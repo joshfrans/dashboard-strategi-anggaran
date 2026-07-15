@@ -803,6 +803,7 @@ td {
 }
 
 .summary-metrics div {
+  position: relative;
   min-height: 88px;
   display: grid;
   grid-template-columns: 1fr;
@@ -820,6 +821,7 @@ td {
   height: 54px;
   display: grid;
   place-items: center;
+  flex: 0 0 54px;
   border-radius: 50%;
   border: 3px solid currentColor;
 }
@@ -844,11 +846,26 @@ td {
   color: #fff;
   font-size: 18px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .summary-metrics small {
   font-size: 9px;
   line-height: 1.25;
+}
+
+.summary-metrics div > .ring + strong {
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  width: 54px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.summary-metrics div > .ring + strong + small {
+  margin-top: 0;
 }
 
 @media (max-width: 1280px) {
