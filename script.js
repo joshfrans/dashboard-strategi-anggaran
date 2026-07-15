@@ -1,11 +1,32 @@
 const policyData = [
-  { name: "Holding Policy 2026", pic: "Yosua S.", status: "Selesai", target: "17 Jul 2026", start: 0, width: 5, color: "green" },
-  { name: "Ratifikasi ECOP (BFKO)", pic: "Bobby P.", status: "On Progress", target: "20 Jul 2026", start: 0, width: 3.3, color: "amber" },
-  { name: "Holding E-Transport", pic: "Mario A.", status: "Terlambat", target: "25 Jul 2026", start: 0, width: 2, color: "red" },
-  { name: "Ratifikasi ITEMS", pic: "Freddy P.", status: "On Progress", target: "31 Jul 2026", start: 1.5, width: 2.2, color: "amber" },
-  { name: "Holding E-Meeting", pic: "Indra K.", status: "Plan", target: "03 Aug 2026", start: 0, width: 1.6, color: "blue" },
-  { name: "Ratifikasi E-COP (BFKO) Phase 2", pic: "Bobby P.", status: "Belum Mulai", target: "08 Aug 2026", start: 0, width: 5, color: "gray" },
-  { name: "Holding Digital Workplace", pic: "Mario A.", status: "Belum Mulai", target: "15 Aug 2026", start: 0, width: 5, color: "gray" }
+  {
+    cluster: "Aset Properti",
+    count: 3,
+    focus: "Pengelolaan aset, properti, dan layanan pendukung.",
+    stages: ["done", "review", "review", "waiting"],
+    status: "Perlu validasi entitas"
+  },
+  {
+    cluster: "Naskah Dinas & Kearsipan",
+    count: 5,
+    focus: "Standarisasi naskah dinas, arsip, dan tata kelola dokumen.",
+    stages: ["done", "done", "review", "waiting"],
+    status: "Self-assessment berjalan"
+  },
+  {
+    cluster: "Perjalanan Dinas & Transportasi",
+    count: 5,
+    focus: "Perjalanan dinas, kendaraan, transportasi, dan integrasi layanan.",
+    stages: ["done", "done", "review", "waiting"],
+    status: "Prioritas monitoring"
+  },
+  {
+    cluster: "Pengadaan Tidak Langsung",
+    count: 1,
+    focus: "Pengadaan layanan umum dan kebutuhan penunjang operasional.",
+    stages: ["review", "waiting", "waiting", "waiting"],
+    status: "Menunggu laporan SH/AP"
+  }
 ];
 
 let crData = [
@@ -43,28 +64,31 @@ function percentLabel(value) {
 
 function renderPolicyRows() {
   const target = document.getElementById("policyRows");
+  const stageLabel = {
+    done: "Sudah",
+    review: "Validasi",
+    waiting: "Menunggu"
+  };
+  const stageDot = {
+    done: "green-dot",
+    review: "amber-dot",
+    waiting: "gray-dot"
+  };
+
   target.innerHTML = policyData
     .map((row, index) => {
-      const color = {
-        green: "var(--green)",
-        amber: "var(--amber)",
-        red: "var(--red)",
-        blue: "var(--blue)",
-        gray: "#dfe4ee"
-      }[row.color];
+      const stages = row.stages
+        .map((stage) => `<td><span class="stage-pill"><b class="dot ${stageDot[stage]}"></b>${stageLabel[stage]}</span></td>`)
+        .join("");
 
       return `
         <tr>
           <td>${index + 1}</td>
-          <td><strong>${row.name}</strong></td>
-          <td><strong>${row.pic}</strong></td>
-          <td><span class="status-label"><b class="dot ${statusDotClass[row.status]}"></b>${row.status}</span></td>
-          <td colspan="5">
-            <div class="timeline">
-              <span style="left:${row.start * 20}%; width:${row.width * 20}%; background:${color}"></span>
-            </div>
-          </td>
-          <td><strong>${row.target}</strong></td>
+          <td><strong>${row.cluster}</strong></td>
+          <td><strong>${row.count}</strong></td>
+          <td>${row.focus}</td>
+          ${stages}
+          <td><strong>${row.status}</strong></td>
         </tr>
       `;
     })

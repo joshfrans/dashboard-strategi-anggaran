@@ -535,9 +535,50 @@ td {
   overflow-x: auto;
 }
 
+.policy-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 12px 2px;
+}
+
+.policy-overview div {
+  min-height: 58px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.policy-overview strong {
+  color: var(--green);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.policy-overview span {
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .policy-table th,
 .policy-table td {
   white-space: nowrap;
+}
+
+.policy-table th:nth-child(4),
+.policy-table td:nth-child(4) {
+  min-width: 245px;
+  white-space: normal;
+}
+
+.policy-table th:nth-child(9),
+.policy-table td:nth-child(9) {
+  min-width: 140px;
 }
 
 .week-row th {
@@ -549,6 +590,19 @@ td {
   align-items: center;
   gap: 5px;
   font-weight: 700;
+}
+
+.stage-pill {
+  min-width: 72px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 7px;
+  border-radius: 8px;
+  background: #f7f9fd;
+  border: 1px solid var(--line);
+  font-weight: 800;
 }
 
 .timeline {

@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260715-7" />
+    <link rel="stylesheet" href="./styles.css?v=20260715-8" />
   </head>
   <body>
     <div class="app-shell">
@@ -152,14 +152,14 @@
           <article class="kpi-card policy-card">
             <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
             <div class="kpi-main">
-              <h2>Kebijakan<br />(Holding & Ratifikasi)</h2>
-              <strong>12</strong>
-              <span>Total Pekerjaan</span>
+              <h2>Kebijakan<br />& Ratifikasi</h2>
+              <strong>14</strong>
+              <span>Total Regulasi</span>
             </div>
             <div class="mini-legend">
-              <span><b class="dot green-dot"></b>8 Selesai</span>
-              <span><b class="dot amber-dot"></b>3 On Progress</span>
-              <span><b class="dot red-dot"></b>1 Terlambat</span>
+              <span><b class="dot green-dot"></b>4 Klaster</span>
+              <span><b class="dot amber-dot"></b>11 Entitas</span>
+              <span><b class="dot gray-dot"></b>Self Assessment</span>
             </div>
           </article>
 
@@ -192,42 +192,49 @@
         <section class="work-grid">
           <article class="panel policy-panel">
             <div class="panel-title green-title">
-              <h2>1. Timeline Kebijakan (Holding & Ratifikasi)</h2>
+              <h2>1. Monitoring Kebijakan & Ratifikasi</h2>
               <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="policy-overview">
+              <div>
+                <strong>14</strong>
+                <span>Regulasi</span>
+              </div>
+              <div>
+                <strong>4</strong>
+                <span>Klaster</span>
+              </div>
+              <div>
+                <strong>11</strong>
+                <span>Entitas SH/AP</span>
+              </div>
+              <div>
+                <strong>Triwulan</strong>
+                <span>Siklus Monitoring</span>
+              </div>
             </div>
             <div class="policy-table-wrap">
               <table class="policy-table">
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Nama Pekerjaan</th>
-                    <th>PIC</th>
-                    <th>Status</th>
-                    <th colspan="5">Juli 2026</th>
-                    <th>Target Selesai</th>
-                  </tr>
-                  <tr class="week-row">
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>W1<br />1-5 Jul</th>
-                    <th>W2<br />6-12 Jul</th>
-                    <th>W3<br />13-19 Jul</th>
-                    <th>W4<br />20-26 Jul</th>
-                    <th>W5<br />27-31 Jul</th>
-                    <th></th>
+                    <th>Klaster Regulasi</th>
+                    <th>Jumlah</th>
+                    <th>Fokus Kebijakan</th>
+                    <th>Adopsi</th>
+                    <th>Sosialisasi</th>
+                    <th>Operasional</th>
+                    <th>Pelaporan</th>
+                    <th>Status SH/AP</th>
                   </tr>
                 </thead>
                 <tbody id="policyRows"></tbody>
               </table>
             </div>
             <div class="legend-row">
-              <span><b class="dot green-dot"></b>Selesai</span>
-              <span><b class="dot amber-dot"></b>On Progress</span>
-              <span><b class="dot red-dot"></b>Terlambat</span>
-              <span><b class="dot blue-dot"></b>Plan</span>
-              <span><b class="dot gray-dot"></b>Belum Mulai</span>
+              <span><b class="dot green-dot"></b>Sudah berjalan</span>
+              <span><b class="dot amber-dot"></b>Perlu validasi</span>
+              <span><b class="dot gray-dot"></b>Menunggu laporan SH/AP</span>
             </div>
           </article>
 
@@ -330,6 +337,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260715-7"></script>
+    <script src="./script.js?v=20260715-8"></script>
   </body>
 </html>
