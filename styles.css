@@ -565,6 +565,61 @@ td {
   font-weight: 800;
 }
 
+.entity-panel {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 10px;
+  align-items: start;
+  margin: 10px 12px 0;
+  padding: 10px;
+  border: 1px solid #dce6f5;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.entity-panel strong {
+  display: block;
+  color: var(--navy);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.entity-panel span {
+  color: #54627d;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.entity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.entity-list span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 7px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--navy);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.entity-list b {
+  width: 16px;
+  height: 16px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7f6ed;
+  color: var(--green);
+  font-size: 9px;
+}
+
 .policy-table th,
 .policy-table td {
   white-space: nowrap;
@@ -988,6 +1043,7 @@ td {
   .header-actions,
   .kpi-card,
   .priority-card,
+  .entity-panel,
   .summary-copy,
   .summary-metrics div {
     grid-template-columns: 1fr;

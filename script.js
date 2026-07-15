@@ -29,6 +29,20 @@ const policyData = [
   }
 ];
 
+const policyEntities = [
+  "PLN Indonesia Power",
+  "PLN Nusantara Power",
+  "PLN Energi Primer Indonesia",
+  "PLN Icon Plus",
+  "PLN Haleyora Power",
+  "PLN Enjiniring",
+  "PLN Tarakan",
+  "PLN Batam",
+  "PLN EMI",
+  "Dana Pensiun PLN",
+  "YPK PLN"
+];
+
 let crData = [
   { app: "ESPPD", request: "CR utama E-SPPD", progress: 60.35, status: "On Progress", target: "Multi target" },
   { app: "ESPPD Manage Service", request: "Integrasi manage service", progress: 36.43, status: "On Progress", target: "30 Jun 2026" },
@@ -92,6 +106,14 @@ function renderPolicyRows() {
         </tr>
       `;
     })
+    .join("");
+}
+
+function renderPolicyEntities() {
+  const target = document.getElementById("policyEntities");
+  if (!target) return;
+  target.innerHTML = policyEntities
+    .map((entity, index) => `<span><b>${index + 1}</b>${entity}</span>`)
     .join("");
 }
 
@@ -292,6 +314,7 @@ function setupFilters() {
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
+  renderPolicyEntities();
   renderCrRows();
   updateDashboardMetrics();
   setupFilters();
