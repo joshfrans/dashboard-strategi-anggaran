@@ -430,6 +430,19 @@ p {
   background: var(--blue);
 }
 
+.peach-dot {
+  background: #f4c7ad;
+}
+
+.white-dot {
+  background: #ffffff;
+  border: 1px solid #b8c4d8;
+}
+
+.purple-dot {
+  background: #d76dcd;
+}
+
 .donut {
   width: 88px;
   height: 88px;
@@ -625,15 +638,23 @@ td {
   white-space: nowrap;
 }
 
-.policy-table th:nth-child(4),
-.policy-table td:nth-child(4) {
-  min-width: 245px;
-  white-space: normal;
+.policy-table th:not(:first-child):not(:nth-child(2)),
+.policy-table td:not(:first-child):not(:nth-child(2)) {
+  min-width: 118px;
+  text-align: center;
 }
 
-.policy-table th:nth-child(9),
-.policy-table td:nth-child(9) {
-  min-width: 140px;
+.policy-table th:nth-child(2),
+.policy-table td:nth-child(2) {
+  min-width: 132px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #ffffff;
+}
+
+.policy-table th:nth-child(2) {
+  background: #f5f8fd;
 }
 
 .week-row th {
@@ -658,6 +679,41 @@ td {
   background: #f7f9fd;
   border: 1px solid var(--line);
   font-weight: 800;
+}
+
+.ratification-status {
+  min-width: 92px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 7px;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--navy);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.15;
+  white-space: normal;
+}
+
+.ratification-status.done {
+  background: #42cd58;
+}
+
+.ratification-status.discussion {
+  background: #fff200;
+}
+
+.ratification-status.no-ratification {
+  background: #f4c7ad;
+}
+
+.ratification-status.drafting {
+  background: #ffffff;
+}
+
+.ratification-status.review-fix {
+  background: #d76dcd;
 }
 
 .timeline {

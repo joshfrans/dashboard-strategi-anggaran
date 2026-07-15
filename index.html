@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260715-9" />
+    <link rel="stylesheet" href="./styles.css?v=20260715-10" />
   </head>
   <body>
     <div class="app-shell">
@@ -152,14 +152,14 @@
           <article class="kpi-card policy-card">
             <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
             <div class="kpi-main">
-              <h2>Kebijakan<br />& Ratifikasi</h2>
-              <strong>14</strong>
-              <span>Total Regulasi</span>
+              <h2>Rekap Progres<br />Ratifikasi</h2>
+              <strong>70</strong>
+              <span>Total Status Kebijakan</span>
             </div>
             <div class="mini-legend">
-              <span><b class="dot green-dot"></b>4 Klaster</span>
-              <span><b class="dot amber-dot"></b>11 Entitas</span>
-              <span><b class="dot gray-dot"></b>Self Assessment</span>
+              <span><b class="dot green-dot"></b>54 Selesai Endorsement</span>
+              <span><b class="dot amber-dot"></b>4 Diskusi SHAP</span>
+              <span><b class="dot gray-dot"></b>12 Perlu Tindak Lanjut</span>
             </div>
           </article>
 
@@ -192,31 +192,31 @@
         <section class="work-grid">
           <article class="panel policy-panel">
             <div class="panel-title green-title">
-              <h2>1. Monitoring Kebijakan & Ratifikasi</h2>
+              <h2>1. Rekap Progres Ratifikasi Kebijakan</h2>
               <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="policy-overview">
               <div>
-                <strong>14</strong>
-                <span>Regulasi</span>
+                <strong>10</strong>
+                <span>Entitas SHAP</span>
               </div>
               <div>
-                <strong>4</strong>
-                <span>Klaster</span>
+                <strong>7</strong>
+                <span>Jenis Kebijakan</span>
               </div>
               <div>
-                <strong>11</strong>
-                <span>Entitas SH/AP</span>
+                <strong>54</strong>
+                <span>Selesai Endorsement</span>
               </div>
               <div>
-                <strong>Triwulan</strong>
-                <span>Siklus Monitoring</span>
+                <strong>16</strong>
+                <span>Perlu Tindak Lanjut</span>
               </div>
             </div>
             <div class="entity-panel" aria-label="Entitas SHAP">
               <div>
                 <strong>Entitas SH/AP</strong>
-                <span>Template status ratifikasi perlu dimutakhirkan melalui self-assessment.</span>
+                <span>Data mengikuti rekap progres ratifikasi pada gambar terbaru.</span>
               </div>
               <div class="entity-list" id="policyEntities"></div>
             </div>
@@ -225,23 +225,25 @@
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Klaster Regulasi</th>
-                    <th>Jumlah</th>
-                    <th>Fokus Kebijakan</th>
-                    <th>Adopsi</th>
-                    <th>Sosialisasi</th>
-                    <th>Operasional</th>
-                    <th>Pelaporan</th>
-                    <th>Status SH/AP</th>
+                    <th>Entitas</th>
+                    <th>Aset Properti</th>
+                    <th>Arsip</th>
+                    <th>SPPD</th>
+                    <th>Fasilitas Kerja</th>
+                    <th>BFKO</th>
+                    <th>Indirect Procurement</th>
+                    <th>Kendaraan Operasional</th>
                   </tr>
                 </thead>
                 <tbody id="policyRows"></tbody>
               </table>
             </div>
             <div class="legend-row">
-              <span><b class="dot green-dot"></b>Sudah berjalan</span>
-              <span><b class="dot amber-dot"></b>Perlu validasi</span>
-              <span><b class="dot gray-dot"></b>Menunggu laporan SH/AP</span>
+              <span><b class="dot green-dot"></b>Selesai endorsement</span>
+              <span><b class="dot amber-dot"></b>Diskusi internal/perbedaan ketentuan</span>
+              <span><b class="dot peach-dot"></b>Tidak melakukan ratifikasi</span>
+              <span><b class="dot white-dot"></b>Proses drafting</span>
+              <span><b class="dot purple-dot"></b>Perbaikan hasil review</span>
             </div>
           </article>
 
@@ -344,6 +346,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260715-9"></script>
+    <script src="./script.js?v=20260715-10"></script>
   </body>
 </html>

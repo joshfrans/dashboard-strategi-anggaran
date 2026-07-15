@@ -1,46 +1,57 @@
 const policyData = [
   {
-    cluster: "Aset Properti",
-    count: 3,
-    focus: "Pengelolaan aset, properti, dan layanan pendukung.",
-    stages: ["done", "review", "review", "waiting"],
-    status: "Perlu validasi entitas"
+    entity: "PLN IP",
+    statuses: ["done", "done", "discussion", "discussion", "discussion", "done", "done"]
   },
   {
-    cluster: "Naskah Dinas & Kearsipan",
-    count: 5,
-    focus: "Standarisasi naskah dinas, arsip, dan tata kelola dokumen.",
-    stages: ["done", "done", "review", "waiting"],
-    status: "Self-assessment berjalan"
+    entity: "PLN EPI",
+    statuses: ["no-ratification", "done", "done", "done", "done", "no-ratification", "done"]
   },
   {
-    cluster: "Perjalanan Dinas & Transportasi",
-    count: 5,
-    focus: "Perjalanan dinas, kendaraan, transportasi, dan integrasi layanan.",
-    stages: ["done", "done", "review", "waiting"],
-    status: "Prioritas monitoring"
+    entity: "PLN NP",
+    statuses: ["done", "done", "discussion", "done", "done", "done", "done"]
   },
   {
-    cluster: "Pengadaan Tidak Langsung",
-    count: 1,
-    focus: "Pengadaan layanan umum dan kebutuhan penunjang operasional.",
-    stages: ["review", "waiting", "waiting", "waiting"],
-    status: "Menunggu laporan SH/AP"
+    entity: "PLN ICON+",
+    statuses: ["drafting", "done", "done", "done", "done", "review-fix", "done"]
+  },
+  {
+    entity: "PLN EMI",
+    statuses: ["no-ratification", "done", "done", "done", "no-ratification", "done", "done"]
+  },
+  {
+    entity: "PLN ES",
+    statuses: ["done", "done", "done", "done", "done", "done", "done"]
+  },
+  {
+    entity: "PLN Haleyora Power",
+    statuses: ["done", "done", "done", "done", "done", "done", "done"]
+  },
+  {
+    entity: "PLN Nusa Daya",
+    statuses: ["done", "done", "done", "done", "done", "done", "done"]
+  },
+  {
+    entity: "PLN MCTN",
+    statuses: ["no-ratification", "done", "done", "done", "done", "no-ratification", "done"]
+  },
+  {
+    entity: "PLN Batam",
+    statuses: ["drafting", "drafting", "done", "drafting", "done", "no-ratification", "done"]
   }
 ];
 
 const policyEntities = [
-  "PLN Indonesia Power",
-  "PLN Nusantara Power",
-  "PLN Energi Primer Indonesia",
-  "PLN Icon Plus",
-  "PLN Haleyora Power",
-  "PLN Enjiniring",
-  "PLN Tarakan",
-  "PLN Batam",
+  "PLN IP",
+  "PLN EPI",
+  "PLN NP",
+  "PLN ICON+",
   "PLN EMI",
-  "Dana Pensiun PLN",
-  "YPK PLN"
+  "PLN ES",
+  "PLN Haleyora Power",
+  "PLN Nusa Daya",
+  "PLN MCTN",
+  "PLN Batam"
 ];
 
 let crData = [
@@ -78,31 +89,48 @@ function percentLabel(value) {
 
 function renderPolicyRows() {
   const target = document.getElementById("policyRows");
-  const stageLabel = {
-    done: "Sudah",
-    review: "Validasi",
-    waiting: "Menunggu"
+  const statusLabel = {
+    done: "Selesai",
+    discussion: "Diskusi",
+    "no-ratification": "Tidak Ratifikasi",
+    drafting: "Drafting",
+    "review-fix": "Perbaikan Review"
   };
-  const stageDot = {
-    done: "green-dot",
-    review: "amber-dot",
-    waiting: "gray-dot"
+  const policyColumns = [
+    "Aset Properti",
+    "Arsip",
+    "SPPD",
+    "Fasilitas Kerja",
+    "BFKO",
+    "Indirect Procurement",
+    "Kendaraan Operasional"
+  ];
+
+  const statusTitle = {
+    done: "Selesai endorsement",
+    discussion: "Diskusi internal di SHAP / terdapat perbedaan ketentuan",
+    "no-ratification": "Tidak melakukan ratifikasi",
+    drafting: "Proses drafting",
+    "review-fix": "Perbaikan hasil review"
   };
 
   target.innerHTML = policyData
     .map((row, index) => {
-      const stages = row.stages
-        .map((stage) => `<td><span class="stage-pill"><b class="dot ${stageDot[stage]}"></b>${stageLabel[stage]}</span></td>`)
+      const statuses = row.statuses
+        .map((status, statusIndex) => `
+          <td>
+            <span class="ratification-status ${status}" title="${policyColumns[statusIndex]} - ${statusTitle[status]}">
+              ${statusLabel[status]}
+            </span>
+          </td>
+        `)
         .join("");
 
       return `
         <tr>
           <td>${index + 1}</td>
-          <td><strong>${row.cluster}</strong></td>
-          <td><strong>${row.count}</strong></td>
-          <td>${row.focus}</td>
-          ${stages}
-          <td><strong>${row.status}</strong></td>
+          <td><strong>${row.entity}</strong></td>
+          ${statuses}
         </tr>
       `;
     })
