@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Change Request Aplikasi</title>
+    <meta
+      name="description"
+      content="Dashboard Timeline Pekerjaan dan Change Request Aplikasi untuk monitoring manajerial."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navigasi utama">
+        <div class="brand">
+          <div class="pln-mark">PLN</div>
+          <div class="brand-text">PLN</div>
+        </div>
+
+        <nav class="nav-list">
+          <a href="#" class="nav-item">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item is-active">
+            <i data-lucide="calendar-days"></i>
+            <span>Timeline Pekerjaan</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="file-check-2"></i>
+            <span>Kebijakan (Holding & Ratifikasi)</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="code-2"></i>
+            <span>Change Request Aplikasi</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="bar-chart-3"></i>
+            <span>Investasi</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="building-2"></i>
+            <span>AO Korporat</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="landmark"></i>
+            <span>AO Kantor Pusat</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="file-text"></i>
+            <span>Laporan & Analitik</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="bell"></i>
+            <span>Alert Center</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i data-lucide="settings"></i>
+            <span>Pengaturan</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-art" aria-hidden="true">
+          <div class="tower tower-left"></div>
+          <div class="tower tower-right"></div>
+          <div class="wave wave-one"></div>
+          <div class="wave wave-two"></div>
+        </div>
+
+        <div class="user-box">
+          <div class="avatar">YS</div>
+          <div>
+            <strong>Yosua S.</strong>
+            <span>Admin</span>
+          </div>
+          <i data-lucide="chevron-down"></i>
+        </div>
+      </aside>
+
+      <main class="dashboard">
+        <header class="page-header">
+          <div class="title-block">
+            <h1>Timeline Pekerjaan</h1>
+            <p class="division">Strategi & Anggaran Umum</p>
+            <p class="description">
+              Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request
+              Aplikasi untuk mendukung percepatan pencapaian target perusahaan.
+            </p>
+          </div>
+
+          <div class="header-actions">
+            <div class="filters" aria-label="Filter dashboard">
+              <label>
+                <span>Tahun</span>
+                <select id="yearFilter">
+                  <option>2026</option>
+                </select>
+              </label>
+              <label>
+                <span>Bulan</span>
+                <select id="monthFilter">
+                  <option>Juli</option>
+                </select>
+              </label>
+              <label>
+                <span>Unit</span>
+                <select id="unitFilter">
+                  <option>Semua</option>
+                  <option>General Affairs</option>
+                  <option>PLN EPI</option>
+                </select>
+              </label>
+              <label>
+                <span>PIC</span>
+                <select id="picFilter">
+                  <option>Semua</option>
+                  <option>Yosua S.</option>
+                  <option>Bobby P.</option>
+                  <option>Mario A.</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="date-card">
+              <i data-lucide="calendar"></i>
+              <div>
+                <span>Data per</span>
+                <strong>15 Juli 2026 10:30 WIB</strong>
+              </div>
+            </div>
+
+            <button class="export-btn" type="button" id="exportCsv">
+              <i data-lucide="download"></i>
+              <span>Export Laporan</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+        </header>
+
+        <section class="kpi-grid" aria-label="Ringkasan KPI">
+          <article class="kpi-card policy-card">
+            <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
+            <div class="kpi-main">
+              <h2>Kebijakan<br />(Holding & Ratifikasi)</h2>
+              <strong>12</strong>
+              <span>Total Pekerjaan</span>
+            </div>
+            <div class="mini-legend">
+              <span><b class="dot green-dot"></b>8 Selesai</span>
+              <span><b class="dot amber-dot"></b>3 On Progress</span>
+              <span><b class="dot red-dot"></b>1 Terlambat</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-icon purple"><i data-lucide="code-2"></i></div>
+            <div class="kpi-main">
+              <h2>Change Request Aplikasi</h2>
+              <strong id="totalCr">9</strong>
+              <span>Total Change Request</span>
+            </div>
+            <div class="mini-legend">
+              <span><b class="dot green-dot"></b><span id="doneCr">2</span> Selesai</span>
+              <span><b class="dot amber-dot"></b><span id="progressCr">6</span> On Progress</span>
+              <span><b class="dot gray-dot"></b><span id="notStartedCr">1</span> Belum Mulai</span>
+            </div>
+          </article>
+
+          <article class="kpi-card progress-card">
+            <div class="donut" id="progressDonut" style="--value: 62.56">
+              <span id="overallProgress">62,56%</span>
+            </div>
+            <div class="kpi-main">
+              <h2>Progress Change<br />Request</h2>
+              <p>Progress Keseluruhan</p>
+            </div>
+          </article>
+
+          <article class="kpi-card priority-card">
+            <div class="kpi-icon amber"><i data-lucide="badge-alert"></i></div>
+            <div class="kpi-main">
+              <h2>Change Request On Progress</h2>
+              <strong id="onProgressMain">6</strong>
+              <span>Change Request</span>
+            </div>
+            <div class="priority-note">
+              <span>Prioritas</span>
+              <strong>Manage Service</strong>
+              <em>36,43%</em>
+            </div>
+          </article>
+        </section>
+
+        <section class="work-grid">
+          <article class="panel policy-panel">
+            <div class="panel-title green-title">
+              <h2>1. Timeline Kebijakan (Holding & Ratifikasi)</h2>
+              <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="policy-table-wrap">
+              <table class="policy-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Pekerjaan</th>
+                    <th>PIC</th>
+                    <th>Status</th>
+                    <th colspan="5">Juli 2026</th>
+                    <th>Target Selesai</th>
+                  </tr>
+                  <tr class="week-row">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>W1<br />1-5 Jul</th>
+                    <th>W2<br />6-12 Jul</th>
+                    <th>W3<br />13-19 Jul</th>
+                    <th>W4<br />20-26 Jul</th>
+                    <th>W5<br />27-31 Jul</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="policyRows"></tbody>
+              </table>
+            </div>
+            <div class="legend-row">
+              <span><b class="dot green-dot"></b>Selesai</span>
+              <span><b class="dot amber-dot"></b>On Progress</span>
+              <span><b class="dot red-dot"></b>Terlambat</span>
+              <span><b class="dot blue-dot"></b>Plan</span>
+              <span><b class="dot gray-dot"></b>Belum Mulai</span>
+            </div>
+          </article>
+
+          <article class="panel cr-panel">
+            <div class="panel-title purple-title">
+              <h2>2. Timeline Change Request Aplikasi</h2>
+              <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="cr-table-wrap">
+              <table class="cr-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Aplikasi</th>
+                    <th>Change Request</th>
+                    <th>Progres</th>
+                    <th>Status</th>
+                    <th>Target Selesai</th>
+                  </tr>
+                </thead>
+                <tbody id="crRows"></tbody>
+              </table>
+            </div>
+            <div class="cr-summary-row">
+              <div><strong id="summaryTotal">9</strong><span>Total CR</span></div>
+              <div><strong class="green-text" id="summaryDone">2</strong><span>Selesai</span></div>
+              <div><strong class="amber-text" id="summaryProgress">6</strong><span>On Progress</span></div>
+              <div><strong class="gray-text" id="summaryNotStarted">1</strong><span>Belum Mulai</span></div>
+              <p>
+                * Progress disesuaikan dari sheet utama pada workbook List Monitoring CR TRANSFORMASI GA.
+                <br />
+                * CR dengan beberapa tahap dihitung sebagai progress gabungan tahapan.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <section class="insight-grid" aria-label="Insight dan aksi">
+          <article class="info-card">
+            <div class="info-title"><i data-lucide="lightbulb"></i><h2>Insight Change Request</h2></div>
+            <ul>
+              <li>2 dari 9 CR telah selesai 100%.</li>
+              <li>6 CR masih on progress dan perlu tindak lanjut.</li>
+              <li>1 CR belum mulai: ESPPD Reengineering.</li>
+            </ul>
+          </article>
+
+          <article class="info-card warning-card">
+            <div class="info-title"><i data-lucide="triangle-alert"></i><h2>Dampak Keterlambatan CR</h2></div>
+            <ul>
+              <li>Manage Service berisiko menunda UAT dan deploy.</li>
+              <li>Reengineering belum bergerak sehingga perlu owner dan target baru.</li>
+              <li>E-COP/E-Transport tahap lanjutan berpotensi menjadi bottleneck.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <div class="info-title blue"><i data-lucide="rocket"></i><h2>Aksi Percepatan</h2></div>
+            <ul class="plain-list">
+              <li>Kunci prioritas resource untuk ESPPD Manage Service.</li>
+              <li>Tetapkan target baru ESPPD Reengineering.</li>
+              <li>Review scope tahap II NEW E-COP dan E-Transport.</li>
+            </ul>
+          </article>
+
+          <article class="info-card next-card">
+            <div class="info-title"><i data-lucide="calendar-check"></i><h2>Next Action (7 Hari Kedepan)</h2></div>
+            <div class="next-list">
+              <div><span>Review ESPPD Manage Service</span><b>18 Jul</b></div>
+              <div><span>Tetapkan owner Reengineering</span><b>20 Jul</b></div>
+              <div><span>Validasi Tahap II E-COP/E-Transport</span><b>22 Jul</b></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="executive-summary">
+          <div class="summary-copy">
+            <i data-lucide="clipboard-list"></i>
+            <div>
+              <h2>Ringkasan Eksekutif</h2>
+              <p>
+                Berdasarkan data workbook terbaru, total Change Request menjadi 9 item dengan progress
+                keseluruhan 62,56%. Sebanyak 2 CR selesai 100%, 6 CR masih on progress, dan 1 CR belum
+                mulai. Prioritas manajemen adalah percepatan ESPPD Manage Service, penetapan owner ESPPD
+                Reengineering, serta validasi tahap II NEW E-COP dan E-Transport agar target roadmap aplikasi
+                General Affairs tetap terkendali.
+              </p>
+            </div>
+          </div>
+          <div class="summary-metrics">
+            <div><span class="ring green-ring"></span><strong>62,56%</strong><small>Progress Keseluruhan</small></div>
+            <div><span class="ring purple-ring"></span><strong>9</strong><small>Total Change Request</small></div>
+            <div><span class="ring green-ring"></span><strong>2</strong><small>Selesai</small></div>
+            <div><span class="ring amber-ring"></span><strong>6</strong><small>On Progress</small></div>
+            <div><span class="ring gray-ring"></span><strong>1</strong><small>Belum Mulai</small></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
