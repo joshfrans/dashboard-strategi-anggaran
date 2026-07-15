@@ -206,9 +206,8 @@ p {
 }
 
 .title-block h1 {
-  text-transform: uppercase;
   font-size: clamp(26px, 3.2vw, 38px);
-  line-height: 0.95;
+  line-height: 1.05;
   color: var(--navy);
   letter-spacing: 0;
 }
