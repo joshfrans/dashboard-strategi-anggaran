@@ -218,7 +218,7 @@ p {
 
 .header-actions {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto auto auto;
   gap: 10px 12px;
   justify-items: end;
 }
@@ -274,7 +274,8 @@ p {
   font-size: 12px;
 }
 
-.export-btn {
+.export-btn,
+.import-btn {
   height: 39px;
   display: flex;
   align-items: center;
@@ -289,9 +290,29 @@ p {
   cursor: pointer;
 }
 
-.export-btn svg {
+.import-btn {
+  color: var(--navy);
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.export-btn svg,
+.import-btn svg {
   width: 16px;
   height: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .kpi-grid {
@@ -924,7 +945,8 @@ td {
 
   .filters label,
   .date-card,
-  .export-btn {
+  .export-btn,
+  .import-btn {
     width: 100%;
   }
 

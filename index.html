@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260715-6" />
+    <link rel="stylesheet" href="./styles.css?v=20260715-7" />
   </head>
   <body>
     <div class="app-shell">
@@ -134,6 +134,17 @@
               <span>Export Laporan</span>
               <i data-lucide="chevron-down"></i>
             </button>
+            <button class="import-btn" type="button" id="importData">
+              <i data-lucide="upload"></i>
+              <span>Import Data</span>
+            </button>
+            <input
+              class="sr-only"
+              type="file"
+              id="dataFile"
+              accept=".xlsx,.xls,.csv,.json"
+              aria-label="Import data source Change Request"
+            />
           </div>
         </header>
 
@@ -318,6 +329,7 @@
     </div>
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script src="./script.js?v=20260715-5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="./script.js?v=20260715-7"></script>
   </body>
 </html>

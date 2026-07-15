@@ -8,7 +8,7 @@ const policyData = [
   { name: "Holding Digital Workplace", pic: "Mario A.", status: "Belum Mulai", target: "15 Aug 2026", start: 0, width: 5, color: "gray" }
 ];
 
-const crData = [
+let crData = [
   { app: "ESPPD", request: "CR utama E-SPPD", progress: 60.35, status: "On Progress", target: "Multi target" },
   { app: "ESPPD Manage Service", request: "Integrasi manage service", progress: 36.43, status: "On Progress", target: "30 Jun 2026" },
   { app: "ESPPD Reengineering", request: "Persiapan infrastruktur & migrasi", progress: 0, status: "Belum Mulai", target: "Belum tersedia" },
@@ -95,6 +95,42 @@ function renderCrRows(rows = crData) {
     .join("");
 }
 
+function updateDashboardMetrics() {
+  const total = crData.length;
+  const done = crData.filter((row) => row.status === "Selesai").length;
+  const onProgress = crData.filter((row) => row.status === "On Progress").length;
+  const notStarted = crData.filter((row) => row.status === "Belum Mulai").length;
+  const progress = total
+    ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / total
+    : 0;
+
+  const values = {
+    totalCr: total,
+    doneCr: done,
+    progressCr: onProgress,
+    notStartedCr: notStarted,
+    summaryTotal: total,
+    summaryDone: done,
+    summaryProgress: onProgress,
+    summaryNotStarted: notStarted
+  };
+
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  });
+
+  const progressLabel = percentLabel(progress);
+  const progressText = document.getElementById("overallProgress");
+  const donut = document.getElementById("progressDonut");
+  if (progressText) progressText.textContent = progressLabel;
+  if (donut) donut.style.setProperty("--value", progress.toFixed(2));
+
+  document.querySelectorAll(".summary-metrics .percent-ring strong").forEach((element) => {
+    element.textContent = progressLabel;
+  });
+}
+
 function downloadCsv() {
   const header = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
   const rows = crData.map((row, index) => [
@@ -119,6 +155,104 @@ function downloadCsv() {
   URL.revokeObjectURL(url);
 }
 
+function parseProgress(value) {
+  if (typeof value === "number") return value <= 1 ? value * 100 : value;
+  const cleaned = String(value || "")
+    .replace("%", "")
+    .replace(",", ".")
+    .trim();
+  const parsed = Number(cleaned);
+  if (Number.isNaN(parsed)) return 0;
+  return parsed <= 1 ? parsed * 100 : parsed;
+}
+
+function excelDate(value) {
+  if (!value && value !== 0) return "";
+  if (typeof value === "number" && window.XLSX?.SSF) {
+    return window.XLSX.SSF.format("dd mmm yyyy", value);
+  }
+  return String(value);
+}
+
+function normalizeRow(row) {
+  const app = row.Aplikasi || row.Application || row.app;
+  const request = row["Change Request"] || row["Change request"] || row.Request || row.request;
+  const progress = row.Progress || row.Progres || row["Progress Dashboard"] || row.progress;
+  const status = row.Status || row["Status Dashboard"] || row.status;
+  const target = row["Target Selesai"] || row.Target || row.target;
+
+  if (!app || !request) return null;
+
+  return {
+    app: String(app),
+    request: String(request),
+    progress: parseProgress(progress),
+    status: String(status || "On Progress"),
+    target: excelDate(target || "")
+  };
+}
+
+function rowsFromWorkbook(workbook) {
+  const preferredSheet =
+    workbook.Sheets.Dashboard_Source ||
+    workbook.Sheets.List_Monitoring_CR ||
+    workbook.Sheets.CR_Master ||
+    workbook.Sheets[workbook.SheetNames[0]];
+  const matrix = window.XLSX.utils.sheet_to_json(preferredSheet, { header: 1, defval: "" });
+  const headerIndex = matrix.findIndex((row) => {
+    const labels = row.map((cell) => String(cell).trim().toLowerCase());
+    return labels.includes("aplikasi") && labels.some((label) => label.includes("change request"));
+  });
+
+  if (headerIndex === -1) return [];
+
+  const headers = matrix[headerIndex].map((cell) => String(cell).trim());
+  const rows = matrix.slice(headerIndex + 1).map((row) => {
+    const record = {};
+    headers.forEach((header, index) => {
+      if (header) record[header] = row[index];
+    });
+    return record;
+  });
+  return rows.map(normalizeRow).filter(Boolean);
+}
+
+function rowsFromCsv(text) {
+  const workbook = window.XLSX.read(text, { type: "string" });
+  return rowsFromWorkbook(workbook);
+}
+
+function rowsFromJson(text) {
+  const parsed = JSON.parse(text);
+  const rows = Array.isArray(parsed) ? parsed : parsed.crData || parsed.data || [];
+  return rows.map(normalizeRow).filter(Boolean);
+}
+
+async function importDataFile(file) {
+  const extension = file.name.split(".").pop().toLowerCase();
+  let rows = [];
+
+  if (["xlsx", "xls"].includes(extension)) {
+    const buffer = await file.arrayBuffer();
+    const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
+    rows = rowsFromWorkbook(workbook);
+  } else if (extension === "csv") {
+    rows = rowsFromCsv(await file.text());
+  } else if (extension === "json") {
+    rows = rowsFromJson(await file.text());
+  }
+
+  if (!rows.length) {
+    alert("Data tidak terbaca. Pastikan file memiliki kolom Aplikasi, Change Request, Progress/Progres, Status, dan Target Selesai.");
+    return;
+  }
+
+  crData = rows;
+  renderCrRows();
+  updateDashboardMetrics();
+  alert(`Import berhasil: ${rows.length} Change Request dimuat.`);
+}
+
 function setupFilters() {
   const unitFilter = document.getElementById("unitFilter");
   unitFilter.addEventListener("change", () => {
@@ -135,8 +269,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
   renderCrRows();
+  updateDashboardMetrics();
   setupFilters();
   document.getElementById("exportCsv").addEventListener("click", downloadCsv);
+  document.getElementById("importData").addEventListener("click", () => {
+    document.getElementById("dataFile").click();
+  });
+  document.getElementById("dataFile").addEventListener("change", (event) => {
+    const file = event.target.files?.[0];
+    if (file) importDataFile(file);
+    event.target.value = "";
+  });
   if (window.lucide) {
     window.lucide.createIcons();
   }
