@@ -132,6 +132,7 @@ function setupFilters() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
   renderCrRows();
   setupFilters();
