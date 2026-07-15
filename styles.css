@@ -308,7 +308,7 @@ p {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: 1.14fr 1fr 0.78fr 1.05fr;
+  grid-template-columns: 1.18fr 1fr 0.86fr;
   gap: 13px;
 }
 
