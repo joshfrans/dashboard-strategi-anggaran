@@ -64,14 +64,45 @@ select {
 .pln-mark {
   width: 46px;
   height: 46px;
-  display: grid;
-  place-items: center;
+  position: relative;
+  overflow: hidden;
   border-radius: 7px;
   background: linear-gradient(135deg, #ffe733, #ffbd00);
-  color: #006bb6;
-  font-weight: 800;
-  font-size: 13px;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.pln-bolt {
+  position: absolute;
+  left: 18px;
+  top: 7px;
+  width: 11px;
+  height: 31px;
+  background: #ef233c;
+  clip-path: polygon(52% 0, 100% 0, 70% 40%, 100% 40%, 30% 100%, 48% 55%, 10% 55%);
+  transform: skew(-7deg);
+  z-index: 2;
+}
+
+.pln-wave {
+  position: absolute;
+  left: 8px;
+  width: 31px;
+  height: 7px;
+  border-top: 3px solid #006bb6;
+  border-radius: 50%;
+  transform: rotate(-10deg);
+}
+
+.pln-wave.wave-a {
+  top: 13px;
+}
+
+.pln-wave.wave-b {
+  top: 21px;
+}
+
+.pln-wave.wave-c {
+  top: 29px;
 }
 
 .brand-text {
