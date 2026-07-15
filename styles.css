@@ -850,8 +850,14 @@ td {
 }
 
 .summary-metrics .percent-ring strong {
-  font-size: 15px;
-  letter-spacing: -0.2px;
+  font-size: 12px;
+  letter-spacing: -0.45px;
+}
+
+.summary-metrics .percent-ring {
+  width: 60px;
+  height: 60px;
+  flex-basis: 60px;
 }
 
 .summary-metrics small {
