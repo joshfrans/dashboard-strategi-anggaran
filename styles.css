@@ -769,6 +769,333 @@ p {
   line-height: 1.35;
 }
 
+.overview-section-title {
+  display: grid;
+  gap: 4px;
+}
+
+.overview-section-title span {
+  color: #53627f;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-section-title h2 {
+  color: var(--navy);
+  font-size: 24px;
+}
+
+.overview-section-title p {
+  margin: 0;
+  color: #53627f;
+  font-size: 12px;
+}
+
+.overview-strategy-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.82fr;
+  gap: 13px;
+}
+
+.overview-kpi-card,
+.overview-progress-card,
+.overview-performance-card,
+.overview-ao-unit-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.overview-kpi-card {
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) minmax(190px, 0.78fr);
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.overview-kpi-main {
+  display: grid;
+  gap: 6px;
+}
+
+.overview-kpi-main h3,
+.overview-progress-card h3 {
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.22;
+  text-transform: uppercase;
+}
+
+.overview-kpi-main strong {
+  color: var(--navy);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.overview-kpi-main small {
+  font-size: 15px;
+}
+
+.overview-kpi-main span,
+.overview-progress-card p {
+  color: var(--navy);
+  font-size: 12px;
+}
+
+.overview-kpi-legend {
+  display: grid;
+  gap: 12px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+
+.overview-kpi-legend span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--navy);
+  font-size: 12px;
+}
+
+.overview-progress-card {
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.overview-performance-card {
+  overflow: hidden;
+}
+
+.overview-performance-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  color: #ffffff;
+  background: #079c9f;
+}
+
+.overview-performance-title h3 {
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.overview-performance-title span {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-performance-body {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f1fff8 100%);
+}
+
+.overview-performance-body > div:nth-child(2) {
+  display: grid;
+  gap: 7px;
+}
+
+.overview-performance-body > div:nth-child(2) span {
+  color: #53627f;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-performance-body > div:nth-child(2) strong {
+  color: var(--green);
+  font-size: 24px;
+}
+
+.overview-performance-body > div:nth-child(2) small {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-performance-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.overview-performance-metrics b {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid #cfe7db;
+  border-radius: 9px;
+  color: var(--navy);
+  background: #f5fffa;
+  font-size: 22px;
+}
+
+.overview-performance-metrics span {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.overview-investment-strip .investment-kpi,
+.overview-ao-strip > div {
+  min-height: 132px;
+}
+
+.overview-two-column {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 13px;
+}
+
+.overview-ao-unit-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.overview-filter-row {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 12px;
+}
+
+.overview-filter-row label {
+  display: grid;
+  gap: 6px;
+  color: #53627f;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-filter-row strong {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--navy);
+  background: #fbfdff;
+  font-size: 14px;
+  text-transform: none;
+}
+
+.overview-filter-row svg {
+  width: 15px;
+}
+
+.overview-ao-metrics {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 0.95fr 1.25fr 0.5fr;
+  gap: 8px;
+}
+
+.overview-ao-metrics div {
+  display: grid;
+  gap: 5px;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fbfdff;
+}
+
+.overview-ao-metrics span {
+  color: #53627f;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-ao-metrics strong {
+  color: var(--navy);
+  font-size: 18px;
+}
+
+.overview-ao-metrics small {
+  font-size: 10px;
+}
+
+.overview-ao-detail {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.overview-ao-detail table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.overview-ao-detail th {
+  padding: 9px 10px;
+  color: var(--navy);
+  background: #d8eefb;
+  font-size: 10px;
+  text-align: right;
+}
+
+.overview-ao-detail th:first-child,
+.overview-ao-detail td:first-child {
+  text-align: left;
+}
+
+.overview-ao-detail td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.overview-ao-bars {
+  display: grid;
+  gap: 9px;
+}
+
+.overview-ao-bars > span {
+  color: #53627f;
+  font-size: 11px;
+}
+
+.overview-ao-bars div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 118px;
+  gap: 8px;
+  align-items: center;
+}
+
+.overview-ao-bars b {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+
+.overview-ao-bars small {
+  color: #53627f;
+  font-size: 10px;
+}
+
 .investment-view {
   display: none;
 }
@@ -3419,6 +3746,9 @@ td {
   .investment-hero,
   .overview-hero,
   .overview-grid,
+  .overview-strategy-grid,
+  .overview-two-column,
+  .overview-ao-detail,
   .overview-decision-band,
   .investment-chart-grid,
   .investment-grid,
@@ -3467,6 +3797,7 @@ td {
 
   .investment-kpi-grid,
   .overview-kpi-grid,
+  .overview-ao-metrics,
   .investment-timeline,
   .investment-luncuran,
   .investment-sarpras-grid {
@@ -3487,6 +3818,16 @@ td {
 
   .overview-decision-band ul {
     grid-template-columns: 1fr;
+  }
+
+  .overview-kpi-card,
+  .overview-performance-body {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-kpi-legend {
+    padding-left: 0;
+    border-left: 0;
   }
 }
 
@@ -3566,6 +3907,8 @@ td {
 
   .investment-kpi-grid,
   .overview-kpi-grid,
+  .overview-filter-row,
+  .overview-ao-metrics,
   .investment-timeline,
   .investment-luncuran,
   .investment-sarpras-grid {
@@ -3577,7 +3920,9 @@ td {
   }
 
   .overview-progress,
-  .overview-panel-head {
+  .overview-panel-head,
+  .overview-progress-card,
+  .overview-ao-bars div {
     grid-template-columns: 1fr;
   }
 

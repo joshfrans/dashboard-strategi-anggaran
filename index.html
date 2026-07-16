@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-53" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-54" />
   </head>
   <body>
     <div class="app-shell">
@@ -154,135 +154,194 @@
         </header>
 
         <section class="dashboard-overview" id="dashboardOverview" aria-label="Dashboard Umum">
-          <div class="overview-hero">
-            <div>
-              <span>Executive Overview</span>
-              <h2>Ringkasan Strategi, Investasi, AO, dan Kinerja GA</h2>
-              <p>
-                Dashboard umum ini menyatukan informasi utama dari Strategi & Evaluasi GA,
-                Investasi, AO Korporat, dan AO Kantor Pusat agar manajemen cepat memahami
-                posisi capaian, area risiko, dan tindak lanjut prioritas.
-              </p>
-            </div>
-            <div class="overview-status">
-              <strong>Status Umum</strong>
-              <b>Terkendali dengan Perhatian</b>
-              <span>Mayoritas indikator berjalan baik, namun perlu percepatan pada CR aplikasi, serapan AKI, dan finalisasi beberapa proses kebijakan.</span>
-            </div>
+          <div class="overview-section-title">
+            <span>Dashboard Umum</span>
+            <h2>Ringkasan Informasi Manajemen</h2>
+            <p>Menampilkan informasi utama dari Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat.</p>
           </div>
 
-          <div class="overview-kpi-grid">
-            <article>
-              <span>Strategi & Evaluasi GA</span>
-              <strong>70 Kebijakan</strong>
-              <small>54 selesai endorsement, 16 masih perlu tindak lanjut.</small>
-            </article>
-            <article>
-              <span>Change Request Aplikasi</span>
-              <strong>62,56%</strong>
-              <small>9 CR: 2 selesai, 6 on progress, 1 belum mulai.</small>
-            </article>
-            <article>
-              <span>Monitoring Kinerja</span>
-              <strong>106,84</strong>
-              <small>NKO s.d. Juni 2026 berada pada status tercapai.</small>
-            </article>
-            <article>
-              <span>Investasi</span>
-              <strong>30,43%</strong>
-              <small>Serapan AKI 412,23 M dari total 1.354,51 M.</small>
-            </article>
-          </div>
-
-          <div class="overview-grid">
-            <article class="overview-panel">
-              <div class="overview-panel-head">
-                <i data-lucide="clipboard-check"></i>
-                <div>
-                  <span>Strategi & Evaluasi GA</span>
-                  <h3>Kebijakan relatif maju, CR aplikasi perlu dikawal.</h3>
-                </div>
+          <div class="overview-strategy-grid">
+            <article class="overview-kpi-card">
+              <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
+              <div class="overview-kpi-main">
+                <h3>Rekap Progres<br />Ratifikasi</h3>
+                <strong>70 <small>Kebijakan</small></strong>
+                <span>Total Status Kebijakan</span>
               </div>
-              <p>
-                Ratifikasi kebijakan sudah memiliki basis progres yang kuat, namun masih ada status non-hijau
-                yang memerlukan tindak lanjut SH/AP. Pada Change Request, fokus utama adalah 6 CR on progress dan
-                1 CR belum mulai agar tidak menahan roadmap transformasi GA.
-              </p>
-              <div class="overview-mini-metrics">
-                <b>54 Selesai</b>
-                <b>16 Tindak lanjut</b>
-                <b>9 CR</b>
+              <div class="overview-kpi-legend">
+                <span><b class="dot green-dot"></b>54 Selesai Endorsement</span>
+                <span><b class="dot amber-dot"></b>4 Diskusi SHAP</span>
+                <span><b class="dot gray-dot"></b>12 Perlu Tindak Lanjut</span>
               </div>
             </article>
 
-            <article class="overview-panel">
-              <div class="overview-panel-head">
-                <i data-lucide="trending-up"></i>
-                <div>
-                  <span>Investasi</span>
-                  <h3>Serapan AKI masih perlu percepatan berbasis BAPP.</h3>
-                </div>
+            <article class="overview-kpi-card">
+              <div class="kpi-icon purple"><i data-lucide="code-2"></i></div>
+              <div class="overview-kpi-main">
+                <h3>Change Request<br />Aplikasi</h3>
+                <strong>9 <small>CR</small></strong>
+                <span>Total Change Request</span>
               </div>
-              <p>
-                Realisasi AKI s.d. Juni mencapai 412,23 M atau 30,43% dari total AKI. Gap belum terserap sebesar
-                942,28 M perlu dimonitor melalui kesiapan BAPP, evaluasi realisasi Juli, dan rekomposisi AKI.
-              </p>
-              <div class="overview-progress">
-                <span>Penyerapan AKI</span>
-                <b><i style="width: 30.43%"></i></b>
-                <strong>30,43%</strong>
+              <div class="overview-kpi-legend">
+                <span><b class="dot green-dot"></b>2 Selesai</span>
+                <span><b class="dot amber-dot"></b>6 On Progress</span>
+                <span><b class="dot gray-dot"></b>1 Belum Mulai</span>
               </div>
             </article>
 
-            <article class="overview-panel">
-              <div class="overview-panel-head">
-                <i data-lucide="network"></i>
-                <div>
-                  <span>AO Korporat</span>
-                  <h3>Monitoring korporat menjadi sumber pembanding utama.</h3>
-                </div>
+            <article class="overview-progress-card">
+              <div class="donut" style="--value: 62.56">
+                <span>62,56%</span>
               </div>
-              <p>
-                Menu AO Korporat digunakan sebagai akses ke dashboard sumber Administrasi Umum. Informasi ini
-                menjadi referensi korporat untuk melihat konteks biaya, tren, dan posisi realisasi yang lebih luas.
-              </p>
-              <div class="overview-tag-row">
-                <b>Sumber Korporat</b>
-                <b>Monitoring Realisasi</b>
-              </div>
-            </article>
-
-            <article class="overview-panel">
-              <div class="overview-panel-head">
-                <i data-lucide="building-2"></i>
-                <div>
-                  <span>AO Kantor Pusat</span>
-                  <h3>Realisasi meningkat, pengendalian RKAP tetap perlu dijaga.</h3>
-                </div>
-              </div>
-              <p>
-                Panel AO Kantor Pusat menampilkan realisasi, serapan RKAP, target s.d. Mei, dan proyeksi 2026.
-                Sinyal utama: realisasi tumbuh kuat, namun pengendalian proyeksi terhadap RKAP tetap menjadi fokus.
-              </p>
-              <div class="overview-mini-metrics">
-                <b>2.931.185 jt</b>
-                <b>33% RKAP</b>
-                <b>87% Proyeksi</b>
+              <div>
+                <h3>Progress Change<br />Request</h3>
+                <p>Progress Keseluruhan</p>
               </div>
             </article>
           </div>
 
-          <div class="overview-decision-band">
-            <div>
-              <span>Kesimpulan Manajemen</span>
-              <strong>Fokus berikutnya adalah menyelesaikan pekerjaan yang menahan target, bukan menambah indikator baru.</strong>
+          <article class="overview-performance-card">
+            <div class="overview-performance-title">
+              <h3>Monitoring Kinerja</h3>
+              <span>S.D. Juni 2026</span>
             </div>
-            <ul>
-              <li>Percepat CR aplikasi yang masih on progress dan belum mulai.</li>
-              <li>Kunci tindak lanjut kebijakan non-hijau per entitas SH/AP.</li>
-              <li>Validasi BAPP dan rekomposisi AKI untuk menutup gap serapan.</li>
-              <li>Jaga proyeksi AO Kantor Pusat tetap terkendali terhadap RKAP.</li>
-            </ul>
+            <div class="overview-performance-body">
+              <div class="performance-score-ring"><span>106,84</span></div>
+              <div>
+                <span>Nilai NKO s.d. Juni 2026</span>
+                <strong>Tercapai</strong>
+                <small>Semua indikator utama berada di zona hijau.</small>
+              </div>
+              <div class="overview-performance-metrics">
+                <b>10<span>Indikator</span></b>
+                <b>10<span>Hijau</span></b>
+              </div>
+            </div>
+          </article>
+
+          <div class="investment-kpi-grid overview-investment-strip">
+            <article class="investment-kpi">
+              <span>Total Anggaran Investasi 2026</span>
+              <strong>10,89 T</strong>
+              <small>KP 10,64 T + Sarpras Unit 255,31 M</small>
+              <div class="investment-bar"><i style="width: 100%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Realisasi AI s.d. Juni</span>
+              <strong>344,27 M</strong>
+              <small>3,16% dari total AI terbit</small>
+              <div class="investment-bar blue"><i style="width: 3.16%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Total AKI 2026</span>
+              <strong>1,35 T</strong>
+              <small>KP 1,18 T + Sarpras Unit 178,66 M</small>
+              <div class="investment-bar"><i style="width: 100%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Realisasi AKI s.d. Juni</span>
+              <strong>412,23 M</strong>
+              <small>30,43% dari total AKI</small>
+              <div class="investment-bar amber"><i style="width: 30.43%"></i></div>
+            </article>
+          </div>
+
+          <div class="overview-two-column">
+            <article class="investment-panel investment-chart-panel">
+              <div class="investment-panel-head">
+                <h3>Monitoring Penyerapan AKI</h3>
+                <p>Melihat posisi serapan kas investasi s.d. Juni dan gap terhadap anggaran terbit.</p>
+              </div>
+              <div class="aki-chart">
+                <div class="aki-gauge">
+                  <div class="aki-gauge-ring" style="--value: 30.43">
+                    <strong>30,43%</strong>
+                    <span>Terserap</span>
+                  </div>
+                  <p>412,23 M dari total AKI 1.354,51 M sudah terealisasi.</p>
+                  <div class="aki-status-chips">
+                    <b>Realisasi 412,23 M</b>
+                    <b class="amber">Sisa 942,28 M</b>
+                  </div>
+                </div>
+                <div class="aki-bars">
+                  <div>
+                    <span>Kantor Pusat</span>
+                    <b><i style="width: 29.02%"></i></b>
+                    <strong>29,02%<small>341,29 M dari 1.175,85 M</small></strong>
+                  </div>
+                  <div>
+                    <span>Sarpras Unit</span>
+                    <b><i style="width: 39.71%"></i></b>
+                    <strong>39,71%<small>70,94 M dari 178,66 M</small></strong>
+                  </div>
+                  <div>
+                    <span>Gap AKI belum terserap</span>
+                    <b class="amber"><i style="width: 69.57%"></i></b>
+                    <strong>69,57%<small>Perlu BAPP & rekomposisi</small></strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="overview-ao-unit-card">
+              <div class="overview-filter-row">
+                <label><span>Grup</span><strong>Holding <i data-lucide="chevron-down"></i></strong></label>
+                <label><span>Pilih / Cari Unit</span><strong>#1 KPST - 1.389.043 jt <i data-lucide="chevron-down"></i></strong></label>
+              </div>
+              <div class="overview-ao-metrics">
+                <div><span>Realisasi s.d Juni 2026</span><strong>1.389.043 <small>jt</small></strong></div>
+                <div><span>Peringkat di Holding</span><strong>#1 <small>dari 39</small></strong></div>
+                <div><span>RKAP 2026 (AO)</span><strong>3.647.914 <small>jt</small></strong></div>
+                <div><span>Penyerapan thd RKAP 2026</span><strong>38%</strong></div>
+                <div><span>% YoY</span><strong class="red-text">129%</strong></div>
+              </div>
+              <div class="overview-ao-detail">
+                <table>
+                  <thead><tr><th>Unsur</th><th>Juni 2026</th><th>% YoY</th><th>% Serapan</th></tr></thead>
+                  <tbody>
+                    <tr><td>Honorarium</td><td>597.771</td><td class="red-text">101%</td><td>31%</td></tr>
+                    <tr><td>Beban Amortisasi</td><td>306.464</td><td class="red-text">352%</td><td class="red-text">103%</td></tr>
+                    <tr><td>Teknologi Informasi</td><td>267.682</td><td class="red-text">177%</td><td>65%</td></tr>
+                    <tr><td>Perjalanan dinas non diklat</td><td>61.521</td><td class="green-text">80%</td><td>20%</td></tr>
+                  </tbody>
+                </table>
+                <div class="overview-ao-bars">
+                  <span>Unsur biaya terbesar di unit KPST</span>
+                  <div><b style="width: 100%"></b><small>Honorarium</small></div>
+                  <div><b style="width: 51%"></b><small>Beban Amortisasi</small></div>
+                  <div><b style="width: 45%"></b><small>Teknologi Informasi</small></div>
+                  <div><b style="width: 10%"></b><small>Perjalanan dinas</small></div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="ao-finance-grid overview-ao-strip">
+            <div class="ao-finance-main">
+              <span>Realisasi s.d Juni 2026</span>
+              <strong>3.533.761 <small>jt</small></strong>
+              <em>▲ 116% YoY</em>
+              <p>Thn lalu (Juni 2025): 3.035.296</p>
+            </div>
+            <div class="ao-finance-metric">
+              <span>Penyerapan thd RKAP 2026</span>
+              <strong>40%</strong>
+              <p>3.533.761 dari RKAP 8.856.163</p>
+              <div class="ao-finance-bar"><i style="width: 40%"></i></div>
+            </div>
+            <div class="ao-finance-metric">
+              <span>Realisasi vs Target s.d Juni</span>
+              <strong>75%</strong>
+              <p>Target: 4.740.295 jt</p>
+              <div class="ao-finance-bar teal"><i style="width: 75%"></i></div>
+            </div>
+            <div class="ao-finance-metric">
+              <span>Proyeksi Setahun 2026</span>
+              <strong>7.946.234 <small>jt</small></strong>
+              <p>RKAP 8.856.163 - 90% - bobot 70:30</p>
+              <div class="ao-finance-bar amber"><i style="width: 90%"></i></div>
+            </div>
           </div>
         </section>
 
@@ -1120,6 +1179,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-53"></script>
+    <script src="./script.js?v=20260716-54"></script>
   </body>
 </html>
