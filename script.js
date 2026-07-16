@@ -214,9 +214,8 @@ function updateDashboardMetrics() {
   }
 }
 
-function downloadCsv() {
-  const header = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
-  const rows = crData.map((row, index) => [
+function crExportRows() {
+  return crData.map((row, index) => [
     index + 1,
     row.app,
     row.request,
@@ -224,18 +223,104 @@ function downloadCsv() {
     row.status,
     row.target
   ]);
-  const csv = [header, ...rows]
-    .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
-    .join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+}
+
+function policyExportRows() {
+  const statusLabel = {
+    done: "Selesai endorsement",
+    discussion: "Diskusi internal/perbedaan ketentuan",
+    "no-ratification": "Tidak melakukan ratifikasi",
+    drafting: "Proses drafting",
+    "review-fix": "Perbaikan hasil review"
+  };
+
+  return policyData.map((row, index) => [
+    index + 1,
+    row.entity,
+    ...row.statuses.map((status) => statusLabel[status] || status)
+  ]);
+}
+
+function downloadBlob(content, filename, type) {
+  const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "dashboard-change-request-aplikasi.csv";
+  link.download = filename;
   document.body.appendChild(link);
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+}
+
+function downloadCsv() {
+  const header = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
+  const rows = crExportRows();
+  const csv = [header, ...rows]
+    .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
+    .join("\n");
+  downloadBlob(`\ufeff${csv}`, "dashboard-change-request-aplikasi.csv", "text/csv;charset=utf-8");
+}
+
+function downloadJson() {
+  const data = {
+    generatedAt: new Date().toISOString(),
+    policyRatification: policyData,
+    changeRequest: crData
+  };
+  downloadBlob(JSON.stringify(data, null, 2), "dashboard-strategi-evaluasi-ga.json", "application/json;charset=utf-8");
+}
+
+function downloadExcel() {
+  if (!window.XLSX) {
+    alert("Library Excel belum siap. Silakan refresh halaman lalu coba lagi.");
+    return;
+  }
+
+  const policyHeader = [
+    "No",
+    "Entitas",
+    "Aset Properti",
+    "Arsip",
+    "SPPD",
+    "Fasilitas Kerja",
+    "BFKO",
+    "Indirect Procurement",
+    "Kendaraan Operasional"
+  ];
+  const crHeader = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
+  const policyRows = policyExportRows();
+  const crRows = crExportRows();
+  const donePolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0);
+  const followUpPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0);
+  const crProgress = crData.length
+    ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crData.length
+    : 0;
+
+  const workbook = window.XLSX.utils.book_new();
+  const summarySheet = window.XLSX.utils.aoa_to_sheet([
+    ["Dashboard Strategi & Evaluasi GA"],
+    ["Tanggal Export", new Date().toLocaleString("id-ID")],
+    [],
+    ["Area", "Indikator", "Nilai"],
+    ["Ratifikasi Kebijakan", "Entitas SH/AP", policyData.length],
+    ["Ratifikasi Kebijakan", "Jenis Kebijakan", policyHeader.length - 2],
+    ["Ratifikasi Kebijakan", "Selesai endorsement", donePolicy],
+    ["Ratifikasi Kebijakan", "Perlu tindak lanjut", followUpPolicy],
+    ["Change Request", "Total CR", crData.length],
+    ["Change Request", "Progress keseluruhan", percentLabel(crProgress)]
+  ]);
+  const policySheet = window.XLSX.utils.aoa_to_sheet([policyHeader, ...policyRows]);
+  const crSheet = window.XLSX.utils.aoa_to_sheet([crHeader, ...crRows]);
+
+  window.XLSX.utils.book_append_sheet(workbook, summarySheet, "Ringkasan");
+  window.XLSX.utils.book_append_sheet(workbook, policySheet, "Ratifikasi Kebijakan");
+  window.XLSX.utils.book_append_sheet(workbook, crSheet, "Change Request");
+  window.XLSX.writeFile(workbook, "dashboard-strategi-evaluasi-ga.xlsx");
+}
+
+function exportPdf() {
+  window.print();
 }
 
 function parseProgress(value) {
@@ -416,6 +501,44 @@ function setupPeriodPicker() {
   renderMonths();
 }
 
+function setupExportMenu() {
+  const button = document.getElementById("exportMenuButton");
+  const menu = document.getElementById("exportOptions");
+  if (!button || !menu) return;
+
+  function closeMenu() {
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+  }
+
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    menu.hidden = !menu.hidden;
+    button.setAttribute("aria-expanded", String(!menu.hidden));
+  });
+
+  menu.addEventListener("click", (event) => {
+    const option = event.target.closest("button[data-export]");
+    if (!option) return;
+    const format = option.dataset.export;
+    closeMenu();
+    if (format === "pdf") exportPdf();
+    if (format === "xlsx") downloadExcel();
+    if (format === "csv") downloadCsv();
+    if (format === "json") downloadJson();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!menu.hidden && !menu.contains(event.target) && !button.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
@@ -424,7 +547,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateDashboardMetrics();
   setupFilters();
   setupPeriodPicker();
-  document.getElementById("exportCsv").addEventListener("click", downloadCsv);
+  setupExportMenu();
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });

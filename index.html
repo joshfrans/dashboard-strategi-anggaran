@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-3" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-4" />
   </head>
   <body>
     <div class="app-shell">
@@ -126,11 +126,19 @@
               </div>
             </div>
 
-            <button class="export-btn" type="button" id="exportCsv">
-              <i data-lucide="download"></i>
-              <span>Export Laporan</span>
-              <i data-lucide="chevron-down"></i>
-            </button>
+            <div class="export-menu">
+              <button class="export-btn" type="button" id="exportMenuButton" aria-expanded="false" aria-controls="exportOptions">
+                <i data-lucide="download"></i>
+                <span>Export Laporan</span>
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="export-options" id="exportOptions" hidden>
+                <button type="button" data-export="pdf"><i data-lucide="file-text"></i><span>PDF</span><small>Siap cetak / presentasi</small></button>
+                <button type="button" data-export="xlsx"><i data-lucide="file-spreadsheet"></i><span>Excel</span><small>Workbook laporan</small></button>
+                <button type="button" data-export="csv"><i data-lucide="table"></i><span>CSV</span><small>Data mentah CR</small></button>
+                <button type="button" data-export="json"><i data-lucide="braces"></i><span>JSON</span><small>Backup data dashboard</small></button>
+              </div>
+            </div>
             <button class="import-btn" type="button" id="importData">
               <i data-lucide="upload"></i>
               <span>Import Data</span>
@@ -347,6 +355,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-3"></script>
+    <script src="./script.js?v=20260716-4"></script>
   </body>
 </html>
