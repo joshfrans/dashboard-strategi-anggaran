@@ -903,7 +903,7 @@ p {
 
 .work-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.18fr;
+  grid-template-columns: 0.82fr 1.08fr;
   gap: 13px;
   align-items: start;
 }
@@ -914,16 +914,19 @@ p {
 
 .policy-panel {
   grid-column: 1;
+  position: relative;
+  z-index: 8;
+  overflow: visible;
 }
 
 .performance-panel {
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 2;
 }
 
 .cr-panel {
   grid-column: 2;
-  grid-row: 1;
+  grid-row: 1 / span 2;
 }
 
 .panel-title {
@@ -1046,7 +1049,7 @@ td {
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
-  z-index: 35;
+  z-index: 120;
   width: 368px;
   max-width: min(76vw, 420px);
   display: grid;
@@ -1134,7 +1137,7 @@ td {
 }
 
 .performance-source-shell {
-  padding: 13px 13px 10px;
+  padding: 11px 12px 9px;
   background: #ffffff;
 }
 
@@ -1146,30 +1149,30 @@ td {
 }
 
 .performance-report-head strong {
-  font-size: 16px;
+  font-size: 13px;
   text-transform: uppercase;
 }
 
 .performance-report-head span {
   color: #3f4752;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .performance-source-filters {
   display: grid;
-  grid-template-columns: 0.72fr 0.72fr 0.72fr 72px;
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 8px;
   align-items: end;
 }
 
 .performance-source-filters label {
   display: grid;
-  gap: 8px;
+  gap: 5px;
 }
 
 .performance-source-filters span {
   color: #666d78;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 600;
 }
 
@@ -1185,7 +1188,7 @@ td {
   border-radius: 3px;
   background: #ffffff;
   color: #39404a;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
 }
 
@@ -1198,22 +1201,24 @@ td {
 .performance-source-filters button {
   justify-content: center;
   cursor: pointer;
+  display: none;
 }
 
 .performance-table-wrap {
-  padding: 0 13px 13px;
-  overflow-x: auto;
+  max-height: 390px;
+  padding: 0 12px 12px;
+  overflow: auto;
 }
 
 .performance-table {
-  min-width: 1180px;
-  font-size: 11px;
+  min-width: 1040px;
+  font-size: 10px;
 }
 
 .performance-table th,
 .performance-table td {
   height: 54px;
-  padding: 12px 13px;
+  padding: 10px 11px;
   border-color: #dbe2e8;
   text-align: center;
   white-space: nowrap;
@@ -1227,14 +1232,14 @@ td {
 
 .performance-table td:nth-child(2),
 .performance-table th:nth-child(2) {
-  min-width: 360px;
+  min-width: 315px;
   text-align: left;
   white-space: normal;
 }
 
 .performance-table td:nth-child(7),
 .performance-table th:nth-child(7) {
-  min-width: 170px;
+  min-width: 150px;
   white-space: normal;
 }
 
