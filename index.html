@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-22" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-23" />
   </head>
   <body>
     <div class="app-shell">
@@ -315,9 +315,84 @@
             </div>
           </article>
 
+          <article class="panel performance-panel">
+            <div class="panel-title teal-title">
+              <h2>2. Monitoring Kinerja</h2>
+              <button type="button">Juni 2026 <i data-lucide="calendar-days"></i></button>
+            </div>
+            <div class="performance-filter-row">
+              <div><span>Bulan dan Tahun</span><strong>Juni 2026</strong></div>
+              <div><span>Entitas</span><strong>Direktorat Legal dan Manajemen Human Capital</strong></div>
+              <div><span>Dit/Divisi/Unit/SHAP</span><strong>Divisi Umum dan Aset Properti</strong></div>
+            </div>
+            <div class="performance-kpis">
+              <div><strong>7</strong><span>Indikator Terlihat</span></div>
+              <div><strong class="green-text">7</strong><span>Tercapai</span></div>
+              <div><strong class="amber-text">2</strong><span>Waiting Approval</span></div>
+              <div><strong class="rose-text">3</strong><span>Not Approved</span></div>
+            </div>
+            <div class="performance-table-wrap">
+              <table class="performance-table">
+                <thead>
+                  <tr>
+                    <th>Indikator Kerja</th>
+                    <th>Bobot</th>
+                    <th>Target Bulanan</th>
+                    <th>Realisasi</th>
+                    <th>%</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Efisiensi Biaya</td>
+                    <td>20</td>
+                    <td>0</td>
+                    <td>2.816,88</td>
+                    <td>110%</td>
+                    <td><span class="status-pill waiting">Waiting Approval</span></td>
+                  </tr>
+                  <tr>
+                    <td>Efektifitas Biaya Administrasi Umum</td>
+                    <td>14</td>
+                    <td>4.740,294</td>
+                    <td>3.284,569</td>
+                    <td>110%</td>
+                    <td><span class="status-pill not-approved">Not Approved</span></td>
+                  </tr>
+                  <tr>
+                    <td>Pengendalian NAC</td>
+                    <td>6</td>
+                    <td>451,041</td>
+                    <td>292,145</td>
+                    <td>110%</td>
+                    <td><span class="status-pill not-approved">Not Approved</span></td>
+                  </tr>
+                  <tr>
+                    <td>Optimalisasi aset tanah dan bangunan</td>
+                    <td>12</td>
+                    <td>59,834</td>
+                    <td>85,481</td>
+                    <td>110%</td>
+                    <td><span class="status-dot done-dot"></span> Tercapai</td>
+                  </tr>
+                  <tr>
+                    <td>Penyediaan dokumen pengadaan kontrak</td>
+                    <td>12</td>
+                    <td>0</td>
+                    <td>400,00</td>
+                    <td>108,53%</td>
+                    <td><span class="status-pill waiting">Waiting Approval</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="performance-note">Snapshot dari tampilan monitoring kinerja Juni 2026. Fokus tindak lanjut: penyelesaian verifikasi dan approval indikator yang belum approved.</p>
+          </article>
+
           <article class="panel cr-panel">
             <div class="panel-title purple-title">
-              <h2>2. Timeline Change Request Aplikasi</h2>
+              <h2>3. Timeline Change Request Aplikasi</h2>
               <button type="button" data-detail="cr">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="cr-table-wrap">
@@ -394,12 +469,12 @@
             <div>
               <h2>Ringkasan Eksekutif</h2>
               <p id="executiveSummaryText">
-                Dashboard menunjukkan dua perhatian utama: ratifikasi kebijakan dan penyelesaian Change Request
-                aplikasi. Dari 10 entitas SH/AP dan 7 jenis kebijakan, terdapat 54 status selesai endorsement dan
-                16 status yang masih perlu tindak lanjut. Pada sisi aplikasi, terdapat 9 Change Request dengan
-                progress keseluruhan 62,56%, terdiri dari 2 selesai, 6 on progress, dan 1 belum mulai. Prioritas
-                manajemen adalah mempercepat status ratifikasi yang belum selesai, menutup gap diskusi/drafting,
-                serta menjaga penyelesaian CR prioritas agar roadmap General Affairs tetap terkendali.
+                Dashboard menunjukkan tiga perhatian utama: ratifikasi kebijakan, monitoring kinerja, dan
+                penyelesaian Change Request aplikasi. Dari 10 entitas SH/AP dan 7 jenis kebijakan, terdapat 54
+                status selesai endorsement dan 16 status yang masih perlu tindak lanjut. Monitoring kinerja Juni
+                2026 menunjukkan seluruh indikator terlihat sudah tercapai, namun beberapa item masih menunggu
+                approval/not approved. Pada sisi aplikasi, terdapat 9 Change Request dengan progress keseluruhan
+                62,56%, terdiri dari 2 selesai, 6 on progress, dan 1 belum mulai.
               </p>
             </div>
           </div>
@@ -434,6 +509,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-22"></script>
+    <script src="./script.js?v=20260716-23"></script>
   </body>
 </html>

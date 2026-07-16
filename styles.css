@@ -905,10 +905,24 @@ p {
   display: grid;
   grid-template-columns: 0.8fr 1.18fr;
   gap: 13px;
+  align-items: start;
 }
 
 .panel {
   overflow: hidden;
+}
+
+.policy-panel {
+  grid-column: 1;
+}
+
+.performance-panel {
+  grid-column: 1;
+}
+
+.cr-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
 }
 
 .panel-title {
@@ -947,6 +961,10 @@ p {
 
 .purple-title {
   background: linear-gradient(90deg, #3220a5, #3d22a8);
+}
+
+.teal-title {
+  background: linear-gradient(90deg, #027f80, #09a3a6);
 }
 
 table {
@@ -1112,6 +1130,122 @@ td {
 .policy-table th,
 .policy-table td {
   white-space: nowrap;
+}
+
+.performance-filter-row {
+  display: grid;
+  grid-template-columns: 0.72fr 1fr 1fr;
+  gap: 8px;
+  padding: 12px 12px 0;
+}
+
+.performance-filter-row div {
+  min-height: 48px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.performance-filter-row span {
+  color: #61718c;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.performance-filter-row strong {
+  color: var(--navy);
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.performance-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px 12px 0;
+}
+
+.performance-kpis div {
+  min-height: 52px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.performance-kpis strong {
+  color: var(--navy);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.performance-kpis span {
+  color: var(--navy);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.performance-table-wrap {
+  padding: 10px 8px 0;
+  overflow-x: auto;
+}
+
+.performance-table th,
+.performance-table td {
+  white-space: nowrap;
+}
+
+.performance-table td:first-child {
+  min-width: 190px;
+  white-space: normal;
+  font-weight: 700;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.status-pill.waiting {
+  color: #b27a00;
+  background: #fff4d8;
+}
+
+.status-pill.not-approved {
+  color: #b61b45;
+  background: #f8dce7;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin-right: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.done-dot {
+  background: var(--green);
+}
+
+.performance-note {
+  margin: 8px 12px 12px;
+  color: #54627d;
+  font-size: 10px;
+  line-height: 1.45;
 }
 
 .policy-group-row th {
@@ -1318,6 +1452,10 @@ td {
 
 .amber-text {
   color: var(--amber);
+}
+
+.rose-text {
+  color: #b61b45;
 }
 
 .gray-text {
@@ -1799,6 +1937,13 @@ td {
   .detail-metrics,
   .detail-columns {
     grid-template-columns: 1fr;
+  }
+
+  .policy-panel,
+  .performance-panel,
+  .cr-panel {
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .ao-hero {
