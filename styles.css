@@ -1060,6 +1060,37 @@ td {
   font-size: 9px;
 }
 
+.policy-note {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 8px;
+  align-items: start;
+  margin: 10px 12px 0;
+  padding: 10px 11px;
+  border: 1px solid #cfe2ff;
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: #f5f9ff;
+  color: var(--navy);
+}
+
+.policy-note svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue);
+  margin-top: 1px;
+}
+
+.policy-note p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.policy-note strong {
+  font-weight: 900;
+}
+
 .policy-table th,
 .policy-table td {
   white-space: nowrap;
