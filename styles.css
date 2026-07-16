@@ -1144,7 +1144,7 @@ td {
 .performance-report-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 4px;
   margin-bottom: 0;
   color: #1f2733;

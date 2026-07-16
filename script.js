@@ -692,7 +692,6 @@ function renderDetailPerformance() {
       <div class="detail-metric gray"><strong>100</strong><span>Total Bobot</span></div>
     </section>
     <section class="detail-section">
-      <h3>Laporan Pencapaian KPI Tahun 2026</h3>
       ${report}
       ${table}
       ${legend}
@@ -718,7 +717,7 @@ function setupDetailModal() {
         body.innerHTML = renderDetailPolicy();
       } else if (type === "performance") {
         eyebrow.textContent = "Monitoring Kinerja";
-        title.textContent = "Detail Monitoring Kinerja";
+        title.textContent = "Detail Monitoring Kinerja Divisi Umum dan Aset Properti";
         subtitle.textContent = "Menampilkan detail NKO s.d. Juni 2026 berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.";
         body.innerHTML = renderDetailPerformance();
       } else {
