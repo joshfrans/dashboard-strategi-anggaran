@@ -377,12 +377,16 @@ function setupNavigation() {
       navItems.forEach((nav) => nav.classList.remove("is-active"));
       item.classList.add("is-active");
 
+      dashboard.classList.remove("ao-mode", "ao-office-mode");
       if (target === "ao") {
         dashboard.classList.add("ao-mode");
         title.textContent = "AO Korporat";
-        description.textContent = "Monitoring realisasi Biaya Administrasi Umum korporat, RKAP/AO 2026, sinyal risiko, dan kontributor biaya terbesar.";
+        description.textContent = "Embed dashboard Administrasi Umum korporat dari sumber monitoring utama.";
+      } else if (target === "ao-office") {
+        dashboard.classList.add("ao-office-mode");
+        title.textContent = "AO Kantor Pusat";
+        description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
       } else {
-        dashboard.classList.remove("ao-mode");
         title.textContent = defaultTitle;
         description.textContent = defaultDescription;
       }
@@ -503,8 +507,9 @@ function exportPdf() {
   const description = document.querySelector(".title-block .description");
   const previousNav = activeNav;
   const wasAoMode = dashboard?.classList.contains("ao-mode");
+  const wasAoOfficeMode = dashboard?.classList.contains("ao-office-mode");
 
-  dashboard?.classList.remove("ao-mode");
+  dashboard?.classList.remove("ao-mode", "ao-office-mode");
   document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
   strategyNav?.classList.add("is-active");
   if (title) title.textContent = "Strategi & Evaluasi GA";
@@ -518,11 +523,15 @@ function exportPdf() {
   const restore = () => {
     document.body.classList.remove("print-strategy");
     if (wasAoMode) dashboard?.classList.add("ao-mode");
+    if (wasAoOfficeMode) dashboard?.classList.add("ao-office-mode");
     document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
     (previousNav || strategyNav)?.classList.add("is-active");
     if (wasAoMode) {
       if (title) title.textContent = "AO Korporat";
-      if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum korporat, RKAP/AO 2026, sinyal risiko, dan kontributor biaya terbesar.";
+      if (description) description.textContent = "Embed dashboard Administrasi Umum korporat dari sumber monitoring utama.";
+    } else if (wasAoOfficeMode) {
+      if (title) title.textContent = "AO Kantor Pusat";
+      if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
     }
     window.removeEventListener("afterprint", restore);
   };
