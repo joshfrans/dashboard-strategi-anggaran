@@ -218,6 +218,10 @@ function setupEntityPopover() {
     togglePopover();
   });
 
+  popover.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
   trigger.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
