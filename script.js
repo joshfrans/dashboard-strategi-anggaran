@@ -692,6 +692,7 @@ function renderDetailPerformance() {
       <div class="detail-metric gray"><strong>100</strong><span>Total Bobot</span></div>
     </section>
     <section class="detail-section">
+      <h3>Laporan Pencapaian KPI Tahun 2026</h3>
       ${report}
       ${table}
       ${legend}
