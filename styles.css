@@ -359,17 +359,36 @@ p {
 }
 
 .date-card {
-  min-width: 210px;
-  grid-template-columns: 22px 1fr;
+  min-width: 286px;
+  grid-template-columns: 24px max-content;
   align-items: center;
+  justify-content: start;
+  gap: 8px;
+  padding: 10px 16px;
 }
 
 .date-card svg {
+  width: 20px;
+  height: 20px;
   color: var(--navy);
 }
 
+.date-card div {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.date-card span {
+  color: var(--navy);
+  line-height: 1;
+}
+
 .date-card strong {
+  color: var(--navy);
   font-size: 12px;
+  line-height: 1;
 }
 
 .export-btn,
