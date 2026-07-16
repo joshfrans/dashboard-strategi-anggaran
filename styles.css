@@ -877,13 +877,13 @@ td {
 }
 
 .info-card ul {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   padding: 0;
   display: grid;
-  gap: 13px;
+  gap: 11px;
   list-style: none;
   font-size: 12px;
-  line-height: 1.55;
+  line-height: 1.48;
 }
 
 .info-card li {
@@ -917,9 +917,9 @@ td {
 }
 
 .next-list {
-  margin-top: 16px;
+  margin-top: 14px;
   display: grid;
-  gap: 11px;
+  gap: 9px;
 }
 
 .next-list div {
@@ -931,7 +931,8 @@ td {
 }
 
 .next-list b {
-  padding: 7px 9px;
+  min-width: 52px;
+  padding: 7px 8px;
   border-radius: 7px;
   color: var(--blue);
   background: #eaf0ff;
