@@ -430,7 +430,37 @@ function downloadExcel() {
 }
 
 function exportPdf() {
-  window.print();
+  const dashboard = document.querySelector(".dashboard");
+  const activeNav = document.querySelector(".nav-item.is-active");
+  const strategyNav = document.querySelector('[data-nav="strategy"]');
+  const title = document.querySelector(".title-block h1");
+  const description = document.querySelector(".title-block .description");
+  const previousNav = activeNav;
+  const wasAoMode = dashboard?.classList.contains("ao-mode");
+
+  dashboard?.classList.remove("ao-mode");
+  document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
+  strategyNav?.classList.add("is-active");
+  if (title) title.textContent = "Strategi & Evaluasi GA";
+  if (description) {
+    description.textContent = "Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request Aplikasi untuk mendukung percepatan pencapaian target perusahaan.";
+  }
+
+  document.body.classList.add("print-strategy");
+  setTimeout(() => window.print(), 150);
+
+  const restore = () => {
+    document.body.classList.remove("print-strategy");
+    if (wasAoMode) dashboard?.classList.add("ao-mode");
+    document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
+    (previousNav || strategyNav)?.classList.add("is-active");
+    if (wasAoMode) {
+      if (title) title.textContent = "AO Korporat";
+      if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum korporat, RKAP/AO 2026, sinyal risiko, dan kontributor biaya terbesar.";
+    }
+    window.removeEventListener("afterprint", restore);
+  };
+  window.addEventListener("afterprint", restore);
 }
 
 function makeMetric(label, value, tone = "") {

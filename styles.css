@@ -1796,6 +1796,25 @@ td {
     display: block;
   }
 
+  .dashboard {
+    padding: 0;
+  }
+
+  .dashboard.ao-mode .page-header,
+  .dashboard.ao-mode > section:not(.ao-corporate-view),
+  body.print-strategy .page-header,
+  body.print-strategy .kpi-grid,
+  body.print-strategy .work-grid,
+  body.print-strategy .insight-grid,
+  body.print-strategy .executive-summary {
+    display: grid !important;
+  }
+
+  body.print-strategy .ao-corporate-view,
+  body.print-strategy .ao-full-frame {
+    display: none !important;
+  }
+
   .sidebar,
   .header-actions,
   .panel-title button,
