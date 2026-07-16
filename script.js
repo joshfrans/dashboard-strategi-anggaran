@@ -66,6 +66,31 @@ let crData = [
   { app: "E-TRANSPORT Multitrip", request: "Tahap I selesai, Tahap II belum berjalan", progress: 50, status: "On Progress", target: "25 Mei 2026" }
 ];
 
+const aoCorporateData = {
+  period: "Mei 2026",
+  total: 2931185,
+  topCosts: [
+    { name: "Honorarium", value: 841322, yoy: 118, rkap: 28 },
+    { name: "Beban Amortisasi", value: 505117, yoy: 161, rkap: 50 },
+    { name: "Asuransi", value: 347801, yoy: 109, rkap: 35 },
+    { name: "Perjalanan dinas non diklat", value: 250611, yoy: 95, rkap: 31 },
+    { name: "Pajak / Retribusi", value: 233802, yoy: 107, rkap: 24 },
+    { name: "Listrik, gas dan air", value: 190372, yoy: 86, rkap: 39 },
+    { name: "Tehnologi Informasi", value: 119896, yoy: 112, rkap: 45 },
+    { name: "Bahan Makanan dan Konsumsi", value: 105855, yoy: 88, rkap: 32 }
+  ],
+  topUnits: [
+    { unit: "KPST", value: 1086889 },
+    { unit: "SPIP", value: 590642 },
+    { unit: "SPIC", value: 387503 },
+    { unit: "SPNP", value: 379701 },
+    { unit: "APEJ", value: 163045 },
+    { unit: "SPEP", value: 62343 },
+    { unit: "APBT", value: 60377 },
+    { unit: "TJBB", value: 54263 }
+  ]
+};
+
 const statusClass = {
   "Selesai": "done",
   "On Progress": "progress",
@@ -103,6 +128,10 @@ const policyStatusLabel = {
 function percentLabel(value) {
   if (Number.isInteger(value)) return `${value}%`;
   return `${value.toFixed(2).replace(".", ",")}%`;
+}
+
+function numberLabel(value) {
+  return Number(value || 0).toLocaleString("id-ID");
 }
 
 function policyMetrics() {
@@ -192,6 +221,34 @@ function renderCrRows(rows = crData) {
     .join("");
 }
 
+function renderAoCorporate() {
+  const topRows = document.getElementById("aoTopRows");
+  const unitRows = document.getElementById("aoUnitRows");
+  if (topRows) {
+    topRows.innerHTML = aoCorporateData.topCosts
+      .map((row) => `
+        <tr>
+          <td><strong>${row.name}</strong></td>
+          <td>${numberLabel(row.value)} jt</td>
+          <td><span class="${row.yoy >= 100 ? "ao-hot" : "ao-cool"}">${row.yoy}%</span></td>
+          <td>${row.rkap}%</td>
+        </tr>
+      `)
+      .join("");
+  }
+  if (unitRows) {
+    unitRows.innerHTML = aoCorporateData.topUnits
+      .map((row) => `
+        <tr>
+          <td><strong>${row.unit}</strong></td>
+          <td>${numberLabel(row.value)} jt</td>
+          <td>${Math.round(row.value / aoCorporateData.total * 100)}%</td>
+        </tr>
+      `)
+      .join("");
+  }
+}
+
 function updateDashboardMetrics() {
   const total = crData.length;
   const done = crData.filter((row) => row.status === "Selesai").length;
@@ -236,6 +293,35 @@ function updateDashboardMetrics() {
   if (summaryText) {
     summaryText.textContent = `Dashboard menunjukkan dua perhatian utama: ratifikasi kebijakan dan penyelesaian Change Request aplikasi. Dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdapat ${values.summaryPolicyDone} status selesai endorsement dan ${values.summaryPolicyFollowUp} status yang masih perlu tindak lanjut. Pada sisi aplikasi, terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Prioritas manajemen adalah mempercepat status ratifikasi yang belum selesai, menutup gap diskusi/drafting, serta menjaga penyelesaian CR prioritas agar roadmap General Affairs tetap terkendali.`;
   }
+}
+
+function setupNavigation() {
+  const dashboard = document.querySelector(".dashboard");
+  const title = document.querySelector(".title-block h1");
+  const description = document.querySelector(".title-block .description");
+  const navItems = document.querySelectorAll(".nav-item");
+  const defaultTitle = "Strategi & Evaluasi GA";
+  const defaultDescription = "Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request Aplikasi untuk mendukung percepatan pencapaian target perusahaan.";
+
+  navItems.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      const target = item.dataset.nav;
+      if (!target) return;
+      event.preventDefault();
+      navItems.forEach((nav) => nav.classList.remove("is-active"));
+      item.classList.add("is-active");
+
+      if (target === "ao") {
+        dashboard.classList.add("ao-mode");
+        title.textContent = "AO Korporat";
+        description.textContent = "Monitoring realisasi Biaya Administrasi Umum korporat, RKAP/AO 2026, sinyal risiko, dan kontributor biaya terbesar.";
+      } else {
+        dashboard.classList.remove("ao-mode");
+        title.textContent = defaultTitle;
+        description.textContent = defaultDescription;
+      }
+    });
+  });
 }
 
 function crExportRows() {
@@ -756,7 +842,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPolicyRows();
   renderPolicyEntities();
   renderCrRows();
+  renderAoCorporate();
   updateDashboardMetrics();
+  setupNavigation();
   setupFilters();
   setupPeriodPicker();
   setupExportMenu();

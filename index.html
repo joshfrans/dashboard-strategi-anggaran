@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-9" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-10" />
   </head>
   <body>
     <div class="app-shell">
@@ -31,7 +31,7 @@
             <i data-lucide="layout-dashboard"></i>
             <span>Dashboard</span>
           </a>
-          <a href="#" class="nav-item is-active">
+          <a href="#" class="nav-item is-active" data-nav="strategy">
             <i data-lucide="calendar-days"></i>
             <span>Strategi & Evaluasi GA</span>
           </a>
@@ -39,7 +39,7 @@
             <i data-lucide="bar-chart-3"></i>
             <span>Investasi</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="#" class="nav-item" data-nav="ao">
             <i data-lucide="building-2"></i>
             <span>AO Korporat</span>
           </a>
@@ -152,6 +152,83 @@
             />
           </div>
         </header>
+
+        <section class="ao-corporate-view" id="aoCorporateView" aria-label="AO Korporat">
+          <div class="ao-hero">
+            <div>
+              <span>AO Korporat · Biaya Administrasi Umum</span>
+              <h2>Realisasi s.d Mei 2026</h2>
+              <p>
+                Data diadaptasi dari dashboard sumber Realisasi Biaya Administrasi Umum. Nilai ditampilkan dalam
+                juta Rupiah dengan fokus pada sinyal keputusan manajemen.
+              </p>
+            </div>
+            <a class="ao-source-link" href="https://emje-maker.github.io/dashboard-admumum/" target="_blank" rel="noreferrer">
+              Buka Sumber <i data-lucide="external-link"></i>
+            </a>
+          </div>
+
+          <div class="ao-kpi-grid">
+            <article class="ao-kpi"><span>Realisasi</span><strong>2.931.185 jt</strong><small>113% YoY vs Mei 2025</small></article>
+            <article class="ao-kpi"><span>RKAP / AO 2026</span><strong>8.856.162 jt</strong><small>Serapan 33% terhadap RKAP</small></article>
+            <article class="ao-kpi"><span>Target s.d Mei</span><strong>3.562.094 jt</strong><small>Realisasi 82% terhadap target</small></article>
+            <article class="ao-kpi"><span>Prorata Tahun</span><strong>79%</strong><small>Realisasi vs prorata 5/12 RKAP</small></article>
+          </div>
+
+          <div class="ao-grid">
+            <article class="ao-panel">
+              <div class="ao-panel-head">
+                <h3>Komposisi Organisasi</h3>
+                <p>Holding + SHAP - Eliminasi</p>
+              </div>
+              <div class="ao-org-list">
+                <div><span>Holding</span><strong>1.835.286 jt</strong><b style="width: 100%"></b></div>
+                <div><span>SHAP</span><strong>1.711.236 jt</strong><b style="width: 93%"></b></div>
+                <div><span>Eliminasi</span><strong>-615.335 jt</strong><b class="negative" style="width: 34%"></b></div>
+              </div>
+            </article>
+
+            <article class="ao-panel">
+              <div class="ao-panel-head">
+                <h3>Management Signal</h3>
+                <p>Area yang perlu perhatian</p>
+              </div>
+              <ul class="ao-signal-list">
+                <li><strong>Beban Bank</strong><span>119% terhadap RKAP dan 579% YoY, perlu validasi penyebab lonjakan.</span></li>
+                <li><strong>Beban Amortisasi IPPKH</strong><span>191% terhadap RKAP, perlu cek basis pencatatan dan outlook FY.</span></li>
+                <li><strong>Beban Amortisasi</strong><span>Kontributor terbesar kedua dan 161% YoY, perlu review proyeksi.</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="ao-grid wide">
+            <article class="ao-panel">
+              <div class="ao-panel-head">
+                <h3>Top Unsur Biaya</h3>
+                <p>8 unsur terbesar s.d Mei 2026</p>
+              </div>
+              <div class="ao-table-wrap">
+                <table class="ao-table">
+                  <thead><tr><th>Unsur</th><th>Realisasi</th><th>YoY</th><th>% RKAP</th></tr></thead>
+                  <tbody id="aoTopRows"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="ao-panel">
+              <div class="ao-panel-head">
+                <h3>Top Unit</h3>
+                <p>Kontributor realisasi tertinggi</p>
+              </div>
+              <div class="ao-table-wrap">
+                <table class="ao-table">
+                  <thead><tr><th>Unit</th><th>Realisasi</th><th>Share</th></tr></thead>
+                  <tbody id="aoUnitRows"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
 
         <section class="kpi-grid" aria-label="Ringkasan KPI">
           <article class="kpi-card policy-card">
@@ -367,6 +444,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-9"></script>
+    <script src="./script.js?v=20260716-10"></script>
   </body>
 </html>
