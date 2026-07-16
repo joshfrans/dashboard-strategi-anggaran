@@ -761,10 +761,10 @@ p {
 
 .aki-chart {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 18px;
   align-items: center;
-  padding: 16px;
+  padding: 16px 16px 8px;
 }
 
 .aki-gauge {
@@ -775,10 +775,13 @@ p {
 }
 
 .aki-gauge-ring {
-  width: 132px;
+  width: 136px;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   border-radius: 50%;
   background:
     radial-gradient(circle at center, #ffffff 0 58%, transparent 59%),
@@ -788,14 +791,13 @@ p {
 
 .aki-gauge-ring strong {
   color: var(--navy);
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
 }
 
 .aki-gauge-ring span {
-  margin-top: 26px;
   color: #53627f;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -807,6 +809,27 @@ p {
   line-height: 1.45;
 }
 
+.aki-status-chips {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  width: 100%;
+}
+
+.aki-status-chips b {
+  padding: 6px 8px;
+  border-radius: 999px;
+  color: var(--green);
+  background: #e9f8ef;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.aki-status-chips b.amber {
+  color: #a66d00;
+  background: #fff2cf;
+}
+
 .aki-bars {
   display: grid;
   gap: 13px;
@@ -814,9 +837,14 @@ p {
 
 .aki-bars div {
   display: grid;
-  grid-template-columns: 128px minmax(130px, 1fr) 210px;
-  gap: 10px;
+  grid-template-columns: 112px minmax(110px, 1fr) minmax(126px, 156px);
+  gap: 11px;
   align-items: center;
+  min-height: 52px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fbfdff;
 }
 
 .aki-bars span,
@@ -827,7 +855,7 @@ p {
 }
 
 .aki-bars b {
-  height: 12px;
+  height: 13px;
   overflow: hidden;
   border-radius: 999px;
   background: #e8eef7;
@@ -845,9 +873,41 @@ p {
 }
 
 .aki-bars strong {
+  display: grid;
+  gap: 3px;
   color: var(--navy);
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.35;
+}
+
+.aki-bars strong small {
+  color: #53627f;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.aki-insight {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin: 0 16px 16px;
+  padding: 11px 12px;
+  border: 1px solid #bfe7df;
+  border-radius: 9px;
+  background: #f2fffb;
+}
+
+.aki-insight strong {
+  color: var(--green);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.aki-insight span {
+  color: #35445f;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
 .ai-funnel {
@@ -3151,6 +3211,10 @@ td {
   }
 
   .aki-bars div {
+    grid-template-columns: 1fr;
+  }
+
+  .aki-insight {
     grid-template-columns: 1fr;
   }
 }
