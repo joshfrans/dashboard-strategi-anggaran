@@ -93,6 +93,7 @@ select {
 .nav-item svg {
   width: 18px;
   height: 18px;
+  stroke-width: 2.2;
 }
 
 .nav-item.is-active {
