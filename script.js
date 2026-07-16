@@ -493,20 +493,25 @@ function setupDetailModal() {
   if (!overlay || !closeButton || !title || !subtitle || !eyebrow || !body) return;
 
   function openDetail(type) {
-    if (type === "policy") {
-      eyebrow.textContent = "Kebijakan & Ratifikasi";
-      title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
-      subtitle.textContent = "Membantu BoD melihat entitas yang membutuhkan keputusan, evidence, dan tindak lanjut.";
-      body.innerHTML = renderDetailPolicy();
-    } else {
-      eyebrow.textContent = "Change Request Aplikasi";
-      title.textContent = "Detail Monitoring Change Request";
-      subtitle.textContent = "Membantu BoD melihat prioritas aplikasi, risiko delivery, dan action working level.";
-      body.innerHTML = renderDetailCr();
+    try {
+      if (type === "policy") {
+        eyebrow.textContent = "Kebijakan & Ratifikasi";
+        title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
+        subtitle.textContent = "Membantu BoD melihat entitas yang membutuhkan keputusan, evidence, dan tindak lanjut.";
+        body.innerHTML = renderDetailPolicy();
+      } else {
+        eyebrow.textContent = "Change Request Aplikasi";
+        title.textContent = "Detail Monitoring Change Request";
+        subtitle.textContent = "Membantu BoD melihat prioritas aplikasi, risiko delivery, dan action working level.";
+        body.innerHTML = renderDetailCr();
+      }
+      overlay.hidden = false;
+      document.body.classList.add("modal-open");
+      if (window.lucide) window.lucide.createIcons();
+    } catch (error) {
+      console.error(error);
+      alert("Detail belum dapat ditampilkan. Silakan refresh halaman lalu coba kembali.");
     }
-    overlay.hidden = false;
-    document.body.classList.add("modal-open");
-    if (window.lucide) window.lucide.createIcons();
   }
 
   function closeDetail() {
@@ -514,9 +519,13 @@ function setupDetailModal() {
     document.body.classList.remove("modal-open");
   }
 
-  document.querySelectorAll("[data-detail]").forEach((button) => {
-    button.addEventListener("click", () => openDetail(button.dataset.detail));
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-detail]");
+    if (!trigger) return;
+    event.preventDefault();
+    openDetail(trigger.dataset.detail);
   });
+
   closeButton.addEventListener("click", closeDetail);
   overlay.addEventListener("click", (event) => {
     if (event.target === overlay) closeDetail();
