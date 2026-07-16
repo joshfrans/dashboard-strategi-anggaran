@@ -377,8 +377,12 @@ function setupNavigation() {
       navItems.forEach((nav) => nav.classList.remove("is-active"));
       item.classList.add("is-active");
 
-      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode");
-      if (target === "ao") {
+      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode");
+      if (target === "dashboard") {
+        dashboard.classList.add("dashboard-mode");
+        title.textContent = "Dashboard";
+        description.textContent = "Ringkasan umum lintas Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
+      } else if (target === "ao") {
         dashboard.classList.add("ao-mode");
         title.textContent = "AO Korporat";
         description.textContent = "Embed dashboard Administrasi Umum korporat dari sumber monitoring utama.";
@@ -513,8 +517,9 @@ function exportPdf() {
   const wasAoMode = dashboard?.classList.contains("ao-mode");
   const wasAoOfficeMode = dashboard?.classList.contains("ao-office-mode");
   const wasInvestmentMode = dashboard?.classList.contains("investment-mode");
+  const wasDashboardMode = dashboard?.classList.contains("dashboard-mode");
 
-  dashboard?.classList.remove("ao-mode", "ao-office-mode", "investment-mode");
+  dashboard?.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode");
   document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
   strategyNav?.classList.add("is-active");
   if (title) title.textContent = "Strategi & Evaluasi GA";
@@ -530,6 +535,7 @@ function exportPdf() {
     if (wasAoMode) dashboard?.classList.add("ao-mode");
     if (wasAoOfficeMode) dashboard?.classList.add("ao-office-mode");
     if (wasInvestmentMode) dashboard?.classList.add("investment-mode");
+    if (wasDashboardMode) dashboard?.classList.add("dashboard-mode");
     document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
     (previousNav || strategyNav)?.classList.add("is-active");
     if (wasAoMode) {
@@ -541,6 +547,9 @@ function exportPdf() {
     } else if (wasInvestmentMode) {
       if (title) title.textContent = "Investasi";
       if (description) description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
+    } else if (wasDashboardMode) {
+      if (title) title.textContent = "Dashboard";
+      if (description) description.textContent = "Ringkasan umum lintas Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
     }
     window.removeEventListener("afterprint", restore);
   };

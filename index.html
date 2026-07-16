@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-52" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-53" />
   </head>
   <body>
     <div class="app-shell">
@@ -27,7 +27,7 @@
         </div>
 
         <nav class="nav-list">
-          <a href="#" class="nav-item">
+          <a href="#" class="nav-item" data-nav="dashboard">
             <i data-lucide="layout-dashboard"></i>
             <span>Dashboard</span>
           </a>
@@ -152,6 +152,139 @@
             />
           </div>
         </header>
+
+        <section class="dashboard-overview" id="dashboardOverview" aria-label="Dashboard Umum">
+          <div class="overview-hero">
+            <div>
+              <span>Executive Overview</span>
+              <h2>Ringkasan Strategi, Investasi, AO, dan Kinerja GA</h2>
+              <p>
+                Dashboard umum ini menyatukan informasi utama dari Strategi & Evaluasi GA,
+                Investasi, AO Korporat, dan AO Kantor Pusat agar manajemen cepat memahami
+                posisi capaian, area risiko, dan tindak lanjut prioritas.
+              </p>
+            </div>
+            <div class="overview-status">
+              <strong>Status Umum</strong>
+              <b>Terkendali dengan Perhatian</b>
+              <span>Mayoritas indikator berjalan baik, namun perlu percepatan pada CR aplikasi, serapan AKI, dan finalisasi beberapa proses kebijakan.</span>
+            </div>
+          </div>
+
+          <div class="overview-kpi-grid">
+            <article>
+              <span>Strategi & Evaluasi GA</span>
+              <strong>70 Kebijakan</strong>
+              <small>54 selesai endorsement, 16 masih perlu tindak lanjut.</small>
+            </article>
+            <article>
+              <span>Change Request Aplikasi</span>
+              <strong>62,56%</strong>
+              <small>9 CR: 2 selesai, 6 on progress, 1 belum mulai.</small>
+            </article>
+            <article>
+              <span>Monitoring Kinerja</span>
+              <strong>106,84</strong>
+              <small>NKO s.d. Juni 2026 berada pada status tercapai.</small>
+            </article>
+            <article>
+              <span>Investasi</span>
+              <strong>30,43%</strong>
+              <small>Serapan AKI 412,23 M dari total 1.354,51 M.</small>
+            </article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="overview-panel">
+              <div class="overview-panel-head">
+                <i data-lucide="clipboard-check"></i>
+                <div>
+                  <span>Strategi & Evaluasi GA</span>
+                  <h3>Kebijakan relatif maju, CR aplikasi perlu dikawal.</h3>
+                </div>
+              </div>
+              <p>
+                Ratifikasi kebijakan sudah memiliki basis progres yang kuat, namun masih ada status non-hijau
+                yang memerlukan tindak lanjut SH/AP. Pada Change Request, fokus utama adalah 6 CR on progress dan
+                1 CR belum mulai agar tidak menahan roadmap transformasi GA.
+              </p>
+              <div class="overview-mini-metrics">
+                <b>54 Selesai</b>
+                <b>16 Tindak lanjut</b>
+                <b>9 CR</b>
+              </div>
+            </article>
+
+            <article class="overview-panel">
+              <div class="overview-panel-head">
+                <i data-lucide="trending-up"></i>
+                <div>
+                  <span>Investasi</span>
+                  <h3>Serapan AKI masih perlu percepatan berbasis BAPP.</h3>
+                </div>
+              </div>
+              <p>
+                Realisasi AKI s.d. Juni mencapai 412,23 M atau 30,43% dari total AKI. Gap belum terserap sebesar
+                942,28 M perlu dimonitor melalui kesiapan BAPP, evaluasi realisasi Juli, dan rekomposisi AKI.
+              </p>
+              <div class="overview-progress">
+                <span>Penyerapan AKI</span>
+                <b><i style="width: 30.43%"></i></b>
+                <strong>30,43%</strong>
+              </div>
+            </article>
+
+            <article class="overview-panel">
+              <div class="overview-panel-head">
+                <i data-lucide="network"></i>
+                <div>
+                  <span>AO Korporat</span>
+                  <h3>Monitoring korporat menjadi sumber pembanding utama.</h3>
+                </div>
+              </div>
+              <p>
+                Menu AO Korporat digunakan sebagai akses ke dashboard sumber Administrasi Umum. Informasi ini
+                menjadi referensi korporat untuk melihat konteks biaya, tren, dan posisi realisasi yang lebih luas.
+              </p>
+              <div class="overview-tag-row">
+                <b>Sumber Korporat</b>
+                <b>Monitoring Realisasi</b>
+              </div>
+            </article>
+
+            <article class="overview-panel">
+              <div class="overview-panel-head">
+                <i data-lucide="building-2"></i>
+                <div>
+                  <span>AO Kantor Pusat</span>
+                  <h3>Realisasi meningkat, pengendalian RKAP tetap perlu dijaga.</h3>
+                </div>
+              </div>
+              <p>
+                Panel AO Kantor Pusat menampilkan realisasi, serapan RKAP, target s.d. Mei, dan proyeksi 2026.
+                Sinyal utama: realisasi tumbuh kuat, namun pengendalian proyeksi terhadap RKAP tetap menjadi fokus.
+              </p>
+              <div class="overview-mini-metrics">
+                <b>2.931.185 jt</b>
+                <b>33% RKAP</b>
+                <b>87% Proyeksi</b>
+              </div>
+            </article>
+          </div>
+
+          <div class="overview-decision-band">
+            <div>
+              <span>Kesimpulan Manajemen</span>
+              <strong>Fokus berikutnya adalah menyelesaikan pekerjaan yang menahan target, bukan menambah indikator baru.</strong>
+            </div>
+            <ul>
+              <li>Percepat CR aplikasi yang masih on progress dan belum mulai.</li>
+              <li>Kunci tindak lanjut kebijakan non-hijau per entitas SH/AP.</li>
+              <li>Validasi BAPP dan rekomposisi AKI untuk menutup gap serapan.</li>
+              <li>Jaga proyeksi AO Kantor Pusat tetap terkendali terhadap RKAP.</li>
+            </ul>
+          </div>
+        </section>
 
         <section class="investment-view" id="investmentView" aria-label="Dashboard Investasi">
           <div class="investment-hero">
@@ -987,6 +1120,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-52"></script>
+    <script src="./script.js?v=20260716-53"></script>
   </body>
 </html>
