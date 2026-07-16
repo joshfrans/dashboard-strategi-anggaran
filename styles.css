@@ -1620,6 +1620,10 @@ td {
   gap: 8px;
 }
 
+.performance-detail-signal {
+  margin-top: 12px;
+}
+
 .performance-exec-signal > div {
   min-height: 86px;
   padding: 10px;

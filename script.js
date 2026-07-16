@@ -700,6 +700,24 @@ function renderDetailPerformance() {
       </div>
       ${table}
       ${legend}
+      <div class="performance-exec-signal performance-detail-signal">
+        <div class="signal-main">
+          <span>Status Manajemen</span>
+          <strong>Kinerja Aman</strong>
+          <p>NKO 106,84 berada di zona hijau. Tidak ada indikator utama yang membutuhkan eskalasi saat ini.</p>
+        </div>
+        <div class="signal-drivers">
+          <span>Pendorong Nilai</span>
+          <div><b>22,00</b><strong>Efisiensi Biaya</strong></div>
+          <div><b>12,82</b><strong>Kebijakan GA</strong></div>
+          <div><b>12,72</b><strong>Transformasi GA</strong></div>
+        </div>
+        <div class="signal-action">
+          <span>Fokus Berikutnya</span>
+          <strong>Jaga NKO >= 100</strong>
+          <p>Monitor indikator bobot besar dan pastikan evidence capaian siap sampai akhir tahun.</p>
+        </div>
+      </div>
     </section>
   `;
 }
