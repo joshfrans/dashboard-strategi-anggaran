@@ -503,12 +503,13 @@ p {
   gap: 13px;
 }
 
-.ao-corporate-view {
+.ao-corporate-view,
+.ao-office-view {
   display: none;
 }
 
 .dashboard.ao-mode > section:not(.ao-corporate-view),
-.dashboard.ao-office-mode > section:not(.ao-corporate-view) {
+.dashboard.ao-office-mode > section:not(.ao-office-view) {
   display: none;
 }
 
@@ -518,18 +519,9 @@ p {
 }
 
 .dashboard.ao-mode .ao-corporate-view,
-.dashboard.ao-office-mode .ao-corporate-view {
+.dashboard.ao-office-mode .ao-office-view {
   display: block;
   min-height: calc(100vh - 36px);
-}
-
-.dashboard.ao-mode .ao-corporate-view > :not(.ao-full-frame):not(.ao-embed-header) {
-  display: none;
-}
-
-.dashboard.ao-office-mode .ao-corporate-view > .ao-embed-header,
-.dashboard.ao-office-mode .ao-corporate-view > .ao-full-frame {
-  display: none;
 }
 
 .ao-embed-header {
@@ -597,11 +589,6 @@ p {
   border-radius: 10px;
   background: #f1f8fc;
   box-shadow: var(--shadow);
-}
-
-.dashboard.ao-office-mode .ao-finance-card,
-.dashboard.ao-office-mode .ao-grid {
-  display: grid;
 }
 
 .ao-hero,
@@ -2749,6 +2736,8 @@ td {
 
   .dashboard.ao-mode .page-header,
   .dashboard.ao-mode > section:not(.ao-corporate-view),
+  .dashboard.ao-office-mode .page-header,
+  .dashboard.ao-office-mode > section:not(.ao-office-view),
   body.print-strategy .page-header,
   body.print-strategy .kpi-grid,
   body.print-strategy .work-grid,
@@ -2758,6 +2747,7 @@ td {
   }
 
   body.print-strategy .ao-corporate-view,
+  body.print-strategy .ao-office-view,
   body.print-strategy .ao-full-frame {
     display: none !important;
   }
