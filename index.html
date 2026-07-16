@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-49" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-50" />
   </head>
   <body>
     <div class="app-shell">
@@ -193,6 +193,70 @@
               <strong>412,23 M</strong>
               <small>30,43% dari total AKI</small>
               <div class="investment-bar amber"><i style="width: 30.43%"></i></div>
+            </article>
+          </div>
+
+          <div class="investment-chart-grid">
+            <article class="investment-panel investment-chart-panel">
+              <div class="investment-panel-head">
+                <h3>Monitoring Penyerapan AKI</h3>
+                <p>Melihat posisi serapan kas investasi s.d. Juni dan gap terhadap anggaran terbit.</p>
+              </div>
+              <div class="aki-chart">
+                <div class="aki-gauge">
+                  <div class="aki-gauge-ring" style="--value: 30.43">
+                    <strong>30,43%</strong>
+                    <span>Terserap</span>
+                  </div>
+                  <p>412,23 M dari total AKI 1.354,51 M sudah terealisasi.</p>
+                </div>
+                <div class="aki-bars">
+                  <div>
+                    <span>Kantor Pusat</span>
+                    <b><i style="width: 29.02%"></i></b>
+                    <strong>341,29 M / 1.175,85 M</strong>
+                  </div>
+                  <div>
+                    <span>Sarpras Unit</span>
+                    <b><i style="width: 39.71%"></i></b>
+                    <strong>70,94 M / 178,66 M</strong>
+                  </div>
+                  <div>
+                    <span>Gap AKI belum terserap</span>
+                    <b class="amber"><i style="width: 69.57%"></i></b>
+                    <strong>942,28 M perlu dimonitor melalui BAPP dan rekomposisi</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="investment-panel investment-chart-panel">
+              <div class="investment-panel-head">
+                <h3>Monitoring Usulan AI 2027</h3>
+                <p>Memantau tahapan usulan agar proses handshake dan validasi tidak menjadi bottleneck.</p>
+              </div>
+              <div class="ai-funnel">
+                <div class="done" style="--w: 100%">
+                  <span>Proses DAMS CP</span>
+                  <strong>Selesai</strong>
+                </div>
+                <div class="done" style="--w: 100%">
+                  <span>Challenge Session</span>
+                  <strong>Selesai</strong>
+                </div>
+                <div class="progress" style="--w: 68%">
+                  <span>Handshake Alokasi Usulan</span>
+                  <strong>On Progress</strong>
+                </div>
+                <div class="waiting" style="--w: 45%">
+                  <span>Validasi & Prioritisasi Lanjutan</span>
+                  <strong>Menunggu Review</strong>
+                </div>
+              </div>
+              <div class="ai-chart-note">
+                <strong>Fokus Manajemen:</strong>
+                <span>Percepat TTD BA handshake D2/D3, validasi usulan prioritas, dan finalisasi dokumen KKP untuk proses DAMS CP berikutnya.</span>
+              </div>
             </article>
           </div>
 
@@ -915,6 +979,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-49"></script>
+    <script src="./script.js?v=20260716-50"></script>
   </body>
 </html>
