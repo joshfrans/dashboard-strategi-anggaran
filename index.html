@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-21" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-22" />
   </head>
   <body>
     <div class="app-shell">
@@ -296,9 +296,17 @@
                   <div class="entity-list" id="policyEntities"></div>
                 </div>
               </div>
-              <div>
+              <div class="policy-overview-card policy-type-trigger" id="policyTypeTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="policyTypePopover">
                 <strong>7</strong>
                 <span>Jenis Kebijakan</span>
+                <small>Klik untuk lihat kebijakan</small>
+                <div class="entity-popover policy-type-popover" id="policyTypePopover" hidden>
+                  <div class="entity-popover-head">
+                    <strong>Jenis Kebijakan</strong>
+                    <span>7 kategori kebijakan yang dimonitor.</span>
+                  </div>
+                  <div class="entity-list policy-type-list" id="policyTypes"></div>
+                </div>
               </div>
               <div>
                 <strong>54</strong>
@@ -426,6 +434,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-21"></script>
+    <script src="./script.js?v=20260716-22"></script>
   </body>
 </html>

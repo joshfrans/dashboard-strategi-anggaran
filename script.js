@@ -54,6 +54,16 @@ const policyEntities = [
   "PLN Batam"
 ];
 
+const policyTypes = [
+  "Aset Properti",
+  "Arsip",
+  "SPPD",
+  "Fasilitas Kerja",
+  "BFKO",
+  "Indirect Procurement",
+  "Kendaraan Operasional"
+];
+
 let crData = [
   { app: "ESPPD", request: "CR utama E-SPPD", progress: 60.35, status: "On Progress", target: "Multi target" },
   { app: "ESPPD Manage Service", request: "Integrasi manage service", progress: 36.43, status: "On Progress", target: "30 Jun 2026" },
@@ -198,9 +208,17 @@ function renderPolicyEntities() {
     .join("");
 }
 
-function setupEntityPopover() {
-  const trigger = document.getElementById("entityTrigger");
-  const popover = document.getElementById("entityPopover");
+function renderPolicyTypes() {
+  const target = document.getElementById("policyTypes");
+  if (!target) return;
+  target.innerHTML = policyTypes
+    .map((policy, index) => `<span><b>${index + 1}</b>${policy}</span>`)
+    .join("");
+}
+
+function setupInfoPopover(triggerId, popoverId) {
+  const trigger = document.getElementById(triggerId);
+  const popover = document.getElementById(popoverId);
   if (!trigger || !popover) return;
 
   function closePopover() {
@@ -209,6 +227,13 @@ function setupEntityPopover() {
   }
 
   function togglePopover() {
+    document.querySelectorAll(".entity-popover").forEach((item) => {
+      if (item !== popover) {
+        item.hidden = true;
+        const owner = document.querySelector(`[aria-controls="${item.id}"]`);
+        if (owner) owner.setAttribute("aria-expanded", "false");
+      }
+    });
     popover.hidden = !popover.hidden;
     trigger.setAttribute("aria-expanded", String(!popover.hidden));
   }
@@ -925,7 +950,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
   renderPolicyEntities();
-  setupEntityPopover();
+  renderPolicyTypes();
+  setupInfoPopover("entityTrigger", "entityPopover");
+  setupInfoPopover("policyTypeTrigger", "policyTypePopover");
   renderCrRows();
   renderAoCorporate();
   updateDashboardMetrics();

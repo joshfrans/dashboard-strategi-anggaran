@@ -1012,11 +1012,13 @@ td {
   font-weight: 800;
 }
 
-.entity-trigger {
+.entity-trigger,
+.policy-type-trigger {
   cursor: pointer;
 }
 
-.entity-trigger:hover {
+.entity-trigger:hover,
+.policy-type-trigger:hover {
   border-color: #bcd6ff;
   background: #f5f9ff;
 }
@@ -1048,6 +1050,10 @@ td {
   border-top: 1px solid var(--border);
   background: #ffffff;
   transform: rotate(45deg);
+}
+
+.policy-type-popover {
+  width: 392px;
 }
 
 .entity-popover[hidden] {
