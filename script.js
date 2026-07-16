@@ -151,6 +151,7 @@ function policyMetrics() {
 
 function renderPolicyRows() {
   const target = document.getElementById("policyRows");
+  if (!target) return;
   const statusLabel = {
     done: "Selesai",
     discussion: "Diskusi",

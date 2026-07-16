@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-14" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-15" />
   </head>
   <body>
     <div class="app-shell">
@@ -304,26 +304,12 @@
               </div>
               <div class="entity-list" id="policyEntities"></div>
             </div>
-            <div class="policy-table-wrap">
-              <table class="policy-table">
-                <thead>
-                  <tr class="policy-group-row">
-                    <th rowspan="2">No</th>
-                    <th rowspan="2">Entitas</th>
-                    <th colspan="7">Kebijakan</th>
-                  </tr>
-                  <tr>
-                    <th>Aset Properti</th>
-                    <th>Arsip</th>
-                    <th>SPPD</th>
-                    <th>Fasilitas Kerja</th>
-                    <th>BFKO</th>
-                    <th>Indirect Procurement</th>
-                    <th>Kendaraan Operasional</th>
-                  </tr>
-                </thead>
-                <tbody id="policyRows"></tbody>
-              </table>
+            <div class="policy-summary-box">
+              <div>
+                <strong>Kebijakan</strong>
+                <span>Aset Properti, Arsip, SPPD, Fasilitas Kerja, BFKO, Indirect Procurement, Kendaraan Operasional</span>
+              </div>
+              <p>Matrix detail status ratifikasi per entitas tersedia pada tombol <b>Lihat Semua</b>.</p>
             </div>
             <div class="legend-row">
               <span><b class="dot green-dot"></b>Selesai endorsement</span>
@@ -453,6 +439,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-14"></script>
+    <script src="./script.js?v=20260716-15"></script>
   </body>
 </html>
