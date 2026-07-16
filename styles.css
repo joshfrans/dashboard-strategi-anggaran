@@ -917,12 +917,13 @@ p {
 }
 
 .performance-panel {
-  grid-column: 1;
+  grid-column: 1 / -1;
+  grid-row: 2;
 }
 
 .cr-panel {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1;
 }
 
 .panel-title {
@@ -1132,90 +1133,140 @@ td {
   white-space: nowrap;
 }
 
-.performance-filter-row {
+.performance-source-shell {
+  padding: 13px 13px 10px;
+  background: #ffffff;
+}
+
+.performance-source-filters {
   display: grid;
-  grid-template-columns: 0.72fr 1fr 1fr;
+  grid-template-columns: 0.72fr 0.72fr 0.72fr 72px;
+  gap: 14px;
+  align-items: end;
+}
+
+.performance-source-filters label {
+  display: grid;
   gap: 8px;
-  padding: 12px 12px 0;
 }
 
-.performance-filter-row div {
-  min-height: 48px;
-  display: grid;
-  align-content: center;
-  gap: 4px;
-  padding: 9px 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #f8fbff;
+.performance-source-filters span {
+  color: #666d78;
+  font-size: 11px;
+  font-weight: 600;
 }
 
-.performance-filter-row span {
-  color: #61718c;
-  font-size: 9px;
-  font-weight: 800;
+.performance-source-filters strong,
+.performance-source-filters button {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid #d8dde6;
+  border-radius: 3px;
+  background: #ffffff;
+  color: #39404a;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.performance-filter-row strong {
-  color: var(--navy);
-  font-size: 10px;
-  line-height: 1.3;
+.performance-source-filters svg {
+  width: 16px;
+  height: 16px;
+  color: #6d747d;
 }
 
-.performance-kpis {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  padding: 10px 12px 0;
-}
-
-.performance-kpis div {
-  min-height: 52px;
-  display: grid;
-  align-content: center;
-  gap: 4px;
-  padding: 9px 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: linear-gradient(180deg, #ffffff, #f7fbff);
-}
-
-.performance-kpis strong {
-  color: var(--navy);
-  font-size: 18px;
-  line-height: 1;
-}
-
-.performance-kpis span {
-  color: var(--navy);
-  font-size: 9px;
-  font-weight: 800;
+.performance-source-filters button {
+  justify-content: center;
+  cursor: pointer;
 }
 
 .performance-table-wrap {
-  padding: 10px 8px 0;
+  padding: 0 13px 13px;
   overflow-x: auto;
+}
+
+.performance-table {
+  min-width: 1720px;
+  font-size: 11px;
 }
 
 .performance-table th,
 .performance-table td {
+  height: 54px;
+  padding: 12px 13px;
+  border-color: #dbe2e8;
+  text-align: center;
   white-space: nowrap;
 }
 
-.performance-table td:first-child {
-  min-width: 190px;
+.performance-table th {
+  color: #1f2733;
+  background: #f3f4f6;
+  font-weight: 500;
+}
+
+.performance-table td:nth-child(2),
+.performance-table th:nth-child(2) {
+  min-width: 330px;
+  text-align: left;
   white-space: normal;
-  font-weight: 700;
+}
+
+.performance-table td:nth-child(7),
+.performance-table th:nth-child(7) {
+  min-width: 162px;
+}
+
+.performance-table td:nth-child(12),
+.performance-table td:nth-child(13),
+.performance-table td:nth-child(14),
+.performance-table td:nth-child(15),
+.performance-table td:nth-child(16),
+.performance-table th:nth-child(12),
+.performance-table th:nth-child(13),
+.performance-table th:nth-child(14),
+.performance-table th:nth-child(15),
+.performance-table th:nth-child(16) {
+  min-width: 190px;
+}
+
+.performance-table em {
+  color: #8a909a;
+  font-style: italic;
+}
+
+.performance-group-row td {
+  height: 48px;
+  color: #267179;
+  background: #e6f2f3;
+  font-weight: 800;
+  text-align: left;
+}
+
+.collapse-dot {
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #3d4148;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .status-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 96px;
-  padding: 5px 8px;
+  min-width: 132px;
+  padding: 6px 10px;
   border-radius: 999px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .status-pill.waiting {
@@ -1229,23 +1280,15 @@ td {
 }
 
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   display: inline-block;
-  margin-right: 6px;
   border-radius: 50%;
   vertical-align: middle;
 }
 
 .done-dot {
   background: var(--green);
-}
-
-.performance-note {
-  margin: 8px 12px 12px;
-  color: #54627d;
-  font-size: 10px;
-  line-height: 1.45;
 }
 
 .policy-group-row th {

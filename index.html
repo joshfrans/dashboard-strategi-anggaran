@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-23" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-24" />
   </head>
   <body>
     <div class="app-shell">
@@ -320,74 +320,161 @@
               <h2>2. Monitoring Kinerja</h2>
               <button type="button">Juni 2026 <i data-lucide="calendar-days"></i></button>
             </div>
-            <div class="performance-filter-row">
-              <div><span>Bulan dan Tahun</span><strong>Juni 2026</strong></div>
-              <div><span>Entitas</span><strong>Direktorat Legal dan Manajemen Human Capital</strong></div>
-              <div><span>Dit/Divisi/Unit/SHAP</span><strong>Divisi Umum dan Aset Properti</strong></div>
-            </div>
-            <div class="performance-kpis">
-              <div><strong>7</strong><span>Indikator Terlihat</span></div>
-              <div><strong class="green-text">7</strong><span>Tercapai</span></div>
-              <div><strong class="amber-text">2</strong><span>Waiting Approval</span></div>
-              <div><strong class="rose-text">3</strong><span>Not Approved</span></div>
+            <div class="performance-source-shell">
+              <div class="performance-source-filters">
+                <label>
+                  <span>Bulan dan Tahun</span>
+                  <strong>Juni 2026 <i data-lucide="calendar-days"></i></strong>
+                </label>
+                <label>
+                  <span>Entitas</span>
+                  <strong>Direktorat Legal dan Manajemen Human Capital <i data-lucide="chevron-down"></i></strong>
+                </label>
+                <label>
+                  <span>Dit/Divisi/Unit/SHAP</span>
+                  <strong>Divisi Umum dan Aset Properti <i data-lucide="chevron-down"></i></strong>
+                </label>
+                <button type="button" aria-label="Filter monitoring kinerja"><i data-lucide="sliders-horizontal"></i></button>
+              </div>
             </div>
             <div class="performance-table-wrap">
               <table class="performance-table">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Indikator Kerja</th>
+                    <th>Satuan</th>
                     <th>Bobot</th>
+                    <th>Target</th>
                     <th>Target Bulanan</th>
-                    <th>Realisasi</th>
+                    <th>Verif</th>
+                    <th>Realisasi Bulan<br />Current</th>
                     <th>%</th>
-                    <th>Status</th>
+                    <th>Nilai</th>
+                    <th>Ket.</th>
+                    <th>Penjelasan Penc. Bulan Ini</th>
+                    <th>Act. Berikutnya</th>
+                    <th>Penjelasan Penc. Bulan Sebelumnya</th>
+                    <th>Action Sebelumnya</th>
+                    <th>Catatan Kaki</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <tr class="performance-group-row">
+                    <td><span class="collapse-dot">-</span></td>
+                    <td colspan="15">I. (TIDAK ADA PERSPEKTIF)</td>
+                  </tr>
                   <tr>
-                    <td>Efisiensi Biaya</td>
+                    <td><span class="collapse-dot">-</span></td>
+                    <td><strong>1. Efisiensi Biaya</strong></td>
+                    <td>0</td>
                     <td>20</td>
+                    <td><em>(Empty)</em></td>
                     <td>0</td>
-                    <td>2.816,88</td>
+                    <td><span class="status-pill waiting">Waiting For Approval</span></td>
+                    <td>2816.88</td>
                     <td>110%</td>
-                    <td><span class="status-pill waiting">Waiting Approval</span></td>
+                    <td>22</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
                   </tr>
                   <tr>
-                    <td>Efektifitas Biaya Administrasi Umum</td>
+                    <td></td>
+                    <td>a. Efektifitas Biaya Administrasi Umum</td>
+                    <td>Rp Miliar</td>
                     <td>14</td>
-                    <td>4.740,294</td>
-                    <td>3.284,569</td>
-                    <td>110%</td>
+                    <td>4.740,29</td>
+                    <td>4740.294</td>
                     <td><span class="status-pill not-approved">Not Approved</span></td>
+                    <td>3284.569</td>
+                    <td>110%</td>
+                    <td>15.4</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td><em>(Data Not Available)</em></td>
                   </tr>
                   <tr>
-                    <td>Pengendalian NAC</td>
+                    <td></td>
+                    <td>b. Pengendalian NAC (Non Allowable Cost)</td>
+                    <td>Rp Miliar</td>
                     <td>6</td>
-                    <td>451,041</td>
-                    <td>292,145</td>
-                    <td>110%</td>
+                    <td>Sesuai SKAO Tahun 2026</td>
+                    <td>451.040551784</td>
                     <td><span class="status-pill not-approved">Not Approved</span></td>
-                  </tr>
-                  <tr>
-                    <td>Optimalisasi aset tanah dan bangunan</td>
-                    <td>12</td>
-                    <td>59,834</td>
-                    <td>85,481</td>
+                    <td>292.145057590</td>
                     <td>110%</td>
-                    <td><span class="status-dot done-dot"></span> Tercapai</td>
+                    <td>6.6</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td><em>(Data Not Available)</em></td>
                   </tr>
                   <tr>
-                    <td>Penyediaan dokumen pengadaan kontrak</td>
+                    <td></td>
+                    <td><strong>2. Optimalisasi penggunaan aset tanah dan bangunan</strong></td>
+                    <td>Rp Miliar</td>
                     <td>12</td>
+                    <td>59,83</td>
+                    <td>59.83358626</td>
+                    <td><span class="status-pill not-approved">Not Approved</span></td>
+                    <td>85.48141199</td>
+                    <td>110%</td>
+                    <td>13.2</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td><em>(Data Not Available)</em></td>
+                  </tr>
+                  <tr>
+                    <td><span class="collapse-dot">-</span></td>
+                    <td><strong>3. Penyediaan Dokumen Pengadaan Barang Jasa Kantor Pusat sampai dengan selesainya draft kontrak</strong></td>
                     <td>0</td>
-                    <td>400,00</td>
-                    <td>108,53%</td>
+                    <td>12</td>
+                    <td><em>(Empty)</em></td>
+                    <td>0</td>
                     <td><span class="status-pill waiting">Waiting Approval</span></td>
+                    <td>400.00</td>
+                    <td>108.53%</td>
+                    <td>13.02</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                    <td><em>(Data Not Available)</em></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>a. Pengadaan Langsung / Penunjukan Langsung Pasca Kualifikasi</td>
+                    <td>%</td>
+                    <td>3</td>
+                    <td>93,96</td>
+                    <td>93.96</td>
+                    <td><span class="status-pill waiting">Waiting Approval</span></td>
+                    <td>100.00</td>
+                    <td>106.43%</td>
+                    <td>3.19</td>
+                    <td><span class="status-dot done-dot"></span></td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td>tercapai</td>
+                    <td><em>(Data Not Available)</em></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p class="performance-note">Snapshot dari tampilan monitoring kinerja Juni 2026. Fokus tindak lanjut: penyelesaian verifikasi dan approval indikator yang belum approved.</p>
           </article>
 
           <article class="panel cr-panel">
@@ -509,6 +596,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-23"></script>
+    <script src="./script.js?v=20260716-24"></script>
   </body>
 </html>
