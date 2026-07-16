@@ -348,6 +348,74 @@ function setupFilters() {
   });
 }
 
+function setupPeriodPicker() {
+  const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Juli", "Agu", "Sep", "Okt", "Nov", "Des"];
+  const trigger = document.getElementById("periodTrigger");
+  const picker = document.getElementById("periodPicker");
+  const yearLabel = document.getElementById("periodYear");
+  const periodLabel = document.getElementById("periodLabel");
+  const monthGrid = document.getElementById("monthGrid");
+  const prevYear = document.getElementById("prevYear");
+  const nextYear = document.getElementById("nextYear");
+  let selectedMonth = 6;
+  let selectedYear = 2026;
+
+  if (!trigger || !picker || !yearLabel || !periodLabel || !monthGrid) return;
+
+  function renderMonths() {
+    yearLabel.textContent = selectedYear;
+    periodLabel.textContent = `${months[selectedMonth]} ${selectedYear}`;
+    monthGrid.innerHTML = months
+      .map((month, index) => `
+        <button class="${index === selectedMonth ? "active" : ""}" type="button" data-month="${index}">
+          ${month}
+        </button>
+      `)
+      .join("");
+  }
+
+  function closePicker() {
+    picker.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  }
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    picker.hidden = !picker.hidden;
+    trigger.setAttribute("aria-expanded", String(!picker.hidden));
+  });
+
+  prevYear?.addEventListener("click", () => {
+    selectedYear -= 1;
+    renderMonths();
+  });
+
+  nextYear?.addEventListener("click", () => {
+    selectedYear += 1;
+    renderMonths();
+  });
+
+  monthGrid.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-month]");
+    if (!button) return;
+    selectedMonth = Number(button.dataset.month);
+    renderMonths();
+    closePicker();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!picker.hidden && !picker.contains(event.target) && !trigger.contains(event.target)) {
+      closePicker();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closePicker();
+  });
+
+  renderMonths();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
@@ -355,6 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCrRows();
   updateDashboardMetrics();
   setupFilters();
+  setupPeriodPicker();
   document.getElementById("exportCsv").addEventListener("click", downloadCsv);
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();

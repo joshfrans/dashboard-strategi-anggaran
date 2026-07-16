@@ -232,6 +232,7 @@ p {
 }
 
 .filters label,
+.period-trigger,
 .date-card {
   height: 58px;
   min-width: 114px;
@@ -246,6 +247,7 @@ p {
 }
 
 .filters span,
+.period-trigger small,
 .date-card span {
   font-size: 10px;
   font-weight: 800;
@@ -258,6 +260,102 @@ p {
   background: transparent;
   font-size: 13px;
   font-weight: 800;
+}
+
+.period-filter {
+  position: relative;
+}
+
+.period-trigger {
+  min-width: 160px;
+  grid-template-columns: 22px 1fr 16px;
+  align-items: center;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.period-trigger span {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+
+.period-trigger strong {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.period-trigger svg {
+  width: 18px;
+  height: 18px;
+}
+
+.period-picker {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  width: 242px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 36px rgba(7, 29, 73, 0.16);
+}
+
+.period-picker-head {
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.period-picker-head strong {
+  color: var(--navy);
+  font-size: 16px;
+  text-align: center;
+}
+
+.period-picker-head button {
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--navy);
+  background: #f6f9ff;
+  cursor: pointer;
+}
+
+.period-picker-head svg {
+  width: 16px;
+  height: 16px;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.month-grid button {
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--navy);
+  background: #f8fbff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.month-grid button.active,
+.month-grid button:hover,
+.period-picker-head button:hover {
+  border-color: var(--blue);
+  color: #ffffff;
+  background: var(--blue);
 }
 
 .date-card {
@@ -1111,9 +1209,17 @@ td {
   }
 
   .filters label,
+  .period-filter,
+  .period-trigger,
   .date-card,
   .export-btn,
   .import-btn {
+    width: 100%;
+  }
+
+  .period-picker {
+    left: 0;
+    right: 0;
     width: 100%;
   }
 

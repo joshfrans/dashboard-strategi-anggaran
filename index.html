@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-3" />
   </head>
   <body>
     <div class="app-shell">
@@ -90,18 +90,24 @@
 
           <div class="header-actions">
             <div class="filters" aria-label="Filter dashboard">
-              <label>
-                <span>Tahun</span>
-                <select id="yearFilter">
-                  <option>2026</option>
-                </select>
-              </label>
-              <label>
-                <span>Bulan</span>
-                <select id="monthFilter">
-                  <option>Juli</option>
-                </select>
-              </label>
+              <div class="period-filter">
+                <button class="period-trigger" type="button" id="periodTrigger" aria-expanded="false" aria-controls="periodPicker">
+                  <i data-lucide="calendar-days"></i>
+                  <span>
+                    <small>Periode</small>
+                    <strong id="periodLabel">Juli 2026</strong>
+                  </span>
+                  <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="period-picker" id="periodPicker" hidden>
+                  <div class="period-picker-head">
+                    <button type="button" id="prevYear" aria-label="Tahun sebelumnya"><i data-lucide="chevron-left"></i></button>
+                    <strong id="periodYear">2026</strong>
+                    <button type="button" id="nextYear" aria-label="Tahun berikutnya"><i data-lucide="chevron-right"></i></button>
+                  </div>
+                  <div class="month-grid" id="monthGrid" aria-label="Pilih bulan"></div>
+                </div>
+              </div>
               <label>
                 <span>Unit</span>
                 <select id="unitFilter">
@@ -341,6 +347,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-2"></script>
+    <script src="./script.js?v=20260716-3"></script>
   </body>
 </html>
