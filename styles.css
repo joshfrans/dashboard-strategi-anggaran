@@ -519,8 +519,60 @@ p {
   min-height: calc(100vh - 36px);
 }
 
-.dashboard.ao-mode .ao-corporate-view > :not(.ao-full-frame) {
+.dashboard.ao-mode .ao-corporate-view > :not(.ao-full-frame):not(.ao-embed-header) {
   display: none;
+}
+
+.ao-embed-header {
+  display: none;
+}
+
+.dashboard.ao-mode .ao-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.ao-embed-header div {
+  display: grid;
+  gap: 3px;
+}
+
+.ao-embed-header span {
+  color: #53627f;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ao-embed-header strong {
+  color: var(--navy);
+  font-size: 16px;
+}
+
+.ao-embed-header a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ao-embed-header svg {
+  width: 15px;
+  height: 15px;
 }
 
 .ao-full-frame {
@@ -530,8 +582,8 @@ p {
 .dashboard.ao-mode .ao-full-frame {
   display: block;
   width: 100%;
-  min-height: calc(100vh - 36px);
-  height: 1180px;
+  min-height: calc(100vh - 104px);
+  height: calc(100vh - 104px);
   border: 0;
   border-radius: 10px;
   background: #f1f8fc;
