@@ -681,7 +681,6 @@ function renderDetailCr() {
 function renderDetailPerformance() {
   const source = document.querySelector(".performance-panel");
   if (!source) return "";
-  const report = source.querySelector(".performance-source-shell")?.outerHTML || "";
   const table = source.querySelector(".performance-table-wrap")?.outerHTML || "";
   const legend = source.querySelector(".performance-legend")?.outerHTML || "";
   return `
@@ -691,9 +690,14 @@ function renderDetailPerformance() {
       <div class="detail-metric purple"><strong>10</strong><span>Indikator Utama</span></div>
       <div class="detail-metric gray"><strong>100</strong><span>Total Bobot</span></div>
     </section>
-    <section class="detail-section">
-      <h3>Laporan Pencapaian KPI Tahun 2026</h3>
-      ${report}
+    <section class="detail-section performance-detail-section">
+      <div class="performance-detail-head">
+        <h3>Laporan Pencapaian KPI Tahun 2026</h3>
+        <label class="performance-period-chip">
+          <span>Periode</span>
+          <strong>S.D. Juni 2026 <i data-lucide="calendar-days"></i></strong>
+        </label>
+      </div>
       ${table}
       ${legend}
     </section>
