@@ -1222,14 +1222,36 @@ td {
 }
 
 .performance-score-card {
-  min-height: 112px;
+  min-height: 116px;
   display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 6px;
+  grid-template-columns: 104px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
   border: 1px solid #cfe7db;
   border-radius: 10px;
-  background: linear-gradient(180deg, #f7fffb, #ffffff);
+  background:
+    linear-gradient(135deg, rgba(0, 132, 61, 0.10), rgba(9, 163, 166, 0.05)),
+    #ffffff;
+}
+
+.performance-score-ring {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #ffffff 58%, transparent 59%),
+    conic-gradient(#00843d 0 100%, #e5edf5 0);
+  box-shadow: inset 0 0 0 1px #d9efe3;
+}
+
+.performance-score-ring span {
+  color: var(--green);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .performance-score-card span,
@@ -1241,8 +1263,10 @@ td {
 }
 
 .performance-score-card strong {
+  display: block;
+  margin: 4px 0;
   color: var(--green);
-  font-size: 38px;
+  font-size: 22px;
   line-height: 1;
 }
 
@@ -1267,6 +1291,11 @@ td {
   background: #f8fbff;
 }
 
+.performance-status-grid div:first-child {
+  border-color: #cfe7db;
+  background: #f5fffa;
+}
+
 .performance-status-grid strong {
   color: var(--navy);
   font-size: 18px;
@@ -1277,6 +1306,44 @@ td {
   color: #53627f;
   font-size: 9px;
   font-weight: 900;
+}
+
+.performance-driver-list {
+  display: grid;
+  gap: 8px;
+}
+
+.performance-driver-list div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.performance-driver-list span {
+  grid-column: 1 / -1;
+  color: #53627f;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.performance-driver-list strong {
+  color: var(--navy);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.performance-driver-list b {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #e7f6ed;
+  color: var(--green);
+  font-size: 10px;
 }
 
 .performance-management-note {
@@ -1315,6 +1382,11 @@ td {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #ffffff;
+}
+
+.performance-action-list div:first-child {
+  border-color: #cfe7db;
+  background: #f7fffb;
 }
 
 .performance-action-list span {
