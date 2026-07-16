@@ -357,7 +357,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Dashboard menunjukkan tiga perhatian utama: ratifikasi kebijakan, monitoring kinerja, dan penyelesaian Change Request aplikasi. Dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdapat ${values.summaryPolicyDone} status selesai endorsement dan ${values.summaryPolicyFollowUp} status yang masih perlu tindak lanjut. Monitoring kinerja Juni 2026 menunjukkan indikator terlihat sudah tercapai, namun beberapa item masih menunggu approval/not approved sehingga perlu percepatan verifikasi. Pada sisi aplikasi, terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai.`;
+    summaryText.textContent = `Dashboard menunjukkan tiga perhatian utama: ratifikasi kebijakan, monitoring kinerja, dan penyelesaian Change Request aplikasi. Dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdapat ${values.summaryPolicyDone} status selesai endorsement dan ${values.summaryPolicyFollowUp} status yang masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 menunjukkan NKO 106,84 dengan status tercapai. Pada sisi aplikasi, terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai.`;
   }
 }
 

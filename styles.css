@@ -1138,6 +1138,23 @@ td {
   background: #ffffff;
 }
 
+.performance-report-head {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+  color: #1f2733;
+}
+
+.performance-report-head strong {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.performance-report-head span {
+  color: #3f4752;
+  font-size: 12px;
+}
+
 .performance-source-filters {
   display: grid;
   grid-template-columns: 0.72fr 0.72fr 0.72fr 72px;
@@ -1189,7 +1206,7 @@ td {
 }
 
 .performance-table {
-  min-width: 1720px;
+  min-width: 1180px;
   font-size: 11px;
 }
 
@@ -1210,27 +1227,15 @@ td {
 
 .performance-table td:nth-child(2),
 .performance-table th:nth-child(2) {
-  min-width: 330px;
+  min-width: 360px;
   text-align: left;
   white-space: normal;
 }
 
 .performance-table td:nth-child(7),
 .performance-table th:nth-child(7) {
-  min-width: 162px;
-}
-
-.performance-table td:nth-child(12),
-.performance-table td:nth-child(13),
-.performance-table td:nth-child(14),
-.performance-table td:nth-child(15),
-.performance-table td:nth-child(16),
-.performance-table th:nth-child(12),
-.performance-table th:nth-child(13),
-.performance-table th:nth-child(14),
-.performance-table th:nth-child(15),
-.performance-table th:nth-child(16) {
-  min-width: 190px;
+  min-width: 170px;
+  white-space: normal;
 }
 
 .performance-table em {
@@ -1239,11 +1244,8 @@ td {
 }
 
 .performance-group-row td {
-  height: 48px;
-  color: #267179;
-  background: #e6f2f3;
-  font-weight: 800;
-  text-align: left;
+  height: 42px;
+  background: #ffc000;
 }
 
 .collapse-dot {
@@ -1289,6 +1291,55 @@ td {
 
 .done-dot {
   background: var(--green);
+}
+
+.performance-total-row td {
+  background: #eadff0;
+  font-weight: 800;
+}
+
+.performance-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+  padding: 0 13px 14px;
+  color: #1f2733;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.performance-legend strong {
+  width: 100%;
+}
+
+.performance-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.legend-dot.green {
+  background: #00b050;
+}
+
+.legend-dot.amber {
+  background: #ffc000;
+}
+
+.legend-dot.red {
+  background: #ff0000;
+}
+
+.legend-dot.gray {
+  background: #a6a6a6;
 }
 
 .policy-group-row th {
