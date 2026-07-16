@@ -866,6 +866,11 @@ p {
   line-height: 1;
 }
 
+.kpi-unit {
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .kpi-main span,
 .kpi-main p {
   margin-top: 9px;
