@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-48" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-49" />
   </head>
   <body>
     <div class="app-shell">
@@ -35,7 +35,7 @@
             <i data-lucide="clipboard-check"></i>
             <span>Strategi & Evaluasi GA</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="#" class="nav-item" data-nav="investment">
             <i data-lucide="trending-up"></i>
             <span>Investasi</span>
           </a>
@@ -152,6 +152,126 @@
             />
           </div>
         </header>
+
+        <section class="investment-view" id="investmentView" aria-label="Dashboard Investasi">
+          <div class="investment-hero">
+            <div>
+              <span>Report ANG Investasi - 16 Juli 2026</span>
+              <h2>Dashboard Monitoring Anggaran Investasi</h2>
+              <p>
+                Ringkasan AI dan AKI 2026, progres realisasi s.d. Juni, usulan AI 2027, serta
+                kebutuhan keputusan untuk percepatan penyerapan dan penerbitan anggaran.
+              </p>
+            </div>
+            <div class="investment-hero-signal">
+              <strong>Executive Signal</strong>
+              <span>AKI terserap 30,43% dari anggaran kas investasi. Fokus utama: evaluasi realisasi Juli, BAPP, rekomposisi AKI, dan percepatan handshake AI 2027.</span>
+            </div>
+          </div>
+
+          <div class="investment-kpi-grid">
+            <article class="investment-kpi">
+              <span>Total Anggaran Investasi 2026</span>
+              <strong>10,89 T</strong>
+              <small>KP 10,64 T + Sarpras Unit 255,31 M</small>
+              <div class="investment-bar"><i style="width: 100%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Realisasi AI s.d. Juni</span>
+              <strong>344,27 M</strong>
+              <small>3,16% dari total AI terbit</small>
+              <div class="investment-bar blue"><i style="width: 3.16%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Total AKI 2026</span>
+              <strong>1,35 T</strong>
+              <small>KP 1,18 T + Sarpras Unit 178,66 M</small>
+              <div class="investment-bar"><i style="width: 100%"></i></div>
+            </article>
+            <article class="investment-kpi">
+              <span>Realisasi AKI s.d. Juni</span>
+              <strong>412,23 M</strong>
+              <small>30,43% dari total AKI</small>
+              <div class="investment-bar amber"><i style="width: 30.43%"></i></div>
+            </article>
+          </div>
+
+          <div class="investment-grid">
+            <article class="investment-panel">
+              <div class="investment-panel-head">
+                <h3>Komposisi AI & AKI 2026</h3>
+                <p>Anggaran terbit dan realisasi s.d. Juni dalam miliar rupiah.</p>
+              </div>
+              <div class="investment-comparison">
+                <div>
+                  <span>Kantor Pusat</span>
+                  <strong>AI 10.636,92 M</strong>
+                  <small>AKI 1.175,85 M - realisasi AKI 341,29 M</small>
+                  <b style="width: 97.66%"></b>
+                </div>
+                <div>
+                  <span>Sarpras Unit</span>
+                  <strong>AI 255,31 M</strong>
+                  <small>AKI 178,66 M - realisasi AKI 70,94 M</small>
+                  <b style="width: 39.71%"></b>
+                </div>
+              </div>
+            </article>
+
+            <article class="investment-panel">
+              <div class="investment-panel-head">
+                <h3>Prioritas Keputusan</h3>
+                <p>Hal yang perlu dikunci agar target penyerapan terkendali.</p>
+              </div>
+              <ul class="investment-action-list">
+                <li><strong>Evaluasi Juli & rencana Agustus</strong><span>Realisasi Juli perlu dievaluasi di awal Agustus berdasarkan kesiapan BAPP.</span></li>
+                <li><strong>Rekomposisi AKI</strong><span>Tambahan AKI dilakukan berbasis BAPP dan rekomposisi dari pagu AKI yang terbit.</span></li>
+                <li><strong>Tambahan kebutuhan AI</strong><span>Indikasi kebutuhan: DIV TEN 100 M, DIV RSL 80 M, DIV MEB 80 M.</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="investment-grid wide">
+            <article class="investment-panel">
+              <div class="investment-panel-head">
+                <h3>Usulan AI 2027</h3>
+                <p>Status proses top down dan handshake alokasi usulan.</p>
+              </div>
+              <div class="investment-timeline">
+                <div class="done"><i></i><strong>Proses DAMS CP</strong><span>Selesai</span></div>
+                <div class="done"><i></i><strong>Challenge Session</strong><span>Selesai</span></div>
+                <div class="progress"><i></i><strong>Handshake Alokasi Usulan</strong><span>On Progress - proses TTD BA</span></div>
+                <div class="waiting"><i></i><strong>Validasi & Challenge Lanjutan</strong><span>Menunggu review/prioritisasi</span></div>
+              </div>
+            </article>
+
+            <article class="investment-panel">
+              <div class="investment-panel-head">
+                <h3>AI Luncuran Kantor Pusat 2026</h3>
+                <p>Perlu konfirmasi ulang perencanaan penggunaan anggaran.</p>
+              </div>
+              <div class="investment-luncuran">
+                <div><strong>42</strong><span>PRK</span></div>
+                <div><strong>2.912,71 M</strong><span>Total AI</span></div>
+                <div><strong>1.208,99 M</strong><span>Digunakan 2026</span></div>
+                <div><strong>1.703,71 M</strong><span>Belum digunakan</span></div>
+              </div>
+            </article>
+          </div>
+
+          <article class="investment-panel">
+            <div class="investment-panel-head">
+              <h3>Monitoring Sarpras Unit</h3>
+              <p>Ringkasan AI/AKI Sarpras dan status pekerjaan 2026.</p>
+            </div>
+            <div class="investment-sarpras-grid">
+              <div><span>SKAI Terbit</span><strong>270,70 M</strong><small>AI lanjutan terbit</small></div>
+              <div><span>AKI Terbit</span><strong>98,87 M</strong><small>AKI lanjutan terbit</small></div>
+              <div><span>AI Murni 2026</span><strong>Belum Terbit</strong><small>Masih koordinasi penerbitan</small></div>
+              <div><span>Progress PRK</span><strong>9 selesai / 8 berjalan</strong><small>Monitoring terkontrak berlanjut</small></div>
+            </div>
+          </article>
+        </section>
 
         <section class="ao-corporate-view" id="aoCorporateView" aria-label="AO Korporat">
           <div class="ao-embed-header">
@@ -795,6 +915,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-48"></script>
+    <script src="./script.js?v=20260716-49"></script>
   </body>
 </html>

@@ -504,7 +504,8 @@ p {
 }
 
 .ao-corporate-view,
-.ao-office-view {
+.ao-office-view,
+.investment-view {
   display: none;
 }
 
@@ -519,19 +520,308 @@ p {
 }
 
 .dashboard.ao-mode > section:not(.ao-corporate-view),
-.dashboard.ao-office-mode > section:not(.ao-office-view) {
+.dashboard.ao-office-mode > section:not(.ao-office-view),
+.dashboard.investment-mode > section:not(.investment-view) {
   display: none;
 }
 
 .dashboard.ao-mode .page-header,
-.dashboard.ao-office-mode .page-header {
+.dashboard.ao-office-mode .page-header,
+.dashboard.investment-mode .page-header {
   display: none;
 }
 
 .dashboard.ao-mode .ao-corporate-view,
-.dashboard.ao-office-mode .ao-office-view {
+.dashboard.ao-office-mode .ao-office-view,
+.dashboard.investment-mode .investment-view {
   display: block;
   min-height: calc(100vh - 36px);
+}
+
+.investment-view {
+  display: none;
+}
+
+.dashboard.investment-mode .investment-view {
+  display: grid;
+  gap: 14px;
+}
+
+.investment-hero,
+.investment-panel,
+.investment-kpi {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.investment-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border-left: 5px solid #079c9f;
+  background: linear-gradient(135deg, #ffffff 0%, #f4fffd 100%);
+}
+
+.investment-hero span,
+.investment-kpi span,
+.investment-panel-head p,
+.investment-comparison span,
+.investment-sarpras-grid span {
+  color: #53627f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.investment-hero h2 {
+  margin-top: 5px;
+  color: var(--navy);
+  font-size: 24px;
+}
+
+.investment-hero p {
+  max-width: 760px;
+  margin-top: 7px;
+  color: #43526f;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.investment-hero-signal {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid #bfe7df;
+  border-radius: 9px;
+  background: #f2fffb;
+}
+
+.investment-hero-signal strong {
+  color: var(--green);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.investment-hero-signal span {
+  color: var(--navy);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.investment-kpi-grid,
+.investment-grid,
+.investment-sarpras-grid {
+  display: grid;
+  gap: 13px;
+}
+
+.investment-kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.investment-kpi {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  min-height: 132px;
+  padding: 15px;
+}
+
+.investment-kpi strong {
+  color: var(--navy);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.investment-kpi small {
+  color: #52617e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.investment-bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e6edf6;
+}
+
+.investment-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+}
+
+.investment-bar.blue i {
+  background: var(--blue);
+}
+
+.investment-bar.amber i {
+  background: var(--amber);
+}
+
+.investment-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.investment-grid.wide {
+  grid-template-columns: 1.05fr 0.95fr;
+}
+
+.investment-panel {
+  overflow: hidden;
+}
+
+.investment-panel-head {
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--line);
+  background: #f8fbff;
+}
+
+.investment-panel-head h3 {
+  color: var(--navy);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.investment-panel-head p {
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.investment-comparison {
+  display: grid;
+  gap: 13px;
+  padding: 15px;
+}
+
+.investment-comparison div {
+  display: grid;
+  gap: 6px;
+}
+
+.investment-comparison strong {
+  color: var(--navy);
+  font-size: 16px;
+}
+
+.investment-comparison small {
+  color: #53627f;
+  font-size: 11px;
+}
+
+.investment-comparison b {
+  height: 10px;
+  border-radius: 999px;
+  background: #079c9f;
+}
+
+.investment-action-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 15px;
+  list-style: none;
+}
+
+.investment-action-list li {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border-left: 4px solid var(--amber);
+  border-radius: 8px;
+  background: #fffaf0;
+}
+
+.investment-action-list strong,
+.investment-timeline strong {
+  color: var(--navy);
+  font-size: 12px;
+}
+
+.investment-action-list span,
+.investment-timeline span {
+  color: #465572;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.investment-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 15px;
+}
+
+.investment-timeline div {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  min-height: 96px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.investment-timeline i {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gray);
+}
+
+.investment-timeline .done i {
+  background: var(--green);
+}
+
+.investment-timeline .progress i {
+  background: var(--amber);
+}
+
+.investment-timeline .waiting i {
+  background: #73809c;
+}
+
+.investment-luncuran,
+.investment-sarpras-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 15px;
+}
+
+.investment-luncuran {
+  display: grid;
+  gap: 10px;
+}
+
+.investment-luncuran div,
+.investment-sarpras-grid div {
+  display: grid;
+  gap: 6px;
+  min-height: 86px;
+  align-content: center;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fbfdff;
+}
+
+.investment-luncuran strong,
+.investment-sarpras-grid strong {
+  color: var(--navy);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.investment-luncuran span,
+.investment-sarpras-grid small {
+  color: #53627f;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .dashboard.ao-mode .ao-corporate-view,
@@ -2613,6 +2903,9 @@ td {
   .kpi-grid,
   .ao-kpi-grid,
   .ao-grid,
+  .investment-hero,
+  .investment-grid,
+  .investment-grid.wide,
   .work-grid,
   .insight-grid,
   .executive-summary,
@@ -2652,6 +2945,13 @@ td {
   }
 
   .ao-finance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .investment-kpi-grid,
+  .investment-timeline,
+  .investment-luncuran,
+  .investment-sarpras-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -2727,6 +3027,13 @@ td {
   }
 
   .ao-finance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .investment-kpi-grid,
+  .investment-timeline,
+  .investment-luncuran,
+  .investment-sarpras-grid {
     grid-template-columns: 1fr;
   }
 

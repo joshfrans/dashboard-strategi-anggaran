@@ -377,7 +377,7 @@ function setupNavigation() {
       navItems.forEach((nav) => nav.classList.remove("is-active"));
       item.classList.add("is-active");
 
-      dashboard.classList.remove("ao-mode", "ao-office-mode");
+      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode");
       if (target === "ao") {
         dashboard.classList.add("ao-mode");
         title.textContent = "AO Korporat";
@@ -386,6 +386,10 @@ function setupNavigation() {
         dashboard.classList.add("ao-office-mode");
         title.textContent = "AO Kantor Pusat";
         description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
+      } else if (target === "investment") {
+        dashboard.classList.add("investment-mode");
+        title.textContent = "Investasi";
+        description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
       } else {
         title.textContent = defaultTitle;
         description.textContent = defaultDescription;
@@ -508,8 +512,9 @@ function exportPdf() {
   const previousNav = activeNav;
   const wasAoMode = dashboard?.classList.contains("ao-mode");
   const wasAoOfficeMode = dashboard?.classList.contains("ao-office-mode");
+  const wasInvestmentMode = dashboard?.classList.contains("investment-mode");
 
-  dashboard?.classList.remove("ao-mode", "ao-office-mode");
+  dashboard?.classList.remove("ao-mode", "ao-office-mode", "investment-mode");
   document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
   strategyNav?.classList.add("is-active");
   if (title) title.textContent = "Strategi & Evaluasi GA";
@@ -524,6 +529,7 @@ function exportPdf() {
     document.body.classList.remove("print-strategy");
     if (wasAoMode) dashboard?.classList.add("ao-mode");
     if (wasAoOfficeMode) dashboard?.classList.add("ao-office-mode");
+    if (wasInvestmentMode) dashboard?.classList.add("investment-mode");
     document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
     (previousNav || strategyNav)?.classList.add("is-active");
     if (wasAoMode) {
@@ -532,6 +538,9 @@ function exportPdf() {
     } else if (wasAoOfficeMode) {
       if (title) title.textContent = "AO Kantor Pusat";
       if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
+    } else if (wasInvestmentMode) {
+      if (title) title.textContent = "Investasi";
+      if (description) description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
     }
     window.removeEventListener("afterprint", restore);
   };
