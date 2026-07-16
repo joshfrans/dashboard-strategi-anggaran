@@ -1679,6 +1679,13 @@ td {
   z-index: 1;
 }
 
+.detail-policy-group-row th {
+  background: #e7f6ed;
+  color: var(--green);
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .detail-table td,
 .detail-table th {
   white-space: nowrap;

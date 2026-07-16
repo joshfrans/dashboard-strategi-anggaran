@@ -523,8 +523,11 @@ function renderDetailPolicy() {
       <div class="detail-table-wrap">
         <table class="detail-table">
           <thead>
+            <tr class="detail-policy-group-row">
+              <th rowspan="2">Entitas</th>
+              <th colspan="${policyColumns.length}">Kebijakan</th>
+            </tr>
             <tr>
-              <th>Entitas</th>
               ${policyColumns.map((column) => `<th>${column}</th>`).join("")}
             </tr>
           </thead>
