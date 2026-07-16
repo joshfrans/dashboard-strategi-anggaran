@@ -969,6 +969,35 @@ p {
   padding: 14px;
 }
 
+.overview-category-label {
+  width: fit-content;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid #cde2ff;
+  border-radius: 999px;
+  background: #f7fbff;
+}
+
+.overview-category-label span {
+  color: #53627f;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-category-label strong {
+  color: var(--blue);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.overview-category-wide {
+  margin-top: 2px;
+}
+
 .overview-filter-row {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
