@@ -534,6 +534,16 @@ function renderDetailPolicy() {
           <tbody>${detailRows}</tbody>
         </table>
       </div>
+      <div class="detail-legend">
+        <strong>Keterangan Status</strong>
+        <div>
+          <span><b class="dot green-dot"></b>Selesai endorsement</span>
+          <span><b class="dot amber-dot"></b>Diskusi internal/perbedaan ketentuan</span>
+          <span><b class="dot peach-dot"></b>Tidak melakukan ratifikasi</span>
+          <span><b class="dot white-dot"></b>Proses drafting</span>
+          <span><b class="dot purple-dot"></b>Perbaikan hasil review</span>
+        </div>
+      </div>
     </section>
   `;
 }
