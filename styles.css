@@ -1137,14 +1137,16 @@ td {
 }
 
 .performance-source-shell {
-  padding: 11px 12px 9px;
+  padding: 10px 12px 8px;
   background: #ffffff;
 }
 
 .performance-report-head {
-  display: grid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 4px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   color: #1f2733;
 }
 
@@ -1154,54 +1156,42 @@ td {
 }
 
 .performance-report-head span {
+  display: block;
   color: #3f4752;
   font-size: 10px;
 }
 
-.performance-source-filters {
+.performance-period-chip {
+  min-width: 136px;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  align-items: end;
+  gap: 3px;
+  padding: 7px 10px;
+  border: 1px solid #d8dde6;
+  border-radius: 7px;
+  background: #f8fbff;
 }
 
-.performance-source-filters label {
-  display: grid;
-  gap: 5px;
-}
-
-.performance-source-filters span {
+.performance-period-chip span {
   color: #666d78;
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.performance-source-filters strong,
-.performance-source-filters button {
-  min-height: 40px;
+.performance-period-chip strong {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 0 13px;
-  border: 1px solid #d8dde6;
-  border-radius: 3px;
-  background: #ffffff;
-  color: #39404a;
+  gap: 8px;
+  color: var(--navy);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 900;
 }
 
-.performance-source-filters svg {
-  width: 16px;
-  height: 16px;
+.performance-period-chip svg {
+  width: 14px;
+  height: 14px;
   color: #6d747d;
-}
-
-.performance-source-filters button {
-  justify-content: center;
-  cursor: pointer;
-  display: none;
 }
 
 .performance-table-wrap {
@@ -2251,8 +2241,13 @@ td {
   }
 
   .performance-score-card.executive-compact,
-  .performance-exec-bottom {
+  .performance-exec-bottom,
+  .performance-report-head {
     grid-template-columns: 1fr;
+  }
+
+  .performance-report-head {
+    display: grid;
   }
 
   .performance-driver-list {
