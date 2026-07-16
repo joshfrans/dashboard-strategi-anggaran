@@ -722,6 +722,69 @@ function renderDetailPerformance() {
   `;
 }
 
+function getPerformanceStatusSummary() {
+  const rows = Array.from(document.querySelectorAll(".performance-table tbody tr"));
+  const indicatorRows = rows.filter((row) => {
+    if (row.classList.contains("performance-group-row") || row.classList.contains("performance-total-row")) return false;
+    const firstCell = row.querySelector("td");
+    return /^\d+$/.test(firstCell?.textContent.trim() || "");
+  });
+  const summary = {
+    total: indicatorRows.length,
+    green: 0,
+    amber: 0,
+    red: 0,
+    gray: 0
+  };
+
+  indicatorRows.forEach((row) => {
+    const dot = row.querySelector(".status-dot");
+    if (!dot || dot.classList.contains("gray-dot")) {
+      summary.gray += 1;
+    } else if (dot.classList.contains("red-dot")) {
+      summary.red += 1;
+    } else if (dot.classList.contains("amber-dot")) {
+      summary.amber += 1;
+    } else {
+      summary.green += 1;
+    }
+  });
+
+  return summary;
+}
+
+function updatePerformanceStatusPanel() {
+  const grid = document.getElementById("performanceStatusGrid");
+  const message = document.getElementById("performanceStatusMessage");
+  if (!grid) return;
+
+  const summary = getPerformanceStatusSummary();
+  const statusItems = [
+    { key: "green", label: "Hijau" },
+    { key: "amber", label: "Kuning" },
+    { key: "red", label: "Merah" },
+    { key: "gray", label: "Belum Ukur" }
+  ].filter((item) => summary[item.key] > 0);
+
+  grid.innerHTML = `
+    <div class="status-total"><strong>${summary.total}</strong><span>Indikator</span></div>
+    ${statusItems.map((item) => `
+      <div class="status-${item.key}"><strong>${summary[item.key]}</strong><span>${item.label}</span></div>
+    `).join("")}
+  `;
+
+  if (!message) return;
+  if (summary.red > 0) {
+    message.textContent = `${summary.green} hijau, ${summary.red} merah. Perlu perhatian pada indikator merah.`;
+  } else if (summary.amber > 0) {
+    message.textContent = `${summary.green} hijau, ${summary.amber} kuning. Monitor indikator yang hampir tercapai.`;
+  } else if (summary.gray > 0) {
+    message.textContent = `${summary.green} hijau, ${summary.gray} belum diukur. Lengkapi pengukuran indikator.`;
+  } else {
+    message.textContent = "Semua indikator utama berada di zona hijau.";
+  }
+}
+
 function setupDetailModal() {
   const overlay = document.getElementById("detailOverlay");
   const closeButton = document.getElementById("detailClose");
@@ -1005,6 +1068,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCrRows();
   renderAoCorporate();
   updateDashboardMetrics();
+  updatePerformanceStatusPanel();
   setupNavigation();
   setupFilters();
   setupPeriodPicker();

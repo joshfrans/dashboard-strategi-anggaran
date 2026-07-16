@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-43" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-44" />
   </head>
   <body>
     <div class="app-shell">
@@ -378,11 +378,11 @@
                 <div class="performance-score-copy">
                   <span>Nilai NKO s.d. Juni 2026</span>
                   <strong>Tercapai</strong>
-                  <small>Semua indikator utama berada di zona hijau.</small>
+                  <small id="performanceStatusMessage">Semua indikator utama berada di zona hijau.</small>
                 </div>
-                <div class="performance-status-grid">
-                  <div><strong>10</strong><span>Indikator</span></div>
-                  <div><strong>10</strong><span>Status Hijau</span></div>
+                <div class="performance-status-grid" id="performanceStatusGrid">
+                  <div class="status-total"><strong>10</strong><span>Indikator</span></div>
+                  <div class="status-green"><strong>10</strong><span>Hijau</span></div>
                 </div>
               </div>
             </div>
@@ -777,6 +777,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-43"></script>
+    <script src="./script.js?v=20260716-44"></script>
   </body>
 </html>

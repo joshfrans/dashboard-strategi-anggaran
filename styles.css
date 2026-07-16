@@ -1494,9 +1494,41 @@ td {
   background: #f8fbff;
 }
 
-.performance-status-grid div:first-child {
+.performance-status-grid .status-total,
+.performance-status-grid .status-green {
   border-color: #cfe7db;
   background: #f5fffa;
+}
+
+.performance-status-grid .status-green strong {
+  color: var(--green);
+}
+
+.performance-status-grid .status-amber {
+  border-color: #ffe2a5;
+  background: #fff9ea;
+}
+
+.performance-status-grid .status-amber strong {
+  color: var(--amber);
+}
+
+.performance-status-grid .status-red {
+  border-color: #ffd0d6;
+  background: #fff5f6;
+}
+
+.performance-status-grid .status-red strong {
+  color: var(--red);
+}
+
+.performance-status-grid .status-gray {
+  border-color: #dce2ef;
+  background: #f7f9fc;
+}
+
+.performance-status-grid .status-gray strong {
+  color: #73809c;
 }
 
 .performance-status-grid strong {
