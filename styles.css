@@ -963,6 +963,14 @@ p {
   gap: 13px;
 }
 
+.overview-two-column.overview-investment-only {
+  grid-template-columns: 1fr;
+}
+
+.overview-two-column.overview-investment-only .investment-chart-panel {
+  min-height: 0;
+}
+
 .overview-ao-unit-card {
   display: grid;
   gap: 12px;

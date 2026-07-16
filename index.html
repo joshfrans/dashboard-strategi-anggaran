@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-55" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-56" />
   </head>
   <body>
     <div class="app-shell">
@@ -160,6 +160,10 @@
             <p>Menampilkan informasi utama dari Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat.</p>
           </div>
 
+          <div class="overview-category-label overview-category-wide">
+            <span>Kategori</span>
+            <strong>Strategi & Evaluasi</strong>
+          </div>
           <div class="overview-strategy-grid">
             <article class="overview-kpi-card">
               <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
@@ -219,6 +223,10 @@
             </div>
           </article>
 
+          <div class="overview-category-label overview-category-wide">
+            <span>Kategori</span>
+            <strong>Investasi</strong>
+          </div>
           <div class="investment-kpi-grid overview-investment-strip">
             <article class="investment-kpi">
               <span>Total Anggaran Investasi 2026</span>
@@ -246,7 +254,7 @@
             </article>
           </div>
 
-          <div class="overview-two-column">
+          <div class="overview-two-column overview-investment-only">
             <article class="investment-panel investment-chart-panel">
               <div class="investment-panel-head">
                 <h3>Monitoring Penyerapan AKI</h3>
@@ -284,41 +292,6 @@
               </div>
             </article>
 
-            <article class="overview-ao-unit-card">
-              <div class="overview-category-label">
-                <span>Kategori</span>
-                <strong>Administrasi Umum</strong>
-              </div>
-              <div class="overview-filter-row">
-                <label><span>Grup</span><strong>Holding <i data-lucide="chevron-down"></i></strong></label>
-                <label><span>Pilih / Cari Unit</span><strong>#1 KPST - 1.389.043 jt <i data-lucide="chevron-down"></i></strong></label>
-              </div>
-              <div class="overview-ao-metrics">
-                <div><span>Realisasi s.d Juni 2026</span><strong>1.389.043 <small>jt</small></strong></div>
-                <div><span>Peringkat di Holding</span><strong>#1 <small>dari 39</small></strong></div>
-                <div><span>RKAP 2026 (AO)</span><strong>3.647.914 <small>jt</small></strong></div>
-                <div><span>Penyerapan thd RKAP 2026</span><strong>38%</strong></div>
-                <div><span>% YoY</span><strong class="red-text">129%</strong></div>
-              </div>
-              <div class="overview-ao-detail">
-                <table>
-                  <thead><tr><th>Unsur</th><th>Juni 2026</th><th>% YoY</th><th>% Serapan</th></tr></thead>
-                  <tbody>
-                    <tr><td>Honorarium</td><td>597.771</td><td class="red-text">101%</td><td>31%</td></tr>
-                    <tr><td>Beban Amortisasi</td><td>306.464</td><td class="red-text">352%</td><td class="red-text">103%</td></tr>
-                    <tr><td>Teknologi Informasi</td><td>267.682</td><td class="red-text">177%</td><td>65%</td></tr>
-                    <tr><td>Perjalanan dinas non diklat</td><td>61.521</td><td class="green-text">80%</td><td>20%</td></tr>
-                  </tbody>
-                </table>
-                <div class="overview-ao-bars">
-                  <span>Unsur biaya terbesar di unit KPST</span>
-                  <div><b style="width: 100%"></b><small>Honorarium</small></div>
-                  <div><b style="width: 51%"></b><small>Beban Amortisasi</small></div>
-                  <div><b style="width: 45%"></b><small>Teknologi Informasi</small></div>
-                  <div><b style="width: 10%"></b><small>Perjalanan dinas</small></div>
-                </div>
-              </div>
-            </article>
           </div>
 
           <div class="overview-category-label overview-category-wide">
@@ -351,6 +324,38 @@
               <div class="ao-finance-bar amber"><i style="width: 90%"></i></div>
             </div>
           </div>
+
+          <article class="overview-ao-unit-card">
+            <div class="overview-filter-row">
+              <label><span>Grup</span><strong>Holding <i data-lucide="chevron-down"></i></strong></label>
+              <label><span>Pilih / Cari Unit</span><strong>#1 KPST - 1.389.043 jt <i data-lucide="chevron-down"></i></strong></label>
+            </div>
+            <div class="overview-ao-metrics">
+              <div><span>Realisasi s.d Juni 2026</span><strong>1.389.043 <small>jt</small></strong></div>
+              <div><span>Peringkat di Holding</span><strong>#1 <small>dari 39</small></strong></div>
+              <div><span>RKAP 2026 (AO)</span><strong>3.647.914 <small>jt</small></strong></div>
+              <div><span>Penyerapan thd RKAP 2026</span><strong>38%</strong></div>
+              <div><span>% YoY</span><strong class="red-text">129%</strong></div>
+            </div>
+            <div class="overview-ao-detail">
+              <table>
+                <thead><tr><th>Unsur</th><th>Juni 2026</th><th>% YoY</th><th>% Serapan</th></tr></thead>
+                <tbody>
+                  <tr><td>Honorarium</td><td>597.771</td><td class="red-text">101%</td><td>31%</td></tr>
+                  <tr><td>Beban Amortisasi</td><td>306.464</td><td class="red-text">352%</td><td class="red-text">103%</td></tr>
+                  <tr><td>Teknologi Informasi</td><td>267.682</td><td class="red-text">177%</td><td>65%</td></tr>
+                  <tr><td>Perjalanan dinas non diklat</td><td>61.521</td><td class="green-text">80%</td><td>20%</td></tr>
+                </tbody>
+              </table>
+              <div class="overview-ao-bars">
+                <span>Unsur biaya terbesar di unit KPST</span>
+                <div><b style="width: 100%"></b><small>Honorarium</small></div>
+                <div><b style="width: 51%"></b><small>Beban Amortisasi</small></div>
+                <div><b style="width: 45%"></b><small>Teknologi Informasi</small></div>
+                <div><b style="width: 10%"></b><small>Perjalanan dinas</small></div>
+              </div>
+            </div>
+          </article>
         </section>
 
         <section class="investment-view" id="investmentView" aria-label="Dashboard Investasi">
@@ -1187,6 +1192,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-55"></script>
+    <script src="./script.js?v=20260716-56"></script>
   </body>
 </html>
