@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-6" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-7" />
   </head>
   <body>
     <div class="app-shell">
@@ -198,7 +198,7 @@
           <article class="panel policy-panel">
             <div class="panel-title green-title">
               <h2>1. Rekap Progres Ratifikasi Kebijakan</h2>
-              <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+              <button type="button" data-detail="policy">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="policy-overview">
               <div>
@@ -255,7 +255,7 @@
           <article class="panel cr-panel">
             <div class="panel-title purple-title">
               <h2>2. Timeline Change Request Aplikasi</h2>
-              <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+              <button type="button" data-detail="cr">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="cr-table-wrap">
               <table class="cr-table">
@@ -353,8 +353,24 @@
       </main>
     </div>
 
+    <div class="detail-overlay" id="detailOverlay" hidden>
+      <section class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+        <header class="detail-header">
+          <div>
+            <span id="detailEyebrow">Detail Monitoring</span>
+            <h2 id="detailTitle">Detail Dashboard</h2>
+            <p id="detailSubtitle">Ringkasan keputusan dan tindak lanjut.</p>
+          </div>
+          <button class="detail-close" type="button" id="detailClose" aria-label="Tutup detail">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+        <div class="detail-body" id="detailBody"></div>
+      </section>
+    </div>
+
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-6"></script>
+    <script src="./script.js?v=20260716-7"></script>
   </body>
 </html>

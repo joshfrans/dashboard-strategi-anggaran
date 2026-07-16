@@ -82,9 +82,42 @@ const statusDotClass = {
   "Plan": "blue-dot"
 };
 
+const policyColumns = [
+  "Aset Properti",
+  "Arsip",
+  "SPPD",
+  "Fasilitas Kerja",
+  "BFKO",
+  "Indirect Procurement",
+  "Kendaraan Operasional"
+];
+
+const policyStatusLabel = {
+  done: "Selesai endorsement",
+  discussion: "Diskusi internal",
+  "no-ratification": "Tidak ratifikasi",
+  drafting: "Proses drafting",
+  "review-fix": "Perbaikan review"
+};
+
 function percentLabel(value) {
   if (Number.isInteger(value)) return `${value}%`;
   return `${value.toFixed(2).replace(".", ",")}%`;
+}
+
+function policyMetrics() {
+  const flat = policyData.flatMap((row) => row.statuses);
+  return {
+    entities: policyData.length,
+    types: policyColumns.length,
+    total: flat.length,
+    done: flat.filter((status) => status === "done").length,
+    discussion: flat.filter((status) => status === "discussion").length,
+    drafting: flat.filter((status) => status === "drafting").length,
+    reviewFix: flat.filter((status) => status === "review-fix").length,
+    noRatification: flat.filter((status) => status === "no-ratification").length,
+    followUp: flat.filter((status) => status !== "done").length
+  };
 }
 
 function renderPolicyRows() {
@@ -96,16 +129,6 @@ function renderPolicyRows() {
     drafting: "Drafting",
     "review-fix": "Perbaikan Review"
   };
-  const policyColumns = [
-    "Aset Properti",
-    "Arsip",
-    "SPPD",
-    "Fasilitas Kerja",
-    "BFKO",
-    "Indirect Procurement",
-    "Kendaraan Operasional"
-  ];
-
   const statusTitle = {
     done: "Selesai endorsement",
     discussion: "Diskusi internal di SHAP / terdapat perbedaan ketentuan",
@@ -177,6 +200,7 @@ function updateDashboardMetrics() {
   const progress = total
     ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / total
     : 0;
+  const policy = policyMetrics();
 
   const values = {
     totalCr: total,
@@ -187,10 +211,10 @@ function updateDashboardMetrics() {
     summaryDone: done,
     summaryProgress: onProgress,
     summaryNotStarted: notStarted,
-    summaryPolicyEntities: policyData.length,
-    summaryPolicyTypes: policyData[0]?.statuses.length || 0,
-    summaryPolicyDone: policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0),
-    summaryPolicyFollowUp: policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0)
+    summaryPolicyEntities: policy.entities,
+    summaryPolicyTypes: policy.types,
+    summaryPolicyDone: policy.done,
+    summaryPolicyFollowUp: policy.followUp
   };
 
   Object.entries(values).forEach(([id, value]) => {
@@ -321,6 +345,185 @@ function downloadExcel() {
 
 function exportPdf() {
   window.print();
+}
+
+function makeMetric(label, value, tone = "") {
+  return `<div class="detail-metric ${tone}"><strong>${value}</strong><span>${label}</span></div>`;
+}
+
+function renderDetailPolicy() {
+  const metrics = policyMetrics();
+  const followUpRows = policyData
+    .map((row) => {
+      const issues = row.statuses
+        .map((status, index) => ({ status, column: policyColumns[index] }))
+        .filter((item) => item.status !== "done");
+      return { entity: row.entity, issues };
+    })
+    .filter((row) => row.issues.length);
+
+  const detailRows = policyData
+    .map((row) => `
+      <tr>
+        <td><strong>${row.entity}</strong></td>
+        ${row.statuses.map((status) => `<td><span class="ratification-status ${status}">${policyStatusLabel[status]}</span></td>`).join("")}
+      </tr>
+    `)
+    .join("");
+
+  return `
+    <section class="detail-section">
+      <h3>Executive Snapshot</h3>
+      <div class="detail-metrics">
+        ${makeMetric("Entitas SH/AP", metrics.entities)}
+        ${makeMetric("Jenis Kebijakan", metrics.types)}
+        ${makeMetric("Selesai Endorsement", metrics.done, "green")}
+        ${makeMetric("Perlu Tindak Lanjut", metrics.followUp, "amber")}
+        ${makeMetric("Diskusi Internal", metrics.discussion, "amber")}
+        ${makeMetric("Drafting/Review", metrics.drafting + metrics.reviewFix, "purple")}
+      </div>
+    </section>
+    <section class="detail-columns">
+      <article class="detail-section">
+        <h3>Decision Points</h3>
+        <ul class="detail-action-list">
+          <li><strong>Prioritaskan ${metrics.followUp} status non-hijau</strong><span>BoD dapat meminta komitmen tanggal penyelesaian dari SH/AP terkait.</span></li>
+          <li><strong>Kunci penyelesaian diskusi internal</strong><span>Fokus pada status kuning yang menunjukkan perbedaan ketentuan atau pembahasan internal.</span></li>
+          <li><strong>Validasi evidence endorsement</strong><span>Pastikan status hijau memiliki dokumen pengesahan atau bukti implementasi.</span></li>
+        </ul>
+      </article>
+      <article class="detail-section">
+        <h3>Working Actions</h3>
+        <ul class="detail-action-list">
+          ${followUpRows.slice(0, 5).map((row) => `
+            <li><strong>${row.entity}</strong><span>${row.issues.map((issue) => issue.column).join(", ")}</span></li>
+          `).join("")}
+        </ul>
+      </article>
+    </section>
+    <section class="detail-section">
+      <h3>Detail Monitoring Ratifikasi</h3>
+      <div class="detail-table-wrap">
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th>Entitas</th>
+              ${policyColumns.map((column) => `<th>${column}</th>`).join("")}
+            </tr>
+          </thead>
+          <tbody>${detailRows}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderDetailCr() {
+  const total = crData.length;
+  const done = crData.filter((row) => row.status === "Selesai").length;
+  const onProgress = crData.filter((row) => row.status === "On Progress").length;
+  const notStarted = crData.filter((row) => row.status === "Belum Mulai").length;
+  const progress = total ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / total : 0;
+  const critical = crData
+    .filter((row) => row.status !== "Selesai")
+    .sort((a, b) => a.progress - b.progress);
+
+  return `
+    <section class="detail-section">
+      <h3>Executive Snapshot</h3>
+      <div class="detail-metrics">
+        ${makeMetric("Total Change Request", total)}
+        ${makeMetric("Progress Keseluruhan", percentLabel(progress), "green")}
+        ${makeMetric("Selesai", done, "green")}
+        ${makeMetric("On Progress", onProgress, "amber")}
+        ${makeMetric("Belum Mulai", notStarted, "gray")}
+        ${makeMetric("Prioritas Minggu Ini", critical.slice(0, 3).length, "purple")}
+      </div>
+    </section>
+    <section class="detail-columns">
+      <article class="detail-section">
+        <h3>Decision Points</h3>
+        <ul class="detail-action-list">
+          <li><strong>ESPPD Manage Service</strong><span>Perlu kepastian resource UAT dan deploy karena progress masih 36,43%.</span></li>
+          <li><strong>ESPPD Reengineering</strong><span>Belum mulai, perlu owner definitif dan target baru.</span></li>
+          <li><strong>Tahap II E-COP/E-Transport</strong><span>Perlu keputusan scope agar tidak menjadi bottleneck lanjutan.</span></li>
+        </ul>
+      </article>
+      <article class="detail-section">
+        <h3>Working Actions</h3>
+        <ul class="detail-action-list">
+          ${critical.slice(0, 5).map((row) => `
+            <li><strong>${row.app}</strong><span>${row.request} - ${percentLabel(row.progress)} - Target: ${row.target}</span></li>
+          `).join("")}
+        </ul>
+      </article>
+    </section>
+    <section class="detail-section">
+      <h3>Detail Monitoring Change Request</h3>
+      <div class="detail-table-wrap">
+        <table class="detail-table">
+          <thead>
+            <tr><th>Aplikasi</th><th>Change Request</th><th>Progress</th><th>Status</th><th>Target</th><th>Management Signal</th></tr>
+          </thead>
+          <tbody>
+            ${crData.map((row) => `
+              <tr>
+                <td><strong>${row.app}</strong></td>
+                <td>${row.request}</td>
+                <td>${percentLabel(row.progress)}</td>
+                <td><span class="badge ${statusClass[row.status]}">${row.status}</span></td>
+                <td><strong>${row.target}</strong></td>
+                <td>${row.status === "Selesai" ? "Monitor pasca implementasi" : row.progress < 50 ? "Perlu keputusan/percepatan" : "Pantau target mingguan"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function setupDetailModal() {
+  const overlay = document.getElementById("detailOverlay");
+  const closeButton = document.getElementById("detailClose");
+  const title = document.getElementById("detailTitle");
+  const subtitle = document.getElementById("detailSubtitle");
+  const eyebrow = document.getElementById("detailEyebrow");
+  const body = document.getElementById("detailBody");
+  if (!overlay || !closeButton || !title || !subtitle || !eyebrow || !body) return;
+
+  function openDetail(type) {
+    if (type === "policy") {
+      eyebrow.textContent = "Kebijakan & Ratifikasi";
+      title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
+      subtitle.textContent = "Membantu BoD melihat entitas yang membutuhkan keputusan, evidence, dan tindak lanjut.";
+      body.innerHTML = renderDetailPolicy();
+    } else {
+      eyebrow.textContent = "Change Request Aplikasi";
+      title.textContent = "Detail Monitoring Change Request";
+      subtitle.textContent = "Membantu BoD melihat prioritas aplikasi, risiko delivery, dan action working level.";
+      body.innerHTML = renderDetailCr();
+    }
+    overlay.hidden = false;
+    document.body.classList.add("modal-open");
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeDetail() {
+    overlay.hidden = true;
+    document.body.classList.remove("modal-open");
+  }
+
+  document.querySelectorAll("[data-detail]").forEach((button) => {
+    button.addEventListener("click", () => openDetail(button.dataset.detail));
+  });
+  closeButton.addEventListener("click", closeDetail);
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) closeDetail();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !overlay.hidden) closeDetail();
+  });
 }
 
 function parseProgress(value) {
@@ -548,6 +751,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFilters();
   setupPeriodPicker();
   setupExportMenu();
+  setupDetailModal();
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });
