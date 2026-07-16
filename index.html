@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-26" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-27" />
   </head>
   <body>
     <div class="app-shell">
@@ -318,7 +318,7 @@
           <article class="panel performance-panel">
             <div class="panel-title teal-title">
               <h2>2. Monitoring Kinerja</h2>
-              <button type="button">NKO S.D. Juni 2026 <i data-lucide="calendar-days"></i></button>
+              <button type="button" data-detail="performance">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="performance-source-shell">
               <div class="performance-report-head">
@@ -339,6 +339,27 @@
                   <strong>Divisi Umum dan Aset Properti <i data-lucide="chevron-down"></i></strong>
                 </label>
                 <button type="button" aria-label="Filter monitoring kinerja"><i data-lucide="sliders-horizontal"></i></button>
+              </div>
+            </div>
+            <div class="performance-executive-view">
+              <div class="performance-score-card">
+                <span>Nilai NKO</span>
+                <strong>106,84</strong>
+                <small>Tercapai</small>
+              </div>
+              <div class="performance-status-grid">
+                <div><strong>100</strong><span>Total Bobot</span></div>
+                <div><strong>10</strong><span>Indikator Utama</span></div>
+                <div><strong>10</strong><span>Status Hijau</span></div>
+              </div>
+              <div class="performance-management-note">
+                <strong>Management Insight</strong>
+                <p>Kinerja Divisi Umum dan Aset Properti s.d. Juni 2026 berada di atas ambang tercapai. Fokus manajemen berikutnya adalah menjaga konsistensi realisasi, terutama pada indikator bernilai strategis: Efisiensi Biaya, Integrated GA Management System, Penyusunan Kebijakan GA, dan Manajemen Kearsipan.</p>
+              </div>
+              <div class="performance-action-list">
+                <div><span>Jaga capaian NKO tetap >= 100 sampai akhir tahun.</span><b>Prioritas</b></div>
+                <div><span>Monitor indikator dengan bobot besar agar tidak turun di semester II.</span><b>Kontrol</b></div>
+                <div><span>Pastikan evidence capaian terdokumentasi untuk audit kinerja.</span><b>Evidence</b></div>
               </div>
             </div>
             <div class="performance-table-wrap">
@@ -731,6 +752,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-26"></script>
+    <script src="./script.js?v=20260716-27"></script>
   </body>
 </html>

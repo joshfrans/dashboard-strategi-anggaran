@@ -678,6 +678,28 @@ function renderDetailCr() {
   `;
 }
 
+function renderDetailPerformance() {
+  const source = document.querySelector(".performance-panel");
+  if (!source) return "";
+  const report = source.querySelector(".performance-source-shell")?.outerHTML || "";
+  const table = source.querySelector(".performance-table-wrap")?.outerHTML || "";
+  const legend = source.querySelector(".performance-legend")?.outerHTML || "";
+  return `
+    <section class="detail-metrics">
+      <div class="detail-metric green"><strong>106,84</strong><span>Nilai NKO</span></div>
+      <div class="detail-metric green"><strong>Tercapai</strong><span>Status Kinerja</span></div>
+      <div class="detail-metric purple"><strong>10</strong><span>Indikator Utama</span></div>
+      <div class="detail-metric gray"><strong>100</strong><span>Total Bobot</span></div>
+    </section>
+    <section class="detail-section">
+      <h3>Laporan Pencapaian KPI Tahun 2026</h3>
+      ${report}
+      ${table}
+      ${legend}
+    </section>
+  `;
+}
+
 function setupDetailModal() {
   const overlay = document.getElementById("detailOverlay");
   const closeButton = document.getElementById("detailClose");
@@ -694,6 +716,11 @@ function setupDetailModal() {
         title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
         subtitle.textContent = "Membantu BoD melihat entitas yang membutuhkan keputusan, evidence, dan tindak lanjut.";
         body.innerHTML = renderDetailPolicy();
+      } else if (type === "performance") {
+        eyebrow.textContent = "Monitoring Kinerja";
+        title.textContent = "Detail Monitoring Kinerja";
+        subtitle.textContent = "Menampilkan detail NKO s.d. Juni 2026 berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.";
+        body.innerHTML = renderDetailPerformance();
       } else {
         eyebrow.textContent = "Change Request Aplikasi";
         title.textContent = "Detail Monitoring Change Request";

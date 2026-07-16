@@ -1210,6 +1210,128 @@ td {
   overflow: auto;
 }
 
+.performance-panel > .performance-table-wrap,
+.performance-panel > .performance-legend {
+  display: none;
+}
+
+.performance-executive-view {
+  display: grid;
+  gap: 10px;
+  padding: 0 12px 12px;
+}
+
+.performance-score-card {
+  min-height: 112px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  border: 1px solid #cfe7db;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f7fffb, #ffffff);
+}
+
+.performance-score-card span,
+.performance-score-card small {
+  color: #53627f;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.performance-score-card strong {
+  color: var(--green);
+  font-size: 38px;
+  line-height: 1;
+}
+
+.performance-score-card small {
+  color: #00843d;
+}
+
+.performance-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.performance-status-grid div {
+  min-height: 58px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.performance-status-grid strong {
+  color: var(--navy);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.performance-status-grid span {
+  color: #53627f;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.performance-management-note {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border-left: 4px solid #09a3a6;
+  border-radius: 8px;
+  background: #f4fbfb;
+}
+
+.performance-management-note strong {
+  color: var(--navy);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.performance-management-note p {
+  margin: 0;
+  color: #35445f;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.performance-action-list {
+  display: grid;
+  gap: 7px;
+}
+
+.performance-action-list div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.performance-action-list span {
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.performance-action-list b {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #e7f6ed;
+  color: var(--green);
+  font-size: 9px;
+}
+
 .performance-table {
   min-width: 1040px;
   font-size: 10px;
