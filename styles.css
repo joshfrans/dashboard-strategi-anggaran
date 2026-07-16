@@ -983,6 +983,7 @@ td {
 }
 
 .policy-overview div {
+  position: relative;
   min-height: 58px;
   display: grid;
   align-content: center;
@@ -1005,29 +1006,55 @@ td {
   font-weight: 800;
 }
 
-.entity-panel {
+.policy-overview small {
+  color: #61718c;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.entity-trigger {
+  cursor: pointer;
+}
+
+.entity-trigger:hover {
+  border-color: #bcd6ff;
+  background: #f5f9ff;
+}
+
+.entity-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 35;
+  width: min(420px, 78vw);
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  align-items: start;
-  margin: 10px 12px 0;
+  gap: 10px;
   padding: 12px;
-  border: 1px solid #dce6f5;
-  border-radius: 8px;
-  background: #f8fbff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 36px rgba(7, 29, 73, 0.16);
 }
 
-.entity-panel strong {
-  display: block;
+.entity-popover[hidden] {
+  display: none;
+}
+
+.entity-popover-head {
+  display: grid;
+  gap: 3px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.entity-popover-head strong {
   color: var(--navy);
-  font-size: 13px;
-  line-height: 1.2;
+  font-size: 12px;
 }
 
-.entity-panel span {
-  color: #54627d;
-  font-size: 11px;
-  line-height: 1.45;
+.entity-popover-head span {
+  color: #61718c;
+  font-size: 10px;
 }
 
 .entity-list {
@@ -1777,7 +1804,6 @@ td {
   .header-actions,
   .kpi-card,
   .priority-card,
-  .entity-panel,
   .summary-copy,
   .summary-metrics div {
     grid-template-columns: 1fr;

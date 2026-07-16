@@ -198,6 +198,42 @@ function renderPolicyEntities() {
     .join("");
 }
 
+function setupEntityPopover() {
+  const trigger = document.getElementById("entityTrigger");
+  const popover = document.getElementById("entityPopover");
+  if (!trigger || !popover) return;
+
+  function closePopover() {
+    popover.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  }
+
+  function togglePopover() {
+    popover.hidden = !popover.hidden;
+    trigger.setAttribute("aria-expanded", String(!popover.hidden));
+  }
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    togglePopover();
+  });
+
+  trigger.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      togglePopover();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!popover.hidden && !trigger.contains(event.target)) closePopover();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closePopover();
+  });
+}
+
 function renderCrRows(rows = crData) {
   const target = document.getElementById("crRows");
   target.innerHTML = rows
@@ -885,6 +921,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   renderPolicyRows();
   renderPolicyEntities();
+  setupEntityPopover();
   renderCrRows();
   renderAoCorporate();
   updateDashboardMetrics();

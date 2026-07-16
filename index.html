@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-19" />
+    <link rel="stylesheet" href="./styles.css?v=20260716-20" />
   </head>
   <body>
     <div class="app-shell">
@@ -284,9 +284,17 @@
               <button type="button" data-detail="policy">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="policy-overview">
-              <div>
+              <div class="policy-overview-card entity-trigger" id="entityTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="entityPopover">
                 <strong>10</strong>
                 <span>Entitas SHAP</span>
+                <small>Klik untuk lihat entitas</small>
+                <div class="entity-popover" id="entityPopover" hidden>
+                  <div class="entity-popover-head">
+                    <strong>Entitas SH/AP</strong>
+                    <span>10 entitas dalam monitoring ratifikasi.</span>
+                  </div>
+                  <div class="entity-list" id="policyEntities"></div>
+                </div>
               </div>
               <div>
                 <strong>7</strong>
@@ -296,13 +304,6 @@
                 <strong>54</strong>
                 <span>Selesai Endorsement</span>
               </div>
-            </div>
-            <div class="entity-panel" aria-label="Entitas SHAP">
-              <div>
-                <strong>Entitas SH/AP</strong>
-                <span>Data mengikuti rekap progres ratifikasi pada gambar terbaru.</span>
-              </div>
-              <div class="entity-list" id="policyEntities"></div>
             </div>
           </article>
 
@@ -425,6 +426,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-19"></script>
+    <script src="./script.js?v=20260716-20"></script>
   </body>
 </html>
