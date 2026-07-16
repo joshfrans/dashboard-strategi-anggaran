@@ -1073,41 +1073,6 @@ td {
   letter-spacing: 0;
 }
 
-.policy-summary-box {
-  display: grid;
-  gap: 10px;
-  margin: 10px 12px 0;
-  padding: 13px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: linear-gradient(180deg, #ffffff, #f7fbff);
-}
-
-.policy-summary-box div {
-  display: grid;
-  gap: 5px;
-}
-
-.policy-summary-box strong {
-  color: var(--green);
-  font-size: 13px;
-  text-transform: uppercase;
-}
-
-.policy-summary-box span {
-  color: var(--navy);
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.5;
-}
-
-.policy-summary-box p {
-  margin: 0;
-  color: #52627d;
-  font-size: 11px;
-  line-height: 1.45;
-}
-
 .policy-table th:not(:first-child):not(:nth-child(2)),
 .policy-table td:not(:first-child):not(:nth-child(2)) {
   min-width: 118px;
