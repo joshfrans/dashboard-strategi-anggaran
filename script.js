@@ -186,7 +186,11 @@ function updateDashboardMetrics() {
     summaryTotal: total,
     summaryDone: done,
     summaryProgress: onProgress,
-    summaryNotStarted: notStarted
+    summaryNotStarted: notStarted,
+    summaryPolicyEntities: policyData.length,
+    summaryPolicyTypes: policyData[0]?.statuses.length || 0,
+    summaryPolicyDone: policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0),
+    summaryPolicyFollowUp: policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0)
   };
 
   Object.entries(values).forEach(([id, value]) => {
@@ -203,6 +207,11 @@ function updateDashboardMetrics() {
   document.querySelectorAll(".summary-metrics .percent-ring strong").forEach((element) => {
     element.textContent = progressLabel;
   });
+
+  const summaryText = document.getElementById("executiveSummaryText");
+  if (summaryText) {
+    summaryText.textContent = `Dashboard menunjukkan dua perhatian utama: ratifikasi kebijakan dan penyelesaian Change Request aplikasi. Dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdapat ${values.summaryPolicyDone} status selesai endorsement dan ${values.summaryPolicyFollowUp} status yang masih perlu tindak lanjut. Pada sisi aplikasi, terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Prioritas manajemen adalah mempercepat status ratifikasi yang belum selesai, menutup gap diskusi/drafting, serta menjaga penyelesaian CR prioritas agar roadmap General Affairs tetap terkendali.`;
+  }
 }
 
 function downloadCsv() {

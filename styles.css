@@ -973,7 +973,7 @@ td {
 
 .summary-metrics {
   display: grid;
-  grid-template-columns: repeat(5, minmax(90px, 1fr));
+  grid-template-columns: repeat(7, minmax(76px, 1fr));
 }
 
 .summary-metrics div {
@@ -985,7 +985,7 @@ td {
   align-items: center;
   justify-items: center;
   row-gap: 7px;
-  padding: 0 14px;
+  padding: 0 9px;
   border-left: 1px solid rgba(255, 255, 255, 0.22);
   text-align: center;
 }
@@ -1035,7 +1035,7 @@ td {
 }
 
 .summary-metrics small {
-  font-size: 9px;
+  font-size: 8.5px;
   line-height: 1.25;
 }
 
