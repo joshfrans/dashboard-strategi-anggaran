@@ -794,7 +794,7 @@ p {
 
 .overview-strategy-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.82fr;
+  grid-template-columns: 1.15fr 1fr 0.82fr 0.92fr;
   gap: 13px;
 }
 
@@ -868,6 +868,48 @@ p {
   gap: 14px;
   align-items: center;
   padding: 14px 16px;
+}
+
+.overview-nko-card {
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 13px;
+  align-items: center;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f2fff8 100%);
+}
+
+.overview-nko-card > div:nth-child(2) {
+  display: grid;
+  gap: 5px;
+}
+
+.overview-nko-card h3 {
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.22;
+  text-transform: uppercase;
+}
+
+.overview-nko-card span {
+  color: #53627f;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-nko-card strong {
+  color: var(--green);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.overview-nko-card small {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .overview-performance-card {
