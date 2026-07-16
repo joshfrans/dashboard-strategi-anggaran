@@ -961,9 +961,15 @@ p {
 
 .work-grid {
   display: grid;
-  grid-template-columns: 0.82fr 1.08fr;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
   gap: 13px;
   align-items: start;
+}
+
+.work-stack {
+  display: grid;
+  gap: 13px;
+  min-width: 0;
 }
 
 .panel {
@@ -971,20 +977,9 @@ p {
 }
 
 .policy-panel {
-  grid-column: 1;
   position: relative;
   z-index: 8;
   overflow: visible;
-}
-
-.performance-panel {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.cr-panel {
-  grid-column: 2;
-  grid-row: 1 / span 2;
 }
 
 .panel-title {
@@ -1051,8 +1046,9 @@ td {
 
 .policy-table-wrap,
 .cr-table-wrap {
+  max-height: 600px;
   padding: 10px 8px 0;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .policy-overview {
@@ -1794,19 +1790,30 @@ td {
 
 .cr-table th:nth-child(3),
 .cr-table td:nth-child(3) {
-  min-width: 280px;
+  min-width: 250px;
+}
+
+.cr-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.cr-table th,
+.cr-table td {
+  padding: 8px 10px;
 }
 
 .progress-cell {
-  min-width: 88px;
+  min-width: 82px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-weight: 800;
 }
 
 .bar {
-  width: 58px;
+  width: 52px;
   height: 8px;
   overflow: hidden;
   border-radius: 99px;
@@ -1831,10 +1838,10 @@ td {
 .badge {
   display: inline-flex;
   justify-content: center;
-  min-width: 76px;
-  padding: 7px 9px;
+  min-width: 72px;
+  padding: 6px 8px;
   border-radius: 7px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
 }
 
@@ -1857,8 +1864,8 @@ td {
   display: grid;
   grid-template-columns: repeat(4, 64px) 1fr;
   align-items: center;
-  gap: 12px;
-  padding: 9px 20px 16px;
+  gap: 10px;
+  padding: 8px 16px 12px;
 }
 
 .cr-summary-row div {
@@ -1867,7 +1874,7 @@ td {
 
 .cr-summary-row strong {
   display: block;
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .cr-summary-row span {
