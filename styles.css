@@ -2348,7 +2348,7 @@ p {
 
 .work-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 13px;
   align-items: stretch;
 }
