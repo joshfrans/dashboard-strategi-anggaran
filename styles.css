@@ -3627,29 +3627,30 @@ td {
 
 .summary-metrics {
   display: grid;
-  grid-template-columns: repeat(7, minmax(76px, 1fr));
+  grid-template-columns: repeat(5, minmax(80px, 1fr));
+  gap: 8px 0;
 }
 
 .summary-metrics div {
   position: relative;
-  min-height: 88px;
+  min-height: 92px;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 58px auto;
+  grid-template-rows: 62px auto;
   align-items: center;
   justify-items: center;
-  row-gap: 7px;
+  row-gap: 8px;
   padding: 0 9px;
   border-left: 1px solid rgba(255, 255, 255, 0.22);
   text-align: center;
 }
 
 .ring {
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
   display: grid;
   place-items: center;
-  flex: 0 0 54px;
+  flex: 0 0 58px;
   border-radius: 50%;
   border: 3px solid currentColor;
 }
@@ -3672,25 +3673,35 @@ td {
 
 .summary-metrics strong {
   color: #fff;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .summary-metrics .percent-ring strong {
-  font-size: 10px;
-  letter-spacing: -0.55px;
+  font-size: 10.5px;
+  letter-spacing: 0;
 }
 
 .summary-metrics .percent-ring {
-  width: 60px;
-  height: 60px;
-  flex-basis: 60px;
+  width: 64px;
+  height: 64px;
+  flex-basis: 64px;
+}
+
+.summary-metrics .value-ring strong {
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.summary-metrics .wide-percent-ring strong {
+  font-size: 9px;
 }
 
 .summary-metrics small {
   font-size: 8.5px;
   line-height: 1.25;
+  text-align: center;
 }
 
 .summary-metrics div > .ring + strong {
