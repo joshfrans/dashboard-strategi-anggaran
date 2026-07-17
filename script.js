@@ -357,7 +357,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Dashboard menunjukkan tiga perhatian utama: ratifikasi kebijakan, monitoring kinerja, dan penyelesaian Change Request aplikasi. Dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdapat ${values.summaryPolicyDone} status selesai endorsement dan ${values.summaryPolicyFollowUp} status yang masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 menunjukkan NKO 106,84 dengan status tercapai. Pada sisi aplikasi, terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai.`;
+    summaryText.textContent = `Strategi & Evaluasi GA menunjukkan 70 status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO 106,84 dengan status tercapai, seluruh 10 indikator berada pada zona tercapai. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor 3 kebijakan yang seluruhnya masih on progress, serta implementasi PLN Business Excellence menunjukkan realisasi 100,18% pada semester 1 dan semester 2.`;
   }
 }
 
