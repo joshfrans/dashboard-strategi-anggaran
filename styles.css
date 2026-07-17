@@ -2350,13 +2350,18 @@ p {
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
   gap: 13px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .work-stack {
   display: grid;
   gap: 13px;
+  align-content: start;
   min-width: 0;
+}
+
+.work-right {
+  grid-template-rows: minmax(0, 1fr) auto;
 }
 
 .panel {
@@ -2532,6 +2537,22 @@ td {
   max-height: 600px;
   padding: 10px 8px 0;
   overflow: auto;
+}
+
+.work-right .cr-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+.work-right .cr-table-wrap {
+  max-height: 432px;
+}
+
+.work-right .cr-table th,
+.work-right .cr-table td {
+  height: 48px;
+  padding: 7px 9px;
 }
 
 .policy-overview {
@@ -3406,7 +3427,7 @@ td {
   grid-template-columns: repeat(4, 64px) 1fr;
   align-items: center;
   gap: 10px;
-  padding: 8px 16px 12px;
+  padding: 8px 14px 11px;
 }
 
 .cr-summary-row div {
