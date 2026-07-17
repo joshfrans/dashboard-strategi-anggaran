@@ -783,21 +783,18 @@ function getPerformanceStatusSummary() {
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
+  const indicatorCard = document.querySelector(".performance-indicator-card");
   if (!grid) return;
 
   const summary = getPerformanceStatusSummary();
-  const statusItems = [
-    { key: "green", label: "Hijau" },
-    { key: "amber", label: "Kuning" },
-    { key: "red", label: "Merah" },
-    { key: "gray", label: "Belum Ukur" }
-  ].filter((item) => summary[item.key] > 0);
+  if (indicatorCard) {
+    indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
+  }
 
   grid.innerHTML = `
-    <div class="status-total"><strong>${summary.total}</strong><span>Indikator</span></div>
-    ${statusItems.map((item) => `
-      <div class="status-${item.key}"><strong>${summary[item.key]}</strong><span>${item.label}</span></div>
-    `).join("")}
+    <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
+    <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
+    <div class="status-red"><strong>${summary.red}</strong><span>Perlu Peningkatan</span></div>
   `;
 
   if (!message) return;
