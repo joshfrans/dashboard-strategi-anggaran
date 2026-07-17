@@ -2424,9 +2424,12 @@ p {
   background: linear-gradient(90deg, #123c64, #174a72);
 }
 
-.business-panel,
-.policy-prep-panel {
+.business-panel {
   min-height: 0;
+}
+
+.policy-prep-panel {
+  min-height: 262px;
 }
 
 .business-excellence-grid {
@@ -2486,6 +2489,7 @@ p {
 }
 
 .policy-prep-wrap {
+  min-height: 222px;
   padding: 0;
   overflow: auto;
 }
@@ -2546,8 +2550,8 @@ td {
 }
 
 .work-right .cr-table-wrap {
-  height: 322px;
-  max-height: 322px;
+  height: 252px;
+  max-height: 252px;
 }
 
 .work-right .cr-table th,
