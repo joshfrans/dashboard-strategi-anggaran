@@ -2361,7 +2361,7 @@ p {
 }
 
 .work-right {
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
 }
 
 .panel {
@@ -2546,7 +2546,8 @@ td {
 }
 
 .work-right .cr-table-wrap {
-  max-height: 432px;
+  height: 322px;
+  max-height: 322px;
 }
 
 .work-right .cr-table th,
