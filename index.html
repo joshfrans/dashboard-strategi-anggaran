@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260716-58" />
+    <link rel="stylesheet" href="./styles.css?v=20260717-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -712,13 +712,16 @@
             </div>
           </article>
 
-          <article class="kpi-card progress-card">
-            <div class="donut" id="progressDonut" style="--value: 62.56">
-              <span id="overallProgress">62,56%</span>
-            </div>
+          <article class="kpi-card policy-writing-card">
+            <div class="policy-writing-icon"></div>
             <div class="kpi-main">
-              <h2>Progress Change<br />Request</h2>
-              <p>Progress Keseluruhan</p>
+              <h2>Penyusunan<br />Kebijakan</h2>
+              <strong>3 <small class="kpi-unit">Kebijakan</small></strong>
+            </div>
+            <div class="mini-legend">
+              <span><b class="dot green-dot"></b>0 Selesai</span>
+              <span><b class="dot amber-dot"></b>3 On Progress</span>
+              <span><b class="dot gray-dot"></b>0 Belum Mulai</span>
             </div>
           </article>
 
@@ -1063,8 +1066,33 @@
               <span><i class="legend-dot gray"></i>Belum dilakukan pengukuran</span>
             </div>
           </article>
+          <article class="panel business-panel">
+            <div class="panel-title excellence-title">
+              <h2>Implementasi PLN Business Excellence</h2>
+              <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="business-excellence-grid">
+              <div class="business-semester">
+                <div>
+                  <strong>Semester 1</strong>
+                  <span>Penyusunan dan updating dokumen aplikasi</span>
+                </div>
+                <b>Target<br /><em>100%</em></b>
+                <b class="green-box">Realisasi<br /><em>100,18%</em></b>
+              </div>
+              <div class="business-semester">
+                <div>
+                  <strong>Semester 2</strong>
+                  <span>Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen</span>
+                </div>
+                <b>Target<br /><em>293,75</em></b>
+                <b class="green-box">Realisasi<br /><em>100,18%</em></b>
+              </div>
+            </div>
+          </article>
           </div>
 
+          <div class="work-stack work-right">
           <article class="panel cr-panel">
             <div class="panel-title purple-title">
               <h2>3. Timeline Change Request Aplikasi</h2>
@@ -1097,6 +1125,52 @@
               </p>
             </div>
           </article>
+          <article class="panel policy-prep-panel">
+            <div class="panel-title navy-title">
+              <h2>Monitoring Penyusunan Kebijakan Layanan GA</h2>
+            </div>
+            <div class="policy-prep-wrap">
+              <table class="policy-prep-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Bidang</th>
+                    <th>Lingkup</th>
+                    <th>Progres</th>
+                    <th>Status</th>
+                    <th>Target</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1.</td>
+                    <td>Fasilitas</td>
+                    <td>Petunjuk Teknis Fasilitas Komunikasi</td>
+                    <td>81%</td>
+                    <td>On Progress</td>
+                    <td>31 Juli 2026</td>
+                  </tr>
+                  <tr>
+                    <td>2.</td>
+                    <td>Fasilitas</td>
+                    <td>Petunjuk Teknis BFKO</td>
+                    <td>81%</td>
+                    <td>On Progress</td>
+                    <td>31 Juli 2026</td>
+                  </tr>
+                  <tr>
+                    <td>3.</td>
+                    <td>ATK</td>
+                    <td>Petunjuk Teknis Pengelolaan ATK</td>
+                    <td>10%</td>
+                    <td>On Progress</td>
+                    <td>31 Okt 2026</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+          </div>
         </section>
 
         <section class="insight-grid" aria-label="Insight dan aksi">
@@ -1183,6 +1257,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260716-58"></script>
+    <script src="./script.js?v=20260717-1"></script>
   </body>
 </html>

@@ -499,7 +499,7 @@ p {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: 1.18fr 1fr 0.86fr;
+  grid-template-columns: 1.12fr 1fr 0.84fr;
   gap: 13px;
 }
 
@@ -2182,6 +2182,19 @@ p {
   padding: 16px;
 }
 
+.policy-writing-card {
+  grid-template-columns: 66px minmax(0, 1fr) minmax(118px, auto);
+}
+
+.policy-writing-icon {
+  width: 58px;
+  height: 58px;
+  border: 4px solid #061d3f;
+  border-radius: 50%;
+  background: #176d8a;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
 .progress-card {
   grid-template-columns: 86px 1fr;
 }
@@ -2252,6 +2265,12 @@ p {
   gap: 12px;
   border-left: 1px solid var(--border);
   font-size: 11px;
+}
+
+.policy-writing-card .mini-legend {
+  min-width: 108px;
+  gap: 10px;
+  font-weight: 900;
 }
 
 .dot {
@@ -2390,6 +2409,102 @@ p {
 
 .teal-title {
   background: linear-gradient(90deg, #027f80, #09a3a6);
+}
+
+.excellence-title {
+  background: linear-gradient(90deg, #2c7a1d, #398a26);
+}
+
+.navy-title {
+  background: linear-gradient(90deg, #123c64, #174a72);
+}
+
+.business-panel,
+.policy-prep-panel {
+  min-height: 0;
+}
+
+.business-excellence-grid {
+  display: grid;
+  gap: 6px;
+  padding: 8px 12px 12px;
+  background: #4b9cdc;
+}
+
+.business-semester {
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 120px;
+  gap: 7px;
+  align-items: stretch;
+  color: #ffffff;
+}
+
+.business-semester > div {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 8px 10px;
+  background: #4b9cdc;
+}
+
+.business-semester strong {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.business-semester span {
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.business-semester b {
+  display: grid;
+  place-items: center;
+  padding: 7px;
+  text-align: center;
+  background: #07aee6;
+  font-size: 12px;
+}
+
+.business-semester b.green-box {
+  background: #35d354;
+}
+
+.business-semester em {
+  color: #ffffff;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.policy-prep-wrap {
+  padding: 0;
+  overflow: auto;
+}
+
+.policy-prep-table {
+  min-width: 620px;
+  font-size: 10px;
+}
+
+.policy-prep-table th {
+  background: #dbe5f4;
+  font-weight: 900;
+  text-decoration: underline;
+  text-transform: none;
+}
+
+.policy-prep-table td {
+  background: #d6def0;
+}
+
+.policy-prep-table td,
+.policy-prep-table th {
+  height: 30px;
+  padding: 6px 8px;
 }
 
 table {
