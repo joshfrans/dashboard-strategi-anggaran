@@ -2424,15 +2424,13 @@ p {
   background: linear-gradient(90deg, #123c64, #174a72);
 }
 
-.business-panel {
-  min-height: 0;
-}
-
+.business-panel,
 .policy-prep-panel {
-  min-height: 0;
+  height: 206px;
 }
 
 .business-excellence-grid {
+  height: calc(100% - 40px);
   display: grid;
   gap: 6px;
   padding: 8px 12px 12px;
@@ -2489,13 +2487,41 @@ p {
 }
 
 .policy-prep-wrap {
+  height: calc(100% - 40px);
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .policy-prep-table {
-  min-width: 620px;
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   font-size: 10px;
+}
+
+.policy-prep-table th:nth-child(1),
+.policy-prep-table td:nth-child(1) {
+  width: 44px;
+}
+
+.policy-prep-table th:nth-child(2),
+.policy-prep-table td:nth-child(2) {
+  width: 82px;
+}
+
+.policy-prep-table th:nth-child(4),
+.policy-prep-table td:nth-child(4) {
+  width: 82px;
+}
+
+.policy-prep-table th:nth-child(5),
+.policy-prep-table td:nth-child(5) {
+  width: 110px;
+}
+
+.policy-prep-table th:nth-child(6),
+.policy-prep-table td:nth-child(6) {
+  width: 112px;
 }
 
 .policy-prep-table th {
@@ -2513,6 +2539,7 @@ p {
 .policy-prep-table th {
   height: 30px;
   padding: 6px 8px;
+  overflow-wrap: anywhere;
 }
 
 table {
