@@ -2493,6 +2493,7 @@ p {
 }
 
 .policy-prep-table {
+  height: 100%;
   width: 100%;
   min-width: 0;
   table-layout: fixed;
@@ -2537,7 +2538,7 @@ p {
 
 .policy-prep-table td,
 .policy-prep-table th {
-  height: 30px;
+  height: 38px;
   padding: 6px 8px;
   overflow-wrap: anywhere;
 }
