@@ -351,7 +351,7 @@ function updateDashboardMetrics() {
   if (progressText) progressText.textContent = progressLabel;
   if (donut) donut.style.setProperty("--value", progress.toFixed(2));
 
-  document.querySelectorAll(".summary-metrics .percent-ring strong").forEach((element) => {
+  document.querySelectorAll(".summary-metrics .progress-cr-ring strong").forEach((element) => {
     element.textContent = progressLabel;
   });
 
