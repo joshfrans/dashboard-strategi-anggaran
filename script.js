@@ -481,7 +481,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi GA menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
+    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 }
 
@@ -490,7 +490,7 @@ function setupNavigation() {
   const title = document.querySelector(".title-block h1");
   const description = document.querySelector(".title-block .description");
   const navItems = document.querySelectorAll(".nav-item");
-  const defaultTitle = "Strategi & Evaluasi GA";
+  const defaultTitle = "Strategi & Evaluasi";
   const defaultDescription = "Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request Aplikasi untuk mendukung percepatan pencapaian target perusahaan.";
 
   navItems.forEach((item) => {
@@ -505,7 +505,7 @@ function setupNavigation() {
       if (target === "dashboard") {
         dashboard.classList.add("dashboard-mode");
         title.textContent = "Dashboard";
-        description.textContent = "Ringkasan umum lintas Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
+        description.textContent = "Ringkasan umum lintas Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
       } else if (target === "ao") {
         dashboard.classList.add("ao-mode");
         title.textContent = "AO Kantor Pusat";
@@ -611,7 +611,7 @@ function downloadExcel() {
 
   const workbook = window.XLSX.utils.book_new();
   const summarySheet = window.XLSX.utils.aoa_to_sheet([
-    ["Dashboard Strategi & Evaluasi GA"],
+    ["Dashboard Strategi & Evaluasi"],
     ["Tanggal Export", new Date().toLocaleString("id-ID")],
     [],
     ["Area", "Indikator", "Nilai"],
@@ -646,7 +646,7 @@ function exportPdf() {
   dashboard?.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode");
   document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
   strategyNav?.classList.add("is-active");
-  if (title) title.textContent = "Strategi & Evaluasi GA";
+  if (title) title.textContent = "Strategi & Evaluasi";
   if (description) {
     description.textContent = "Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request Aplikasi untuk mendukung percepatan pencapaian target perusahaan.";
   }
@@ -673,7 +673,7 @@ function exportPdf() {
       if (description) description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
     } else if (wasDashboardMode) {
       if (title) title.textContent = "Dashboard";
-      if (description) description.textContent = "Ringkasan umum lintas Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
+      if (description) description.textContent = "Ringkasan umum lintas Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
     }
     window.removeEventListener("afterprint", restore);
   };
@@ -1212,7 +1212,7 @@ async function importDataFile(file) {
   }
 
   if (!rows.length) {
-    alert("Data tidak terbaca. Pastikan file menggunakan template Strategi & Evaluasi GA atau memiliki kolom Aplikasi, Change Request, Progress/Progres, Status, dan Target Selesai.");
+    alert("Data tidak terbaca. Pastikan file menggunakan template Strategi & Evaluasi atau memiliki kolom Aplikasi, Change Request, Progress/Progres, Status, dan Target Selesai.");
     return;
   }
 
