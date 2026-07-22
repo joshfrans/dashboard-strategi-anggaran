@@ -384,12 +384,12 @@ function setupNavigation() {
         description.textContent = "Ringkasan umum lintas Strategi & Evaluasi GA, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
       } else if (target === "ao") {
         dashboard.classList.add("ao-mode");
-        title.textContent = "AO Korporat";
-        description.textContent = "Embed dashboard Administrasi Umum korporat dari sumber monitoring utama.";
+        title.textContent = "AO Kantor Pusat";
+        description.textContent = "Dashboard Administrasi Umum Kantor Pusat dari sumber monitoring utama.";
       } else if (target === "ao-office") {
         dashboard.classList.add("ao-office-mode");
-        title.textContent = "AO Kantor Pusat";
-        description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
+        title.textContent = "AO Korporat";
+        description.textContent = "Monitoring realisasi Biaya Administrasi Umum Korporat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
       } else if (target === "investment") {
         dashboard.classList.add("investment-mode");
         title.textContent = "Investasi";
@@ -539,11 +539,11 @@ function exportPdf() {
     document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
     (previousNav || strategyNav)?.classList.add("is-active");
     if (wasAoMode) {
-      if (title) title.textContent = "AO Korporat";
-      if (description) description.textContent = "Embed dashboard Administrasi Umum korporat dari sumber monitoring utama.";
-    } else if (wasAoOfficeMode) {
       if (title) title.textContent = "AO Kantor Pusat";
-      if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum Kantor Pusat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
+      if (description) description.textContent = "Dashboard Administrasi Umum Kantor Pusat dari sumber monitoring utama.";
+    } else if (wasAoOfficeMode) {
+      if (title) title.textContent = "AO Korporat";
+      if (description) description.textContent = "Monitoring realisasi Biaya Administrasi Umum Korporat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
     } else if (wasInvestmentMode) {
       if (title) title.textContent = "Investasi";
       if (description) description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
