@@ -384,14 +384,20 @@ tbody td{
   padding:7px 8px;
 }
 .ranking-section{
-  align-self:start;
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
 }
 .ranking-section canvas{
   max-height:150px;
   margin-top:2px;
+  flex:0 0 auto;
 }
 .ranking-table-scroll{
-  max-height:245px;
+  flex:1 1 auto;
+  min-height:280px;
+  max-height:none;
   overflow-y:auto;
   overflow-x:hidden;
   border:1px solid #dbe6f2;
@@ -525,7 +531,7 @@ footer{ text-align:center; color:var(--ink-400); font-size:10.5px; margin-top:14
   </section>
 
   <div class="grid-2">
-    <section class="section ranking-section">
+    <section class="section">
       <div class="section-head">
         <h2>Rincian per Unsur Biaya</h2>
         <span class="hint">Klik header untuk urutkan &middot; klik baris untuk lihat rincian per divisi</span>
@@ -545,7 +551,7 @@ footer{ text-align:center; color:var(--ink-400); font-size:10.5px; margin-top:14
       </div>
     </section>
 
-    <section class="section">
+    <section class="section ranking-section">
       <div class="section-head">
         <h2>Ranking Divisi</h2>
         <span class="hint">% realisasi thd RKAP tertinggi</span>
