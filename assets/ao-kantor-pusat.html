@@ -91,6 +91,26 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .btn-ghost:hover{ background:rgba(255,255,255,.14); }
 
+.source-actions-panel{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px;
+}
+.source-action-card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 18px; box-shadow:var(--shadow); display:grid; gap:10px;
+}
+.source-action-card span{
+  color:var(--ink-500); font-size:11px; font-weight:800; letter-spacing:.5px; text-transform:uppercase;
+}
+.source-action-card strong{ color:var(--ink-900); font-size:15px; font-family:'Manrope','Inter',sans-serif; }
+.source-action-card p{ margin:0; color:var(--ink-500); font-size:12px; min-height:36px; }
+.source-action-card button,
+.source-action-card a{
+  height:38px; border:0; border-radius:9px; display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none; background:var(--navy-900); color:#fff; font-size:12.5px; font-weight:800;
+}
+.source-action-card .teal-btn{ background:var(--teal-600); }
+.source-action-card .amber-btn{ background:var(--amber-600); }
+
 .anomaly-banner{
   margin-top:14px; background:rgba(242,169,59,.14); border:1px solid rgba(242,169,59,.4);
   color:#FCEED3; border-radius:10px; padding:10px 14px; font-size:12.5px; display:none; gap:8px; position:relative; z-index:1;
@@ -229,6 +249,27 @@ footer{ text-align:center; color:var(--ink-400); font-size:11.5px; margin-top:26
       <span id="anomaly-text"></span>
     </div>
   </header>
+
+  <section class="source-actions-panel no-print" aria-label="Panel Data Source AO Kantor Pusat">
+    <div class="source-action-card">
+      <span>Template</span>
+      <strong>Download Template Data Source</strong>
+      <p>Gunakan struktur Excel resmi agar data dapat terbaca oleh dashboard.</p>
+      <a href="template-data-source-ao-kantor-pusat.xlsx" download>Download Template</a>
+    </div>
+    <div class="source-action-card">
+      <span>Import</span>
+      <strong>Upload Data Source Terbaru</strong>
+      <p>Unggah file Excel dengan sheet Target Bulanan, Realisasi Bulanan, dan Rekap per Divisi.</p>
+      <button class="teal-btn" type="button" id="btn-import-source">Import Data</button>
+    </div>
+    <div class="source-action-card">
+      <span>Export</span>
+      <strong>Download Data dari Dashboard</strong>
+      <p>Unduh data aktif dashboard ke Excel untuk audit, backup, atau update lanjutan.</p>
+      <button class="amber-btn" type="button" id="btn-export-source">Export Data</button>
+    </div>
+  </section>
 
   <section class="kpi-row">
     <div class="kpi-card">
@@ -913,6 +954,33 @@ function populateNoteContext(){
   uSel.innerHTML = '<option value="">Semua unsur</option>' + RAW.unsurs.map(u=>`<option value="${u}">${u}</option>`).join('');
 }
 
+function exportDashboardSource(){
+  if (!window.XLSX) {
+    alert('Library Excel belum siap. Muat ulang halaman lalu coba lagi.');
+    return;
+  }
+  const wb = XLSX.utils.book_new();
+  const targetRows = [['No','Grouping','Divisi','Bulan','Unsur','Target']];
+  RAW.target.forEach((row, index)=>{
+    const [gi, di, ui, mi, value] = row;
+    targetRows.push([index + 1, RAW.groupings[gi], RAW.divisis[di], RAW.months[mi], RAW.unsurs[ui], value]);
+  });
+  const realRows = [['No','Grouping','Divisi','Bulan','Unsur','Unsur Standar','Realisasi']];
+  RAW.real.forEach((row, index)=>{
+    const [gi, di, ui, mi, value] = row;
+    realRows.push([index + 1, RAW.groupings[gi], RAW.divisis[di], RAW.months[mi], RAW.unsurs[ui], RAW.unsurs[ui], value]);
+  });
+  const rekapRows = [['No','Grouping','Divisi','Unsur','Anggaran Operasi']];
+  RAW.rkap.forEach((row, index)=>{
+    const [gi, di, ui, value] = row;
+    rekapRows.push([index + 1, RAW.groupings[gi], RAW.divisis[di], RAW.unsurs[ui], value]);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(targetRows), 'Target Bulanan');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(realRows), 'Realisasi Bulanan');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rekapRows), 'Rekap per Divisi');
+  XLSX.writeFile(wb, `data-source-ao-kantor-pusat-${RAW.months[state.upto] || 'periode'}.xlsx`);
+}
+
 function wireEvents(){
   document.getElementById('f-month').addEventListener('change', (e)=>{
     state.upto = parseInt(e.target.value);
@@ -985,6 +1053,8 @@ function wireEvents(){
   // upload / dropzone
   const dz = document.getElementById('dropzone');
   const fileInput = document.getElementById('file-input');
+  document.getElementById('btn-import-source')?.addEventListener('click', ()=> fileInput.click());
+  document.getElementById('btn-export-source')?.addEventListener('click', exportDashboardSource);
   document.getElementById('browse-btn').addEventListener('click', ()=> fileInput.click());
   fileInput.addEventListener('change', (e)=>{ if (e.target.files[0]) handleFile(e.target.files[0]); });
   ['dragenter','dragover'].forEach(evt=> dz.addEventListener(evt, (e)=>{ e.preventDefault(); dz.classList.add('drag'); }));
