@@ -1731,6 +1731,10 @@ p {
   min-height: calc(100vh - 24px);
 }
 
+.dashboard.ao-mode .ao-corporate-view {
+  grid-template-rows: minmax(0, 1fr);
+}
+
 .ao-embed-header {
   display: none;
 }
@@ -1747,6 +1751,10 @@ p {
   border-radius: 9px;
   background: #ffffff;
   box-shadow: var(--shadow);
+}
+
+.dashboard.ao-mode .ao-corporate-view .ao-embed-header {
+  display: none;
 }
 
 .ao-embed-header div {
@@ -1798,6 +1806,12 @@ p {
   border-radius: 9px;
   background: #f1f8fc;
   box-shadow: var(--shadow);
+}
+
+.dashboard.ao-mode .ao-corporate-view .ao-full-frame {
+  min-height: 860px;
+  height: calc(100vh - 24px);
+  border-radius: 0;
 }
 
 .dashboard.ao-office-mode .ao-full-frame {
