@@ -383,6 +383,39 @@ thead th{
 tbody td{
   padding:7px 8px;
 }
+.ranking-section{
+  align-self:start;
+}
+.ranking-section canvas{
+  max-height:150px;
+  margin-top:2px;
+}
+.ranking-table-scroll{
+  max-height:245px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border:1px solid #dbe6f2;
+  border-radius:8px;
+}
+.ranking-table-scroll table{
+  margin:0;
+}
+.ranking-table-scroll thead th{
+  top:0;
+  z-index:2;
+  box-shadow:0 1px 0 #dbe6f2;
+}
+.ranking-table-scroll tbody td{
+  padding:6px 8px;
+  height:28px;
+}
+.ranking-table-scroll .name-cell{
+  max-width:150px;
+}
+.ranking-table-scroll .pill{
+  min-width:52px;
+  text-align:center;
+}
 .dropzone{
   padding:18px;
   border-radius:8px;
@@ -492,7 +525,7 @@ footer{ text-align:center; color:var(--ink-400); font-size:10.5px; margin-top:14
   </section>
 
   <div class="grid-2">
-    <section class="section">
+    <section class="section ranking-section">
       <div class="section-head">
         <h2>Rincian per Unsur Biaya</h2>
         <span class="hint">Klik header untuk urutkan &middot; klik baris untuk lihat rincian per divisi</span>
@@ -517,8 +550,8 @@ footer{ text-align:center; color:var(--ink-400); font-size:10.5px; margin-top:14
         <h2>Ranking Divisi</h2>
         <span class="hint">% realisasi thd RKAP tertinggi</span>
       </div>
-      <canvas id="chart-rank" height="230"></canvas>
-      <div class="table-scroll">
+      <canvas id="chart-rank" height="150"></canvas>
+      <div class="table-scroll ranking-table-scroll">
         <table id="tbl-divisi">
           <thead><tr>
             <th data-key="divisi">Divisi<span class="arrow">&#9662;</span></th>
