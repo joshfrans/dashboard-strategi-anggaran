@@ -1,4 +1,4 @@
-const policyData = [
+let policyData = [
   {
     entity: "PLN IP",
     statuses: ["done", "done", "discussion", "discussion", "discussion", "done", "done"]
@@ -41,7 +41,7 @@ const policyData = [
   }
 ];
 
-const policyEntities = [
+let policyEntities = [
   "PLN IP",
   "PLN EPI",
   "PLN NP",
@@ -54,7 +54,7 @@ const policyEntities = [
   "PLN Batam"
 ];
 
-const policyTypes = [
+let policyTypes = [
   "Aset Properti",
   "Arsip",
   "SPPD",
@@ -117,7 +117,7 @@ const statusDotClass = {
   "Plan": "blue-dot"
 };
 
-const policyColumns = [
+let policyColumns = [
   "Aset Properti",
   "Arsip",
   "SPPD",
@@ -134,6 +134,30 @@ const policyStatusLabel = {
   drafting: "Proses drafting",
   "review-fix": "Perbaikan review"
 };
+
+let performanceData = [
+  { no: 1, indicator: "Efisiensi Biaya", unit: "", weight: 20, target: "", targetPeriod: "", realization: "", achievement: "", score: 22, status: "Tercapai" },
+  { no: 2, indicator: "Optimalisasi penggunaan aset tanah dan bangunan", unit: "Rp Miliar", weight: 12, target: 147.74, targetPeriod: 59.83358626, realization: 85.48141199, achievement: 1.1, score: 13.2, status: "Tercapai" },
+  { no: 3, indicator: "Penyediaan Dokumen Pengadaan Barang Jasa KP sampai draft kontrak", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: 13.02, status: "Tercapai" },
+  { no: 4, indicator: "Integrated GA Management System", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: 12.72, status: "Tercapai" },
+  { no: 5, indicator: "Penyusunan Kebijakan General Affair", unit: "Waktu", weight: 12, target: "31 Desember 2026", targetPeriod: "30 Juni 2026", realization: "Nodin Kebijakan Layanan GA; Aset; Arsip", achievement: 1.069, score: 12.82, status: "Tercapai" },
+  { no: 6, indicator: "Proses Sentralisasi Pembayaran", unit: "%", weight: 10, target: 0.9392, targetPeriod: 0.9392, realization: 0.94, achievement: 1.0009, score: 10, status: "Tercapai" },
+  { no: 7, indicator: "Manajemen Kearsipan", unit: "%", weight: 10, target: 0.95, targetPeriod: 0.95, realization: 1.0561, achievement: 1.1, score: 11, status: "Tercapai" },
+  { no: 8, indicator: "Pengamanan Aset dan Lingkungan Kerja", unit: "%", weight: 5, target: 1, targetPeriod: 1, realization: 1, achievement: 1, score: 5, status: "Tercapai" },
+  { no: 9, indicator: "Pemenuhan SLA Layanan GA", unit: "%", weight: 4, target: 0.95, targetPeriod: 0.95, realization: 1, achievement: 1.0526, score: 4.2, status: "Tercapai" },
+  { no: 10, indicator: "Kepatuhan Administrasi Layanan", unit: "%", weight: 3, target: 1, targetPeriod: 1, realization: 1, achievement: 1, score: 3, status: "Tercapai" }
+];
+
+let policyPrepData = [
+  { no: 1, area: "Fasilitas", scope: "Petunjuk Teknis Fasilitas Komunikasi", progress: 81, status: "On Progress", target: "31 Juli 2026" },
+  { no: 2, area: "Fasilitas", scope: "Petunjuk Teknis BFKO", progress: 81, status: "On Progress", target: "31 Juli 2026" },
+  { no: 3, area: "ATK", scope: "Petunjuk Teknis Pengelolaan ATK", progress: 10, status: "On Progress", target: "31 Okt 2026" }
+];
+
+let businessExcellenceData = [
+  { semester: "Semester 1", activity: "Penyusunan dan updating dokumen aplikasi", target: 100, realization: 100.18, status: "Tercapai" },
+  { semester: "Semester 2", activity: "Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen", target: 293.75, realization: 100.18, status: "Tercapai" }
+];
 
 function percentLabel(value) {
   if (Number.isInteger(value)) return `${value}%`;
@@ -214,6 +238,80 @@ function renderPolicyTypes() {
   target.innerHTML = policyTypes
     .map((policy, index) => `<span><b>${index + 1}</b>${policy}</span>`)
     .join("");
+}
+
+function smartLabel(value, type = "text") {
+  if (value === null || value === undefined || value === "") return "";
+  if (type === "percent") return percentLabel(parseProgress(value));
+  if (typeof value === "number") {
+    if (Math.abs(value) > 0 && Math.abs(value) < 1 && type !== "plain") return percentLabel(value * 100);
+    return numberLabel(Math.round(value * 100) / 100);
+  }
+  return String(value);
+}
+
+function performanceDotClass(status) {
+  const normalized = String(status || "").toLowerCase();
+  if (normalized.includes("belum")) return "gray-dot";
+  if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "red-dot";
+  if (normalized.includes("hampir") || normalized.includes("kuning")) return "amber-dot";
+  return "done-dot";
+}
+
+function renderPerformanceRows() {
+  const target = document.getElementById("performanceRows");
+  if (!target) return;
+  target.innerHTML = `
+    <tr class="performance-group-row"><td colspan="10"></td></tr>
+    ${performanceData
+      .map((row) => `
+        <tr>
+          <td>${row.no || ""}</td>
+          <td><strong>${row.no ? `${row.no}. ` : ""}${row.indicator || ""}</strong></td>
+          <td>${row.unit || ""}</td>
+          <td>${smartLabel(row.weight, "plain")}</td>
+          <td>${smartLabel(row.target)}</td>
+          <td>${smartLabel(row.targetPeriod)}</td>
+          <td>${smartLabel(row.realization)}</td>
+          <td>${row.achievement === "" || row.achievement === undefined ? "" : smartLabel(row.achievement, "percent")}</td>
+          <td>${smartLabel(row.score, "plain")}</td>
+          <td><span class="status-dot ${performanceDotClass(row.status)}"></span></td>
+        </tr>
+      `)
+      .join("")}
+  `;
+}
+
+function renderPolicyPrepRows() {
+  const target = document.getElementById("policyPrepRows");
+  if (!target) return;
+  target.innerHTML = policyPrepData
+    .map((row, index) => `
+      <tr>
+        <td>${row.no || `${index + 1}.`}</td>
+        <td>${row.area || ""}</td>
+        <td>${row.scope || ""}</td>
+        <td>${percentLabel(parseProgress(row.progress))}</td>
+        <td>${row.status || ""}</td>
+        <td>${row.target || ""}</td>
+      </tr>
+    `)
+    .join("");
+}
+
+function renderBusinessExcellence() {
+  businessExcellenceData.slice(0, 2).forEach((row, index) => {
+    const target = document.getElementById(`businessSemester${index + 1}`);
+    if (!target) return;
+    target.innerHTML = `
+      <div>
+        <strong>${row.semester || `Semester ${index + 1}`}</strong>
+        <span>${row.activity || ""}</span>
+      </div>
+      <b>Target<br /><em>${smartLabel(row.target, row.target <= 1 ? "percent" : "plain")}</em></b>
+      <b class="green-box">Realisasi<br /><em>${smartLabel(row.realization, row.realization <= 1 ? "percent" : "plain")}</em></b>
+    `;
+  });
 }
 
 function setupInfoPopover(triggerId, popoverId) {
@@ -324,8 +422,33 @@ function updateDashboardMetrics() {
     ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / total
     : 0;
   const policy = policyMetrics();
+  const prepTotal = policyPrepData.length;
+  const prepDone = policyPrepData.filter((row) => row.status === "Selesai").length;
+  const prepProgress = policyPrepData.filter((row) => row.status === "On Progress").length;
+  const prepNotStarted = policyPrepData.filter((row) => row.status === "Belum Mulai").length;
+  const performanceScore = performanceData.reduce((sum, row) => sum + Number(row.score || 0), 0);
+  const performanceSummary = getPerformanceStatusSummary();
+  const businessScore = businessExcellenceData[0]?.realization ?? 0;
 
   const values = {
+    policyTotal: policy.total,
+    policyDoneCard: policy.done,
+    policyDiscussionCard: policy.discussion,
+    policyFollowUpCard: policy.followUp,
+    policyEntityCount: policy.entities,
+    policyEntityPopoverCount: policy.entities,
+    policyTypeCount: policy.types,
+    policyTypePopoverCount: policy.types,
+    policyDoneOverview: policy.done,
+    policyPrepTotal: prepTotal,
+    policyPrepDone: prepDone,
+    policyPrepProgress: prepProgress,
+    policyPrepNotStarted: prepNotStarted,
+    performanceScore: smartLabel(performanceScore, "plain"),
+    performanceIndicatorCount: performanceSummary.total,
+    summaryNko: smartLabel(performanceScore, "plain"),
+    summaryPolicyPrepProgress: prepProgress,
+    summaryBusinessExcellence: smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain"),
     totalCr: total,
     doneCr: done,
     progressCr: onProgress,
@@ -341,8 +464,9 @@ function updateDashboardMetrics() {
   };
 
   Object.entries(values).forEach(([id, value]) => {
-    const element = document.getElementById(id);
-    if (element) element.textContent = value;
+    document.querySelectorAll(`[id="${id}"]`).forEach((element) => {
+      element.textContent = value;
+    });
   });
 
   const progressLabel = percentLabel(progress);
@@ -357,7 +481,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi GA menunjukkan 70 status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO 106,84 dengan status tercapai, seluruh 10 indikator berada pada zona tercapai. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor 3 kebijakan yang seluruhnya masih on progress, serta implementasi PLN Business Excellence menunjukkan realisasi 100,18% pada semester 1 dan semester 2.`;
+    summaryText.textContent = `Strategi & Evaluasi GA menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 }
 
@@ -882,7 +1006,132 @@ function excelDate(value) {
   if (typeof value === "number" && window.XLSX?.SSF) {
     return window.XLSX.SSF.format("dd mmm yyyy", value);
   }
-  return String(value);
+  const text = String(value);
+  const isoDate = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoDate) {
+    const [, year, month, day] = isoDate;
+    const names = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    return `${Number(day)} ${names[Number(month) - 1]} ${year}`;
+  }
+  return text;
+}
+
+function sheetRows(workbook, sheetName) {
+  const sheet = workbook.Sheets[sheetName];
+  if (!sheet) return [];
+  return window.XLSX.utils.sheet_to_json(sheet, { defval: "" });
+}
+
+function normalizePolicyStatus(status) {
+  const value = String(status || "").toLowerCase();
+  if (value.includes("tidak")) return "no-ratification";
+  if (value.includes("draft")) return "drafting";
+  if (value.includes("review") || value.includes("legal") || value.includes("grc")) return "review-fix";
+  if (value.includes("pembahasan") || value.includes("diskusi")) return "discussion";
+  if (value.includes("selesai") || value.includes("endorsement")) return "done";
+  return "drafting";
+}
+
+function normalizeDashboardStatus(status, progress = 0) {
+  const value = String(status || "").toLowerCase();
+  if (value.includes("selesai") || Number(progress) >= 100) return "Selesai";
+  if (value.includes("belum")) return "Belum Mulai";
+  return "On Progress";
+}
+
+function importPolicySheet(workbook) {
+  const rows = sheetRows(workbook, "01_Ratifikasi");
+  if (!rows.length) return 0;
+  const entities = [...new Set(rows.map((row) => String(row["Entitas SH/AP"] || "").trim()).filter(Boolean))];
+  const types = [...new Set(rows.map((row) => String(row["Jenis Kebijakan"] || "").trim()).filter(Boolean))];
+  if (!entities.length || !types.length) return 0;
+
+  policyEntities = entities;
+  policyTypes = types;
+  policyColumns = types;
+  policyData = entities.map((entity) => ({
+    entity,
+    statuses: types.map((type) => {
+      const match = rows.find((row) =>
+        String(row["Entitas SH/AP"] || "").trim() === entity &&
+        String(row["Jenis Kebijakan"] || "").trim() === type
+      );
+      return normalizePolicyStatus(match?.Status);
+    })
+  }));
+  return rows.length;
+}
+
+function importCrSheet(workbook) {
+  const rows = sheetRows(workbook, "02_Change_Request");
+  if (!rows.length) return 0;
+  crData = rows
+    .map((row) => {
+      const progress = parseProgress(row.Progress || row.Progres);
+      const app = String(row.Aplikasi || "").trim();
+      const request = String(row["Change Request"] || "").trim();
+      if (!app || !request) return null;
+      return {
+        app,
+        request,
+        progress,
+        status: normalizeDashboardStatus(row.Status, progress),
+        target: excelDate(row["Target Selesai"] || "")
+      };
+    })
+    .filter(Boolean);
+  return crData.length;
+}
+
+function importPerformanceSheet(workbook) {
+  const rows = sheetRows(workbook, "03_Kinerja");
+  if (!rows.length) return 0;
+  performanceData = rows
+    .map((row, index) => ({
+      no: row.No || index + 1,
+      indicator: row["Indikator Kerja"],
+      unit: row.Satuan,
+      weight: row.Bobot,
+      target: row["Target 2026"],
+      targetPeriod: row["Target S.D. Juni"] || row["Target Bulanan"],
+      realization: row.Realisasi || row["Realisasi Bulan Current"],
+      achievement: row.Pencapaian || row["%"],
+      score: row.Nilai,
+      status: row.Status || row["Ket."] || "Tercapai"
+    }))
+    .filter((row) => row.indicator);
+  return performanceData.length;
+}
+
+function importPolicyPrepSheet(workbook) {
+  const rows = sheetRows(workbook, "04_Penyusunan_Kebijakan");
+  if (!rows.length) return 0;
+  policyPrepData = rows
+    .map((row, index) => ({
+      no: row.No || `${index + 1}.`,
+      area: row.Bidang,
+      scope: row.Lingkup,
+      progress: parseProgress(row.Progress || row.Progres),
+      status: normalizeDashboardStatus(row.Status, parseProgress(row.Progress || row.Progres)),
+      target: excelDate(row.Target || "")
+    }))
+    .filter((row) => row.area || row.scope);
+  return policyPrepData.length;
+}
+
+function importBusinessSheet(workbook) {
+  const rows = sheetRows(workbook, "05_Business_Excellence");
+  if (!rows.length) return 0;
+  businessExcellenceData = rows
+    .map((row) => ({
+      semester: row.Semester,
+      activity: row.Aktivitas,
+      target: parseProgress(row.Target || 0),
+      realization: parseProgress(row.Realisasi || 0),
+      status: row.Status
+    }))
+    .filter((row) => row.semester);
+  return businessExcellenceData.length;
 }
 
 function normalizeRow(row) {
@@ -905,6 +1154,7 @@ function normalizeRow(row) {
 
 function rowsFromWorkbook(workbook) {
   const preferredSheet =
+    workbook.Sheets["02_Change_Request"] ||
     workbook.Sheets.Dashboard_Source ||
     workbook.Sheets.List_Monitoring_CR ||
     workbook.Sheets.CR_Master ||
@@ -942,26 +1192,50 @@ function rowsFromJson(text) {
 async function importDataFile(file) {
   const extension = file.name.split(".").pop().toLowerCase();
   let rows = [];
+  const imported = {};
 
   if (["xlsx", "xls"].includes(extension)) {
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
-    rows = rowsFromWorkbook(workbook);
+    imported.ratifikasi = importPolicySheet(workbook);
+    imported.changeRequest = importCrSheet(workbook);
+    imported.kinerja = importPerformanceSheet(workbook);
+    imported.penyusunanKebijakan = importPolicyPrepSheet(workbook);
+    imported.businessExcellence = importBusinessSheet(workbook);
+    rows = crData;
   } else if (extension === "csv") {
     rows = rowsFromCsv(await file.text());
+    if (rows.length) crData = rows;
   } else if (extension === "json") {
     rows = rowsFromJson(await file.text());
+    if (rows.length) crData = rows;
   }
 
   if (!rows.length) {
-    alert("Data tidak terbaca. Pastikan file memiliki kolom Aplikasi, Change Request, Progress/Progres, Status, dan Target Selesai.");
+    alert("Data tidak terbaca. Pastikan file menggunakan template Strategi & Evaluasi GA atau memiliki kolom Aplikasi, Change Request, Progress/Progres, Status, dan Target Selesai.");
     return;
   }
 
-  crData = rows;
+  renderPolicyRows();
+  renderPolicyEntities();
+  renderPolicyTypes();
   renderCrRows();
+  renderPerformanceRows();
+  renderPolicyPrepRows();
+  renderBusinessExcellence();
+  updatePerformanceStatusPanel();
   updateDashboardMetrics();
-  alert(`Import berhasil: ${rows.length} Change Request dimuat.`);
+  const message = ["Import berhasil."];
+  if (Object.keys(imported).length) {
+    message.push(`Ratifikasi: ${imported.ratifikasi} baris.`);
+    message.push(`Change Request: ${imported.changeRequest} baris.`);
+    message.push(`Kinerja: ${imported.kinerja} indikator.`);
+    message.push(`Penyusunan Kebijakan: ${imported.penyusunanKebijakan} baris.`);
+    message.push(`Business Excellence: ${imported.businessExcellence} baris.`);
+  } else {
+    message.push(`${rows.length} Change Request dimuat.`);
+  }
+  alert(message.join("\n"));
 }
 
 function setupFilters() {
@@ -1090,9 +1364,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupInfoPopover("entityTrigger", "entityPopover");
   setupInfoPopover("policyTypeTrigger", "policyTypePopover");
   renderCrRows();
+  renderPerformanceRows();
+  renderPolicyPrepRows();
+  renderBusinessExcellence();
   renderAoCorporate();
-  updateDashboardMetrics();
   updatePerformanceStatusPanel();
+  updateDashboardMetrics();
   setupNavigation();
   setupFilters();
   setupPeriodPicker();

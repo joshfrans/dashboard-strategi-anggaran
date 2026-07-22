@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260722-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260722-3" />
   </head>
   <body>
     <div class="app-shell">
@@ -148,7 +148,7 @@
               type="file"
               id="dataFile"
               accept=".xlsx,.xls,.csv,.json"
-              aria-label="Import data source Change Request"
+              aria-label="Import data source Strategi dan Evaluasi GA"
             />
           </div>
         </header>
@@ -727,13 +727,13 @@
             <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
             <div class="kpi-main">
               <h2>Rekap Progres<br />Ratifikasi</h2>
-              <strong>70 <small class="kpi-unit">Kebijakan</small></strong>
+              <strong><span id="policyTotal">70</span> <small class="kpi-unit">Kebijakan</small></strong>
               <span>Total Status Kebijakan</span>
             </div>
             <div class="mini-legend">
-              <span><b class="dot green-dot"></b>54 Selesai Endorsement</span>
-              <span><b class="dot amber-dot"></b>4 Diskusi SHAP</span>
-              <span><b class="dot gray-dot"></b>12 Perlu Tindak Lanjut</span>
+              <span><b class="dot green-dot"></b><span id="policyDoneCard">54</span> Selesai Endorsement</span>
+              <span><b class="dot amber-dot"></b><span id="policyDiscussionCard">4</span> Diskusi SHAP</span>
+              <span><b class="dot gray-dot"></b><span id="policyFollowUpCard">12</span> Perlu Tindak Lanjut</span>
             </div>
           </article>
 
@@ -755,12 +755,12 @@
             <div class="kpi-icon policy-writing-icon"><i data-lucide="file-pen-line"></i></div>
             <div class="kpi-main">
               <h2>Penyusunan<br />Kebijakan</h2>
-              <strong>3 <small class="kpi-unit">Kebijakan</small></strong>
+              <strong><span id="policyPrepTotal">3</span> <small class="kpi-unit">Kebijakan</small></strong>
             </div>
             <div class="mini-legend">
-              <span><b class="dot green-dot"></b>0 Selesai</span>
-              <span><b class="dot amber-dot"></b>3 On Progress</span>
-              <span><b class="dot gray-dot"></b>0 Belum Mulai</span>
+              <span><b class="dot green-dot"></b><span id="policyPrepDone">0</span> Selesai</span>
+              <span><b class="dot amber-dot"></b><span id="policyPrepProgress">3</span> On Progress</span>
+              <span><b class="dot gray-dot"></b><span id="policyPrepNotStarted">0</span> Belum Mulai</span>
             </div>
           </article>
 
@@ -775,31 +775,31 @@
             </div>
             <div class="policy-overview">
               <div class="policy-overview-card entity-trigger" id="entityTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="entityPopover">
-                <strong>10</strong>
+                <strong id="policyEntityCount">10</strong>
                 <span>Entitas SHAP</span>
                 <small>Klik untuk lihat entitas</small>
                 <div class="entity-popover" id="entityPopover" hidden>
                   <div class="entity-popover-head">
                     <strong>Entitas SH/AP</strong>
-                    <span>10 entitas dalam monitoring ratifikasi.</span>
+                    <span><span id="policyEntityPopoverCount">10</span> entitas dalam monitoring ratifikasi.</span>
                   </div>
                   <div class="entity-list" id="policyEntities"></div>
                 </div>
               </div>
               <div class="policy-overview-card policy-type-trigger" id="policyTypeTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="policyTypePopover">
-                <strong>7</strong>
+                <strong id="policyTypeCount">7</strong>
                 <span>Jenis Kebijakan</span>
                 <small>Klik untuk lihat kebijakan</small>
                 <div class="entity-popover policy-type-popover" id="policyTypePopover" hidden>
                   <div class="entity-popover-head">
                     <strong>Jenis Kebijakan</strong>
-                    <span>7 kategori kebijakan yang dimonitor.</span>
+                    <span><span id="policyTypePopoverCount">7</span> kategori kebijakan yang dimonitor.</span>
                   </div>
                   <div class="entity-list policy-type-list" id="policyTypes"></div>
                 </div>
               </div>
               <div>
-                <strong>54</strong>
+                <strong id="policyDoneOverview">54</strong>
                 <span>Selesai Endorsement</span>
               </div>
             </div>
@@ -814,22 +814,22 @@
               <div class="performance-report-head">
                 <label class="performance-period-chip">
                   <span>Periode</span>
-                  <strong>S.D. Juni 2026 <i data-lucide="calendar-days"></i></strong>
+                  <strong><span id="performancePeriod">S.D. Juni 2026</span> <i data-lucide="calendar-days"></i></strong>
                 </label>
               </div>
             </div>
             <div class="performance-executive-view">
               <div class="performance-score-card executive-compact">
                 <div class="performance-score-ring">
-                  <span>106,84</span>
+                  <span id="performanceScore">106,84</span>
                 </div>
                 <div class="performance-score-copy">
-                  <span>Nilai NKO s.d. Juni 2026</span>
-                  <strong>Tercapai</strong>
+                  <span id="performanceScoreLabel">Nilai NKO s.d. Juni 2026</span>
+                  <strong id="performanceMainStatus">Tercapai</strong>
                   <small id="performanceStatusMessage">Semua indikator utama berada di zona hijau.</small>
                 </div>
                 <div class="performance-indicator-card">
-                  <strong>10</strong>
+                  <strong id="performanceIndicatorCount">10</strong>
                   <span>Indikator</span>
                 </div>
                 <div class="performance-status-grid" id="performanceStatusGrid">
@@ -855,7 +855,7 @@
                     <th>Ket.</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="performanceRows">
                   <tr class="performance-group-row">
                     <td colspan="10"></td>
                   </tr>
@@ -1116,7 +1116,7 @@
               <button type="button">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="business-excellence-grid">
-              <div class="business-semester">
+              <div class="business-semester" id="businessSemester1">
                 <div>
                   <strong>Semester 1</strong>
                   <span>Penyusunan dan updating dokumen aplikasi</span>
@@ -1124,7 +1124,7 @@
                 <b>Target<br /><em>100%</em></b>
                 <b class="green-box">Realisasi<br /><em>100,18%</em></b>
               </div>
-              <div class="business-semester">
+              <div class="business-semester" id="businessSemester2">
                 <div>
                   <strong>Semester 2</strong>
                   <span>Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen</span>
@@ -1185,7 +1185,7 @@
                     <th>Target</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="policyPrepRows">
                   <tr>
                     <td>1.</td>
                     <td>Fasilitas</td>
@@ -1241,9 +1241,9 @@
             <div><span class="ring green-ring percent-ring progress-cr-ring"><strong>62,56%</strong></span><small>Progress CR</small></div>
             <div><span class="ring purple-ring"><strong id="summaryTotal">9</strong></span><small>Total CR</small></div>
             <div><span class="ring amber-ring"><strong id="summaryProgress">6</strong></span><small>CR On Progress</small></div>
-            <div><span class="ring green-ring value-ring"><strong>106,84</strong></span><small>NKO Tercapai</small></div>
-            <div><span class="ring purple-ring"><strong>3</strong></span><small>Kebijakan On Progress</small></div>
-            <div><span class="ring green-ring percent-ring wide-percent-ring"><strong>100,18%</strong></span><small>Business Excellence</small></div>
+            <div><span class="ring green-ring value-ring"><strong id="summaryNko">106,84</strong></span><small>NKO Tercapai</small></div>
+            <div><span class="ring purple-ring"><strong id="summaryPolicyPrepProgress">3</strong></span><small>Kebijakan On Progress</small></div>
+            <div><span class="ring green-ring percent-ring wide-percent-ring"><strong id="summaryBusinessExcellence">100,18%</strong></span><small>Business Excellence</small></div>
           </div>
         </section>
       </main>
@@ -1267,6 +1267,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260722-2"></script>
+    <script src="./script.js?v=20260722-3"></script>
   </body>
 </html>
