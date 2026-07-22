@@ -1811,7 +1811,8 @@ p {
 .dashboard.ao-mode .ao-corporate-view .ao-full-frame {
   min-height: 860px;
   height: calc(100vh - 24px);
-  border-radius: 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
 }
 
 .dashboard.ao-office-mode .ao-full-frame {
