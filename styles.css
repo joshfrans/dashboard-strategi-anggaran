@@ -1202,10 +1202,11 @@ p {
 .overview-kpi-card {
   min-height: 132px;
   display: grid;
-  grid-template-columns: 70px minmax(128px, 1fr) minmax(145px, 0.78fr);
-  gap: 12px;
+  grid-template-columns: 60px minmax(112px, 0.82fr) minmax(128px, 1fr);
+  gap: 10px;
   align-items: center;
-  padding: 14px;
+  padding: 12px;
+  overflow: hidden;
 }
 
 .overview-kpi-main {
@@ -1216,7 +1217,7 @@ p {
 .overview-kpi-main h3,
 .overview-progress-card h3 {
   color: var(--navy);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.22;
   text-transform: uppercase;
 }
@@ -1224,15 +1225,15 @@ p {
 .overview-kpi-main strong {
   display: flex;
   align-items: baseline;
-  gap: 7px;
+  gap: 6px;
   color: var(--navy);
-  font-size: 34px;
+  font-size: 31px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .overview-kpi-main small {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -1244,20 +1245,22 @@ p {
 
 .overview-kpi-legend {
   display: grid;
-  gap: 11px;
-  padding-left: 12px;
+  gap: 9px;
+  padding-left: 10px;
   border-left: 1px solid var(--border);
   min-width: 0;
 }
 
 .overview-kpi-legend span {
-  display: flex;
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   color: var(--navy);
-  font-size: 11px;
-  line-height: 1.2;
-  white-space: nowrap;
+  font-size: 10.5px;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .overview-progress-card {
