@@ -463,6 +463,108 @@ function renderAoCorporate() {
   }
 }
 
+function setText(id, value) {
+  document.querySelectorAll(`[id="${id}"]`).forEach((element) => {
+    element.textContent = value;
+  });
+}
+
+function clampPercent(value) {
+  return Math.max(0, Math.min(100, Number(value || 0)));
+}
+
+function makeAnalyticsBar(label, value, tone = "") {
+  const numeric = clampPercent(value);
+  return `
+    <div>
+      <span>${label}</span>
+      <b class="${tone}"><i style="width: ${numeric}%"></i></b>
+      <strong>${percentLabel(Number(value || 0))}</strong>
+    </div>
+  `;
+}
+
+function updateAnalyticsDashboard() {
+  const policy = policyMetrics();
+  const crTotal = crData.length;
+  const crDone = crData.filter((row) => row.status === "Selesai").length;
+  const crOpen = crData.filter((row) => row.status === "On Progress").length;
+  const crNotStarted = crData.filter((row) => row.status === "Belum Mulai").length;
+  const crProgress = crTotal
+    ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crTotal
+    : 0;
+  const performanceScore = performanceData.reduce((sum, row) => sum + Number(row.score || 0), 0);
+  const performanceSummary = getPerformanceStatusSummary();
+  const policyDoneRate = policy.total ? (policy.done / policy.total) * 100 : 0;
+  const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
+  const akiGap = investmentData.akiGapChip || `${smartLabel(100 - akiProgress, "plain")}% belum terserap`;
+  const aoAbsorption = 40;
+  const aoProjection = "Proyeksi setahun 7.946.234 jt";
+  const aoOfficeAbsorption = 38;
+  const priorityCr = [...crData]
+    .filter((row) => row.status !== "Selesai")
+    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))[0];
+  const topAoCost = aoCorporateData.topCosts
+    .slice()
+    .sort((a, b) => b.value - a.value)[0];
+  const topAoUnit = aoCorporateData.topUnits
+    .slice()
+    .sort((a, b) => b.value - a.value)[0];
+
+  setText("analyticsAkiProgress", investmentData.akiRealizationPct || percentLabel(akiProgress));
+  setText("analyticsAkiGap", `Gap AKI ${akiGap.replace(/^Sisa\s+/i, "")} perlu dimonitor`);
+  setText("analyticsAoAbsorption", percentLabel(aoAbsorption));
+  setText("analyticsAoProjection", aoProjection);
+
+  const executiveMessage = document.getElementById("analyticsExecutiveMessage");
+  if (executiveMessage) {
+    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai, AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, dan AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO.`;
+  }
+
+  const mainMessage = document.getElementById("analyticsMainMessage");
+  if (mainMessage) {
+    mainMessage.textContent = `Kinerja dan ratifikasi relatif terkendali, namun percepatan ${priorityCr?.app || "CR prioritas"}, penutupan ${akiGap.toLowerCase()}, serta monitoring biaya AO ${topAoCost?.name || "utama"} perlu menjadi agenda manajemen minggu ini.`;
+  }
+
+  const decisionList = document.getElementById("analyticsDecisionList");
+  if (decisionList) {
+    decisionList.innerHTML = [
+      ["Strategi & Evaluasi", `${policy.followUp} status ratifikasi belum hijau; perlu komitmen evidence, PIC, dan target penyelesaian SH/AP.`],
+      ["Change Request", priorityCr ? `${priorityCr.app} menjadi prioritas karena status ${priorityCr.status} dengan progress ${percentLabel(Number(priorityCr.progress || 0))}.` : "Seluruh Change Request telah selesai; fokus pada monitoring pasca implementasi."],
+      ["Investasi", `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap} perlu BAPP, rekomposisi, dan review realisasi bulan berjalan.`],
+      ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
+      ["AO Kantor Pusat", `${topAoUnit?.unit || "Unit prioritas"} menjadi unit dengan realisasi terbesar; perlu monitoring serapan RKAP dan tren YoY.`]
+    ]
+      .map(([title, text]) => `<div><b>${title}</b><span>${text}</span></div>`)
+      .join("");
+  }
+
+  const bars = document.getElementById("analyticsBars");
+  if (bars) {
+    bars.innerHTML = [
+      makeAnalyticsBar("Ratifikasi selesai", policyDoneRate, policyDoneRate >= 75 ? "green" : "amber"),
+      makeAnalyticsBar("Progress CR", crProgress, crProgress >= 80 ? "green" : "amber"),
+      makeAnalyticsBar("NKO tercapai", Math.min(performanceScore, 120), "green").replace(`<strong>${percentLabel(Math.min(performanceScore, 120))}</strong>`, `<strong>${smartLabel(performanceScore, "plain")}</strong>`),
+      makeAnalyticsBar("Serapan AKI", akiProgress, akiProgress >= 70 ? "green" : "amber"),
+      makeAnalyticsBar("Serapan RKAP AO Korporat", aoAbsorption, aoAbsorption >= 75 ? "green" : "amber"),
+      makeAnalyticsBar("Serapan RKAP AO KPST", aoOfficeAbsorption, aoOfficeAbsorption >= 75 ? "green" : "amber")
+    ].join("");
+  }
+
+  const actionRows = document.getElementById("analyticsActionRows");
+  if (actionRows) {
+    actionRows.innerHTML = [
+      ["Validasi evidence ratifikasi", `${policy.followUp} status non-hijau terkunci owner dan due date`, policy.followUp ? "Tinggi" : "Monitor"],
+      ["Lock owner CR prioritas", priorityCr ? `${priorityCr.app} memiliki target delivery mingguan` : "Monitoring pasca implementasi CR", crOpen || crNotStarted ? "Tinggi" : "Monitor"],
+      ["Review gap AKI", `${akiGap} terpetakan BAPP dan rekomposisi`, akiProgress < 70 ? "Tinggi" : "Medium"],
+      ["Analisa AO Korporat", `${topAoCost?.name || "Biaya dominan"} dan proyeksi akhir tahun tervalidasi`, "Medium"],
+      ["Analisa AO Kantor Pusat", `${topAoUnit?.unit || "Unit prioritas"} dan serapan RKAP ditindaklanjuti`, "Medium"]
+    ]
+      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`)
+      .join("");
+  }
+}
+
 function updateDashboardMetrics() {
   const total = crData.length;
   const done = crData.filter((row) => row.status === "Selesai").length;
@@ -550,6 +652,8 @@ function updateDashboardMetrics() {
   if (analyticsExecutiveMessage) {
     analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.done} dari ${policy.total} status ratifikasi telah selesai endorsement, NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada ${policy.followUp} status ratifikasi yang belum selesai, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
   }
+
+  updateAnalyticsDashboard();
 }
 
 function setupNavigation() {
@@ -763,6 +867,7 @@ function updateInvestmentDashboard() {
     const key = element.dataset.investmentStyle;
     element.style.setProperty("--value", investmentPercentValue(investmentData[key]));
   });
+  updateAnalyticsDashboard();
 }
 
 function downloadInvestmentCsv() {
