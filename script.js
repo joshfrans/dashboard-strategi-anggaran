@@ -608,6 +608,103 @@ function updateAnalyticsDashboard() {
       .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`)
       .join("");
   }
+
+  updateAlertCenter();
+}
+
+function updateAlertCenter() {
+  const policy = policyMetrics();
+  const crTotal = crData.length;
+  const crOpen = crData.filter((row) => row.status === "On Progress").length;
+  const crNotStarted = crData.filter((row) => row.status === "Belum Mulai").length;
+  const priorityCr = [...crData]
+    .filter((row) => row.status !== "Selesai")
+    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))[0];
+  const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
+  const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
+  const akiGap = investmentData.akiGapChip || `${smartLabel(100 - akiProgress, "plain")}% belum terserap`;
+  const aoAbsorption = Number(aoCorporateData.absorption || 0);
+  const aoOfficeAbsorption = Number(aoOfficeData.absorption || 0);
+  const topAoCost = aoCorporateData.topCosts
+    .slice()
+    .sort((a, b) => b.value - a.value)[0];
+
+  const alerts = [
+    policy.followUp > 0 && {
+      area: "Strategi & Evaluasi",
+      text: `${policy.followUp} status ratifikasi belum selesai endorsement dan perlu update evidence SH/AP.`,
+      level: policy.followUp >= 15 ? "High" : "Medium"
+    },
+    priorityCr && {
+      area: "Change Request",
+      text: `${priorityCr.app} perlu tindak lanjut karena progress ${percentLabel(Number(priorityCr.progress || 0))} dengan status ${priorityCr.status}.`,
+      level: Number(priorityCr.progress || 0) < 30 ? "High" : "Medium"
+    },
+    akiProgress < 70 && {
+      area: "Investasi",
+      text: `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap} perlu BAPP dan rekomposisi.`,
+      level: "High"
+    },
+    aiProgress < 10 && {
+      area: "Investasi",
+      text: `Realisasi AI masih ${investmentData.aiRealizationPct || percentLabel(aiProgress)} dari total AI terbit.`,
+      level: "Medium"
+    },
+    aoAbsorption < 50 && {
+      area: "AO Korporat",
+      text: `Serapan RKAP AO Korporat ${percentLabel(aoAbsorption)} perlu dikendalikan terhadap proyeksi akhir tahun.`,
+      level: "Medium"
+    },
+    aoOfficeAbsorption < 50 && {
+      area: "AO Kantor Pusat",
+      text: `${aoOfficeData.selectedUnit || "Unit prioritas"} mencatat serapan RKAP ${percentLabel(aoOfficeAbsorption)} dan perlu monitoring unit.`,
+      level: "Medium"
+    }
+  ].filter(Boolean);
+
+  const critical = alerts.filter((alert) => alert.level === "Critical").length;
+  const high = alerts.filter((alert) => alert.level === "High").length;
+  const medium = alerts.filter((alert) => alert.level === "Medium").length;
+  const ok = Math.max(0, 4 - critical - high - medium);
+
+  setText("alertCriticalCount", critical);
+  setText("alertHighCount", high);
+  setText("alertMediumCount", medium);
+  setText("alertOkCount", ok);
+
+  const alertRows = document.getElementById("alertRows");
+  if (alertRows) {
+    alertRows.innerHTML = alerts.length
+      ? alerts
+          .map((alert) => `<div><b>${alert.area}</b><span>${alert.text}</span><em>${alert.level}</em></div>`)
+          .join("")
+      : `<div><b>Dashboard</b><span>Belum ada alert prioritas dari data aktif.</span><em>On Track</em></div>`;
+  }
+
+  const riskRows = document.getElementById("alertRiskRows");
+  if (riskRows) {
+    riskRows.innerHTML = [
+      policy.followUp ? `Evidence ratifikasi belum lengkap pada ${policy.followUp} status.` : "Ratifikasi kebijakan terkendali.",
+      crOpen || crNotStarted ? `${crOpen + crNotStarted} CR belum selesai sepenuhnya.` : "Change Request seluruhnya selesai.",
+      akiProgress < 70 ? "Gap investasi masih perlu BAPP, rekomposisi, dan review realisasi." : "Serapan investasi berada di jalur aman.",
+      topAoCost ? `${topAoCost.name} menjadi kontributor biaya AO utama.` : "Biaya AO belum memiliki kontributor utama."
+    ]
+      .map((text) => `<li>${text}</li>`)
+      .join("");
+  }
+
+  const actionRows = document.getElementById("alertActionRows");
+  if (actionRows) {
+    actionRows.innerHTML = [
+      ["Strategi & Evaluasi", policy.followUp ? "Kunci evidence dan target SH/AP" : "Monitor status hijau", "PIC SH/AP", policy.followUp ? "High" : "Monitor"],
+      ["Change Request", priorityCr ? `Lock owner dan target ${priorityCr.app}` : "Monitoring pasca implementasi", "Working Team", priorityCr ? "High" : "Monitor"],
+      ["Investasi", `Review AI ${investmentData.aiRealization || "-"} dan gap AKI`, "Tim Investasi", akiProgress < 70 ? "High" : "Medium"],
+      ["AO Korporat", topAoCost ? `Review biaya ${topAoCost.name}` : "Review proyeksi AO", "Tim AO", "Medium"],
+      ["AO Kantor Pusat", `Pantau ${aoOfficeData.selectedUnit || "unit prioritas"} dan serapan RKAP`, "Tim AO KP", "Medium"]
+    ]
+      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`)
+      .join("");
+  }
 }
 
 function updateDashboardMetrics() {
@@ -717,7 +814,7 @@ function setupNavigation() {
       navItems.forEach((nav) => nav.classList.remove("is-active"));
       item.classList.add("is-active");
 
-      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode");
+      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode", "alerts-mode", "settings-mode");
       if (target === "dashboard") {
         dashboard.classList.add("dashboard-mode");
         title.textContent = "Dashboard";
@@ -738,6 +835,14 @@ function setupNavigation() {
         dashboard.classList.add("investment-mode");
         title.textContent = "Investasi";
         description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
+      } else if (target === "alerts") {
+        dashboard.classList.add("alerts-mode");
+        title.textContent = "Alert Center";
+        description.textContent = "Pusat monitoring risiko, isu prioritas, dan tindak lanjut lintas dashboard.";
+      } else if (target === "settings") {
+        dashboard.classList.add("settings-mode");
+        title.textContent = "Pengaturan";
+        description.textContent = "Konfigurasi data source, export/import, security scan, dan informasi deployment dashboard.";
       } else {
         title.textContent = defaultTitle;
         description.textContent = defaultDescription;
@@ -2019,6 +2124,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   document.querySelectorAll("[data-investment-export]").forEach((button) => {
     button.addEventListener("click", () => exportInvestment(button.dataset.investmentExport));
+  });
+  document.getElementById("settingsImportStrategy")?.addEventListener("click", () => {
+    document.getElementById("dataFile")?.click();
+  });
+  document.getElementById("settingsExportExcel")?.addEventListener("click", () => {
+    downloadExcel();
+  });
+  document.getElementById("settingsImportInvestment")?.addEventListener("click", () => {
+    document.getElementById("investmentDataFile")?.click();
   });
   if (window.lucide) {
     window.lucide.createIcons();

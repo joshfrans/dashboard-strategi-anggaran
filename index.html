@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260728-7" />
+    <link rel="stylesheet" href="./styles.css?v=20260728-8" />
   </head>
   <body>
     <div class="app-shell">
@@ -51,11 +51,11 @@
             <i data-lucide="file-text"></i>
             <span>Laporan & Analitik</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="#" class="nav-item" data-nav="alerts">
             <i data-lucide="bell"></i>
             <span>Alert Center</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="#" class="nav-item" data-nav="settings">
             <i data-lucide="settings"></i>
             <span>Pengaturan</span>
           </a>
@@ -957,6 +957,145 @@
           </div>
         </section>
 
+        <section class="alert-view" id="alertView" aria-label="Alert Center">
+          <div class="alert-hero">
+            <div>
+              <span>Alert Center</span>
+              <h2>Pusat Monitoring Risiko & Tindak Lanjut</h2>
+              <p>
+                Mengkonsolidasikan alert dari Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat
+                agar manajemen cepat melihat isu yang perlu keputusan atau eskalasi.
+              </p>
+            </div>
+            <div class="alert-date">
+              <small>Status alert</small>
+              <strong>Auto generated</strong>
+              <em>Berubah mengikuti data source aktif</em>
+            </div>
+          </div>
+
+          <div class="alert-score-grid">
+            <article class="critical"><strong id="alertCriticalCount">0</strong><span>Critical</span><small>Perlu keputusan segera</small></article>
+            <article class="high"><strong id="alertHighCount">3</strong><span>High</span><small>Perlu tindak lanjut minggu ini</small></article>
+            <article class="medium"><strong id="alertMediumCount">2</strong><span>Medium</span><small>Perlu monitoring rutin</small></article>
+            <article class="ok"><strong id="alertOkCount">2</strong><span>On Track</span><small>Area terkendali</small></article>
+          </div>
+
+          <div class="alert-grid">
+            <article class="alert-panel alert-wide">
+              <div class="alert-panel-head">
+                <i data-lucide="bell-ring"></i>
+                <div>
+                  <span>Priority Alert</span>
+                  <h3>Daftar Isu Lintas Dashboard</h3>
+                </div>
+              </div>
+              <div class="alert-list" id="alertRows">
+                <div><b>Strategi & Evaluasi</b><span>16 status ratifikasi masih perlu tindak lanjut.</span><em>High</em></div>
+                <div><b>Investasi</b><span>Gap AKI belum terserap perlu BAPP dan rekomposisi.</span><em>High</em></div>
+              </div>
+            </article>
+
+            <article class="alert-panel">
+              <div class="alert-panel-head amber">
+                <i data-lucide="shield-alert"></i>
+                <div>
+                  <span>Management Risk</span>
+                  <h3>Risiko Utama</h3>
+                </div>
+              </div>
+              <ul class="alert-risk-list" id="alertRiskRows">
+                <li>Delivery CR prioritas terlambat.</li>
+                <li>Gap investasi belum tertutup.</li>
+                <li>Evidence ratifikasi belum lengkap.</li>
+              </ul>
+            </article>
+
+            <article class="alert-panel alert-wide">
+              <div class="alert-panel-head green">
+                <i data-lucide="list-checks"></i>
+                <div>
+                  <span>Action Queue</span>
+                  <h3>Tindak Lanjut yang Perlu Dikunci</h3>
+                </div>
+              </div>
+              <table class="alert-action-table">
+                <thead>
+                  <tr><th>Area</th><th>Action</th><th>Owner</th><th>Prioritas</th></tr>
+                </thead>
+                <tbody id="alertActionRows">
+                  <tr><td>CR</td><td>Lock target delivery mingguan</td><td>Working Team</td><td>High</td></tr>
+                </tbody>
+              </table>
+            </article>
+          </div>
+        </section>
+
+        <section class="settings-view" id="settingsView" aria-label="Pengaturan Dashboard">
+          <div class="settings-hero">
+            <div>
+              <span>Pengaturan</span>
+              <h2>Konfigurasi Dashboard & Data Source</h2>
+              <p>
+                Mengelola sumber data, export laporan, template update, security scan, dan informasi deployment dashboard.
+              </p>
+            </div>
+            <a href="https://github.com/joshfrans/dashboard-strategi-anggaran/actions" target="_blank" rel="noreferrer">
+              Buka GitHub Actions <i data-lucide="external-link"></i>
+            </a>
+          </div>
+
+          <div class="settings-grid">
+            <article class="settings-card">
+              <div><i data-lucide="database"></i></div>
+              <span>Data Source</span>
+              <h3>Strategi & Evaluasi</h3>
+              <p>Import template gabungan untuk ratifikasi, CR, kinerja, investasi, AO Korporat, dan AO Kantor Pusat.</p>
+              <button type="button" id="settingsImportStrategy">Import Data</button>
+            </article>
+            <article class="settings-card">
+              <div><i data-lucide="file-spreadsheet"></i></div>
+              <span>Template</span>
+              <h3>Export Data Source</h3>
+              <p>Download template Excel/JSON aktif untuk update data dan backup dashboard.</p>
+              <button type="button" id="settingsExportExcel">Export Excel</button>
+            </article>
+            <article class="settings-card">
+              <div><i data-lucide="trending-up"></i></div>
+              <span>Data Source</span>
+              <h3>Investasi</h3>
+              <p>Upload data AI, AKI, serapan, gap, dan prioritas investasi.</p>
+              <button type="button" id="settingsImportInvestment">Import Investasi</button>
+            </article>
+            <article class="settings-card">
+              <div><i data-lucide="shield-check"></i></div>
+              <span>Security</span>
+              <h3>Weekly Security Scan</h3>
+              <p>Scan otomatis setiap Minggu pukul 09:00 WIB melalui GitHub Actions.</p>
+              <a href="https://github.com/joshfrans/dashboard-strategi-anggaran/actions/workflows/security-weekly.yml" target="_blank" rel="noreferrer">Lihat Workflow</a>
+            </article>
+          </div>
+
+          <div class="settings-info-grid">
+            <article>
+              <strong>GitHub Pages</strong>
+              <span>https://joshfrans.github.io/dashboard-strategi-anggaran/</span>
+            </article>
+            <article>
+              <strong>Security Schedule</strong>
+              <span>Minggu, 09:00 WIB</span>
+            </article>
+            <article>
+              <strong>Supported Import</strong>
+              <span>Excel, CSV, JSON</span>
+            </article>
+            <article>
+              <strong>Mode Data</strong>
+              <span>Static dashboard + import data source</span>
+            </article>
+          </div>
+        </section>
+
         <section class="kpi-grid" aria-label="Ringkasan KPI">
           <article class="kpi-card policy-card">
             <div class="kpi-icon green"><i data-lucide="clipboard-check"></i></div>
@@ -1502,6 +1641,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260728-9"></script>
+    <script src="./script.js?v=20260728-10"></script>
   </body>
 </html>
