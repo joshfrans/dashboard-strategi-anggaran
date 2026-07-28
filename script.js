@@ -101,6 +101,56 @@ const aoCorporateData = {
   ]
 };
 
+let investmentData = {
+  reportDate: "Report ANG Investasi - 16 Juli 2026",
+  executiveSignal: "AKI terserap 30,43% dari anggaran kas investasi. Fokus utama: evaluasi realisasi Juli, BAPP, rekomposisi AKI, dan percepatan handshake AI 2027.",
+  totalInvestment: "10,89 T",
+  totalInvestmentNote: "KP 10,64 T + Sarpras Unit 255,31 M",
+  aiRealization: "344,27 M",
+  aiRealizationNote: "3,16% dari total AI terbit",
+  aiRealizationPct: "3,16%",
+  akiTotal: "1,35 T",
+  akiTotalNote: "KP 1,18 T + Sarpras Unit 178,66 M",
+  akiRealization: "412,23 M",
+  akiRealizationNote: "30,43% dari total AKI",
+  akiRealizationPct: "30,43%",
+  akiGaugeNote: "412,23 M dari total AKI 1.354,51 M sudah terealisasi.",
+  akiRealizationChip: "Realisasi 412,23 M",
+  akiGapChip: "Sisa 942,28 M",
+  akiOfficePct: "29,02%",
+  akiOfficeNote: "341,29 M dari 1.175,85 M",
+  akiSarprasPct: "39,71%",
+  akiSarprasNote: "70,94 M dari 178,66 M",
+  akiGapPct: "69,57%",
+  akiGapNote: "Perlu BAPP & rekomposisi",
+  akiInsight: "Serapan AKI masih 30,43%. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap. Fokus berikutnya adalah validasi BAPP Juli dan rekomposisi AKI untuk menutup gap 942,28 M."
+};
+
+const investmentFieldLabels = {
+  reportDate: "Periode Laporan",
+  executiveSignal: "Executive Signal",
+  totalInvestment: "Total Anggaran Investasi 2026",
+  totalInvestmentNote: "Catatan Total Anggaran Investasi",
+  aiRealization: "Realisasi AI s.d. Juni",
+  aiRealizationNote: "Catatan Realisasi AI",
+  aiRealizationPct: "Persentase Realisasi AI",
+  akiTotal: "Total AKI 2026",
+  akiTotalNote: "Catatan Total AKI",
+  akiRealization: "Realisasi AKI s.d. Juni",
+  akiRealizationNote: "Catatan Realisasi AKI",
+  akiRealizationPct: "Persentase Realisasi AKI",
+  akiGaugeNote: "Narasi Gauge AKI",
+  akiRealizationChip: "Chip Realisasi AKI",
+  akiGapChip: "Chip Sisa AKI",
+  akiOfficePct: "Persentase AKI Kantor Pusat",
+  akiOfficeNote: "Catatan AKI Kantor Pusat",
+  akiSarprasPct: "Persentase AKI Sarpras Unit",
+  akiSarprasNote: "Catatan AKI Sarpras Unit",
+  akiGapPct: "Persentase Gap AKI",
+  akiGapNote: "Catatan Gap AKI",
+  akiInsight: "Insight AKI"
+};
+
 const statusClass = {
   "Selesai": "done",
   "On Progress": "progress",
@@ -629,6 +679,112 @@ function downloadExcel() {
   window.XLSX.utils.book_append_sheet(workbook, policySheet, "Ratifikasi Kebijakan");
   window.XLSX.utils.book_append_sheet(workbook, crSheet, "Change Request");
   window.XLSX.writeFile(workbook, "dashboard-strategi-evaluasi-ga.xlsx");
+}
+
+function investmentPercentValue(value) {
+  const match = String(value || "").replace(",", ".").match(/-?\d+(\.\d+)?/);
+  if (!match) return 0;
+  return Math.max(0, Math.min(100, Number(match[0])));
+}
+
+function investmentExportRows() {
+  return Object.entries(investmentFieldLabels).map(([key, label]) => [
+    key,
+    label,
+    investmentData[key] ?? ""
+  ]);
+}
+
+function updateInvestmentDashboard() {
+  document.querySelectorAll("[data-investment-text]").forEach((element) => {
+    const key = element.dataset.investmentText;
+    if (investmentData[key] != null) element.textContent = investmentData[key];
+  });
+  document.querySelectorAll("[data-investment-width]").forEach((element) => {
+    const key = element.dataset.investmentWidth;
+    element.style.width = `${investmentPercentValue(investmentData[key])}%`;
+  });
+  document.querySelectorAll("[data-investment-style]").forEach((element) => {
+    const key = element.dataset.investmentStyle;
+    element.style.setProperty("--value", investmentPercentValue(investmentData[key]));
+  });
+}
+
+function downloadInvestmentCsv() {
+  const header = ["Kode", "Indikator", "Nilai"];
+  const csv = [header, ...investmentExportRows()]
+    .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
+    .join("\n");
+  downloadBlob(`\ufeff${csv}`, "data-source-investasi.csv", "text/csv;charset=utf-8");
+}
+
+function downloadInvestmentJson() {
+  downloadBlob(
+    JSON.stringify({ generatedAt: new Date().toISOString(), investasi: investmentData }, null, 2),
+    "data-source-investasi.json",
+    "application/json;charset=utf-8"
+  );
+}
+
+function downloadInvestmentExcel() {
+  if (!window.XLSX) {
+    alert("Library Excel belum siap. Silakan refresh halaman lalu coba lagi.");
+    return;
+  }
+  const workbook = window.XLSX.utils.book_new();
+  const sourceSheet = window.XLSX.utils.aoa_to_sheet([
+    ["Kode", "Indikator", "Nilai"],
+    ...investmentExportRows()
+  ]);
+  const guideSheet = window.XLSX.utils.aoa_to_sheet([
+    ["Panduan Update Data Investasi"],
+    ["1. Ubah nilai pada kolom Nilai di sheet Data Investasi."],
+    ["2. Jangan mengubah kolom Kode agar dashboard dapat membaca data otomatis."],
+    ["3. Import kembali file ini dari panel Import Data Investasi di dashboard."],
+    [],
+    ["Format yang didukung", "Excel, CSV, JSON"]
+  ]);
+  window.XLSX.utils.book_append_sheet(workbook, sourceSheet, "Data Investasi");
+  window.XLSX.utils.book_append_sheet(workbook, guideSheet, "Panduan");
+  window.XLSX.writeFile(workbook, "template-data-source-investasi.xlsx");
+}
+
+function exportInvestmentPdf() {
+  const dashboard = document.querySelector(".dashboard");
+  const investmentNav = document.querySelector('[data-nav="investment"]');
+  const activeNav = document.querySelector(".nav-item.is-active");
+  const title = document.querySelector(".title-block h1");
+  const description = document.querySelector(".title-block .description");
+  const previousNav = activeNav;
+  const previousTitle = title?.textContent;
+  const previousDescription = description?.textContent;
+
+  dashboard?.classList.remove("ao-mode", "ao-office-mode", "dashboard-mode");
+  dashboard?.classList.add("investment-mode");
+  document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
+  investmentNav?.classList.add("is-active");
+  if (title) title.textContent = "Investasi";
+  if (description) description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
+
+  document.body.classList.add("print-investment");
+  setTimeout(() => window.print(), 150);
+
+  const restore = () => {
+    document.body.classList.remove("print-investment");
+    document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
+    previousNav?.classList.add("is-active");
+    if (title && previousTitle) title.textContent = previousTitle;
+    if (description && previousDescription) description.textContent = previousDescription;
+    window.removeEventListener("afterprint", restore);
+  };
+  window.addEventListener("afterprint", restore);
+}
+
+function exportInvestment(format) {
+  if (format === "pdf") exportInvestmentPdf();
+  if (format === "xlsx") downloadInvestmentExcel();
+  if (format === "csv") downloadInvestmentCsv();
+  if (format === "json") downloadInvestmentJson();
 }
 
 function exportPdf() {
@@ -1189,6 +1345,68 @@ function rowsFromJson(text) {
   return rows.map(normalizeRow).filter(Boolean);
 }
 
+function investmentKeyFromLabel(label) {
+  const normalized = String(label || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  const labelMap = Object.fromEntries(
+    Object.entries(investmentFieldLabels).map(([key, value]) => [
+      String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(),
+      key
+    ])
+  );
+  return investmentData[normalized] != null ? normalized : labelMap[normalized];
+}
+
+function applyInvestmentRows(rows) {
+  let count = 0;
+  rows.forEach((row) => {
+    const key = investmentKeyFromLabel(row.Kode || row.kode || row.Key || row.key || row.Indikator || row.indikator || row.Metric || row.metric);
+    const rawValue = row.Nilai ?? row.nilai ?? row.Value ?? row.value ?? "";
+    if (!key || rawValue === "") return;
+    investmentData[key] = String(rawValue);
+    count += 1;
+  });
+  if (count) updateInvestmentDashboard();
+  return count;
+}
+
+function parseInvestmentCsv(text) {
+  const workbook = window.XLSX.read(text, { type: "string" });
+  const sheetName = workbook.SheetNames[0];
+  return window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+}
+
+async function importInvestmentDataFile(file) {
+  const extension = file.name.split(".").pop().toLowerCase();
+  let count = 0;
+
+  if (["xlsx", "xls"].includes(extension)) {
+    const buffer = await file.arrayBuffer();
+    const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
+    const sheetName = workbook.SheetNames.find((name) => name.toLowerCase().includes("investasi")) || workbook.SheetNames[0];
+    const rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+    count = applyInvestmentRows(rows);
+  } else if (extension === "csv") {
+    count = applyInvestmentRows(parseInvestmentCsv(await file.text()));
+  } else if (extension === "json") {
+    const json = JSON.parse(await file.text());
+    const source = json.investasi || json.investment || json;
+    if (Array.isArray(source)) {
+      count = applyInvestmentRows(source);
+    } else {
+      count = applyInvestmentRows(Object.entries(source).map(([key, value]) => ({ Kode: key, Nilai: value })));
+    }
+  }
+
+  if (!count) {
+    alert("Data Investasi tidak terbaca. Pastikan file memakai kolom Kode, Indikator, dan Nilai dari template data source investasi.");
+    return;
+  }
+  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.`);
+}
+
 async function importDataFile(file) {
   const extension = file.name.split(".").pop().toLowerCase();
   let rows = [];
@@ -1339,6 +1557,10 @@ function setupExportMenu() {
     if (!option) return;
     const format = option.dataset.export;
     closeMenu();
+    if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
+      exportInvestment(format);
+      return;
+    }
     if (format === "pdf") exportPdf();
     if (format === "xlsx") downloadExcel();
     if (format === "csv") downloadCsv();
@@ -1368,6 +1590,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPolicyPrepRows();
   renderBusinessExcellence();
   renderAoCorporate();
+  updateInvestmentDashboard();
   updatePerformanceStatusPanel();
   updateDashboardMetrics();
   setupNavigation();
@@ -1380,8 +1603,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("dataFile").addEventListener("change", (event) => {
     const file = event.target.files?.[0];
-    if (file) importDataFile(file);
+    if (file) {
+      if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
+        importInvestmentDataFile(file);
+      } else {
+        importDataFile(file);
+      }
+    }
     event.target.value = "";
+  });
+  document.getElementById("investmentImportData")?.addEventListener("click", () => {
+    document.getElementById("investmentDataFile")?.click();
+  });
+  document.getElementById("investmentDataFile")?.addEventListener("change", (event) => {
+    const file = event.target.files?.[0];
+    if (file) importInvestmentDataFile(file);
+    event.target.value = "";
+  });
+  document.querySelectorAll("[data-investment-export]").forEach((button) => {
+    button.addEventListener("click", () => exportInvestment(button.dataset.investmentExport));
   });
   if (window.lucide) {
     window.lucide.createIcons();

@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260722-9" />
+    <link rel="stylesheet" href="./styles.css?v=20260728-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -391,7 +391,7 @@
         <section class="investment-view" id="investmentView" aria-label="Dashboard Investasi">
           <div class="investment-hero">
             <div>
-              <span>Report ANG Investasi - 16 Juli 2026</span>
+              <span data-investment-text="reportDate">Report ANG Investasi - 16 Juli 2026</span>
               <h2>Dashboard Monitoring Anggaran Investasi</h2>
               <p>
                 Ringkasan AI dan AKI 2026, progres realisasi s.d. Juni, usulan AI 2027, serta
@@ -400,34 +400,62 @@
             </div>
             <div class="investment-hero-signal">
               <strong>Executive Signal</strong>
-              <span>AKI terserap 30,43% dari anggaran kas investasi. Fokus utama: evaluasi realisasi Juli, BAPP, rekomposisi AKI, dan percepatan handshake AI 2027.</span>
+              <span data-investment-text="executiveSignal">AKI terserap 30,43% dari anggaran kas investasi. Fokus utama: evaluasi realisasi Juli, BAPP, rekomposisi AKI, dan percepatan handshake AI 2027.</span>
             </div>
+          </div>
+
+          <div class="investment-actions-panel">
+            <article>
+              <i data-lucide="upload-cloud"></i>
+              <div>
+                <strong>Import Data Investasi</strong>
+                <span>Upload data source Excel/CSV/JSON untuk update angka AI, AKI, prioritas, dan status monitoring.</span>
+              </div>
+              <button class="import-btn" type="button" id="investmentImportData">
+                <i data-lucide="upload"></i>
+                <span>Import Data</span>
+              </button>
+              <input class="sr-only" type="file" id="investmentDataFile" accept=".xlsx,.xls,.csv,.json" aria-label="Import data source Investasi" />
+            </article>
+            <article>
+              <i data-lucide="download-cloud"></i>
+              <div>
+                <strong>Export Laporan Investasi</strong>
+                <span>Download laporan dalam PDF atau data source dalam format Excel, CSV, dan JSON.</span>
+              </div>
+              <div class="investment-export-actions">
+                <button type="button" data-investment-export="pdf"><i data-lucide="file-text"></i><span>PDF</span></button>
+                <button type="button" data-investment-export="xlsx"><i data-lucide="file-spreadsheet"></i><span>Excel</span></button>
+                <button type="button" data-investment-export="csv"><i data-lucide="table"></i><span>CSV</span></button>
+                <button type="button" data-investment-export="json"><i data-lucide="braces"></i><span>JSON</span></button>
+              </div>
+            </article>
           </div>
 
           <div class="investment-kpi-grid">
             <article class="investment-kpi">
               <span>Total Anggaran Investasi 2026</span>
-              <strong>10,89 T</strong>
-              <small>KP 10,64 T + Sarpras Unit 255,31 M</small>
+              <strong data-investment-text="totalInvestment">10,89 T</strong>
+              <small data-investment-text="totalInvestmentNote">KP 10,64 T + Sarpras Unit 255,31 M</small>
               <div class="investment-bar"><i style="width: 100%"></i></div>
             </article>
             <article class="investment-kpi">
               <span>Realisasi AI s.d. Juni</span>
-              <strong>344,27 M</strong>
-              <small>3,16% dari total AI terbit</small>
-              <div class="investment-bar blue"><i style="width: 3.16%"></i></div>
+              <strong data-investment-text="aiRealization">344,27 M</strong>
+              <small data-investment-text="aiRealizationNote">3,16% dari total AI terbit</small>
+              <div class="investment-bar blue"><i data-investment-width="aiRealizationPct" style="width: 3.16%"></i></div>
             </article>
             <article class="investment-kpi">
               <span>Total AKI 2026</span>
-              <strong>1,35 T</strong>
-              <small>KP 1,18 T + Sarpras Unit 178,66 M</small>
+              <strong data-investment-text="akiTotal">1,35 T</strong>
+              <small data-investment-text="akiTotalNote">KP 1,18 T + Sarpras Unit 178,66 M</small>
               <div class="investment-bar"><i style="width: 100%"></i></div>
             </article>
             <article class="investment-kpi">
               <span>Realisasi AKI s.d. Juni</span>
-              <strong>412,23 M</strong>
-              <small>30,43% dari total AKI</small>
-              <div class="investment-bar amber"><i style="width: 30.43%"></i></div>
+              <strong data-investment-text="akiRealization">412,23 M</strong>
+              <small data-investment-text="akiRealizationNote">30,43% dari total AKI</small>
+              <div class="investment-bar amber"><i data-investment-width="akiRealizationPct" style="width: 30.43%"></i></div>
             </article>
           </div>
 
@@ -439,37 +467,37 @@
               </div>
               <div class="aki-chart">
                 <div class="aki-gauge">
-                  <div class="aki-gauge-ring" style="--value: 30.43">
-                    <strong>30,43%</strong>
+                  <div class="aki-gauge-ring" data-investment-style="akiRealizationPct" style="--value: 30.43">
+                    <strong data-investment-text="akiRealizationPct">30,43%</strong>
                     <span>Terserap</span>
                   </div>
-                  <p>412,23 M dari total AKI 1.354,51 M sudah terealisasi.</p>
+                  <p data-investment-text="akiGaugeNote">412,23 M dari total AKI 1.354,51 M sudah terealisasi.</p>
                   <div class="aki-status-chips">
-                    <b>Realisasi 412,23 M</b>
-                    <b class="amber">Sisa 942,28 M</b>
+                    <b data-investment-text="akiRealizationChip">Realisasi 412,23 M</b>
+                    <b class="amber" data-investment-text="akiGapChip">Sisa 942,28 M</b>
                   </div>
                 </div>
                 <div class="aki-bars">
                   <div>
                     <span>Kantor Pusat</span>
-                    <b><i style="width: 29.02%"></i></b>
-                    <strong>29,02%<small>341,29 M dari 1.175,85 M</small></strong>
+                    <b><i data-investment-width="akiOfficePct" style="width: 29.02%"></i></b>
+                    <strong><span data-investment-text="akiOfficePct">29,02%</span><small data-investment-text="akiOfficeNote">341,29 M dari 1.175,85 M</small></strong>
                   </div>
                   <div>
                     <span>Sarpras Unit</span>
-                    <b><i style="width: 39.71%"></i></b>
-                    <strong>39,71%<small>70,94 M dari 178,66 M</small></strong>
+                    <b><i data-investment-width="akiSarprasPct" style="width: 39.71%"></i></b>
+                    <strong><span data-investment-text="akiSarprasPct">39,71%</span><small data-investment-text="akiSarprasNote">70,94 M dari 178,66 M</small></strong>
                   </div>
                   <div>
                     <span>Gap AKI belum terserap</span>
-                    <b class="amber"><i style="width: 69.57%"></i></b>
-                    <strong>69,57%<small>Perlu BAPP & rekomposisi</small></strong>
+                    <b class="amber"><i data-investment-width="akiGapPct" style="width: 69.57%"></i></b>
+                    <strong><span data-investment-text="akiGapPct">69,57%</span><small data-investment-text="akiGapNote">Perlu BAPP & rekomposisi</small></strong>
                   </div>
                 </div>
               </div>
               <div class="aki-insight">
                 <strong>Prioritas baca dashboard</strong>
-                <span>Serapan AKI masih 30,43%. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap. Fokus berikutnya adalah validasi BAPP Juli dan rekomposisi AKI untuk menutup gap 942,28 M.</span>
+                <span data-investment-text="akiInsight">Serapan AKI masih 30,43%. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap. Fokus berikutnya adalah validasi BAPP Juli dan rekomposisi AKI untuk menutup gap 942,28 M.</span>
               </div>
             </article>
 
@@ -1267,6 +1295,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260722-9"></script>
+    <script src="./script.js?v=20260728-1"></script>
   </body>
 </html>
