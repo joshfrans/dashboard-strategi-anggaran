@@ -1084,6 +1084,64 @@ function renderDetailPerformance() {
   `;
 }
 
+function renderDetailBusiness() {
+  const rows = businessExcellenceData
+    .map((row) => `
+      <tr>
+        <td><strong>${row.semester}</strong></td>
+        <td>${row.activity}</td>
+        <td>${percentLabel(row.target)}</td>
+        <td>${percentLabel(row.realization)}</td>
+        <td><span class="badge done">${row.status || "Tercapai"}</span></td>
+        <td>${Number(row.realization || 0) >= Number(row.target || 0) ? "Pertahankan evidence dan kesiapan asesmen" : "Perlu percepatan pemenuhan target"}</td>
+      </tr>
+    `)
+    .join("");
+
+  const avgRealization = businessExcellenceData.length
+    ? businessExcellenceData.reduce((sum, row) => sum + Number(row.realization || 0), 0) / businessExcellenceData.length
+    : 0;
+
+  return `
+    <section class="detail-section">
+      <h3>Executive Snapshot</h3>
+      <div class="detail-metrics">
+        ${makeMetric("Semester Dimonitor", businessExcellenceData.length)}
+        ${makeMetric("Rata-rata Realisasi", percentLabel(avgRealization), "green")}
+        ${makeMetric("Semester Tercapai", businessExcellenceData.filter((row) => String(row.status || "").toLowerCase().includes("tercapai")).length, "green")}
+        ${makeMetric("Perlu Follow-up", businessExcellenceData.filter((row) => Number(row.realization || 0) < Number(row.target || 0)).length, "amber")}
+      </div>
+    </section>
+    <section class="detail-columns">
+      <article class="detail-section">
+        <h3>Management Signal</h3>
+        <ul class="detail-action-list">
+          <li><strong>Implementasi Business Excellence berada pada jalur tercapai</strong><span>Realisasi semester utama menunjukkan capaian di atas target.</span></li>
+          <li><strong>Evidence tetap perlu dijaga</strong><span>Pastikan dokumen aplikasi, update dokumen, dan asesmen nilai siap untuk kebutuhan review manajemen.</span></li>
+        </ul>
+      </article>
+      <article class="detail-section">
+        <h3>Working Actions</h3>
+        <ul class="detail-action-list">
+          <li><strong>Finalisasi evidence semester 1</strong><span>Kunci dokumen pendukung penyusunan dan updating dokumen aplikasi.</span></li>
+          <li><strong>Siapkan asesmen semester 2</strong><span>Monitor pencapaian update dokumen dan nilai skor PLN Bisnis Ekselen.</span></li>
+        </ul>
+      </article>
+    </section>
+    <section class="detail-section">
+      <h3>Detail Implementasi PLN Business Excellence</h3>
+      <div class="detail-table-wrap">
+        <table class="detail-table">
+          <thead>
+            <tr><th>Semester</th><th>Aktivitas</th><th>Target</th><th>Realisasi</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
 function getPerformanceStatusSummary() {
   const rows = Array.from(document.querySelectorAll(".performance-table tbody tr"));
   const indicatorRows = rows.filter((row) => {
@@ -1165,6 +1223,11 @@ function setupDetailModal() {
         title.textContent = "Detail Monitoring Kinerja Divisi Umum dan Aset Properti";
         subtitle.textContent = "Menampilkan detail NKO s.d. Juni 2026 berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.";
         body.innerHTML = renderDetailPerformance();
+      } else if (type === "business") {
+        eyebrow.textContent = "Business Excellence";
+        title.textContent = "Detail Implementasi PLN Business Excellence";
+        subtitle.textContent = "Menampilkan target, realisasi, status capaian, dan tindak lanjut implementasi Business Excellence.";
+        body.innerHTML = renderDetailBusiness();
       } else {
         eyebrow.textContent = "Change Request Aplikasi";
         title.textContent = "Detail Monitoring Change Request";
