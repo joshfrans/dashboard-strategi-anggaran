@@ -1313,6 +1313,13 @@ p {
   justify-content: flex-end;
 }
 
+.investment-import-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .investment-export-actions button {
   height: 34px;
   display: inline-flex;
@@ -1328,12 +1335,38 @@ p {
   cursor: pointer;
 }
 
+.investment-template-btn {
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--navy);
+  background: #f8fbff;
+  font-size: 11px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 .investment-export-actions button:hover {
   background: #eef5ff;
   border-color: #bfd4f2;
 }
 
+.investment-template-btn:hover {
+  background: #eef5ff;
+  border-color: #bfd4f2;
+}
+
 .investment-export-actions svg {
+  width: 14px;
+  height: 14px;
+  color: var(--blue);
+}
+
+.investment-template-btn svg {
   width: 14px;
   height: 14px;
   color: var(--blue);

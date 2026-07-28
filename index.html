@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260728-1" />
+    <link rel="stylesheet" href="./styles.css?v=20260728-2" />
   </head>
   <body>
     <div class="app-shell">
@@ -411,10 +411,16 @@
                 <strong>Import Data Investasi</strong>
                 <span>Upload data source Excel/CSV/JSON untuk update angka AI, AKI, prioritas, dan status monitoring.</span>
               </div>
-              <button class="import-btn" type="button" id="investmentImportData">
-                <i data-lucide="upload"></i>
-                <span>Import Data</span>
-              </button>
+              <div class="investment-import-actions">
+                <button class="import-btn" type="button" id="investmentImportData">
+                  <i data-lucide="upload"></i>
+                  <span>Import Data</span>
+                </button>
+                <a class="investment-template-btn" href="./assets/template-data-source-investasi.xlsx" download>
+                  <i data-lucide="file-spreadsheet"></i>
+                  <span>Template</span>
+                </a>
+              </div>
               <input class="sr-only" type="file" id="investmentDataFile" accept=".xlsx,.xls,.csv,.json" aria-label="Import data source Investasi" />
             </article>
             <article>
@@ -1295,6 +1301,6 @@
 
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="./script.js?v=20260728-1"></script>
+    <script src="./script.js?v=20260728-2"></script>
   </body>
 </html>
