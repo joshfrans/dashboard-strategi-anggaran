@@ -1,0 +1,27 @@
+# Dependencies and local tooling
+node_modules/
+.env
+.env.*
+*.log
+
+# Raw office/source materials should stay outside the public GitHub Pages site.
+*.ppt
+*.pptx
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.xlsm
+*.csv
+
+# Keep approved public templates explicit.
+!assets/template-data-source-*.xlsx
+
+# Local screenshots and temporary exports
+codex-clipboard-*
+*.jpeg
+*.jpg
+*.zip
+*.bak
+*.tmp

@@ -26,6 +26,7 @@ GitHub Pages public tidak memiliki login bawaan. Jika dashboard harus bisa diaks
 Panduan implementasi ada di:
 
 - `ACCESS_CONTROL.md`
+- `SECURITY.md`
 
 ## Update data
 
@@ -44,10 +45,11 @@ Data source Strategi & Evaluasi mendukung sheet:
 
 ## Pemeriksaan keamanan otomatis
 
-Repository ini memiliki GitHub Actions `Weekly Security Scan` yang berjalan otomatis setiap Senin pukul 09:00 WIB dan bisa dijalankan manual dari tab `Actions`.
+Repository ini memiliki GitHub Actions `Weekly Security Scan` yang berjalan otomatis setiap Minggu pukul 09:00 WIB, saat ada push/pull request ke branch `main`, dan bisa dijalankan manual dari tab `Actions`.
 
 Pemeriksaan yang dilakukan:
 
+- Public data leak scan untuk mencegah email PLN, link SharePoint internal, token, password, private key, atau URL internal ikut terpublikasi.
 - Secret scan untuk mencegah token/password ikut terpublikasi.
 - CodeQL untuk mendeteksi pola JavaScript yang berisiko.
 - OWASP ZAP baseline scan ke URL GitHub Pages untuk mengecek risiko umum pada halaman publik.
