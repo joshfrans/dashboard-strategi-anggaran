@@ -540,14 +540,34 @@ function updateAnalyticsDashboard() {
   setText("analyticsAoOfficeAbsorption", percentLabel(aoOfficeAbsorption));
   setText("analyticsAoOfficeUnit", `${aoOfficeData.selectedUnit || "Unit prioritas"} - ${aoOfficeData.rank || "peringkat belum tersedia"}`);
 
+  const investmentGrid = document.getElementById("analyticsInvestmentGrid");
+  if (investmentGrid) {
+    investmentGrid.innerHTML = [
+      ["Total Anggaran Investasi", investmentData.totalInvestment, investmentData.totalInvestmentNote],
+      ["Realisasi AI", investmentData.aiRealization, investmentData.aiRealizationNote],
+      ["Total AKI", investmentData.akiTotal, investmentData.akiTotalNote],
+      ["Realisasi AKI", investmentData.akiRealization, investmentData.akiRealizationNote]
+    ]
+      .map(([label, value, note]) => `<div><span>${label}</span><strong>${value || "-"}</strong><small>${note || "-"}</small></div>`)
+      .join("");
+  }
+
+  const investmentSignal = document.getElementById("analyticsInvestmentSignal");
+  if (investmentSignal) {
+    investmentSignal.innerHTML = `
+      <b>Prioritas Investasi</b>
+      <span>${investmentData.akiInsight || `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)} dengan ${akiGap.toLowerCase()}. Fokus pada BAPP, rekomposisi, dan validasi realisasi bulan berjalan.`}</span>
+    `;
+  }
+
   const executiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (executiveMessage) {
-    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai, AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, dan AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
+    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai. Pada Investasi, total anggaran ${investmentData.totalInvestment || "-"}, realisasi AI ${investmentData.aiRealization || "-"}, total AKI ${investmentData.akiTotal || "-"}, dan AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}. AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, sementara AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
   }
 
   const mainMessage = document.getElementById("analyticsMainMessage");
   if (mainMessage) {
-    mainMessage.textContent = `Kinerja dan ratifikasi relatif terkendali, namun percepatan ${priorityCr?.app || "CR prioritas"}, penutupan ${akiGap.toLowerCase()}, monitoring biaya AO Korporat ${topAoCost?.name || "utama"}, dan review unit AO Kantor Pusat ${aoOfficeData.selectedUnit || "prioritas"} perlu menjadi agenda manajemen minggu ini.`;
+    mainMessage.textContent = `Kinerja dan ratifikasi relatif terkendali, namun percepatan ${priorityCr?.app || "CR prioritas"}, validasi realisasi AI ${investmentData.aiRealization || "-"}, penutupan ${akiGap.toLowerCase()}, monitoring biaya AO Korporat ${topAoCost?.name || "utama"}, dan review unit AO Kantor Pusat ${aoOfficeData.selectedUnit || "prioritas"} perlu menjadi agenda manajemen minggu ini.`;
   }
 
   const decisionList = document.getElementById("analyticsDecisionList");
@@ -555,7 +575,7 @@ function updateAnalyticsDashboard() {
     decisionList.innerHTML = [
       ["Strategi & Evaluasi", `${policy.followUp} status ratifikasi belum hijau; perlu komitmen evidence, PIC, dan target penyelesaian SH/AP.`],
       ["Change Request", priorityCr ? `${priorityCr.app} menjadi prioritas karena status ${priorityCr.status} dengan progress ${percentLabel(Number(priorityCr.progress || 0))}.` : "Seluruh Change Request telah selesai; fokus pada monitoring pasca implementasi."],
-      ["Investasi", `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap} perlu BAPP, rekomposisi, dan review realisasi bulan berjalan.`],
+      ["Investasi", `AI terealisasi ${investmentData.aiRealization || "-"} (${investmentData.aiRealizationPct || "progress belum tersedia"}), AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, dan ${akiGap} perlu BAPP, rekomposisi, serta review realisasi bulan berjalan.`],
       ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan dengan serapan RKAP ${percentLabel(aoAbsorption)}; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
       ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} mencatat serapan RKAP ${percentLabel(aoOfficeAbsorption)} dan YoY ${percentLabel(Number(aoOfficeData.yoy || 0))}; perlu monitoring unit/divisi prioritas.`]
     ]
@@ -569,6 +589,7 @@ function updateAnalyticsDashboard() {
       makeAnalyticsBar("Ratifikasi selesai", policyDoneRate, policyDoneRate >= 75 ? "green" : "amber"),
       makeAnalyticsBar("Progress CR", crProgress, crProgress >= 80 ? "green" : "amber"),
       makeAnalyticsBar("NKO tercapai", Math.min(performanceScore, 120), "green").replace(`<strong>${percentLabel(Math.min(performanceScore, 120))}</strong>`, `<strong>${smartLabel(performanceScore, "plain")}</strong>`),
+      makeAnalyticsBar("Realisasi AI", investmentPercentValue(investmentData.aiRealizationPct), investmentPercentValue(investmentData.aiRealizationPct) >= 70 ? "green" : "amber"),
       makeAnalyticsBar("Serapan AKI", akiProgress, akiProgress >= 70 ? "green" : "amber"),
       makeAnalyticsBar("Serapan RKAP AO Korporat", aoAbsorption, aoAbsorption >= 75 ? "green" : "amber"),
       makeAnalyticsBar(`Serapan RKAP AO ${aoOfficeData.selectedUnit || "KPST"}`, aoOfficeAbsorption, aoOfficeAbsorption >= 75 ? "green" : "amber")
@@ -580,7 +601,7 @@ function updateAnalyticsDashboard() {
     actionRows.innerHTML = [
       ["Validasi evidence ratifikasi", `${policy.followUp} status non-hijau terkunci owner dan due date`, policy.followUp ? "Tinggi" : "Monitor"],
       ["Lock owner CR prioritas", priorityCr ? `${priorityCr.app} memiliki target delivery mingguan` : "Monitoring pasca implementasi CR", crOpen || crNotStarted ? "Tinggi" : "Monitor"],
-      ["Review gap AKI", `${akiGap} terpetakan BAPP dan rekomposisi`, akiProgress < 70 ? "Tinggi" : "Medium"],
+      ["Review realisasi AI dan gap AKI", `AI ${investmentData.aiRealization || "-"}; ${akiGap} terpetakan BAPP dan rekomposisi`, akiProgress < 70 ? "Tinggi" : "Medium"],
       ["Analisa AO Korporat", `${topAoCost?.name || "Biaya dominan"} dan proyeksi akhir tahun tervalidasi`, aoAbsorption > 90 ? "Tinggi" : "Medium"],
       ["Analisa AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} dan serapan RKAP ditindaklanjuti`, aoOfficeAbsorption > 90 ? "Tinggi" : "Medium"]
     ]
