@@ -19,6 +19,14 @@ Dashboard web statis untuk monitoring Strategi & Evaluasi, Investasi, AO Korpora
 5. Pilih branch `main` dan folder `/root`.
 6. Simpan, lalu tunggu GitHub membuat URL dashboard.
 
+## Otorisasi akses
+
+GitHub Pages public tidak memiliki login bawaan. Jika dashboard harus bisa diakses melalui link tetapi tetap wajib login, gunakan custom domain dengan Cloudflare Access, SSO, atau GitHub Enterprise private Pages.
+
+Panduan implementasi ada di:
+
+- `ACCESS_CONTROL.md`
+
 ## Update data
 
 Gunakan tombol `Import Data` pada dashboard atau export template Excel/JSON dari menu `Export Laporan`.
