@@ -1,12 +1,14 @@
-# Dashboard Change Request Aplikasi
+# Dashboard Strategi & Evaluasi
 
-Dashboard web statis untuk monitoring Timeline Pekerjaan dan Change Request Aplikasi.
+Dashboard web statis untuk monitoring Strategi & Evaluasi, Investasi, AO Korporat, AO Kantor Pusat, serta Laporan & Analitik manajemen.
 
 ## Isi folder
 
 - `index.html` - halaman utama dashboard
 - `styles.css` - desain tampilan dashboard
-- `script.js` - data contoh, render tabel, filter sederhana, dan export CSV
+- `script.js` - render dashboard, import/export data source, dan generator analitik
+- `assets/` - aset dashboard, template data source, dan data statis pendukung
+- `.github/workflows/security-weekly.yml` - pemeriksaan keamanan otomatis mingguan
 
 ## Cara pakai di GitHub Pages
 
@@ -19,18 +21,27 @@ Dashboard web statis untuk monitoring Timeline Pekerjaan dan Change Request Apli
 
 ## Update data
 
-Untuk update data Change Request, ubah array `crData` pada file `script.js`.
+Gunakan tombol `Import Data` pada dashboard atau export template Excel/JSON dari menu `Export Laporan`.
 
-Kolom utama:
+Data source Strategi & Evaluasi mendukung sheet:
 
-- `app`
-- `request`
-- `progress`
-- `status`
-- `target`
+- `01_Ratifikasi`
+- `02_Change_Request`
+- `03_Kinerja`
+- `04_Penyusunan_Kebijakan`
+- `05_Business_Excellence`
+- `06_Investasi`
+- `07_AO_Korporat`
+- `08_AO_Kantor_Pusat`
 
-Status yang didukung:
+## Pemeriksaan keamanan otomatis
 
-- `Selesai`
-- `On Progress`
-- `Belum Mulai`
+Repository ini memiliki GitHub Actions `Weekly Security Scan` yang berjalan otomatis setiap Senin pukul 09:00 WIB dan bisa dijalankan manual dari tab `Actions`.
+
+Pemeriksaan yang dilakukan:
+
+- Secret scan untuk mencegah token/password ikut terpublikasi.
+- CodeQL untuk mendeteksi pola JavaScript yang berisiko.
+- OWASP ZAP baseline scan ke URL GitHub Pages untuk mengecek risiko umum pada halaman publik.
+
+Catatan: scan otomatis membantu monitoring rutin, tetapi tidak menggantikan penetration test manual yang dilakukan oleh tim keamanan tersertifikasi, terutama jika dashboard nantinya memakai login, API internal, atau data sensitif.

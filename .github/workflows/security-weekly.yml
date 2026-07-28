@@ -1,0 +1,45 @@
+name: Weekly Security Scan
+
+on:
+  schedule:
+    # Runs every Monday at 02:00 UTC / 09:00 WIB.
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  static-security-check:
+    name: Static Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Scan repository for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+
+  weekly-dast-baseline:
+    name: Weekly DAST Baseline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baseline scan against GitHub Pages
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: "https://joshfrans.github.io/dashboard-strategi-anggaran/"
+          fail_action: true
+          allow_issue_writing: false
+          artifact_name: "zap-baseline-report"
