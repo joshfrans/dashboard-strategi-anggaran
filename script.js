@@ -79,6 +79,12 @@ let crData = [
 const aoCorporateData = {
   period: "Mei 2026",
   total: 2931185,
+  rkap: 8856162,
+  absorption: 33,
+  targetRate: 82,
+  projection: 7724829,
+  projectionRate: 87,
+  yoy: 113,
   topCosts: [
     { name: "Honorarium", value: 841322, yoy: 118, rkap: 28 },
     { name: "Beban Amortisasi", value: 505117, yoy: 161, rkap: 50 },
@@ -98,6 +104,22 @@ const aoCorporateData = {
     { unit: "SPEP", value: 62343 },
     { unit: "APBT", value: 60377 },
     { unit: "TJBB", value: 54263 }
+  ]
+};
+
+let aoOfficeData = {
+  period: "Juni 2026",
+  selectedUnit: "KPST",
+  realization: 1389043,
+  rank: "#1 dari 39",
+  rkap: 3647914,
+  absorption: 38,
+  yoy: 129,
+  topCosts: [
+    { name: "Honorarium", value: 597771, yoy: 101, absorption: 31 },
+    { name: "Beban Amortisasi", value: 306464, yoy: 352, absorption: 103 },
+    { name: "Teknologi Informasi", value: 267682, yoy: 177, absorption: 65 },
+    { name: "Perjalanan dinas non diklat", value: 61521, yoy: 80, absorption: 20 }
   ]
 };
 
@@ -498,9 +520,9 @@ function updateAnalyticsDashboard() {
   const policyDoneRate = policy.total ? (policy.done / policy.total) * 100 : 0;
   const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
   const akiGap = investmentData.akiGapChip || `${smartLabel(100 - akiProgress, "plain")}% belum terserap`;
-  const aoAbsorption = 40;
-  const aoProjection = "Proyeksi setahun 7.946.234 jt";
-  const aoOfficeAbsorption = 38;
+  const aoAbsorption = Number(aoCorporateData.absorption || 0);
+  const aoProjection = `Proyeksi setahun ${numberLabel(aoCorporateData.projection || 0)} jt`;
+  const aoOfficeAbsorption = Number(aoOfficeData.absorption || 0);
   const priorityCr = [...crData]
     .filter((row) => row.status !== "Selesai")
     .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))[0];
@@ -515,15 +537,17 @@ function updateAnalyticsDashboard() {
   setText("analyticsAkiGap", `Gap AKI ${akiGap.replace(/^Sisa\s+/i, "")} perlu dimonitor`);
   setText("analyticsAoAbsorption", percentLabel(aoAbsorption));
   setText("analyticsAoProjection", aoProjection);
+  setText("analyticsAoOfficeAbsorption", percentLabel(aoOfficeAbsorption));
+  setText("analyticsAoOfficeUnit", `${aoOfficeData.selectedUnit || "Unit prioritas"} - ${aoOfficeData.rank || "peringkat belum tersedia"}`);
 
   const executiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (executiveMessage) {
-    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai, AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, dan AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO.`;
+    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai, AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, dan AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
   }
 
   const mainMessage = document.getElementById("analyticsMainMessage");
   if (mainMessage) {
-    mainMessage.textContent = `Kinerja dan ratifikasi relatif terkendali, namun percepatan ${priorityCr?.app || "CR prioritas"}, penutupan ${akiGap.toLowerCase()}, serta monitoring biaya AO ${topAoCost?.name || "utama"} perlu menjadi agenda manajemen minggu ini.`;
+    mainMessage.textContent = `Kinerja dan ratifikasi relatif terkendali, namun percepatan ${priorityCr?.app || "CR prioritas"}, penutupan ${akiGap.toLowerCase()}, monitoring biaya AO Korporat ${topAoCost?.name || "utama"}, dan review unit AO Kantor Pusat ${aoOfficeData.selectedUnit || "prioritas"} perlu menjadi agenda manajemen minggu ini.`;
   }
 
   const decisionList = document.getElementById("analyticsDecisionList");
@@ -532,8 +556,8 @@ function updateAnalyticsDashboard() {
       ["Strategi & Evaluasi", `${policy.followUp} status ratifikasi belum hijau; perlu komitmen evidence, PIC, dan target penyelesaian SH/AP.`],
       ["Change Request", priorityCr ? `${priorityCr.app} menjadi prioritas karena status ${priorityCr.status} dengan progress ${percentLabel(Number(priorityCr.progress || 0))}.` : "Seluruh Change Request telah selesai; fokus pada monitoring pasca implementasi."],
       ["Investasi", `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap} perlu BAPP, rekomposisi, dan review realisasi bulan berjalan.`],
-      ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
-      ["AO Kantor Pusat", `${topAoUnit?.unit || "Unit prioritas"} menjadi unit dengan realisasi terbesar; perlu monitoring serapan RKAP dan tren YoY.`]
+      ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan dengan serapan RKAP ${percentLabel(aoAbsorption)}; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
+      ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} mencatat serapan RKAP ${percentLabel(aoOfficeAbsorption)} dan YoY ${percentLabel(Number(aoOfficeData.yoy || 0))}; perlu monitoring unit/divisi prioritas.`]
     ]
       .map(([title, text]) => `<div><b>${title}</b><span>${text}</span></div>`)
       .join("");
@@ -547,7 +571,7 @@ function updateAnalyticsDashboard() {
       makeAnalyticsBar("NKO tercapai", Math.min(performanceScore, 120), "green").replace(`<strong>${percentLabel(Math.min(performanceScore, 120))}</strong>`, `<strong>${smartLabel(performanceScore, "plain")}</strong>`),
       makeAnalyticsBar("Serapan AKI", akiProgress, akiProgress >= 70 ? "green" : "amber"),
       makeAnalyticsBar("Serapan RKAP AO Korporat", aoAbsorption, aoAbsorption >= 75 ? "green" : "amber"),
-      makeAnalyticsBar("Serapan RKAP AO KPST", aoOfficeAbsorption, aoOfficeAbsorption >= 75 ? "green" : "amber")
+      makeAnalyticsBar(`Serapan RKAP AO ${aoOfficeData.selectedUnit || "KPST"}`, aoOfficeAbsorption, aoOfficeAbsorption >= 75 ? "green" : "amber")
     ].join("");
   }
 
@@ -557,8 +581,8 @@ function updateAnalyticsDashboard() {
       ["Validasi evidence ratifikasi", `${policy.followUp} status non-hijau terkunci owner dan due date`, policy.followUp ? "Tinggi" : "Monitor"],
       ["Lock owner CR prioritas", priorityCr ? `${priorityCr.app} memiliki target delivery mingguan` : "Monitoring pasca implementasi CR", crOpen || crNotStarted ? "Tinggi" : "Monitor"],
       ["Review gap AKI", `${akiGap} terpetakan BAPP dan rekomposisi`, akiProgress < 70 ? "Tinggi" : "Medium"],
-      ["Analisa AO Korporat", `${topAoCost?.name || "Biaya dominan"} dan proyeksi akhir tahun tervalidasi`, "Medium"],
-      ["Analisa AO Kantor Pusat", `${topAoUnit?.unit || "Unit prioritas"} dan serapan RKAP ditindaklanjuti`, "Medium"]
+      ["Analisa AO Korporat", `${topAoCost?.name || "Biaya dominan"} dan proyeksi akhir tahun tervalidasi`, aoAbsorption > 90 ? "Tinggi" : "Medium"],
+      ["Analisa AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} dan serapan RKAP ditindaklanjuti`, aoOfficeAbsorption > 90 ? "Tinggi" : "Medium"]
     ]
       .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`)
       .join("");
@@ -759,7 +783,10 @@ function downloadJson() {
     crData,
     performanceData,
     policyPrepData,
-    businessExcellenceData
+    businessExcellenceData,
+    investmentData,
+    aoCorporateData,
+    aoOfficeData
   };
   downloadBlob(JSON.stringify(data, null, 2), "data-source-strategi-evaluasi.json", "application/json;charset=utf-8");
 }
@@ -805,6 +832,25 @@ function downloadExcel() {
     row.realization,
     row.status
   ]);
+  const aoCorporateRows = [
+    ["period", "Periode", aoCorporateData.period],
+    ["total", "Realisasi", aoCorporateData.total],
+    ["rkap", "RKAP", aoCorporateData.rkap],
+    ["absorption", "Serapan RKAP (%)", aoCorporateData.absorption],
+    ["targetRate", "Realisasi vs Target (%)", aoCorporateData.targetRate],
+    ["projection", "Proyeksi Setahun", aoCorporateData.projection],
+    ["projectionRate", "Proyeksi vs RKAP (%)", aoCorporateData.projectionRate],
+    ["yoy", "YoY (%)", aoCorporateData.yoy]
+  ];
+  const aoOfficeRows = [
+    ["period", "Periode", aoOfficeData.period],
+    ["selectedUnit", "Unit Prioritas", aoOfficeData.selectedUnit],
+    ["realization", "Realisasi", aoOfficeData.realization],
+    ["rank", "Peringkat", aoOfficeData.rank],
+    ["rkap", "RKAP", aoOfficeData.rkap],
+    ["absorption", "Serapan RKAP (%)", aoOfficeData.absorption],
+    ["yoy", "YoY (%)", aoOfficeData.yoy]
+  ];
   const donePolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0);
   const followUpPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0);
   const crProgress = crData.length
@@ -830,6 +876,9 @@ function downloadExcel() {
   const performanceSheet = window.XLSX.utils.aoa_to_sheet([["No", "Indikator Kerja", "Satuan", "Bobot", "Target 2026", "Target S.D. Juni", "Realisasi", "Pencapaian", "Nilai", "Status"], ...performanceRows]);
   const prepSheet = window.XLSX.utils.aoa_to_sheet([["No", "Bidang", "Lingkup", "Progress", "Status", "Target"], ...policyPrepRows]);
   const businessSheet = window.XLSX.utils.aoa_to_sheet([["Semester", "Aktivitas", "Target", "Realisasi", "Status"], ...businessRows]);
+  const investmentSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...investmentExportRows()]);
+  const aoCorporateSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoCorporateRows]);
+  const aoOfficeSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoOfficeRows]);
 
   window.XLSX.utils.book_append_sheet(workbook, summarySheet, "Ringkasan");
   window.XLSX.utils.book_append_sheet(workbook, policySheet, "01_Ratifikasi");
@@ -837,6 +886,9 @@ function downloadExcel() {
   window.XLSX.utils.book_append_sheet(workbook, performanceSheet, "03_Kinerja");
   window.XLSX.utils.book_append_sheet(workbook, prepSheet, "04_Penyusunan_Kebijakan");
   window.XLSX.utils.book_append_sheet(workbook, businessSheet, "05_Business_Excellence");
+  window.XLSX.utils.book_append_sheet(workbook, investmentSheet, "06_Investasi");
+  window.XLSX.utils.book_append_sheet(workbook, aoCorporateSheet, "07_AO_Korporat");
+  window.XLSX.utils.book_append_sheet(workbook, aoOfficeSheet, "08_AO_Kantor_Pusat");
   window.XLSX.writeFile(workbook, "template-data-source-strategi-evaluasi.xlsx");
 }
 
@@ -1513,6 +1565,43 @@ function importBusinessSheet(workbook) {
   return businessExcellenceData.length;
 }
 
+function importInvestmentSheet(workbook) {
+  const rows = sheetRows(workbook, "06_Investasi");
+  if (!rows.length) return 0;
+  return applyInvestmentRows(rows);
+}
+
+function importKeyValueSheet(workbook, sheetName) {
+  const rows = sheetRows(workbook, sheetName);
+  const result = {};
+  rows.forEach((row) => {
+    const key = String(row.Kode || row.kode || row.Key || row.key || "").trim();
+    if (!key) return;
+    result[key] = row.Nilai ?? row.nilai ?? row.Value ?? row.value ?? "";
+  });
+  return result;
+}
+
+function importAoCorporateSheet(workbook) {
+  const source = importKeyValueSheet(workbook, "07_AO_Korporat");
+  if (!Object.keys(source).length) return 0;
+  Object.assign(aoCorporateData, source);
+  ["total", "rkap", "absorption", "targetRate", "projection", "projectionRate", "yoy"].forEach((key) => {
+    if (aoCorporateData[key] !== "" && aoCorporateData[key] != null) aoCorporateData[key] = Number(aoCorporateData[key]);
+  });
+  return Object.keys(source).length;
+}
+
+function importAoOfficeSheet(workbook) {
+  const source = importKeyValueSheet(workbook, "08_AO_Kantor_Pusat");
+  if (!Object.keys(source).length) return 0;
+  aoOfficeData = { ...aoOfficeData, ...source };
+  ["realization", "rkap", "absorption", "yoy"].forEach((key) => {
+    if (aoOfficeData[key] !== "" && aoOfficeData[key] != null) aoOfficeData[key] = Number(aoOfficeData[key]);
+  });
+  return Object.keys(source).length;
+}
+
 function applyStrategyDataSource(source) {
   if (!source || typeof source !== "object") return false;
 
@@ -1529,6 +1618,12 @@ function applyStrategyDataSource(source) {
   if (Array.isArray(source.performanceData)) performanceData = source.performanceData;
   if (Array.isArray(source.policyPrepData)) policyPrepData = source.policyPrepData;
   if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
+  if (source.investmentData && typeof source.investmentData === "object") investmentData = { ...investmentData, ...source.investmentData };
+  if (source.investasi && typeof source.investasi === "object") investmentData = { ...investmentData, ...source.investasi };
+  if (source.aoCorporateData && typeof source.aoCorporateData === "object") Object.assign(aoCorporateData, source.aoCorporateData);
+  if (source.aoKorporat && typeof source.aoKorporat === "object") Object.assign(aoCorporateData, source.aoKorporat);
+  if (source.aoOfficeData && typeof source.aoOfficeData === "object") aoOfficeData = { ...aoOfficeData, ...source.aoOfficeData };
+  if (source.aoKantorPusat && typeof source.aoKantorPusat === "object") aoOfficeData = { ...aoOfficeData, ...source.aoKantorPusat };
 
   return true;
 }
@@ -1542,6 +1637,8 @@ function renderStrategyDashboard() {
   renderPolicyPrepRows();
   renderBusinessExcellence();
   updatePerformanceStatusPanel();
+  updateInvestmentDashboard();
+  renderAoCorporate();
   updateDashboardMetrics();
 }
 
@@ -1687,6 +1784,9 @@ async function importDataFile(file) {
     imported.kinerja = importPerformanceSheet(workbook);
     imported.penyusunanKebijakan = importPolicyPrepSheet(workbook);
     imported.businessExcellence = importBusinessSheet(workbook);
+    imported.investasi = importInvestmentSheet(workbook);
+    imported.aoKorporat = importAoCorporateSheet(workbook);
+    imported.aoKantorPusat = importAoOfficeSheet(workbook);
     rows = crData;
   } else if (extension === "csv") {
     rows = rowsFromCsv(await file.text());
@@ -1698,7 +1798,13 @@ async function importDataFile(file) {
       parsed.crData ||
       parsed.performanceData ||
       parsed.policyPrepData ||
-      parsed.businessExcellenceData;
+      parsed.businessExcellenceData ||
+      parsed.investmentData ||
+      parsed.investasi ||
+      parsed.aoCorporateData ||
+      parsed.aoKorporat ||
+      parsed.aoOfficeData ||
+      parsed.aoKantorPusat;
     if (isFullDataSource) {
       applyStrategyDataSource(parsed);
       rows = crData;
@@ -1724,6 +1830,9 @@ async function importDataFile(file) {
     message.push(`Kinerja: ${imported.kinerja} indikator.`);
     message.push(`Penyusunan Kebijakan: ${imported.penyusunanKebijakan} baris.`);
     message.push(`Business Excellence: ${imported.businessExcellence} baris.`);
+    message.push(`Investasi: ${imported.investasi} nilai.`);
+    message.push(`AO Korporat: ${imported.aoKorporat} nilai.`);
+    message.push(`AO Kantor Pusat: ${imported.aoKantorPusat} nilai.`);
   } else {
     message.push(`${rows.length} Change Request dimuat.`);
   }
