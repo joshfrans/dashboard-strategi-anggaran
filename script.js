@@ -627,10 +627,16 @@ function downloadCsv() {
 function downloadJson() {
   const data = {
     generatedAt: new Date().toISOString(),
-    policyRatification: policyData,
-    changeRequest: crData
+    policyData,
+    policyEntities,
+    policyTypes,
+    policyColumns,
+    crData,
+    performanceData,
+    policyPrepData,
+    businessExcellenceData
   };
-  downloadBlob(JSON.stringify(data, null, 2), "dashboard-strategi-evaluasi-ga.json", "application/json;charset=utf-8");
+  downloadBlob(JSON.stringify(data, null, 2), "data-source-strategi-evaluasi.json", "application/json;charset=utf-8");
 }
 
 function downloadExcel() {
@@ -639,20 +645,41 @@ function downloadExcel() {
     return;
   }
 
-  const policyHeader = [
-    "No",
-    "Entitas",
-    "Aset Properti",
-    "Arsip",
-    "SPPD",
-    "Fasilitas Kerja",
-    "BFKO",
-    "Indirect Procurement",
-    "Kendaraan Operasional"
-  ];
-  const crHeader = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
-  const policyRows = policyExportRows();
+  const policyRows = policyData.flatMap((row) =>
+    policyColumns.map((type, index) => [
+      row.entity,
+      type,
+      policyStatusLabel[row.statuses[index]] || row.statuses[index] || ""
+    ])
+  );
   const crRows = crExportRows();
+  const performanceRows = performanceData.map((row) => [
+    row.no,
+    row.indicator,
+    row.unit,
+    row.weight,
+    row.target,
+    row.targetPeriod,
+    row.realization,
+    row.achievement,
+    row.score,
+    row.status
+  ]);
+  const policyPrepRows = policyPrepData.map((row) => [
+    row.no,
+    row.area,
+    row.scope,
+    row.progress,
+    row.status,
+    row.target
+  ]);
+  const businessRows = businessExcellenceData.map((row) => [
+    row.semester,
+    row.activity,
+    row.target,
+    row.realization,
+    row.status
+  ]);
   const donePolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0);
   const followUpPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0);
   const crProgress = crData.length
@@ -663,22 +690,29 @@ function downloadExcel() {
   const summarySheet = window.XLSX.utils.aoa_to_sheet([
     ["Dashboard Strategi & Evaluasi"],
     ["Tanggal Export", new Date().toLocaleString("id-ID")],
+    ["Fungsi", "Data source ini dapat di-import kembali untuk update menu Strategi & Evaluasi"],
     [],
     ["Area", "Indikator", "Nilai"],
     ["Ratifikasi Kebijakan", "Entitas SH/AP", policyData.length],
-    ["Ratifikasi Kebijakan", "Jenis Kebijakan", policyHeader.length - 2],
+    ["Ratifikasi Kebijakan", "Jenis Kebijakan", policyColumns.length],
     ["Ratifikasi Kebijakan", "Selesai endorsement", donePolicy],
     ["Ratifikasi Kebijakan", "Perlu tindak lanjut", followUpPolicy],
     ["Change Request", "Total CR", crData.length],
     ["Change Request", "Progress keseluruhan", percentLabel(crProgress)]
   ]);
-  const policySheet = window.XLSX.utils.aoa_to_sheet([policyHeader, ...policyRows]);
-  const crSheet = window.XLSX.utils.aoa_to_sheet([crHeader, ...crRows]);
+  const policySheet = window.XLSX.utils.aoa_to_sheet([["Entitas SH/AP", "Jenis Kebijakan", "Status"], ...policyRows]);
+  const crSheet = window.XLSX.utils.aoa_to_sheet([["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"], ...crRows]);
+  const performanceSheet = window.XLSX.utils.aoa_to_sheet([["No", "Indikator Kerja", "Satuan", "Bobot", "Target 2026", "Target S.D. Juni", "Realisasi", "Pencapaian", "Nilai", "Status"], ...performanceRows]);
+  const prepSheet = window.XLSX.utils.aoa_to_sheet([["No", "Bidang", "Lingkup", "Progress", "Status", "Target"], ...policyPrepRows]);
+  const businessSheet = window.XLSX.utils.aoa_to_sheet([["Semester", "Aktivitas", "Target", "Realisasi", "Status"], ...businessRows]);
 
   window.XLSX.utils.book_append_sheet(workbook, summarySheet, "Ringkasan");
-  window.XLSX.utils.book_append_sheet(workbook, policySheet, "Ratifikasi Kebijakan");
-  window.XLSX.utils.book_append_sheet(workbook, crSheet, "Change Request");
-  window.XLSX.writeFile(workbook, "dashboard-strategi-evaluasi-ga.xlsx");
+  window.XLSX.utils.book_append_sheet(workbook, policySheet, "01_Ratifikasi");
+  window.XLSX.utils.book_append_sheet(workbook, crSheet, "02_Change_Request");
+  window.XLSX.utils.book_append_sheet(workbook, performanceSheet, "03_Kinerja");
+  window.XLSX.utils.book_append_sheet(workbook, prepSheet, "04_Penyusunan_Kebijakan");
+  window.XLSX.utils.book_append_sheet(workbook, businessSheet, "05_Business_Excellence");
+  window.XLSX.writeFile(workbook, "template-data-source-strategi-evaluasi.xlsx");
 }
 
 function investmentPercentValue(value) {
@@ -1290,6 +1324,50 @@ function importBusinessSheet(workbook) {
   return businessExcellenceData.length;
 }
 
+function applyStrategyDataSource(source) {
+  if (!source || typeof source !== "object") return false;
+
+  if (Array.isArray(source.policyData)) policyData = source.policyData;
+  if (Array.isArray(source.policyEntities)) policyEntities = source.policyEntities;
+  if (Array.isArray(source.policyTypes)) policyTypes = source.policyTypes;
+  if (Array.isArray(source.policyColumns)) {
+    policyColumns = source.policyColumns;
+  } else if (Array.isArray(source.policyTypes)) {
+    policyColumns = source.policyTypes;
+  }
+  if (Array.isArray(source.crData)) crData = source.crData;
+  if (Array.isArray(source.changeRequest)) crData = source.changeRequest;
+  if (Array.isArray(source.performanceData)) performanceData = source.performanceData;
+  if (Array.isArray(source.policyPrepData)) policyPrepData = source.policyPrepData;
+  if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
+
+  return true;
+}
+
+function renderStrategyDashboard() {
+  renderPolicyRows();
+  renderPolicyEntities();
+  renderPolicyTypes();
+  renderCrRows();
+  renderPerformanceRows();
+  renderPolicyPrepRows();
+  renderBusinessExcellence();
+  updatePerformanceStatusPanel();
+  updateDashboardMetrics();
+}
+
+async function loadStrategyDataSource() {
+  try {
+    const response = await fetch("./assets/data-source-strategi-evaluasi.json?v=20260728-3", { cache: "no-store" });
+    if (!response.ok) return false;
+    const source = await response.json();
+    return applyStrategyDataSource(source);
+  } catch (error) {
+    console.info("Data source Strategi & Evaluasi tidak dimuat:", error);
+    return false;
+  }
+}
+
 function normalizeRow(row) {
   const app = row.Aplikasi || row.Application || row.app;
   const request = row["Change Request"] || row["Change request"] || row.Request || row.request;
@@ -1425,8 +1503,21 @@ async function importDataFile(file) {
     rows = rowsFromCsv(await file.text());
     if (rows.length) crData = rows;
   } else if (extension === "json") {
-    rows = rowsFromJson(await file.text());
-    if (rows.length) crData = rows;
+    const parsed = JSON.parse(await file.text());
+    const isFullDataSource =
+      parsed.policyData ||
+      parsed.crData ||
+      parsed.performanceData ||
+      parsed.policyPrepData ||
+      parsed.businessExcellenceData;
+    if (isFullDataSource) {
+      applyStrategyDataSource(parsed);
+      rows = crData;
+      imported.dataSource = true;
+    } else {
+      rows = rowsFromJson(JSON.stringify(parsed));
+      if (rows.length) crData = rows;
+    }
   }
 
   if (!rows.length) {
@@ -1434,17 +1525,11 @@ async function importDataFile(file) {
     return;
   }
 
-  renderPolicyRows();
-  renderPolicyEntities();
-  renderPolicyTypes();
-  renderCrRows();
-  renderPerformanceRows();
-  renderPolicyPrepRows();
-  renderBusinessExcellence();
-  updatePerformanceStatusPanel();
-  updateDashboardMetrics();
+  renderStrategyDashboard();
   const message = ["Import berhasil."];
-  if (Object.keys(imported).length) {
+  if (imported.dataSource) {
+    message.push("Data source Strategi & Evaluasi lengkap dimuat.");
+  } else if (Object.keys(imported).length) {
     message.push(`Ratifikasi: ${imported.ratifikasi} baris.`);
     message.push(`Change Request: ${imported.changeRequest} baris.`);
     message.push(`Kinerja: ${imported.kinerja} indikator.`);
@@ -1578,21 +1663,14 @@ function setupExportMenu() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
-  renderPolicyRows();
-  renderPolicyEntities();
-  renderPolicyTypes();
+  await loadStrategyDataSource();
+  renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
   setupInfoPopover("policyTypeTrigger", "policyTypePopover");
-  renderCrRows();
-  renderPerformanceRows();
-  renderPolicyPrepRows();
-  renderBusinessExcellence();
   renderAoCorporate();
   updateInvestmentDashboard();
-  updatePerformanceStatusPanel();
-  updateDashboardMetrics();
   setupNavigation();
   setupFilters();
   setupPeriodPicker();
