@@ -510,7 +510,15 @@ function updateDashboardMetrics() {
     summaryPolicyEntities: policy.entities,
     summaryPolicyTypes: policy.types,
     summaryPolicyDone: policy.done,
-    summaryPolicyFollowUp: policy.followUp
+    summaryPolicyFollowUp: policy.followUp,
+    analyticsPolicyDone: policy.done,
+    analyticsPolicyTotal: policy.total,
+    analyticsPolicyFollowUp: policy.followUp,
+    analyticsCrTotal: total,
+    analyticsCrOpen: onProgress,
+    analyticsCrNotStarted: notStarted,
+    analyticsNko: smartLabel(performanceScore, "plain"),
+    analyticsKpiGreen: performanceSummary.green
   };
 
   Object.entries(values).forEach(([id, value]) => {
@@ -533,6 +541,15 @@ function updateDashboardMetrics() {
   if (summaryText) {
     summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, dengan ${values.summaryPolicyDone} selesai endorsement dan ${values.summaryPolicyFollowUp} masih perlu tindak lanjut. Monitoring kinerja s.d. Juni 2026 mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
+
+  document.querySelectorAll('[id="analyticsCrProgress"]').forEach((element) => {
+    element.textContent = progressLabel;
+  });
+
+  const analyticsExecutiveMessage = document.getElementById("analyticsExecutiveMessage");
+  if (analyticsExecutiveMessage) {
+    analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.done} dari ${policy.total} status ratifikasi telah selesai endorsement, NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada ${policy.followUp} status ratifikasi yang belum selesai, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
+  }
 }
 
 function setupNavigation() {
@@ -551,11 +568,15 @@ function setupNavigation() {
       navItems.forEach((nav) => nav.classList.remove("is-active"));
       item.classList.add("is-active");
 
-      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode");
+      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode");
       if (target === "dashboard") {
         dashboard.classList.add("dashboard-mode");
         title.textContent = "Dashboard";
         description.textContent = "Ringkasan umum lintas Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
+      } else if (target === "analytics") {
+        dashboard.classList.add("analytics-mode");
+        title.textContent = "Laporan & Analitik";
+        description.textContent = "Executive management report untuk membaca status, risiko, dan tindak lanjut lintas menu saat presentasi dashboard.";
       } else if (target === "ao") {
         dashboard.classList.add("ao-mode");
         title.textContent = "AO Kantor Pusat";
