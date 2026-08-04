@@ -2282,29 +2282,19 @@ p {
   background: #ffeaea;
 }
 
-.exec2-main-layout {
+.exec2-content-grid {
   display: grid;
   grid-template-columns: minmax(480px, 0.92fr) minmax(560px, 1fr);
   gap: 10px;
   align-items: start;
 }
 
-.exec2-board {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-  margin-top: -146px;
-}
-
+.exec2-left-column,
+.exec2-right-column,
 .exec2-center-stack,
 .exec2-right-stack {
   display: grid;
   gap: 10px;
-}
-
-.exec2-right-stack {
-  padding-top: 146px;
 }
 
 .exec2-panel {
@@ -6522,8 +6512,7 @@ td {
   .exec-lower-grid,
   .exec-bottom-grid,
   .exec-budget-body,
-  .exec2-main-layout,
-  .exec2-board,
+  .exec2-content-grid,
   .analytics-hero,
   .alert-hero,
   .settings-hero,
@@ -6617,14 +6606,6 @@ td {
 
   .analytics-wide {
     grid-column: auto;
-  }
-
-  .exec2-board {
-    margin-top: 0;
-  }
-
-  .exec2-right-stack {
-    padding-top: 0;
   }
 }
 
