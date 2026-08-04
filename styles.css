@@ -560,7 +560,7 @@ p {
 .dashboard.settings-mode .settings-view,
 .dashboard.dashboard-mode .executive-dashboard-view {
   display: grid;
-  gap: 14px;
+  gap: 11px;
 }
 
 .alert-hero,
@@ -1274,6 +1274,8 @@ p {
 }
 
 .executive-dashboard-view {
+  max-width: 1600px;
+  margin: 0 auto;
   color: var(--navy);
 }
 
@@ -1289,9 +1291,9 @@ p {
 .exec-topbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: 18px;
   align-items: center;
-  padding: 14px 18px;
+  padding: 12px 18px;
 }
 
 .exec-topbar h2 {
@@ -1299,7 +1301,7 @@ p {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  font-size: 25px;
+  font-size: 27px;
   line-height: 1;
 }
 
@@ -1322,13 +1324,13 @@ p {
 
 .exec-controls {
   display: flex;
-  gap: 9px;
+  gap: 10px;
   align-items: center;
 }
 
 .exec-controls span,
 .exec-controls button {
-  height: 38px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1346,15 +1348,28 @@ p {
   padding: 0;
 }
 
+.exec-controls .theme-picker {
+  gap: 5px;
+  padding: 0 9px;
+}
+
+.exec-controls .exec-exit {
+  width: auto;
+  min-width: 92px;
+  justify-content: center;
+  color: #12285b;
+}
+
 .theme-dot {
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
 .theme-dot.blue { background: #1463ff; }
 .theme-dot.teal { background: #079c9f; }
+.theme-dot.sky { background: #3f8cff; }
 .theme-dot.purple { background: #6d4ee8; }
 
 .exec-subhead {
@@ -1362,7 +1377,7 @@ p {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  padding: 0 4px;
+  padding: 0 3px;
 }
 
 .exec-subhead strong,
@@ -1375,23 +1390,24 @@ p {
 .exec-kpi-strip {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
+  gap: 13px;
 }
 
 .exec-kpi {
   position: relative;
-  min-height: 124px;
+  min-height: 118px;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 50px minmax(0, 1fr);
+  grid-template-rows: minmax(56px, auto) 1fr;
+  gap: 9px 13px;
   align-items: start;
-  padding: 14px;
+  padding: 12px 14px 11px;
   overflow: hidden;
 }
 
 .exec-icon {
-  width: 43px;
-  height: 43px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -1406,7 +1422,7 @@ p {
 .exec-kpi > div > span {
   display: block;
   color: var(--navy);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -1421,7 +1437,7 @@ p {
 
 .exec-kpi strong {
   display: block;
-  margin-top: 5px;
+  margin-top: 4px;
   color: #f39a00;
   font-size: 25px;
   line-height: 1;
@@ -1432,8 +1448,9 @@ p {
 
 .exec-kpi em {
   width: max-content;
-  grid-column: 1 / -1;
-  padding: 6px 9px;
+  grid-column: 1 / 3;
+  align-self: end;
+  padding: 5px 9px;
   border-radius: 7px;
   color: #bd6c00;
   background: #fff1d3;
@@ -1448,10 +1465,10 @@ p {
 
 .exec-kpi svg {
   position: absolute;
-  right: 12px;
-  bottom: 14px;
-  width: 74px;
-  height: 24px;
+  right: 14px;
+  bottom: 13px;
+  width: 72px;
+  height: 21px;
   fill: none;
   stroke: currentColor;
   stroke-width: 3;
@@ -1463,24 +1480,24 @@ p {
 
 .exec-main-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.7fr) minmax(300px, 0.72fr);
-  gap: 12px;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.72fr) minmax(300px, 0.72fr);
+  gap: 13px;
 }
 
 .exec-lower-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.82fr) minmax(0, 0.9fr);
-  gap: 12px;
+  gap: 13px;
 }
 
 .exec-bottom-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(280px, 0.65fr) minmax(260px, 0.55fr);
-  gap: 12px;
+  gap: 13px;
 }
 
 .exec-panel {
-  padding: 14px;
+  padding: 12px 14px;
 }
 
 .exec-budget-panel {
@@ -1493,14 +1510,14 @@ p {
   justify-content: space-between;
   gap: 10px;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .exec-budget-body {
   height: 100%;
   display: grid;
-  grid-template-columns: 210px 160px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 176px 150px minmax(0, 1fr);
+  gap: 12px;
   align-items: center;
 }
 
@@ -1515,12 +1532,12 @@ p {
 }
 
 .exec-big-donut {
-  width: 170px;
-  box-shadow: inset 0 0 0 28px #fff;
+  width: 148px;
+  box-shadow: inset 0 0 0 24px #fff;
 }
 
 .exec-big-donut strong {
-  font-size: 29px;
+  font-size: 26px;
 }
 
 .exec-big-donut span,
@@ -1538,15 +1555,16 @@ p {
 
 .exec-budget-metrics {
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .exec-budget-metrics div {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 8px;
+  grid-template-columns: 30px 1fr;
+  gap: 7px;
   align-items: center;
-  padding: 8px;
+  min-height: 49px;
+  padding: 6px 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -1564,7 +1582,7 @@ p {
 }
 
 .exec-budget-metrics strong {
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .exec-budget-metrics .risk i,
@@ -1595,9 +1613,9 @@ p {
 .exec-bar-chart .bars .amber { background: #f3a000; }
 
 .exec-bar-chart .bars {
-  height: 164px;
+  height: 122px;
   display: flex;
-  gap: 34px;
+  gap: 28px;
   align-items: end;
   justify-content: center;
   margin-top: 12px;
@@ -1614,7 +1632,7 @@ p {
 }
 
 .exec-bar-chart .bars span {
-  width: 22px;
+  width: 20px;
   border-radius: 4px 4px 0 0;
 }
 
@@ -1632,7 +1650,7 @@ p {
 .exec-notes,
 .exec-status-legend {
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .exec-risk-list div,
@@ -1642,7 +1660,8 @@ p {
   grid-template-rows: auto auto;
   gap: 8px;
   align-items: center;
-  padding: 8px;
+  min-height: 43px;
+  padding: 6px 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfdff;
@@ -1661,14 +1680,14 @@ p {
 .exec-action-list strong {
   grid-column: 2;
   color: var(--navy);
-  font-size: 12px;
+  font-size: 11.5px;
 }
 
 .exec-risk-list span,
 .exec-action-list span {
   grid-column: 2;
   color: #53627f;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .exec-risk-list em {
@@ -1694,8 +1713,8 @@ p {
 }
 
 .exec-action-list b {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
   border-radius: 7px;
@@ -1711,7 +1730,7 @@ p {
 
 .exec-outline-btn {
   width: 100%;
-  height: 34px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1727,29 +1746,29 @@ p {
 .exec-portfolio,
 .exec-strategy-status {
   display: grid;
-  grid-template-columns: 118px 1fr;
+  grid-template-columns: 112px 1fr;
   gap: 14px;
   align-items: center;
 }
 
 .exec-mini-donut {
-  width: 108px;
-  box-shadow: inset 0 0 0 24px #fff;
+  width: 92px;
+  box-shadow: inset 0 0 0 21px #fff;
 }
 
 .exec-portfolio-bars,
 .exec-progress-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .exec-portfolio-bars div,
 .exec-progress-list div {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 58px;
-  gap: 8px;
+  grid-template-columns: 112px minmax(0, 1fr) 52px;
+  gap: 7px;
   align-items: center;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
 }
 
@@ -1778,29 +1797,29 @@ p {
 .exec-total-chip {
   display: flex;
   justify-content: space-between;
-  margin-top: 12px;
-  padding: 10px 14px;
+  margin-top: 10px;
+  padding: 8px 14px;
   border-radius: 8px;
   background: #f3f7ff;
   font-weight: 900;
 }
 
 .exec-strategy-status {
-  grid-template-columns: 1fr 142px;
+  grid-template-columns: 1fr 132px;
 }
 
 .exec-overall {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   place-items: center;
-  padding: 12px;
+  padding: 10px;
   border-left: 1px solid var(--line);
   text-align: center;
 }
 
 .exec-overall strong {
   color: #f39a00;
-  font-size: 40px;
+  font-size: 34px;
 }
 
 .exec-overall em {
@@ -1813,13 +1832,13 @@ p {
 .exec-ranking table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .exec-cr-table th,
 .exec-cr-table td,
 .exec-ranking td {
-  padding: 8px;
+  padding: 6px 8px;
   border-bottom: 1px solid var(--line);
   text-align: left;
 }
@@ -1831,16 +1850,16 @@ p {
 }
 
 .exec-cr-table b {
-  width: 58px;
+  width: 52px;
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 7px;
   vertical-align: middle;
 }
 
 .exec-rank-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 
 .exec-rank-columns h4 {
@@ -1868,8 +1887,8 @@ p {
   margin: 0;
   padding-left: 18px;
   color: #253553;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
 .exec-status-legend span {
@@ -1877,7 +1896,7 @@ p {
   grid-template-columns: 14px 1fr;
   gap: 8px;
   align-items: center;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 900;
 }
 
@@ -1891,6 +1910,23 @@ p {
   grid-column: 2;
   color: #53627f;
   font-weight: 700;
+}
+
+.exec-main-grid > .exec-panel {
+  min-height: 252px;
+}
+
+.exec-lower-grid > .exec-panel {
+  min-height: 212px;
+}
+
+.exec-bottom-grid > .exec-panel {
+  min-height: 150px;
+}
+
+.exec-ranking .exec-panel-head,
+.exec-bottom-grid .exec-panel-head {
+  margin-bottom: 8px;
 }
 
 .overview-hero,
