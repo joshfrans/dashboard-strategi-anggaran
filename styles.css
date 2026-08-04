@@ -2425,27 +2425,42 @@ p {
 }
 
 .exec2-forecast-panel {
-  display: grid;
-  grid-template-columns: minmax(270px, 0.72fr) minmax(420px, 0.95fr);
-  gap: 10px 18px;
-  align-items: center;
-  padding: 10px 14px 12px;
+  width: min(530px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px 16px 11px;
 }
 
 .exec2-forecast-panel .exec2-panel-head {
   display: grid;
-  gap: 4px;
+  gap: 0;
   margin-bottom: 0;
+}
+
+.exec2-forecast-panel .exec2-panel-head h3 {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.exec2-forecast-panel .exec2-panel-head h3 small {
+  color: #3d4d6b;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.exec2-forecast-panel .exec2-panel-head span {
+  display: none;
 }
 
 .exec2-forecast-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 24px;
   align-items: center;
   justify-self: start;
   color: #34456b;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -2477,16 +2492,13 @@ p {
 }
 
 .exec2-forecast-chart {
-  grid-column: 2;
-  grid-row: 1 / 4;
-  width: min(520px, 100%);
-  height: 118px;
+  width: 100%;
+  height: 174px;
   display: flex;
-  gap: 36px;
+  gap: 54px;
   align-items: end;
-  justify-content: center;
-  justify-self: end;
-  padding: 14px 14px 22px;
+  justify-content: flex-start;
+  padding: 21px 18px 28px;
   border-bottom: 1px solid #dfe8f6;
 }
 
@@ -2494,7 +2506,7 @@ p {
   position: relative;
   height: 100%;
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: end;
   justify-content: center;
 }
@@ -2511,44 +2523,54 @@ p {
 
 .exec2-bar {
   position: relative;
-  width: 24px;
+  width: 33px;
   height: var(--h);
   min-height: 7px;
-  border-radius: 5px 5px 0 0;
+  border-radius: 6px 6px 0 0;
   box-shadow: 0 7px 14px rgba(6, 26, 80, 0.12);
 }
 
 .exec2-bar strong {
   position: absolute;
-  top: -20px;
+  top: -22px;
   left: 50%;
   transform: translateX(-50%);
   color: #061a50;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 950;
   white-space: nowrap;
 }
 
 .exec2-forecast-note {
-  grid-column: 1;
   display: flex;
-  gap: 8px;
+  gap: 7px;
   align-items: center;
-  width: max-content;
-  max-width: 100%;
-  justify-self: start;
-  padding: 9px 10px;
+  width: 100%;
+  padding: 8px 10px;
   border-radius: 8px;
   color: #0a2b8f;
   background: #eef5ff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 850;
 }
 
-.exec2-forecast-note svg {
-  width: 16px;
-  height: 16px;
+.exec2-forecast-note::before {
+  content: "i";
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #1266f1;
+  border-radius: 50%;
   color: #1266f1;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.exec2-forecast-note svg {
+  display: none;
 }
 
 .exec2-small-table {
