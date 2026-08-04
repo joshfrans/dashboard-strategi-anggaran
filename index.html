@@ -159,192 +159,138 @@
           </div>
         </header>
 
-        <section class="executive-dashboard-view" id="executiveDashboardView" aria-label="Executive Dashboard">
-          <header class="exec-topbar">
+        <section class="executive-dashboard-view exec2" id="executiveDashboardView" aria-label="Executive Dashboard">
+          <header class="exec2-topbar">
             <div>
               <h2>Executive Dashboard <span>Umum & Aset Properti</span></h2>
               <p>EVP - PT PLN (Persero)</p>
             </div>
-            <div class="exec-controls">
-              <span><i data-lucide="calendar-days"></i> Juli 2026</span>
-              <span><i data-lucide="user-round"></i> Administrator GA</span>
-              <span class="theme-picker" aria-label="Pilihan tema dashboard"><b class="theme-dot blue"></b><b class="theme-dot teal"></b><b class="theme-dot sky"></b><b class="theme-dot purple"></b></span>
-              <button type="button" aria-label="Refresh dashboard"><i data-lucide="refresh-cw"></i></button>
-              <button type="button" class="exec-exit" aria-label="Keluar dashboard"><i data-lucide="log-out"></i> Keluar</button>
+            <div class="exec2-controls">
+              <span><i data-lucide="calendar-days"></i> Juni 2026 <i data-lucide="chevron-down"></i></span>
+              <span><i data-lucide="user-round"></i> Administrator GA <i data-lucide="chevron-down"></i></span>
+              <span class="exec2-theme" aria-label="Pilihan tema dashboard"><b></b><b></b><b></b><b></b></span>
+              <button type="button" aria-label="Mode gelap"><i data-lucide="moon"></i></button>
+              <button type="button" aria-label="Keluar"><i data-lucide="log-out"></i> Keluar</button>
             </div>
           </header>
 
-          <div class="exec-subhead">
-            <strong>Executive Summary - KPI Strategis</strong>
-            <span>Data per 16 Juli 2026 - ilustratif dashboard manajemen</span>
+          <div class="exec2-subline">
+            <strong>Realisasi Biaya s.d. Juni 2026</strong>
+            <span>Data per 30 Juni 2026 - Ilustrasi dashboard manajemen</span>
           </div>
 
-          <div class="exec-kpi-strip">
-            <article class="exec-kpi danger">
-              <div class="exec-icon"><i data-lucide="chart-no-axes-combined"></i></div>
-              <div><span>Penyerapan AI</span><strong>3,2%</strong><small>344,27 M dari 10,89 T</small></div>
-              <em>Kritis</em>
-              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,5 14,9 26,12 38,13 50,18 62,14 78,19" /></svg>
-            </article>
-            <article class="exec-kpi warning">
-              <div class="exec-icon"><i data-lucide="database"></i></div>
-              <div><span>Penyerapan AKI</span><strong>30,4%</strong><small>412,23 M dari 1,35 T</small></div>
-              <em>Perlu Percepatan</em>
-              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,20 14,18 26,17 38,15 50,10 62,12 78,8" /></svg>
-            </article>
-            <article class="exec-kpi safe">
-              <div class="exec-icon"><i data-lucide="pie-chart"></i></div>
-              <div><span>Penyerapan AO</span><strong>39,9%</strong><small>3.533,76 M dari 8,86 T</small></div>
-              <em>On Track</em>
-              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,20 14,18 26,15 38,16 50,10 62,12 78,6" /></svg>
-            </article>
-            <article class="exec-kpi safe">
-              <div class="exec-icon"><i data-lucide="target"></i></div>
-              <div><span>NKO Strategi & Evaluasi</span><strong id="summaryNko">106,84</strong><small>Tercapai dari target 100</small></div>
-              <em>On Track</em>
-              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,18 14,16 26,10 38,14 50,8 62,10 78,6" /></svg>
-            </article>
-            <article class="exec-kpi warning">
-              <div class="exec-icon"><i data-lucide="clipboard-list"></i></div>
-              <div><span>Progress Change Request</span><strong id="overallProgress">62,6%</strong><small><span id="doneCr">2</span> selesai - <span id="progressCr">6</span> on progress - <span id="notStartedCr">1</span> belum mulai</small></div>
-              <em>Perlu Percepatan</em>
-              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,18 14,15 26,10 38,17 50,11 62,14 78,8" /></svg>
-            </article>
-          </div>
-
-          <div class="exec-main-grid">
-            <article class="exec-panel exec-budget-panel">
-              <div class="exec-panel-head">
-                <h3>Kinerja Anggaran Terintegrasi 2026</h3>
-                <i data-lucide="info"></i>
+          <div class="exec2-cost-grid">
+            <article class="exec2-cost-card blue">
+              <div class="exec2-cost-head"><b>1</b><h3>Realisasi Biaya<br />Adm. Umum Korporat</h3><i data-lucide="info"></i></div>
+              <div class="exec2-cost-body">
+                <div class="exec2-cost-icon"><i data-lucide="database"></i></div>
+                <div><strong>3.533.761 <small>jt</small></strong><span>s.d. Juni</span></div>
+                <div class="exec2-gauge" style="--value:108"><strong>108%</strong><span>terhadap target</span></div>
               </div>
-              <div class="exec-budget-body">
-                <div class="exec-big-donut" style="--value: 21.7">
-                  <strong>21,7%</strong>
-                  <span>Penyerapan Total</span>
-                  <small>4,29 T dari 19,75 T</small>
-                </div>
-                <div class="exec-budget-metrics">
-                  <div><i data-lucide="landmark"></i><span>RKAP Total</span><strong>19,75 T</strong></div>
-                  <div><i data-lucide="receipt"></i><span>Realisasi</span><strong>4,29 T</strong></div>
-                  <div><i data-lucide="building-2"></i><span>Forecast Akhir Tahun</span><strong>16,80 T</strong></div>
-                  <div class="risk"><i data-lucide="circle-alert"></i><span>Gap Forecast</span><strong>2,95 T</strong></div>
-                </div>
-                <div class="exec-bar-chart">
-                  <div class="legend"><b class="blue"></b>RKAP <b class="green"></b>Realisasi <b class="amber"></b>Forecast</div>
-                  <div class="bars">
-                    <div><span style="height: 96%"></span><span class="green" style="height: 8%"></span><span class="amber" style="height: 86%"></span><small>AI</small></div>
-                    <div><span style="height: 34%"></span><span class="green" style="height: 11%"></span><span class="amber" style="height: 28%"></span><small>AKI</small></div>
-                    <div><span style="height: 74%"></span><span class="green" style="height: 46%"></span><span class="amber" style="height: 62%"></span><small>AO</small></div>
-                  </div>
-                  <p>Forecast dihitung berdasarkan realisasi s.d. bulan berjalan dan pipeline percepatan.</p>
-                </div>
-              </div>
+              <div class="exec2-cost-meta"><span>Target s.d. Juni <b>3.262.876 jt</b></span><span>Realisasi 2025 <b>3.003.849 jt</b></span></div>
+              <div class="exec2-mini-trend blue-line"></div>
+              <div class="exec2-cost-signals"><span class="up">98% vs Target</span><span class="up">2025</span><span class="bad">110% vs Prognosa</span></div>
             </article>
-
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Early Warning Center - Top 5 Risiko</h3></div>
-              <div class="exec-risk-list">
-                <div class="critical"><i data-lucide="siren"></i><b>Penyerapan AI sangat rendah</b><span>Baru 3,2% dari target semester</span><em>Kritis</em></div>
-                <div class="critical"><i data-lucide="siren"></i><b>Gap AKI Rp 942 M</b><span>Belum terserap, perlu rekonsiliasi SHAP</span><em>Kritis</em></div>
-                <div><i data-lucide="triangle-alert"></i><b>Change Request belum mulai</b><span>1 CR status belum mulai</span><em>Perlu</em></div>
-                <div><i data-lucide="triangle-alert"></i><b>12 Ratifikasi belum selesai</b><span>Evidence dan target perlu dikunci</span><em>Perlu</em></div>
-                <div class="critical"><i data-lucide="siren"></i><b>AO YoY naik 116%</b><span>Perlu efisiensi dan kontrol biaya</span><em>Kritis</em></div>
+            <article class="exec2-cost-card green">
+              <div class="exec2-cost-head"><b>2</b><h3>Realisasi Biaya<br />Adm. Umum Kantor Pusat</h3><i data-lucide="info"></i></div>
+              <div class="exec2-cost-body">
+                <div class="exec2-cost-icon"><i data-lucide="file-search"></i></div>
+                <div><strong>2.287.654 <small>jt</small></strong><span>s.d. Juni</span></div>
+                <div class="exec2-gauge" style="--value:95"><strong>95%</strong><span>terhadap target</span></div>
               </div>
+              <div class="exec2-cost-meta"><span>Target s.d. Juni <b>2.420.000 jt</b></span><span>Realisasi 2025 <b>2.120.985 jt</b></span></div>
+              <div class="exec2-mini-trend green-line"></div>
+              <div class="exec2-cost-signals"><span class="up">95% vs Target</span><span class="up">62%</span><span class="bad">108% vs Prognosa</span></div>
             </article>
-
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Executive Action Needed</h3></div>
-              <div class="exec-action-list">
-                <div><b>1</b><span><strong>Penyerapan AI baru 3,2%</strong>Target semester perlu percepatan realisasi investasi strategis.</span></div>
-                <div><b>2</b><span><strong>Gap AKI Rp 942 M</strong>Lakukan rekonsiliasi dengan SHAP terkait.</span></div>
-                <div><b>3</b><span><strong>12 Ratifikasi belum selesai</strong>Segera selesaikan ratifikasi kebijakan prioritas.</span></div>
-                <div><b>4</b><span><strong>1 Change Request belum dimulai</strong>Koordinasi dengan PIC untuk kick off segera.</span></div>
+            <article class="exec2-cost-card purple">
+              <div class="exec2-cost-head"><b>3</b><h3>Realisasi Biaya<br />Pemeliharaan KP</h3><i data-lucide="info"></i></div>
+              <div class="exec2-cost-body">
+                <div class="exec2-cost-icon"><i data-lucide="wrench"></i></div>
+                <div><strong>1.125.842 <small>jt</small></strong><span>s.d. Juni</span></div>
+                <div class="exec2-gauge" style="--value:95"><strong>95%</strong><span>terhadap target</span></div>
               </div>
-              <button class="exec-outline-btn" type="button">Lihat Rekomendasi Detail <i data-lucide="arrow-right"></i></button>
+              <div class="exec2-cost-meta"><span>Target s.d. Juni <b>1.180.000 jt</b></span><span>Realisasi 2025 <b>1.045.213 jt</b></span></div>
+              <div class="exec2-mini-trend purple-line"></div>
+              <div class="exec2-cost-signals"><span class="up">95% vs Target</span><span class="up">62%</span><span class="bad">108% vs Prognosa</span></div>
+            </article>
+            <article class="exec2-cost-card orange">
+              <div class="exec2-cost-head"><b>4</b><h3>Realisasi Biaya<br />NAC</h3><i data-lucide="info"></i></div>
+              <div class="exec2-cost-body">
+                <div class="exec2-cost-icon"><i data-lucide="bar-chart-3"></i></div>
+                <div><strong>456.789 <small>jt</small></strong><span>s.d. Juni</span></div>
+                <div class="exec2-gauge" style="--value:91"><strong>91%</strong><span>terhadap target</span></div>
+              </div>
+              <div class="exec2-cost-meta"><span>Target s.d. Juni <b>500.000 jt</b></span><span>Realisasi 2025 <b>398.765 jt</b></span></div>
+              <div class="exec2-mini-trend orange-line"></div>
+              <div class="exec2-cost-signals"><span class="up">91% vs Target</span><span class="up">37%</span><span class="bad">115% vs Prognosa</span></div>
+            </article>
+            <article class="exec2-cost-card teal">
+              <div class="exec2-cost-head"><b>5</b><h3>Realisasi Investasi</h3><i data-lucide="info"></i></div>
+              <div class="exec2-cost-body">
+                <div class="exec2-cost-icon"><i data-lucide="network"></i></div>
+                <div><strong>1.987.321 <small>jt</small></strong><span>s.d. Juni</span></div>
+                <div class="exec2-gauge" style="--value:95"><strong>95%</strong><span>terhadap target</span></div>
+              </div>
+              <div class="exec2-cost-meta"><span>Target s.d. Juni <b>2.100.000 jt</b></span><span>Realisasi 2025 <b>1.732.450 jt</b></span></div>
+              <div class="exec2-mini-trend teal-line"></div>
+              <div class="exec2-cost-signals"><span class="up">95% vs Target</span><span class="up">37%</span><span class="bad">115% vs Prognosa</span></div>
             </article>
           </div>
 
-          <div class="exec-lower-grid">
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Portofolio Investasi & Sarana</h3></div>
-              <div class="exec-portfolio">
-                <div class="exec-mini-donut" style="--value: 35"><span>Status</span></div>
-                <div class="exec-portfolio-bars">
-                  <div><span>Holding</span><b><i style="width: 100%"></i></b><strong>1,84 T</strong></div>
-                  <div><span>SHAP (10 entitas)</span><b><i style="width: 93%"></i></b><strong>1,71 T</strong></div>
-                  <div><span>Unit</span><b class="purple"><i style="width: 53%"></i></b><strong>0,98 T</strong></div>
-                  <div><span>Eliminasi</span><b class="red"><i style="width: 34%"></i></b><strong>(0,62 T)</strong></div>
-                </div>
+          <div class="exec2-board">
+            <article class="exec2-panel exec2-invest-panel">
+              <div class="exec2-panel-head"><h3>Penyerapan AI & AKI</h3><span>Report 16 Juli 2026</span></div>
+              <div class="exec2-duo-kpi"><div><span>Realisasi AKI</span><strong>412,23 M</strong><small>30,43% dari 1,35 T</small></div><div><span>Realisasi AI</span><strong>344,27 M</strong><small>dari AI 2026 10,89 T</small></div></div>
+              <h4>Penyerapan AKI per Lokasi</h4>
+              <div class="exec2-location-bars">
+                <div><span>Kantor Pusat</span><b><i style="width:29%"></i></b><strong>29,02%</strong><small>341,29 M dari 1.175,85 M</small></div>
+                <div><span>Sarpras Unit</span><b><i style="width:40%"></i></b><strong>39,71%</strong><small>70,94 M dari 178,66 M</small></div>
+                <div><span>Penyerapan AI (total)</span><b><i style="width:3%"></i></b><strong>3,2%</strong><small>344,27 M dari 10,89 T</small></div>
               </div>
-              <div class="exec-total-chip"><span>Total Investasi 2026</span><strong>3,91 T</strong></div>
+              <div class="exec2-warning-line"><i data-lucide="circle-alert"></i> Gap 942,28 M belum terserap - perlu BAPP & rekomposisi</div>
+              <h4>Komposisi AI & AKI per Lokasi</h4>
+              <table class="exec2-small-table"><thead><tr><th>Lokasi</th><th>AI</th><th>AKI</th></tr></thead><tbody><tr><td>Kantor Pusat</td><td>10,64 T</td><td>1,18 T</td></tr><tr><td>Sarpras Unit</td><td>255,31 M</td><td>178,66 M</td></tr></tbody></table>
             </article>
 
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Status Eksekusi Strategi & Evaluasi</h3><i data-lucide="info"></i></div>
-              <div class="exec-strategy-status">
-                <div class="exec-progress-list">
-                  <div><span>Ratifikasi Kebijakan</span><b><i style="width:77%"></i></b><strong>77%</strong></div>
-                  <div><span>Penyusunan Kebijakan</span><b><i style="width:81%"></i></b><strong>81%</strong></div>
-                  <div><span>Change Request</span><b class="amber"><i style="width:63%"></i></b><strong>63%</strong></div>
-                  <div><span>Monitoring Evaluasi</span><b><i style="width:92%"></i></b><strong>92%</strong></div>
+            <div class="exec2-center-stack">
+              <article class="exec2-panel">
+                <div class="exec2-panel-head"><h3>AO Korporat & SHAP</h3><span>RKAP 8,86 T - 10 entitas</span></div>
+                <div class="exec2-ao-bars">
+                  <div><i data-lucide="building-2"></i><span>Holding</span><b><em style="width:100%"></em></b><strong>1.835.286</strong></div>
+                  <div><i data-lucide="users"></i><span>SHAP (10 entitas)</span><b><em style="width:93%"></em></b><strong>1.711.236</strong></div>
+                  <div class="negative"><i data-lucide="minus"></i><span>Eliminasi</span><b><em style="width:34%"></em></b><strong>(615.335)</strong></div>
+                  <div><i data-lucide="layers"></i><span>Konsolidasi</span><b><em style="width:86%"></em></b><strong>2.931.187</strong></div>
                 </div>
-                <div class="exec-overall">
-                  <span>Overall Strategic Execution</span>
-                  <strong>76%</strong>
-                  <em>Perlu Percepatan</em>
-                  <small>Target RKAP 2026: 100%<br />Gap terhadap Target: 24%</small>
-                </div>
-              </div>
-            </article>
+                <div class="exec2-highlight"><i data-lucide="trending-up"></i><span>Realisasi AO Korporat</span><strong>3.533.761 <small>jt</small></strong><em>116% YoY - perlu dimonitor</em></div>
+              </article>
+              <article class="exec2-panel">
+                <div class="exec2-panel-head"><h3>AO Korporat - Indikator Tambahan</h3><span>ilustratif</span></div>
+                <div class="exec2-extra-kpi"><div><span>RKAP Korporat</span><strong>8.860.000 jt</strong></div><div><span>Penyerapan</span><strong>39,9%</strong></div></div>
+                <div class="exec2-prognosa"><span>Prognosa 2026</span><b></b><strong>7.987.839 jt</strong></div>
+                <div class="exec2-ranking-mini"><h4>Ranking Unit (H/SHAP) - Realisasi</h4><p><span>1. PLN Icon Plus</span><b><i style="width:100%"></i></b><strong>412.331 jt</strong></p><p><span>2. PLN Enjiniring</span><b><i style="width:70%"></i></b><strong>287.554 jt</strong></p><p><span>3. PLN Batam</span><b><i style="width:49%"></i></b><strong>201.808 jt</strong></p></div>
+              </article>
+            </div>
 
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Monitoring Change Request & Digitalisasi</h3></div>
-              <table class="exec-cr-table">
-                <thead><tr><th>Aplikasi</th><th>Progress</th><th>Target Go Live</th><th>Status</th></tr></thead>
-                <tbody>
-                  <tr><td>ESPPD</td><td><b><i style="width:35%"></i></b>35%</td><td>Des 2026</td><td class="amber-text">On Progress</td></tr>
-                  <tr><td>ECOP (BFKO)</td><td><b><i style="width:70%"></i></b>70%</td><td>Agu 2026</td><td class="amber-text">On Progress</td></tr>
-                  <tr><td>E-Transport</td><td><b><i style="width:95%"></i></b>95%</td><td>Mei 2026</td><td class="green-text">Hampir Selesai</td></tr>
-                  <tr><td>E-Meeting</td><td><b><i style="width:80%"></i></b>80%</td><td>Sep 2026</td><td class="amber-text">On Progress</td></tr>
-                  <tr><td>ITEMS</td><td><b><i style="width:60%"></i></b>60%</td><td>Nov 2026</td><td class="amber-text">On Progress</td></tr>
-                </tbody>
-              </table>
-              <button class="exec-outline-btn" type="button">Lihat Semua Change Request <i data-lucide="arrow-right"></i></button>
-            </article>
+            <div class="exec2-right-stack">
+              <article class="exec2-panel">
+                <div class="exec2-panel-head"><h3>Anggaran Operasi - Kantor Pusat</h3><span>116% YoY</span></div>
+                <div class="exec2-op-kpi"><div><span>Realisasi AO</span><strong>3.533.761 <small>jt</small></strong><small>s.d. Juni</small></div><div><span>RKAP 2026</span><strong>3.647.914 <small>jt</small></strong><small>penyerapan 40%</small></div></div>
+                <h4>Top Unsur Biaya (Rp Juta)</h4>
+                <div class="exec2-expense-bars"><p><span>Honorarium</span><b><i style="width:100%"></i></b><strong>597.771</strong><em>31%</em></p><p><span>Beban Amortisasi</span><b><i style="width:51%"></i></b><strong>306.464</strong><em>16%</em></p><p><span>Teknologi Informasi</span><b><i style="width:45%"></i></b><strong>267.682</strong><em>14%</em></p><p><span>Perjalanan Dinas</span><b><i style="width:10%"></i></b><strong>61.521</strong><em>3%</em></p></div>
+              </article>
+              <article class="exec2-panel">
+                <div class="exec2-panel-head"><h3>Strategi & Evaluasi GA</h3><span>NKO 106,84 - tercapai</span></div>
+                <h4>Ratifikasi Kebijakan Sub Holding & Anak Perusahaan</h4>
+                <div class="exec2-policy-kpis"><div><strong>70</strong><span>Total Kebijakan</span></div><div><strong>54</strong><span>Selesai Endorsement</span></div><div><strong>4</strong><span>Diskusi SHAP</span></div><div><strong>12</strong><span>Perlu Tindak Lanjut</span></div></div>
+                <div class="exec2-cr-progress"><span>Progress Change Request</span><b><i style="width:62.56%"></i></b><strong id="overallProgress">62,56%</strong><small><span id="doneCr">2</span> CR selesai - <span id="progressCr">6</span> on progress - <span id="notStartedCr">1</span> belum mulai</small></div>
+                <div class="exec2-policy-list"><p><span>Draft Kebijakan Layanan GA #1</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #2</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #3</span><b><i style="width:10%"></i></b><strong>10%</strong></p><p class="exec2-nko-line"><span>NKO Strategi & Evaluasi</span><b><i style="width:100%"></i></b><strong id="summaryNko">106,84</strong></p></div>
+              </article>
+            </div>
           </div>
 
-          <div class="exec-bottom-grid">
-            <article class="exec-panel exec-ranking">
-              <div class="exec-panel-head"><h3>Ranking Unit / SHAP - Penyerapan Anggaran</h3></div>
-              <div class="exec-rank-columns">
-                <div>
-                  <h4>Top 3 Tertinggi</h4>
-                  <table><tbody><tr><td>1</td><td>PLN Icon Plus</td><td>49,63%</td></tr><tr><td>2</td><td>PLN Enjiniring</td><td>42,95%</td></tr><tr><td>3</td><td>PLN Batam</td><td>41,97%</td></tr></tbody></table>
-                </div>
-                <div>
-                  <h4 class="red-text">Top 3 Terendah</h4>
-                  <table><tbody><tr><td>18</td><td>PLN Nusantara Power</td><td>17,16%</td></tr><tr><td>19</td><td>PLN EPI</td><td>16,56%</td></tr><tr><td>20</td><td>PLN Indonesia Power</td><td>15,02%</td></tr></tbody></table>
-                </div>
-              </div>
-            </article>
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Catatan Penting</h3></div>
-              <ul class="exec-notes">
-                <li>Data realisasi per 16 Juli 2026.</li>
-                <li>Forecast dihitung otomatis berdasarkan pipeline dan historical trend.</li>
-                <li>Gap forecasting memerlukan aksi mitigasi.</li>
-                <li>Pastikan data SHAP ter-update setiap minggu.</li>
-              </ul>
-            </article>
-            <article class="exec-panel">
-              <div class="exec-panel-head"><h3>Keterangan Status</h3></div>
-              <div class="exec-status-legend">
-                <span><b class="green-dot"></b>On Track <small>Aman / Sesuai Target</small></span>
-                <span><b class="amber-dot"></b>Perlu Percepatan <small>Perlu Monitoring & Tindakan</small></span>
-                <span><b class="red-dot"></b>Kritis <small>Segera Tindak Lanjut</small></span>
-              </div>
-            </article>
+          <div class="exec2-footer-grid">
+            <article class="exec2-panel exec2-legend"><h3>Keterangan KPI</h3><div><span><b class="green-dot"></b>vs Target<small>Perbandingan terhadap target s.d. Juni 2026</small></span><span><b class="green-dot"></b>vs 2025<small>Perbandingan terhadap realisasi Juni 2025</small></span><span><b class="red-dot"></b>vs Prognosa<small>Perbandingan terhadap prognosa tahun 2026</small></span></div></article>
+            <article class="exec2-panel exec2-insight"><i data-lucide="target"></i><h3>Insight Utama</h3><ul><li>Secara keseluruhan realisasi biaya s.d. Juni 2026 mencapai 76% dari target.</li><li>Kategori dengan kinerja di atas target: Adm. Umum Korporat (108%).</li><li>Fokus percepatan: NAC dan Pemeliharaan KP agar optimal mencapai target tahunan.</li></ul></article>
           </div>
         </section>
 
