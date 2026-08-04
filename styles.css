@@ -24,7 +24,7 @@
 
 body {
   margin: 0;
-  font-family: "Inter", Arial, sans-serif;
+  font-family: Arial, "Segoe UI", sans-serif;
   color: var(--text);
   background: radial-gradient(circle at top left, #ffffff 0, #f3f7ff 44%, #eef4ff 100%);
 }

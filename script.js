@@ -890,6 +890,38 @@ function downloadBlob(content, filename, type) {
   URL.revokeObjectURL(url);
 }
 
+let xlsxLoadPromise;
+
+function loadXlsxLibrary() {
+  if (window.XLSX) return Promise.resolve(true);
+  if (xlsxLoadPromise) return xlsxLoadPromise;
+
+  xlsxLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => {
+      xlsxLoadPromise = null;
+      reject(new Error("Library Excel gagal dimuat"));
+    };
+    document.head.appendChild(script);
+  });
+
+  return xlsxLoadPromise;
+}
+
+async function ensureXlsxLibrary() {
+  try {
+    await loadXlsxLibrary();
+    return true;
+  } catch (error) {
+    console.info(error);
+    alert("Library Excel belum dapat dimuat. Gunakan export CSV/JSON, atau pastikan koneksi internet mengizinkan akses CDN Excel.");
+    return false;
+  }
+}
+
 function downloadCsv() {
   const header = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
   const rows = crExportRows();
@@ -917,11 +949,8 @@ function downloadJson() {
   downloadBlob(JSON.stringify(data, null, 2), "data-source-strategi-evaluasi.json", "application/json;charset=utf-8");
 }
 
-function downloadExcel() {
-  if (!window.XLSX) {
-    alert("Library Excel belum siap. Silakan refresh halaman lalu coba lagi.");
-    return;
-  }
+async function downloadExcel() {
+  if (!(await ensureXlsxLibrary())) return;
 
   const policyRows = policyData.flatMap((row) =>
     policyColumns.map((type, index) => [
@@ -1064,11 +1093,8 @@ function downloadInvestmentJson() {
   );
 }
 
-function downloadInvestmentExcel() {
-  if (!window.XLSX) {
-    alert("Library Excel belum siap. Silakan refresh halaman lalu coba lagi.");
-    return;
-  }
+async function downloadInvestmentExcel() {
+  if (!(await ensureXlsxLibrary())) return;
   const workbook = window.XLSX.utils.book_new();
   const sourceSheet = window.XLSX.utils.aoa_to_sheet([
     ["Kode", "Indikator", "Nilai"],
@@ -1118,9 +1144,9 @@ function exportInvestmentPdf() {
   window.addEventListener("afterprint", restore);
 }
 
-function exportInvestment(format) {
+async function exportInvestment(format) {
   if (format === "pdf") exportInvestmentPdf();
-  if (format === "xlsx") downloadInvestmentExcel();
+  if (format === "xlsx") await downloadInvestmentExcel();
   if (format === "csv") downloadInvestmentCsv();
   if (format === "json") downloadInvestmentJson();
 }
@@ -1873,12 +1899,14 @@ async function importInvestmentDataFile(file) {
   let count = 0;
 
   if (["xlsx", "xls"].includes(extension)) {
+    if (!(await ensureXlsxLibrary())) return;
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
     const sheetName = workbook.SheetNames.find((name) => name.toLowerCase().includes("investasi")) || workbook.SheetNames[0];
     const rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
     count = applyInvestmentRows(rows);
   } else if (extension === "csv") {
+    if (!(await ensureXlsxLibrary())) return;
     count = applyInvestmentRows(parseInvestmentCsv(await file.text()));
   } else if (extension === "json") {
     const json = JSON.parse(await file.text());
@@ -1903,6 +1931,7 @@ async function importDataFile(file) {
   const imported = {};
 
   if (["xlsx", "xls"].includes(extension)) {
+    if (!(await ensureXlsxLibrary())) return;
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
     imported.ratifikasi = importPolicySheet(workbook);
@@ -1915,6 +1944,7 @@ async function importDataFile(file) {
     imported.aoKantorPusat = importAoOfficeSheet(workbook);
     rows = crData;
   } else if (extension === "csv") {
+    if (!(await ensureXlsxLibrary())) return;
     rows = rowsFromCsv(await file.text());
     if (rows.length) crData = rows;
   } else if (extension === "json") {
@@ -2061,17 +2091,17 @@ function setupExportMenu() {
     button.setAttribute("aria-expanded", String(!menu.hidden));
   });
 
-  menu.addEventListener("click", (event) => {
+  menu.addEventListener("click", async (event) => {
     const option = event.target.closest("button[data-export]");
     if (!option) return;
     const format = option.dataset.export;
     closeMenu();
     if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
-      exportInvestment(format);
+      await exportInvestment(format);
       return;
     }
     if (format === "pdf") exportPdf();
-    if (format === "xlsx") downloadExcel();
+    if (format === "xlsx") await downloadExcel();
     if (format === "csv") downloadCsv();
     if (format === "json") downloadJson();
   });
@@ -2103,13 +2133,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });
-  document.getElementById("dataFile").addEventListener("change", (event) => {
+  document.getElementById("dataFile").addEventListener("change", async (event) => {
     const file = event.target.files?.[0];
     if (file) {
       if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
-        importInvestmentDataFile(file);
+        await importInvestmentDataFile(file);
       } else {
-        importDataFile(file);
+        await importDataFile(file);
       }
     }
     event.target.value = "";
@@ -2117,19 +2147,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("investmentImportData")?.addEventListener("click", () => {
     document.getElementById("investmentDataFile")?.click();
   });
-  document.getElementById("investmentDataFile")?.addEventListener("change", (event) => {
+  document.getElementById("investmentDataFile")?.addEventListener("change", async (event) => {
     const file = event.target.files?.[0];
-    if (file) importInvestmentDataFile(file);
+    if (file) await importInvestmentDataFile(file);
     event.target.value = "";
   });
   document.querySelectorAll("[data-investment-export]").forEach((button) => {
-    button.addEventListener("click", () => exportInvestment(button.dataset.investmentExport));
+    button.addEventListener("click", async () => exportInvestment(button.dataset.investmentExport));
   });
   document.getElementById("settingsImportStrategy")?.addEventListener("click", () => {
     document.getElementById("dataFile")?.click();
   });
-  document.getElementById("settingsExportExcel")?.addEventListener("click", () => {
-    downloadExcel();
+  document.getElementById("settingsExportExcel")?.addEventListener("click", async () => {
+    await downloadExcel();
   });
   document.getElementById("settingsImportInvestment")?.addEventListener("click", () => {
     document.getElementById("investmentDataFile")?.click();
