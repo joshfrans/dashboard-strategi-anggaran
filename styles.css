@@ -2593,6 +2593,73 @@ p {
   background: #078a43;
 }
 
+.exec2-business-excellence {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #cce9d7;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f4fff8 0%, #eef8ff 100%);
+}
+
+.exec2-business-excellence > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 10px;
+  align-items: center;
+}
+
+.exec2-business-excellence > div span {
+  color: #078a43;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.exec2-business-excellence > div strong {
+  color: #078a43;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.exec2-business-excellence > div small {
+  grid-column: 1 / -1;
+  color: #53627f;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.exec2-business-excellence p {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 3px 8px;
+  margin: 0;
+  padding: 7px 8px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.exec2-business-excellence p b {
+  color: #0a2b8f;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.exec2-business-excellence p span {
+  color: #061a50;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.exec2-business-excellence p em {
+  grid-column: 2;
+  color: #078a43;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .exec2-footer-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
