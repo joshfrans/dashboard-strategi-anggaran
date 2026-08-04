@@ -159,6 +159,194 @@
           </div>
         </header>
 
+        <section class="executive-dashboard-view" id="executiveDashboardView" aria-label="Executive Dashboard">
+          <header class="exec-topbar">
+            <div>
+              <h2>Executive Dashboard <span>Umum & Aset Properti</span></h2>
+              <p>EVP - PT PLN (Persero)</p>
+            </div>
+            <div class="exec-controls">
+              <span><i data-lucide="calendar-days"></i> Juli 2026</span>
+              <span><i data-lucide="user-round"></i> Administrator GA</span>
+              <b class="theme-dot blue"></b><b class="theme-dot teal"></b><b class="theme-dot purple"></b>
+              <button type="button" aria-label="Refresh dashboard"><i data-lucide="refresh-cw"></i></button>
+            </div>
+          </header>
+
+          <div class="exec-subhead">
+            <strong>Executive Summary - KPI Strategis</strong>
+            <span>Data per 16 Juli 2026 - ilustratif dashboard manajemen</span>
+          </div>
+
+          <div class="exec-kpi-strip">
+            <article class="exec-kpi danger">
+              <div class="exec-icon"><i data-lucide="chart-no-axes-combined"></i></div>
+              <div><span>Penyerapan AI</span><strong>3,2%</strong><small>344,27 M dari 10,89 T</small></div>
+              <em>Kritis</em>
+              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,5 14,9 26,12 38,13 50,18 62,14 78,19" /></svg>
+            </article>
+            <article class="exec-kpi warning">
+              <div class="exec-icon"><i data-lucide="database"></i></div>
+              <div><span>Penyerapan AKI</span><strong>30,4%</strong><small>412,23 M dari 1,35 T</small></div>
+              <em>Perlu Percepatan</em>
+              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,20 14,18 26,17 38,15 50,10 62,12 78,8" /></svg>
+            </article>
+            <article class="exec-kpi safe">
+              <div class="exec-icon"><i data-lucide="pie-chart"></i></div>
+              <div><span>Penyerapan AO</span><strong>39,9%</strong><small>3.533,76 M dari 8,86 T</small></div>
+              <em>On Track</em>
+              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,20 14,18 26,15 38,16 50,10 62,12 78,6" /></svg>
+            </article>
+            <article class="exec-kpi safe">
+              <div class="exec-icon"><i data-lucide="target"></i></div>
+              <div><span>NKO Strategi & Evaluasi</span><strong id="summaryNko">106,84</strong><small>Tercapai dari target 100</small></div>
+              <em>On Track</em>
+              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,18 14,16 26,10 38,14 50,8 62,10 78,6" /></svg>
+            </article>
+            <article class="exec-kpi warning">
+              <div class="exec-icon"><i data-lucide="clipboard-list"></i></div>
+              <div><span>Progress Change Request</span><strong id="overallProgress">62,6%</strong><small><span id="doneCr">2</span> selesai - <span id="progressCr">6</span> on progress - <span id="notStartedCr">1</span> belum mulai</small></div>
+              <em>Perlu Percepatan</em>
+              <svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="2,18 14,15 26,10 38,17 50,11 62,14 78,8" /></svg>
+            </article>
+          </div>
+
+          <div class="exec-main-grid">
+            <article class="exec-panel exec-budget-panel">
+              <div class="exec-panel-head">
+                <h3>Kinerja Anggaran Terintegrasi 2026</h3>
+                <i data-lucide="info"></i>
+              </div>
+              <div class="exec-budget-body">
+                <div class="exec-big-donut" style="--value: 21.7">
+                  <strong>21,7%</strong>
+                  <span>Penyerapan Total</span>
+                  <small>4,29 T dari 19,75 T</small>
+                </div>
+                <div class="exec-budget-metrics">
+                  <div><i data-lucide="landmark"></i><span>RKAP Total</span><strong>19,75 T</strong></div>
+                  <div><i data-lucide="receipt"></i><span>Realisasi</span><strong>4,29 T</strong></div>
+                  <div><i data-lucide="building-2"></i><span>Forecast Akhir Tahun</span><strong>16,80 T</strong></div>
+                  <div class="risk"><i data-lucide="circle-alert"></i><span>Gap Forecast</span><strong>2,95 T</strong></div>
+                </div>
+                <div class="exec-bar-chart">
+                  <div class="legend"><b class="blue"></b>RKAP <b class="green"></b>Realisasi <b class="amber"></b>Forecast</div>
+                  <div class="bars">
+                    <div><span style="height: 96%"></span><span class="green" style="height: 8%"></span><span class="amber" style="height: 86%"></span><small>AI</small></div>
+                    <div><span style="height: 34%"></span><span class="green" style="height: 11%"></span><span class="amber" style="height: 28%"></span><small>AKI</small></div>
+                    <div><span style="height: 74%"></span><span class="green" style="height: 46%"></span><span class="amber" style="height: 62%"></span><small>AO</small></div>
+                  </div>
+                  <p>Forecast dihitung berdasarkan realisasi s.d. bulan berjalan dan pipeline percepatan.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Early Warning Center - Top 5 Risiko</h3></div>
+              <div class="exec-risk-list">
+                <div class="critical"><i data-lucide="siren"></i><b>Penyerapan AI sangat rendah</b><span>Baru 3,2% dari target semester</span><em>Kritis</em></div>
+                <div class="critical"><i data-lucide="siren"></i><b>Gap AKI Rp 942 M</b><span>Belum terserap, perlu rekonsiliasi SHAP</span><em>Kritis</em></div>
+                <div><i data-lucide="triangle-alert"></i><b>Change Request belum mulai</b><span>1 CR status belum mulai</span><em>Perlu</em></div>
+                <div><i data-lucide="triangle-alert"></i><b>12 Ratifikasi belum selesai</b><span>Evidence dan target perlu dikunci</span><em>Perlu</em></div>
+                <div class="critical"><i data-lucide="siren"></i><b>AO YoY naik 116%</b><span>Perlu efisiensi dan kontrol biaya</span><em>Kritis</em></div>
+              </div>
+            </article>
+
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Executive Action Needed</h3></div>
+              <div class="exec-action-list">
+                <div><b>1</b><span><strong>Penyerapan AI baru 3,2%</strong>Target semester perlu percepatan realisasi investasi strategis.</span></div>
+                <div><b>2</b><span><strong>Gap AKI Rp 942 M</strong>Lakukan rekonsiliasi dengan SHAP terkait.</span></div>
+                <div><b>3</b><span><strong>12 Ratifikasi belum selesai</strong>Segera selesaikan ratifikasi kebijakan prioritas.</span></div>
+                <div><b>4</b><span><strong>1 Change Request belum dimulai</strong>Koordinasi dengan PIC untuk kick off segera.</span></div>
+              </div>
+              <button class="exec-outline-btn" type="button">Lihat Rekomendasi Detail <i data-lucide="arrow-right"></i></button>
+            </article>
+          </div>
+
+          <div class="exec-lower-grid">
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Portofolio Investasi & Sarana</h3></div>
+              <div class="exec-portfolio">
+                <div class="exec-mini-donut" style="--value: 35"><span>Status</span></div>
+                <div class="exec-portfolio-bars">
+                  <div><span>Holding</span><b><i style="width: 100%"></i></b><strong>1,84 T</strong></div>
+                  <div><span>SHAP (10 entitas)</span><b><i style="width: 93%"></i></b><strong>1,71 T</strong></div>
+                  <div><span>Unit</span><b class="purple"><i style="width: 53%"></i></b><strong>0,98 T</strong></div>
+                  <div><span>Eliminasi</span><b class="red"><i style="width: 34%"></i></b><strong>(0,62 T)</strong></div>
+                </div>
+              </div>
+              <div class="exec-total-chip"><span>Total Investasi 2026</span><strong>3,91 T</strong></div>
+            </article>
+
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Status Eksekusi Strategi & Evaluasi</h3><i data-lucide="info"></i></div>
+              <div class="exec-strategy-status">
+                <div class="exec-progress-list">
+                  <div><span>Ratifikasi Kebijakan</span><b><i style="width:77%"></i></b><strong>77%</strong></div>
+                  <div><span>Penyusunan Kebijakan</span><b><i style="width:81%"></i></b><strong>81%</strong></div>
+                  <div><span>Change Request</span><b class="amber"><i style="width:63%"></i></b><strong>63%</strong></div>
+                  <div><span>Monitoring Evaluasi</span><b><i style="width:92%"></i></b><strong>92%</strong></div>
+                </div>
+                <div class="exec-overall">
+                  <span>Overall Strategic Execution</span>
+                  <strong>76%</strong>
+                  <em>Perlu Percepatan</em>
+                  <small>Target RKAP 2026: 100%<br />Gap terhadap Target: 24%</small>
+                </div>
+              </div>
+            </article>
+
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Monitoring Change Request & Digitalisasi</h3></div>
+              <table class="exec-cr-table">
+                <thead><tr><th>Aplikasi</th><th>Progress</th><th>Target Go Live</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>ESPPD</td><td><b><i style="width:35%"></i></b>35%</td><td>Des 2026</td><td class="amber-text">On Progress</td></tr>
+                  <tr><td>ECOP (BFKO)</td><td><b><i style="width:70%"></i></b>70%</td><td>Agu 2026</td><td class="amber-text">On Progress</td></tr>
+                  <tr><td>E-Transport</td><td><b><i style="width:95%"></i></b>95%</td><td>Mei 2026</td><td class="green-text">Hampir Selesai</td></tr>
+                  <tr><td>E-Meeting</td><td><b><i style="width:80%"></i></b>80%</td><td>Sep 2026</td><td class="amber-text">On Progress</td></tr>
+                  <tr><td>ITEMS</td><td><b><i style="width:60%"></i></b>60%</td><td>Nov 2026</td><td class="amber-text">On Progress</td></tr>
+                </tbody>
+              </table>
+              <button class="exec-outline-btn" type="button">Lihat Semua Change Request <i data-lucide="arrow-right"></i></button>
+            </article>
+          </div>
+
+          <div class="exec-bottom-grid">
+            <article class="exec-panel exec-ranking">
+              <div class="exec-panel-head"><h3>Ranking Unit / SHAP - Penyerapan Anggaran</h3></div>
+              <div class="exec-rank-columns">
+                <div>
+                  <h4>Top 3 Tertinggi</h4>
+                  <table><tbody><tr><td>1</td><td>PLN Icon Plus</td><td>49,63%</td></tr><tr><td>2</td><td>PLN Enjiniring</td><td>42,95%</td></tr><tr><td>3</td><td>PLN Batam</td><td>41,97%</td></tr></tbody></table>
+                </div>
+                <div>
+                  <h4 class="red-text">Top 3 Terendah</h4>
+                  <table><tbody><tr><td>18</td><td>PLN Nusantara Power</td><td>17,16%</td></tr><tr><td>19</td><td>PLN EPI</td><td>16,56%</td></tr><tr><td>20</td><td>PLN Indonesia Power</td><td>15,02%</td></tr></tbody></table>
+                </div>
+              </div>
+            </article>
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Catatan Penting</h3></div>
+              <ul class="exec-notes">
+                <li>Data realisasi per 16 Juli 2026.</li>
+                <li>Forecast dihitung otomatis berdasarkan pipeline dan historical trend.</li>
+                <li>Gap forecasting memerlukan aksi mitigasi.</li>
+                <li>Pastikan data SHAP ter-update setiap minggu.</li>
+              </ul>
+            </article>
+            <article class="exec-panel">
+              <div class="exec-panel-head"><h3>Keterangan Status</h3></div>
+              <div class="exec-status-legend">
+                <span><b class="green-dot"></b>On Track <small>Aman / Sesuai Target</small></span>
+                <span><b class="amber-dot"></b>Perlu Percepatan <small>Perlu Monitoring & Tindakan</small></span>
+                <span><b class="red-dot"></b>Kritis <small>Segera Tindak Lanjut</small></span>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section class="dashboard-overview" id="dashboardOverview" aria-label="Dashboard Umum">
           <div class="overview-section-title">
             <span>Dashboard Umum</span>
