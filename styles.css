@@ -2424,6 +2424,128 @@ p {
   font-weight: 900;
 }
 
+.exec2-forecast-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1fr);
+  gap: 10px 18px;
+  align-items: start;
+  padding: 12px 14px;
+}
+
+.exec2-forecast-panel .exec2-panel-head {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 0;
+}
+
+.exec2-forecast-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  color: #34456b;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.exec2-forecast-legend span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.exec2-forecast-legend b {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.exec2-forecast-legend .rkap,
+.exec2-bar.rkap {
+  background: #1266f1;
+}
+
+.exec2-forecast-legend .actual,
+.exec2-bar.actual {
+  background: #078a43;
+}
+
+.exec2-forecast-legend .forecast,
+.exec2-bar.forecast {
+  background: #ff9800;
+}
+
+.exec2-forecast-chart {
+  grid-column: 1 / -1;
+  height: 158px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+  align-items: end;
+  padding: 16px 80px 24px;
+  border-bottom: 1px solid #dfe8f6;
+}
+
+.exec2-forecast-group {
+  position: relative;
+  height: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: end;
+  justify-content: center;
+}
+
+.exec2-forecast-group > span {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #061a50;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.exec2-bar {
+  position: relative;
+  width: 30px;
+  height: var(--h);
+  min-height: 7px;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 7px 14px rgba(6, 26, 80, 0.12);
+}
+
+.exec2-bar strong {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #061a50;
+  font-size: 10px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.exec2-forecast-note {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: #0a2b8f;
+  background: #eef5ff;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.exec2-forecast-note svg {
+  width: 16px;
+  height: 16px;
+  color: #1266f1;
+}
+
 .exec2-small-table {
   width: 100%;
   border-collapse: collapse;
