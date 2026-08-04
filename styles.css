@@ -2293,13 +2293,18 @@ p {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
-  align-items: stretch;
+  align-items: start;
+  margin-top: -146px;
 }
 
 .exec2-center-stack,
 .exec2-right-stack {
   display: grid;
   gap: 10px;
+}
+
+.exec2-right-stack {
+  padding-top: 146px;
 }
 
 .exec2-panel {
@@ -6612,6 +6617,14 @@ td {
 
   .analytics-wide {
     grid-column: auto;
+  }
+
+  .exec2-board {
+    margin-top: 0;
+  }
+
+  .exec2-right-stack {
+    padding-top: 0;
   }
 }
 
