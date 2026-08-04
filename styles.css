@@ -2029,10 +2029,10 @@ p {
 
 .exec2-cost-card {
   position: relative;
-  min-height: 212px;
+  min-height: 198px;
   display: grid;
-  grid-template-rows: auto 62px auto 1fr;
-  gap: 8px;
+  grid-template-rows: auto minmax(58px, auto) auto auto;
+  gap: 9px;
   padding: 12px 13px 10px;
   overflow: hidden;
 }
@@ -2041,7 +2041,8 @@ p {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr) 20px;
   gap: 8px;
-  align-items: start;
+  align-items: center;
+  min-height: 34px;
 }
 
 .exec2-cost-head b {
@@ -2072,16 +2073,16 @@ p {
 
 .exec2-cost-body {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 58px;
-  gap: 9px;
+  grid-template-columns: 42px minmax(0, 1fr) 54px;
+  gap: 8px;
   align-items: center;
   min-width: 0;
   margin-top: 0;
 }
 
 .exec2-cost-icon {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -2097,7 +2098,7 @@ p {
 .exec2-cost-body strong {
   display: block;
   color: #061a50;
-  font-size: clamp(19px, 1.35vw, 24px);
+  font-size: clamp(18px, 1.25vw, 23px);
   line-height: 1;
   white-space: nowrap;
 }
@@ -2112,14 +2113,14 @@ p {
 }
 
 .exec2-gauge {
-  width: 58px;
-  height: 58px;
+  width: 54px;
+  height: 54px;
   display: grid;
   place-items: center;
   text-align: center;
   border-radius: 50%;
   background: conic-gradient(#1266f1 calc(min(var(--value), 100) * 1%), #e6edf7 0);
-  box-shadow: inset 0 0 0 10px #fff;
+  box-shadow: inset 0 0 0 9px #fff;
 }
 
 .exec2-cost-card.green .exec2-gauge { background: conic-gradient(#078a43 calc(min(var(--value), 100) * 1%), #e6edf7 0); }
@@ -2128,12 +2129,12 @@ p {
 .exec2-cost-card.teal .exec2-gauge { background: conic-gradient(#0e7895 calc(min(var(--value), 100) * 1%), #e6edf7 0); }
 
 .exec2-gauge strong {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .exec2-gauge span {
-  max-width: 42px;
-  font-size: 7px;
+  max-width: 38px;
+  font-size: 6.5px;
   line-height: 1.05;
 }
 
@@ -2162,19 +2163,7 @@ p {
 }
 
 .exec2-mini-trend {
-  align-self: end;
-  height: 30px;
-  margin-top: 0;
-  background:
-    radial-gradient(circle at 6% 60%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 16% 65%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 27% 44%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 38% 58%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 50% 54%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 62% 70%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 74% 73%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 86% 64%, currentColor 0 2px, transparent 2.5px),
-    radial-gradient(circle at 98% 70%, currentColor 0 2px, transparent 2.5px);
+  display: none;
 }
 
 .blue-line { color: #1266f1; }
@@ -2185,18 +2174,29 @@ p {
 
 .exec2-cost-signals {
   position: static;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: -2px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 1px;
   color: #0f8d47;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 900;
-  text-align: right;
+  text-align: center;
+}
+
+.exec2-cost-signals span {
+  min-height: 22px;
+  display: grid;
+  place-items: center;
+  padding: 3px 4px;
+  border-radius: 6px;
+  background: #eaf8ef;
+  line-height: 1.15;
 }
 
 .exec2-cost-signals .bad {
   color: #ed1c24;
+  background: #ffeaea;
 }
 
 .exec2-board {
