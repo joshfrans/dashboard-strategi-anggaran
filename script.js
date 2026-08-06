@@ -460,8 +460,10 @@ function renderCrRows(rows = crData) {
 function renderAoCorporate() {
   const topRows = document.getElementById("aoTopRows");
   const unitRows = document.getElementById("aoUnitRows");
+  const topCosts = Array.isArray(aoCorporateData.topCosts) ? aoCorporateData.topCosts : [];
+  const topUnits = Array.isArray(aoCorporateData.topUnits) ? aoCorporateData.topUnits : [];
   if (topRows) {
-    topRows.innerHTML = aoCorporateData.topCosts
+    topRows.innerHTML = topCosts
       .map((row) => `
         <tr>
           <td><strong>${row.name}</strong></td>
@@ -473,12 +475,13 @@ function renderAoCorporate() {
       .join("");
   }
   if (unitRows) {
-    unitRows.innerHTML = aoCorporateData.topUnits
+    const total = numberFromImport(aoCorporateData.total, 0);
+    unitRows.innerHTML = topUnits
       .map((row) => `
         <tr>
           <td><strong>${row.unit}</strong></td>
           <td>${numberLabel(row.value)} jt</td>
-          <td>${Math.round(row.value / aoCorporateData.total * 100)}%</td>
+          <td>${total ? Math.round(numberFromImport(row.value) / total * 100) : 0}%</td>
         </tr>
       `)
       .join("");
@@ -1684,6 +1687,22 @@ function rowValue(row, ...labels) {
   return "";
 }
 
+function numberFromImport(value, fallback = 0) {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  const text = String(value ?? "").trim();
+  if (!text) return fallback;
+  const numericText = text.replace(/[^0-9,.-]+/g, "");
+  const dotCount = (numericText.match(/\./g) || []).length;
+  const normalized = numericText.includes(",")
+    ? numericText.replace(/\./g, "").replace(",", ".")
+    : dotCount > 1 || /\.\d{3}$/.test(numericText)
+      ? numericText.replace(/\./g, "")
+      : numericText;
+  const cleaned = normalized.replace(/[^0-9.-]+/g, "");
+  const parsed = Number(cleaned);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 function sheetRows(workbook, sheetName) {
   const resolvedName = findSheetName(workbook, sheetName);
   const sheet = workbook.Sheets[resolvedName];
@@ -1810,6 +1829,106 @@ function importInvestmentSheet(workbook) {
   return applyInvestmentRows(rows);
 }
 
+function monthIndex(value) {
+  const months = [
+    "januari",
+    "februari",
+    "maret",
+    "april",
+    "mei",
+    "juni",
+    "juli",
+    "agustus",
+    "september",
+    "oktober",
+    "november",
+    "desember"
+  ];
+  const normalized = normalizeImportKey(value);
+  const index = months.findIndex((month) => normalized.includes(month));
+  return index === -1 ? 0 : index + 1;
+}
+
+function sumBy(rows, valueLabels, predicate = () => true) {
+  return rows.reduce((total, row) => {
+    if (!predicate(row)) return total;
+    return total + numberFromImport(rowValue(row, ...valueLabels), 0);
+  }, 0);
+}
+
+function groupSum(rows, groupLabels, valueLabels, predicate = () => true) {
+  const grouped = new Map();
+  rows.forEach((row) => {
+    if (!predicate(row)) return;
+    const group = String(rowValue(row, ...groupLabels) || "").trim();
+    if (!group) return;
+    grouped.set(group, (grouped.get(group) || 0) + numberFromImport(rowValue(row, ...valueLabels), 0));
+  });
+  return [...grouped.entries()]
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value);
+}
+
+function parseAoOperationalWorkbook(workbook) {
+  const targetRows = sheetRows(workbook, "Target Bulanan").filter((row) => rowValue(row, "Divisi", "Unit"));
+  const realizationRows = sheetRows(workbook, "Realisasi Bulanan").filter((row) => rowValue(row, "Divisi", "Unit"));
+  const budgetRows = sheetRows(workbook, "Rekap per Divisi").filter((row) => rowValue(row, "Divisi", "Unit"));
+  if (!targetRows.length && !realizationRows.length && !budgetRows.length) return null;
+
+  const latestMonthNumber = Math.max(
+    1,
+    ...targetRows.map((row) => monthIndex(rowValue(row, "Bulan", "Periode"))),
+    ...realizationRows.map((row) => monthIndex(rowValue(row, "Bulan", "Periode")))
+  );
+  const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  const period = `${monthNames[latestMonthNumber - 1] || "Juni"} 2026`;
+  const isToDate = (row) => {
+    const current = monthIndex(rowValue(row, "Bulan", "Periode"));
+    return current > 0 && current <= latestMonthNumber;
+  };
+
+  const realization = sumBy(realizationRows, ["Realisasi", "Nilai", "Value"], isToDate) / 1000000;
+  const target = sumBy(targetRows, ["Target", "Nilai", "Value"], isToDate) / 1000000;
+  const rkap = sumBy(budgetRows, ["Anggaran Operasi", "RKAP", "Anggaran", "Nilai"], () => true) / 1000000;
+  const denominator = rkap || target || realization;
+  const absorption = denominator ? Math.round((realization / denominator) * 1000) / 10 : 0;
+  const targetRate = target ? Math.round((realization / target) * 1000) / 10 : absorption;
+  const projection = Math.max(realization, denominator ? denominator * Math.min(1, absorption / 100 + 0.5) : realization);
+
+  const costGroups = groupSum(realizationRows, ["Unsur Standar", "Unsur"], ["Realisasi", "Nilai", "Value"], isToDate);
+  const budgetByCost = groupSum(budgetRows, ["Unsur Standar", "Unsur"], ["Anggaran Operasi", "RKAP", "Anggaran", "Nilai"]);
+  const budgetLookup = Object.fromEntries(budgetByCost.map((row) => [row.name, row.value]));
+  const topCosts = costGroups.slice(0, 8).map((row) => ({
+    name: row.name,
+    value: Math.round(row.value / 1000000),
+    yoy: 100,
+    rkap: budgetLookup[row.name] ? Math.round((row.value / budgetLookup[row.name]) * 100) : 0
+  }));
+
+  const unitGroups = groupSum(realizationRows, ["Divisi", "Unit"], ["Realisasi", "Nilai", "Value"], isToDate);
+  const topUnits = unitGroups.slice(0, 10).map((row) => ({
+    unit: row.name,
+    value: Math.round(row.value / 1000000)
+  }));
+  const selected = topUnits[0];
+
+  return {
+    period,
+    total: Math.round(realization),
+    realization: Math.round(realization),
+    selectedUnit: selected?.unit || "",
+    rank: selected ? "#1 dari " + Math.max(unitGroups.length, 1) : "",
+    rkap: Math.round(rkap),
+    absorption,
+    targetRate,
+    projection: Math.round(projection),
+    projectionRate: denominator ? Math.round((projection / denominator) * 100) : 0,
+    yoy: 100,
+    topCosts,
+    topUnits
+  };
+}
+
 function importKeyValueSheet(workbook, sheetName) {
   const rows = sheetRows(workbook, sheetName);
   const result = {};
@@ -1824,21 +1943,44 @@ function importKeyValueSheet(workbook, sheetName) {
 function importAoCorporateSheet(workbook) {
   const source = importKeyValueSheet(workbook, "07_AO_Korporat");
   if (!Object.keys(source).length) return 0;
-  Object.assign(aoCorporateData, source);
-  ["total", "rkap", "absorption", "targetRate", "projection", "projectionRate", "yoy"].forEach((key) => {
-    if (aoCorporateData[key] !== "" && aoCorporateData[key] != null) aoCorporateData[key] = Number(aoCorporateData[key]);
-  });
+  Object.assign(aoCorporateData, normalizeAoSource(source, aoCorporateData));
   return Object.keys(source).length;
 }
 
 function importAoOfficeSheet(workbook) {
   const source = importKeyValueSheet(workbook, "08_AO_Kantor_Pusat");
-  if (!Object.keys(source).length) return 0;
-  aoOfficeData = { ...aoOfficeData, ...source };
-  ["realization", "rkap", "absorption", "yoy"].forEach((key) => {
-    if (aoOfficeData[key] !== "" && aoOfficeData[key] != null) aoOfficeData[key] = Number(aoOfficeData[key]);
+  const operationalSource = parseAoOperationalWorkbook(workbook);
+  if (!Object.keys(source).length && !operationalSource) return 0;
+  aoOfficeData = normalizeAoSource({ ...aoOfficeData, ...(operationalSource || {}), ...source }, aoOfficeData);
+  return Object.keys(source).length + (operationalSource ? 1 : 0);
+}
+
+function normalizeAoSource(source, fallback = {}) {
+  const normalized = { ...source };
+  ["total", "realization", "rkap", "absorption", "targetRate", "projection", "projectionRate", "yoy"].forEach((key) => {
+    if (normalized[key] !== "" && normalized[key] != null) {
+      normalized[key] = numberFromImport(normalized[key], fallback[key] ?? 0);
+    }
   });
-  return Object.keys(source).length;
+  if (Array.isArray(normalized.topCosts)) {
+    normalized.topCosts = normalized.topCosts
+      .map((row) => ({
+        name: row.name || row.unsur || row.Unsur || row.biaya || row.Biaya || "",
+        value: numberFromImport(row.value ?? row.realisasi ?? row.Realisasi ?? row.nilai ?? row.Nilai, 0),
+        yoy: numberFromImport(row.yoy ?? row.YoY ?? row["% YoY"], 0),
+        rkap: numberFromImport(row.rkap ?? row.RKAP ?? row["% RKAP"], 0)
+      }))
+      .filter((row) => row.name);
+  }
+  if (Array.isArray(normalized.topUnits)) {
+    normalized.topUnits = normalized.topUnits
+      .map((row) => ({
+        unit: row.unit || row.Unit || row.divisi || row.Divisi || "",
+        value: numberFromImport(row.value ?? row.realisasi ?? row.Realisasi ?? row.nilai ?? row.Nilai, 0)
+      }))
+      .filter((row) => row.unit);
+  }
+  return normalized;
 }
 
 function applyStrategyDataSource(source) {
@@ -1859,10 +2001,10 @@ function applyStrategyDataSource(source) {
   if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
   if (source.investmentData && typeof source.investmentData === "object") investmentData = { ...investmentData, ...source.investmentData };
   if (source.investasi && typeof source.investasi === "object") investmentData = { ...investmentData, ...source.investasi };
-  if (source.aoCorporateData && typeof source.aoCorporateData === "object") Object.assign(aoCorporateData, source.aoCorporateData);
-  if (source.aoKorporat && typeof source.aoKorporat === "object") Object.assign(aoCorporateData, source.aoKorporat);
-  if (source.aoOfficeData && typeof source.aoOfficeData === "object") aoOfficeData = { ...aoOfficeData, ...source.aoOfficeData };
-  if (source.aoKantorPusat && typeof source.aoKantorPusat === "object") aoOfficeData = { ...aoOfficeData, ...source.aoKantorPusat };
+  if (source.aoCorporateData && typeof source.aoCorporateData === "object") Object.assign(aoCorporateData, normalizeAoSource(source.aoCorporateData, aoCorporateData));
+  if (source.aoKorporat && typeof source.aoKorporat === "object") Object.assign(aoCorporateData, normalizeAoSource(source.aoKorporat, aoCorporateData));
+  if (source.aoOfficeData && typeof source.aoOfficeData === "object") aoOfficeData = { ...aoOfficeData, ...normalizeAoSource(source.aoOfficeData, aoOfficeData) };
+  if (source.aoKantorPusat && typeof source.aoKantorPusat === "object") aoOfficeData = { ...aoOfficeData, ...normalizeAoSource(source.aoKantorPusat, aoOfficeData) };
 
   return true;
 }
@@ -1894,11 +2036,11 @@ async function loadStrategyDataSource() {
 }
 
 function normalizeRow(row) {
-  const app = row.Aplikasi || row.Application || row.app;
-  const request = row["Change Request"] || row["Change request"] || row.Request || row.request;
-  const progress = row.Progress || row.Progres || row["Progress Dashboard"] || row.progress;
-  const status = row.Status || row["Status Dashboard"] || row.status;
-  const target = row["Target Selesai"] || row.Target || row.target;
+  const app = rowValue(row, "Aplikasi", "Application", "App");
+  const request = rowValue(row, "Change Request", "Request", "CR");
+  const progress = rowValue(row, "Progress", "Progres", "Progress Dashboard");
+  const status = rowValue(row, "Status", "Status Dashboard");
+  const target = rowValue(row, "Target Selesai", "Target");
 
   if (!app || !request) return null;
 
@@ -1913,7 +2055,7 @@ function normalizeRow(row) {
 
 function rowsFromWorkbook(workbook) {
   const preferredSheet =
-    workbook.Sheets["02_Change_Request"] ||
+    workbook.Sheets[findSheetName(workbook, "02_Change_Request")] ||
     workbook.Sheets.Dashboard_Source ||
     workbook.Sheets.List_Monitoring_CR ||
     workbook.Sheets.CR_Master ||
@@ -1965,8 +2107,8 @@ function investmentKeyFromLabel(label) {
 function applyInvestmentRows(rows) {
   let count = 0;
   rows.forEach((row) => {
-    const key = investmentKeyFromLabel(row.Kode || row.kode || row.Key || row.key || row.Indikator || row.indikator || row.Metric || row.metric);
-    const rawValue = row.Nilai ?? row.nilai ?? row.Value ?? row.value ?? "";
+    const key = investmentKeyFromLabel(rowValue(row, "Kode", "Key", "Indikator", "Metric"));
+    const rawValue = rowValue(row, "Nilai", "Value");
     if (!key || rawValue === "") return;
     investmentData[key] = String(rawValue);
     count += 1;
@@ -1989,7 +2131,11 @@ async function importInvestmentDataFile(file) {
     if (!(await ensureXlsxLibrary())) return;
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
-    const sheetName = workbook.SheetNames.find((name) => name.toLowerCase().includes("investasi")) || workbook.SheetNames[0];
+    const sheetName =
+      findSheetName(workbook, "Data Investasi") ||
+      findSheetName(workbook, "06_Investasi") ||
+      workbook.SheetNames.find((name) => normalizeImportKey(name).includes("investasi")) ||
+      workbook.SheetNames[0];
     const rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
     count = applyInvestmentRows(rows);
   } else if (extension === "csv") {
