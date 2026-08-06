@@ -189,6 +189,37 @@ const statusDotClass = {
   "Plan": "blue-dot"
 };
 
+const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
+
+function formatDatabaseTimestamp(date = new Date()) {
+  return new Intl.DateTimeFormat("id-ID", {
+    timeZone: "Asia/Jakarta",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  })
+    .format(date)
+    .replace(" pukul ", " ")
+    .replace(".", ":") + " WIB";
+}
+
+function setDatabaseUpdatedAt(value = DEFAULT_DATABASE_UPDATED_AT, persist = false) {
+  const label = value || DEFAULT_DATABASE_UPDATED_AT;
+  document.querySelectorAll("[data-last-updated]").forEach((element) => {
+    element.textContent = label;
+  });
+  if (persist) localStorage.setItem("dashboardDatabaseUpdatedAt", label);
+}
+
+function markDatabaseUploadedNow() {
+  const label = formatDatabaseTimestamp();
+  setDatabaseUpdatedAt(label, true);
+  return label;
+}
+
 let policyColumns = [
   "Aset Properti",
   "Arsip",
@@ -2155,7 +2186,8 @@ async function importInvestmentDataFile(file) {
     alert("Data Investasi tidak terbaca. Pastikan file memakai kolom Kode, Indikator, dan Nilai dari template data source investasi.");
     return;
   }
-  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.`);
+  const uploadedAt = markDatabaseUploadedNow();
+  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.\nData per: ${uploadedAt}`);
 }
 
 async function importDataFile(file) {
@@ -2210,6 +2242,7 @@ async function importDataFile(file) {
   }
 
   renderStrategyDashboard();
+  const uploadedAt = markDatabaseUploadedNow();
   const message = ["Import berhasil."];
   if (imported.dataSource) {
     message.push("Data source Strategi & Evaluasi lengkap dimuat.");
@@ -2225,6 +2258,7 @@ async function importDataFile(file) {
   } else {
     message.push(`${rows.length} Change Request dimuat.`);
   }
+  message.push(`Data per: ${uploadedAt}`);
   alert(message.join("\n"));
 }
 
@@ -2352,6 +2386,7 @@ function setupExportMenu() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
+  setDatabaseUpdatedAt(localStorage.getItem("dashboardDatabaseUpdatedAt") || DEFAULT_DATABASE_UPDATED_AT);
   await loadStrategyDataSource();
   renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
