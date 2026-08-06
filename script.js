@@ -1657,19 +1657,48 @@ function excelDate(value) {
   return text;
 }
 
+function normalizeImportKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function findSheetName(workbook, expectedName) {
+  const expected = normalizeImportKey(expectedName);
+  return workbook.SheetNames.find((name) => normalizeImportKey(name) === expected) ||
+    workbook.SheetNames.find((name) => normalizeImportKey(name).includes(expected.replace(/^[0-9]+ /, "")));
+}
+
+function rowValue(row, ...labels) {
+  for (const label of labels) {
+    if (Object.prototype.hasOwnProperty.call(row, label)) return row[label];
+  }
+  const normalizedRow = Object.fromEntries(
+    Object.entries(row).map(([key, value]) => [normalizeImportKey(key), value])
+  );
+  for (const label of labels) {
+    const value = normalizedRow[normalizeImportKey(label)];
+    if (value !== undefined) return value;
+  }
+  return "";
+}
+
 function sheetRows(workbook, sheetName) {
-  const sheet = workbook.Sheets[sheetName];
+  const resolvedName = findSheetName(workbook, sheetName);
+  const sheet = workbook.Sheets[resolvedName];
   if (!sheet) return [];
   return window.XLSX.utils.sheet_to_json(sheet, { defval: "" });
 }
 
-function normalizePolicyStatus(status) {
+function normalizePolicyStatus(status, progress = 0) {
   const value = String(status || "").toLowerCase();
   if (value.includes("tidak")) return "no-ratification";
   if (value.includes("draft")) return "drafting";
   if (value.includes("review") || value.includes("legal") || value.includes("grc")) return "review-fix";
   if (value.includes("pembahasan") || value.includes("diskusi")) return "discussion";
-  if (value.includes("selesai") || value.includes("endorsement")) return "done";
+  if (value.includes("sebagian")) return Number(progress) >= 100 ? "done" : "review-fix";
+  if (value.includes("selesai") || value.includes("endorsement")) return Number(progress) >= 100 || !progress ? "done" : "review-fix";
   return "drafting";
 }
 
@@ -1683,8 +1712,8 @@ function normalizeDashboardStatus(status, progress = 0) {
 function importPolicySheet(workbook) {
   const rows = sheetRows(workbook, "01_Ratifikasi");
   if (!rows.length) return 0;
-  const entities = [...new Set(rows.map((row) => String(row["Entitas SH/AP"] || "").trim()).filter(Boolean))];
-  const types = [...new Set(rows.map((row) => String(row["Jenis Kebijakan"] || "").trim()).filter(Boolean))];
+  const entities = [...new Set(rows.map((row) => String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim()).filter(Boolean))];
+  const types = [...new Set(rows.map((row) => String(rowValue(row, "Jenis Kebijakan", "Kebijakan") || "").trim()).filter(Boolean))];
   if (!entities.length || !types.length) return 0;
 
   policyEntities = entities;
@@ -1694,10 +1723,10 @@ function importPolicySheet(workbook) {
     entity,
     statuses: types.map((type) => {
       const match = rows.find((row) =>
-        String(row["Entitas SH/AP"] || "").trim() === entity &&
-        String(row["Jenis Kebijakan"] || "").trim() === type
+        String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim() === entity &&
+        String(rowValue(row, "Jenis Kebijakan", "Kebijakan") || "").trim() === type
       );
-      return normalizePolicyStatus(match?.Status);
+      return normalizePolicyStatus(rowValue(match || {}, "Status"), parseProgress(rowValue(match || {}, "Progress", "Progres")));
     })
   }));
   return rows.length;
@@ -1708,16 +1737,16 @@ function importCrSheet(workbook) {
   if (!rows.length) return 0;
   crData = rows
     .map((row) => {
-      const progress = parseProgress(row.Progress || row.Progres);
-      const app = String(row.Aplikasi || "").trim();
-      const request = String(row["Change Request"] || "").trim();
+      const progress = parseProgress(rowValue(row, "Progress", "Progres"));
+      const app = String(rowValue(row, "Aplikasi") || "").trim();
+      const request = String(rowValue(row, "Change Request", "CR", "Request") || "").trim();
       if (!app || !request) return null;
       return {
         app,
         request,
         progress,
-        status: normalizeDashboardStatus(row.Status, progress),
-        target: excelDate(row["Target Selesai"] || "")
+        status: normalizeDashboardStatus(rowValue(row, "Status"), progress),
+        target: excelDate(rowValue(row, "Target Selesai", "Target"))
       };
     })
     .filter(Boolean);
@@ -1729,16 +1758,16 @@ function importPerformanceSheet(workbook) {
   if (!rows.length) return 0;
   performanceData = rows
     .map((row, index) => ({
-      no: row.No || index + 1,
-      indicator: row["Indikator Kerja"],
-      unit: row.Satuan,
-      weight: row.Bobot,
-      target: row["Target 2026"],
-      targetPeriod: row["Target S.D. Juni"] || row["Target Bulanan"],
-      realization: row.Realisasi || row["Realisasi Bulan Current"],
-      achievement: row.Pencapaian || row["%"],
-      score: row.Nilai,
-      status: row.Status || row["Ket."] || "Tercapai"
+      no: rowValue(row, "No") || index + 1,
+      indicator: rowValue(row, "Indikator Kerja"),
+      unit: rowValue(row, "Satuan"),
+      weight: rowValue(row, "Bobot"),
+      target: rowValue(row, "Target 2026"),
+      targetPeriod: rowValue(row, "Target S.D. Juni", "Target Bulanan"),
+      realization: rowValue(row, "Realisasi", "Realisasi Bulan Current"),
+      achievement: rowValue(row, "Pencapaian", "%"),
+      score: rowValue(row, "Nilai"),
+      status: rowValue(row, "Status", "Ket.") || "Tercapai"
     }))
     .filter((row) => row.indicator);
   return performanceData.length;
@@ -1749,12 +1778,12 @@ function importPolicyPrepSheet(workbook) {
   if (!rows.length) return 0;
   policyPrepData = rows
     .map((row, index) => ({
-      no: row.No || `${index + 1}.`,
-      area: row.Bidang,
-      scope: row.Lingkup,
-      progress: parseProgress(row.Progress || row.Progres),
-      status: normalizeDashboardStatus(row.Status, parseProgress(row.Progress || row.Progres)),
-      target: excelDate(row.Target || "")
+      no: rowValue(row, "No") || `${index + 1}.`,
+      area: rowValue(row, "Bidang"),
+      scope: rowValue(row, "Lingkup"),
+      progress: parseProgress(rowValue(row, "Progress", "Progres")),
+      status: normalizeDashboardStatus(rowValue(row, "Status"), parseProgress(rowValue(row, "Progress", "Progres"))),
+      target: excelDate(rowValue(row, "Target"))
     }))
     .filter((row) => row.area || row.scope);
   return policyPrepData.length;
@@ -1765,11 +1794,11 @@ function importBusinessSheet(workbook) {
   if (!rows.length) return 0;
   businessExcellenceData = rows
     .map((row) => ({
-      semester: row.Semester,
-      activity: row.Aktivitas,
-      target: parseProgress(row.Target || 0),
-      realization: parseProgress(row.Realisasi || 0),
-      status: row.Status
+      semester: rowValue(row, "Semester"),
+      activity: rowValue(row, "Aktivitas"),
+      target: parseProgress(rowValue(row, "Target") || 0),
+      realization: parseProgress(rowValue(row, "Realisasi") || 0),
+      status: rowValue(row, "Status")
     }))
     .filter((row) => row.semester);
   return businessExcellenceData.length;
@@ -1785,9 +1814,9 @@ function importKeyValueSheet(workbook, sheetName) {
   const rows = sheetRows(workbook, sheetName);
   const result = {};
   rows.forEach((row) => {
-    const key = String(row.Kode || row.kode || row.Key || row.key || "").trim();
+    const key = String(rowValue(row, "Kode", "kode", "Key", "key") || "").trim();
     if (!key) return;
-    result[key] = row.Nilai ?? row.nilai ?? row.Value ?? row.value ?? "";
+    result[key] = rowValue(row, "Nilai", "nilai", "Value", "value");
   });
   return result;
 }
@@ -2000,7 +2029,7 @@ async function importDataFile(file) {
     imported.investasi = importInvestmentSheet(workbook);
     imported.aoKorporat = importAoCorporateSheet(workbook);
     imported.aoKantorPusat = importAoOfficeSheet(workbook);
-    rows = crData;
+    rows = Object.values(imported).some((count) => Number(count) > 0) ? crData : [];
   } else if (extension === "csv") {
     if (!(await ensureXlsxLibrary())) return;
     rows = rowsFromCsv(await file.text());
