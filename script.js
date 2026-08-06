@@ -805,50 +805,108 @@ function setupNavigation() {
   const navItems = document.querySelectorAll(".nav-item");
   const defaultTitle = "Strategi & Evaluasi";
   const defaultDescription = "Dashboard ini menyajikan status kebijakan (Holding & Ratifikasi) dan Change Request Aplikasi untuk mendukung percepatan pencapaian target perusahaan.";
+  const navRoutes = {
+    dashboard: "overview",
+    strategy: "strategi-evaluasi",
+    investment: "investasi",
+    ao: "ao-kantor-pusat",
+    "ao-office": "ao-korporat",
+    analytics: "laporan-analitik",
+    alerts: "alert-center",
+    settings: "pengaturan"
+  };
+  const routeAliases = {
+    overview: "dashboard",
+    dashboard: "dashboard",
+    strategi: "strategy",
+    strategy: "strategy",
+    "strategi-evaluasi": "strategy",
+    "strategi-evaluasi-ga": "strategy",
+    investasi: "investment",
+    investment: "investment",
+    "ao-kantor-pusat": "ao",
+    "ao-kp": "ao",
+    ao: "ao",
+    "ao-korporat": "ao-office",
+    "ao-corporate": "ao-office",
+    "ao-office": "ao-office",
+    "laporan-analitik": "analytics",
+    laporan: "analytics",
+    analytics: "analytics",
+    "alert-center": "alerts",
+    alerts: "alerts",
+    pengaturan: "settings",
+    settings: "settings"
+  };
+
+  function routeTarget() {
+    const params = new URLSearchParams(window.location.search);
+    const menu = params.get("menu") || params.get("view");
+    const hash = window.location.hash.replace(/^#/, "");
+    const route = String(menu || hash || "").toLowerCase().trim();
+    return routeAliases[route] || "strategy";
+  }
+
+  function setActiveNav(target) {
+    const item = document.querySelector(`.nav-item[data-nav="${target}"]`) || document.querySelector('.nav-item[data-nav="strategy"]');
+    if (!item || !dashboard || !title || !description) return;
+
+    navItems.forEach((nav) => nav.classList.remove("is-active"));
+    item.classList.add("is-active");
+
+    dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode", "alerts-mode", "settings-mode");
+    if (target === "dashboard") {
+      dashboard.classList.add("dashboard-mode");
+      title.textContent = "Dashboard";
+      description.textContent = "Ringkasan umum lintas Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
+    } else if (target === "analytics") {
+      dashboard.classList.add("analytics-mode");
+      title.textContent = "Laporan & Analitik";
+      description.textContent = "Executive management report untuk membaca status, risiko, dan tindak lanjut lintas menu saat presentasi dashboard.";
+    } else if (target === "ao") {
+      dashboard.classList.add("ao-mode");
+      title.textContent = "AO Kantor Pusat";
+      description.textContent = "Dashboard Administrasi Umum Kantor Pusat dari sumber monitoring utama.";
+    } else if (target === "ao-office") {
+      dashboard.classList.add("ao-office-mode");
+      title.textContent = "AO Korporat";
+      description.textContent = "Monitoring realisasi Biaya Administrasi Umum Korporat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
+    } else if (target === "investment") {
+      dashboard.classList.add("investment-mode");
+      title.textContent = "Investasi";
+      description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
+    } else if (target === "alerts") {
+      dashboard.classList.add("alerts-mode");
+      title.textContent = "Alert Center";
+      description.textContent = "Pusat monitoring risiko, isu prioritas, dan tindak lanjut lintas dashboard.";
+    } else if (target === "settings") {
+      dashboard.classList.add("settings-mode");
+      title.textContent = "Pengaturan";
+      description.textContent = "Konfigurasi data source, export/import, security scan, dan informasi deployment dashboard.";
+    } else {
+      title.textContent = defaultTitle;
+      description.textContent = defaultDescription;
+    }
+  }
 
   navItems.forEach((item) => {
+    const route = navRoutes[item.dataset.nav];
+    if (route) item.setAttribute("href", `#${route}`);
     item.addEventListener("click", (event) => {
       const target = item.dataset.nav;
       if (!target) return;
       event.preventDefault();
-      navItems.forEach((nav) => nav.classList.remove("is-active"));
-      item.classList.add("is-active");
-
-      dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode", "alerts-mode", "settings-mode");
-      if (target === "dashboard") {
-        dashboard.classList.add("dashboard-mode");
-        title.textContent = "Dashboard";
-        description.textContent = "Ringkasan umum lintas Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat untuk pembacaan manajemen.";
-      } else if (target === "analytics") {
-        dashboard.classList.add("analytics-mode");
-        title.textContent = "Laporan & Analitik";
-        description.textContent = "Executive management report untuk membaca status, risiko, dan tindak lanjut lintas menu saat presentasi dashboard.";
-      } else if (target === "ao") {
-        dashboard.classList.add("ao-mode");
-        title.textContent = "AO Kantor Pusat";
-        description.textContent = "Dashboard Administrasi Umum Kantor Pusat dari sumber monitoring utama.";
-      } else if (target === "ao-office") {
-        dashboard.classList.add("ao-office-mode");
-        title.textContent = "AO Korporat";
-        description.textContent = "Monitoring realisasi Biaya Administrasi Umum Korporat, serapan RKAP, proyeksi 2026, dan kontributor biaya terbesar.";
-      } else if (target === "investment") {
-        dashboard.classList.add("investment-mode");
-        title.textContent = "Investasi";
-        description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
-      } else if (target === "alerts") {
-        dashboard.classList.add("alerts-mode");
-        title.textContent = "Alert Center";
-        description.textContent = "Pusat monitoring risiko, isu prioritas, dan tindak lanjut lintas dashboard.";
-      } else if (target === "settings") {
-        dashboard.classList.add("settings-mode");
-        title.textContent = "Pengaturan";
-        description.textContent = "Konfigurasi data source, export/import, security scan, dan informasi deployment dashboard.";
+      const route = navRoutes[target] || "strategi-evaluasi";
+      if (window.location.hash !== `#${route}`) {
+        window.location.hash = route;
       } else {
-        title.textContent = defaultTitle;
-        description.textContent = defaultDescription;
+        setActiveNav(target);
       }
     });
   });
+
+  window.addEventListener("hashchange", () => setActiveNav(routeTarget()));
+  setActiveNav(routeTarget());
 }
 
 function crExportRows() {
