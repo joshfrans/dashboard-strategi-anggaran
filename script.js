@@ -190,6 +190,7 @@ const statusDotClass = {
 };
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
+const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -218,6 +219,47 @@ function markDatabaseUploadedNow() {
   const label = formatDatabaseTimestamp();
   setDatabaseUpdatedAt(label, true);
   return label;
+}
+
+function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
+  return {
+    generatedAt,
+    policyData,
+    policyEntities,
+    policyTypes,
+    policyColumns,
+    crData,
+    performanceData,
+    policyPrepData,
+    businessExcellenceData,
+    investmentData,
+    aoCorporateData,
+    aoOfficeData
+  };
+}
+
+function saveLocalStrategyDataSource() {
+  try {
+    localStorage.setItem(STRATEGY_LOCAL_SOURCE_KEY, JSON.stringify(currentStrategyDataSource()));
+    return true;
+  } catch (error) {
+    console.info("Data source lokal tidak dapat disimpan:", error);
+    alert("Import berhasil, tetapi browser tidak dapat menyimpan data untuk refresh berikutnya. Coba hapus cache/storage browser atau gunakan file JSON sebagai backup.");
+    return false;
+  }
+}
+
+function loadLocalStrategyDataSource() {
+  try {
+    const stored = localStorage.getItem(STRATEGY_LOCAL_SOURCE_KEY);
+    if (!stored) return false;
+    const source = JSON.parse(stored);
+    return applyStrategyDataSource(source);
+  } catch (error) {
+    console.info("Data source lokal tidak dapat dimuat:", error);
+    localStorage.removeItem(STRATEGY_LOCAL_SOURCE_KEY);
+    return false;
+  }
 }
 
 let policyColumns = [
@@ -1024,20 +1066,7 @@ function downloadCsv() {
 }
 
 function downloadJson() {
-  const data = {
-    generatedAt: new Date().toISOString(),
-    policyData,
-    policyEntities,
-    policyTypes,
-    policyColumns,
-    crData,
-    performanceData,
-    policyPrepData,
-    businessExcellenceData,
-    investmentData,
-    aoCorporateData,
-    aoOfficeData
-  };
+  const data = currentStrategyDataSource();
   downloadBlob(JSON.stringify(data, null, 2), "data-source-strategi-evaluasi.json", "application/json;charset=utf-8");
 }
 
@@ -2055,6 +2084,7 @@ function renderStrategyDashboard() {
 }
 
 async function loadStrategyDataSource() {
+  if (loadLocalStrategyDataSource()) return true;
   try {
     const response = await fetch("./assets/data-source-strategi-evaluasi.json?v=20260728-3", { cache: "no-store" });
     if (!response.ok) return false;
@@ -2187,7 +2217,8 @@ async function importInvestmentDataFile(file) {
     return;
   }
   const uploadedAt = markDatabaseUploadedNow();
-  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.\nData per: ${uploadedAt}`);
+  const saved = saveLocalStrategyDataSource();
+  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.\nData per: ${uploadedAt}${saved ? "\nData tersimpan untuk refresh berikutnya." : ""}`);
 }
 
 async function importDataFile(file) {
@@ -2243,6 +2274,7 @@ async function importDataFile(file) {
 
   renderStrategyDashboard();
   const uploadedAt = markDatabaseUploadedNow();
+  const saved = saveLocalStrategyDataSource();
   const message = ["Import berhasil."];
   if (imported.dataSource) {
     message.push("Data source Strategi & Evaluasi lengkap dimuat.");
@@ -2259,6 +2291,7 @@ async function importDataFile(file) {
     message.push(`${rows.length} Change Request dimuat.`);
   }
   message.push(`Data per: ${uploadedAt}`);
+  if (saved) message.push("Data tersimpan untuk refresh berikutnya.");
   alert(message.join("\n"));
 }
 
