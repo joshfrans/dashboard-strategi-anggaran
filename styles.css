@@ -217,6 +217,22 @@ p {
   color: var(--navy);
 }
 
+.source-status-line {
+  margin-top: 34px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #5a6680;
+}
+
+.source-status-line strong {
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.source-status-line span {
+  color: #5a6680;
+}
+
 .header-actions {
   display: grid;
   grid-template-columns: auto auto auto;

@@ -209,6 +209,20 @@ function formatDatabaseTimestamp(date = new Date()) {
     .replace(".", ":") + " WIB";
 }
 
+function formatSourceSyncTimestamp(date = new Date()) {
+  return new Intl.DateTimeFormat("id-ID", {
+    timeZone: "Asia/Jakarta",
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  })
+    .format(date)
+    .replace(":", ".");
+}
+
 function setDatabaseUpdatedAt(value = DEFAULT_DATABASE_UPDATED_AT, persist = false) {
   const label = value || DEFAULT_DATABASE_UPDATED_AT;
   document.querySelectorAll("[data-last-updated]").forEach((element) => {
@@ -221,6 +235,12 @@ function markDatabaseUploadedNow() {
   const label = formatDatabaseTimestamp();
   setDatabaseUpdatedAt(label, true);
   return label;
+}
+
+function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedAt = new Date()) {
+  const element = document.getElementById("strategySourceStatus");
+  if (!element) return;
+  element.innerHTML = `Sumber data: <strong>${sourceLabel}</strong> &middot; sinkron <span>${formatSourceSyncTimestamp(syncedAt)}</span>`;
 }
 
 function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
@@ -2123,6 +2143,7 @@ async function loadGoogleStrategyDataSource() {
     const lastModified = response.headers.get("last-modified");
     const sourceTime = lastModified ? new Date(lastModified) : new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
+    setStrategySourceStatus("Google Sheets (online)", sourceTime);
     saveLocalStrategyDataSource();
     return true;
   } catch (error) {
@@ -2133,12 +2154,17 @@ async function loadGoogleStrategyDataSource() {
 
 async function loadStrategyDataSource() {
   if (await loadGoogleStrategyDataSource()) return true;
-  if (loadLocalStrategyDataSource()) return true;
+  if (loadLocalStrategyDataSource()) {
+    setStrategySourceStatus("Data import lokal", new Date());
+    return true;
+  }
   try {
     const response = await fetch("./assets/data-source-strategi-evaluasi.json?v=20260728-3", { cache: "no-store" });
     if (!response.ok) return false;
     const source = await response.json();
-    return applyStrategyDataSource(source);
+    const applied = applyStrategyDataSource(source);
+    if (applied) setStrategySourceStatus("Data bawaan dashboard", new Date());
+    return applied;
   } catch (error) {
     console.info("Data source Strategi & Evaluasi tidak dimuat:", error);
     return false;
@@ -2266,6 +2292,7 @@ async function importInvestmentDataFile(file) {
     return;
   }
   const uploadedAt = markDatabaseUploadedNow();
+  setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
   alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.\nData per: ${uploadedAt}${saved ? "\nData tersimpan untuk refresh berikutnya." : ""}`);
 }
@@ -2316,6 +2343,7 @@ async function importDataFile(file) {
 
   renderStrategyDashboard();
   const uploadedAt = markDatabaseUploadedNow();
+  setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
   const message = ["Import berhasil."];
   if (imported.dataSource) {
