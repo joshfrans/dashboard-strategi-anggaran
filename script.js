@@ -487,13 +487,15 @@ function renderBusinessExcellence() {
   businessExcellenceData.slice(0, 2).forEach((row, index) => {
     const target = document.getElementById(`businessSemester${index + 1}`);
     if (!target) return;
+    const targetLabel = smartLabel(row.target, Number(row.target) <= 1 ? "percent" : "plain");
+    const realizationLabel = smartLabel(row.realization, Number(row.realization) <= 1 ? "percent" : "plain");
     target.innerHTML = `
       <div>
         <strong>${row.semester || `Semester ${index + 1}`}</strong>
         <span>${row.activity || ""}</span>
       </div>
-      <b>Target<br /><em>${smartLabel(row.target, row.target <= 1 ? "percent" : "plain")}</em></b>
-      <b class="green-box">Realisasi<br /><em>${smartLabel(row.realization, row.realization <= 1 ? "percent" : "plain")}</em></b>
+      <b>Target<br /><em>${targetLabel}</em></b>
+      <b class="${String(row.realization || "").toLowerCase().includes("belum") ? "amber-box" : "green-box"}">Realisasi<br /><em>${realizationLabel}</em></b>
     `;
   });
 }
@@ -1518,16 +1520,17 @@ function renderDetailBusiness() {
       <tr>
         <td><strong>${row.semester}</strong></td>
         <td>${row.activity}</td>
-        <td>${percentLabel(row.target)}</td>
-        <td>${percentLabel(row.realization)}</td>
+        <td>${smartLabel(row.target, Number(row.target) <= 1 ? "percent" : "plain")}</td>
+        <td>${smartLabel(row.realization, Number(row.realization) <= 1 ? "percent" : "plain")}</td>
         <td><span class="badge done">${row.status || "Tercapai"}</span></td>
-        <td>${Number(row.realization || 0) >= Number(row.target || 0) ? "Pertahankan evidence dan kesiapan asesmen" : "Perlu percepatan pemenuhan target"}</td>
+        <td>${Number.isFinite(Number(row.realization)) && Number(row.realization || 0) >= Number(row.target || 0) ? "Pertahankan evidence dan kesiapan asesmen" : "Perlu penilaian / percepatan pemenuhan target"}</td>
       </tr>
     `)
     .join("");
 
-  const avgRealization = businessExcellenceData.length
-    ? businessExcellenceData.reduce((sum, row) => sum + Number(row.realization || 0), 0) / businessExcellenceData.length
+  const numericRows = businessExcellenceData.filter((row) => Number.isFinite(Number(row.realization)));
+  const avgRealization = numericRows.length
+    ? numericRows.reduce((sum, row) => sum + Number(row.realization || 0), 0) / numericRows.length
     : 0;
 
   return `
@@ -1537,7 +1540,7 @@ function renderDetailBusiness() {
         ${makeMetric("Semester Dimonitor", businessExcellenceData.length)}
         ${makeMetric("Rata-rata Realisasi", percentLabel(avgRealization), "green")}
         ${makeMetric("Semester Tercapai", businessExcellenceData.filter((row) => String(row.status || "").toLowerCase().includes("tercapai")).length, "green")}
-        ${makeMetric("Perlu Follow-up", businessExcellenceData.filter((row) => Number(row.realization || 0) < Number(row.target || 0)).length, "amber")}
+        ${makeMetric("Perlu Follow-up", businessExcellenceData.filter((row) => !Number.isFinite(Number(row.realization)) || Number(row.realization || 0) < Number(row.target || 0)).length, "amber")}
       </div>
     </section>
     <section class="detail-columns">
@@ -1926,13 +1929,19 @@ function importBusinessSheet(workbook) {
   const rows = sheetRows(workbook, "05_Business_Excellence");
   if (!rows.length) return 0;
   businessExcellenceData = rows
-    .map((row) => ({
-      semester: rowValue(row, "Semester"),
-      activity: rowValue(row, "Aktivitas"),
-      target: parseProgress(rowValue(row, "Target") || 0),
-      realization: parseProgress(rowValue(row, "Realisasi") || 0),
-      status: rowValue(row, "Status")
-    }))
+    .map((row) => {
+      const rawTarget = rowValue(row, "Target");
+      const rawRealization = rowValue(row, "Realisasi");
+      const realizationText = String(rawRealization ?? "").trim();
+      return {
+        semester: rowValue(row, "Semester"),
+        activity: rowValue(row, "Aktivitas"),
+        target: rawTarget === "" ? "" : parseProgress(rawTarget),
+        realization: realizationText && /[a-zA-Z]/.test(realizationText) ? realizationText : parseProgress(rawRealization || 0),
+        status: rowValue(row, "Status"),
+        note: rowValue(row, "Catatan")
+      };
+    })
     .filter((row) => row.semester);
   return businessExcellenceData.length;
 }

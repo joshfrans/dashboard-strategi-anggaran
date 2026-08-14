@@ -4971,6 +4971,10 @@ p {
   background: #35d354;
 }
 
+.business-semester b.amber-box {
+  background: #f5a400;
+}
+
 .business-semester em {
   color: #ffffff;
   font-size: 22px;
