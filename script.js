@@ -630,7 +630,7 @@ function updateAnalyticsDashboard() {
   const crProgress = crTotal
     ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crTotal
     : 0;
-  const performanceScore = performanceData.reduce((sum, row) => sum + Number(row.score || 0), 0);
+  const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
   const policyDoneRate = policy.total ? (policy.done / policy.total) * 100 : 0;
   const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
@@ -835,7 +835,7 @@ function updateDashboardMetrics() {
   const prepDone = policyPrepData.filter((row) => row.status === "Selesai").length;
   const prepProgress = policyPrepData.filter((row) => row.status === "On Progress").length;
   const prepNotStarted = policyPrepData.filter((row) => row.status === "Belum Mulai").length;
-  const performanceScore = performanceData.reduce((sum, row) => sum + Number(row.score || 0), 0);
+  const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
   const businessScore = businessExcellenceData[0]?.realization ?? 0;
 
@@ -1761,6 +1761,13 @@ function numberFromImport(value, fallback = 0) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function calculatePerformanceScore() {
+  const scoreSum = performanceData.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
+  const weightSum = performanceData.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
+  if (weightSum > 110) return scoreSum * (100 / weightSum);
+  return scoreSum;
+}
+
 function sheetRows(workbook, sheetName) {
   const resolvedName = findSheetName(workbook, sheetName);
   const sheet = workbook.Sheets[resolvedName];
@@ -1883,8 +1890,8 @@ function importPerformanceSheet(workbook) {
   const rows = sheetRows(workbook, "03_Kinerja");
   if (!rows.length) return 0;
   performanceData = rows
-    .map((row, index) => ({
-      no: rowValue(row, "No") || index + 1,
+    .map((row) => ({
+      no: rowValue(row, "No"),
       indicator: rowValue(row, "Indikator Kerja"),
       unit: rowValue(row, "Satuan"),
       weight: rowValue(row, "Bobot"),
