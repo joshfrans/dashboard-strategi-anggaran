@@ -2151,7 +2151,7 @@ async function loadGoogleStrategyDataSource() {
       return false;
     }
     const lastModified = response.headers.get("last-modified");
-    const sourceTime = lastModified ? new Date(lastModified) : new Date();
+    const sourceTime = new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
     setStrategySourceStatus("Google Sheets (online)", sourceTime);
     saveLocalStrategyDataSource();
