@@ -5852,20 +5852,15 @@ td {
   background: #42cd58;
 }
 
-.ratification-status.discussion {
+.ratification-status.on-progress,
+.ratification-status.discussion,
+.ratification-status.drafting,
+.ratification-status.review-fix {
   background: #fff200;
 }
 
 .ratification-status.no-ratification {
   background: #f4c7ad;
-}
-
-.ratification-status.drafting {
-  background: #ffffff;
-}
-
-.ratification-status.review-fix {
-  background: #d76dcd;
 }
 
 .timeline {

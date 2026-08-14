@@ -307,11 +307,12 @@ let policyColumns = [
 ];
 
 const policyStatusLabel = {
-  done: "Selesai endorsement",
-  discussion: "Diskusi internal",
-  "no-ratification": "Tidak ratifikasi",
-  drafting: "Proses drafting",
-  "review-fix": "Perbaikan review"
+  done: "Selesai",
+  "on-progress": "On Progress",
+  discussion: "On Progress",
+  "no-ratification": "Tidak Ratifikasi",
+  drafting: "On Progress",
+  "review-fix": "On Progress"
 };
 
 let performanceData = [
@@ -349,12 +350,14 @@ function numberLabel(value) {
 
 function policyMetrics() {
   const flat = policyData.flatMap((row) => row.statuses);
+  const onProgress = flat.filter((status) => status !== "done" && status !== "no-ratification").length;
   return {
     entities: policyData.length,
     types: policyColumns.length,
     total: flat.length,
     done: flat.filter((status) => status === "done").length,
-    discussion: flat.filter((status) => status === "discussion").length,
+    discussion: onProgress,
+    onProgress,
     drafting: flat.filter((status) => status === "drafting").length,
     reviewFix: flat.filter((status) => status === "review-fix").length,
     noRatification: flat.filter((status) => status === "no-ratification").length,
@@ -367,17 +370,19 @@ function renderPolicyRows() {
   if (!target) return;
   const statusLabel = {
     done: "Selesai",
-    discussion: "Diskusi",
+    "on-progress": "On Progress",
+    discussion: "On Progress",
     "no-ratification": "Tidak Ratifikasi",
-    drafting: "Drafting",
-    "review-fix": "Perbaikan Review"
+    drafting: "On Progress",
+    "review-fix": "On Progress"
   };
   const statusTitle = {
-    done: "Selesai endorsement",
-    discussion: "Diskusi internal di SHAP / terdapat perbedaan ketentuan",
-    "no-ratification": "Tidak melakukan ratifikasi",
-    drafting: "Proses drafting",
-    "review-fix": "Perbaikan hasil review"
+    done: "Selesai",
+    "on-progress": "On Progress",
+    discussion: "On Progress",
+    "no-ratification": "Tidak Ratifikasi",
+    drafting: "On Progress",
+    "review-fix": "On Progress"
   };
 
   target.innerHTML = policyData
@@ -1389,11 +1394,9 @@ function renderDetailPolicy() {
       <div class="detail-legend">
         <strong>Keterangan Status</strong>
         <div>
-          <span><b class="dot green-dot"></b>Selesai endorsement</span>
-          <span><b class="dot amber-dot"></b>Diskusi internal/perbedaan ketentuan</span>
-          <span><b class="dot peach-dot"></b>Tidak melakukan ratifikasi</span>
-          <span><b class="dot white-dot"></b>Proses drafting</span>
-          <span><b class="dot purple-dot"></b>Perbaikan hasil review</span>
+          <span><b class="dot green-dot"></b>Selesai</span>
+          <span><b class="dot amber-dot"></b>On Progress</span>
+          <span><b class="dot peach-dot"></b>Tidak Ratifikasi</span>
         </div>
       </div>
     </section>
@@ -1768,12 +1771,9 @@ function sheetRows(workbook, sheetName) {
 function normalizePolicyStatus(status, progress = 0) {
   const value = String(status || "").toLowerCase();
   if (value.includes("tidak")) return "no-ratification";
-  if (value.includes("draft")) return "drafting";
-  if (value.includes("review") || value.includes("legal") || value.includes("grc")) return "review-fix";
-  if (value.includes("pembahasan") || value.includes("diskusi") || value.includes("proses pengesahan")) return "discussion";
-  if (value.includes("sebagian")) return Number(progress) >= 100 ? "done" : "review-fix";
-  if (value.includes("selesai") || value.includes("endorsement")) return Number(progress) >= 100 || !progress ? "done" : "review-fix";
-  return "drafting";
+  if (value.includes("selesai")) return "done";
+  if (value.includes("endorsement")) return Number(progress) >= 100 ? "done" : "on-progress";
+  return "on-progress";
 }
 
 function normalizeDashboardStatus(status, progress = 0) {
