@@ -191,6 +191,7 @@ const statusDotClass = {
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
+const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode";
 const STRATEGY_GOOGLE_SHEET_ID = "1F36vfEsBGKVAWuhH2FwixSVn58scgi76";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 let strategyGoogleSourceError = "";
@@ -250,6 +251,7 @@ function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedA
 function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
   return {
     generatedAt,
+    databaseUpdatedAt: localStorage.getItem("dashboardDatabaseUpdatedAt") || DEFAULT_DATABASE_UPDATED_AT,
     policyData,
     policyEntities,
     policyTypes,
@@ -264,9 +266,10 @@ function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
   };
 }
 
-function saveLocalStrategyDataSource() {
+function saveLocalStrategyDataSource(mode = "import") {
   try {
     localStorage.setItem(STRATEGY_LOCAL_SOURCE_KEY, JSON.stringify(currentStrategyDataSource()));
+    localStorage.setItem(STRATEGY_LOCAL_SOURCE_MODE_KEY, mode);
     return true;
   } catch (error) {
     console.info("Data source lokal tidak dapat disimpan:", error);
@@ -275,15 +278,20 @@ function saveLocalStrategyDataSource() {
   }
 }
 
-function loadLocalStrategyDataSource() {
+function loadLocalStrategyDataSource(options = {}) {
   try {
+    const mode = localStorage.getItem(STRATEGY_LOCAL_SOURCE_MODE_KEY) || "google-cache";
+    if (options.mode && mode !== options.mode) return false;
     const stored = localStorage.getItem(STRATEGY_LOCAL_SOURCE_KEY);
     if (!stored) return false;
     const source = JSON.parse(stored);
-    return applyStrategyDataSource(source);
+    const applied = applyStrategyDataSource(source);
+    if (applied && source.databaseUpdatedAt) setDatabaseUpdatedAt(source.databaseUpdatedAt, true);
+    return applied;
   } catch (error) {
     console.info("Data source lokal tidak dapat dimuat:", error);
     localStorage.removeItem(STRATEGY_LOCAL_SOURCE_KEY);
+    localStorage.removeItem(STRATEGY_LOCAL_SOURCE_MODE_KEY);
     return false;
   }
 }
@@ -2154,7 +2162,7 @@ async function loadGoogleStrategyDataSource() {
     const sourceTime = new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
     setStrategySourceStatus("Google Sheets (online)", sourceTime);
-    saveLocalStrategyDataSource();
+    saveLocalStrategyDataSource("google-cache");
     return true;
   } catch (error) {
     strategyGoogleSourceError = "Google tidak terbaca";
@@ -2164,9 +2172,15 @@ async function loadGoogleStrategyDataSource() {
 }
 
 async function loadStrategyDataSource() {
+  if (loadLocalStrategyDataSource({ mode: "import" })) {
+    setStrategySourceStatus("File import (lokal)", new Date(), "aktif di browser ini");
+    return true;
+  }
   if (await loadGoogleStrategyDataSource()) return true;
   if (loadLocalStrategyDataSource()) {
-    setStrategySourceStatus("Data import lokal", new Date(), strategyGoogleSourceError);
+    const mode = localStorage.getItem(STRATEGY_LOCAL_SOURCE_MODE_KEY) || "google-cache";
+    const sourceLabel = mode === "google-cache" ? "Cache Google terakhir" : "Data import lokal";
+    setStrategySourceStatus(sourceLabel, new Date(), strategyGoogleSourceError);
     return true;
   }
   try {
