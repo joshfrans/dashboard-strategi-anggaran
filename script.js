@@ -1360,16 +1360,6 @@ function makeMetric(label, value, tone = "") {
 }
 
 function renderDetailPolicy() {
-  const metrics = policyMetrics();
-  const followUpRows = policyData
-    .map((row) => {
-      const issues = row.statuses
-        .map((status, index) => ({ status, column: policyColumns[index] }))
-        .filter((item) => item.status !== "done");
-      return { entity: row.entity, issues };
-    })
-    .filter((row) => row.issues.length);
-
   const detailRows = policyData
     .map((row) => `
       <tr>
@@ -1380,35 +1370,6 @@ function renderDetailPolicy() {
     .join("");
 
   return `
-    <section class="detail-section">
-      <h3>Executive Snapshot</h3>
-      <div class="detail-metrics">
-        ${makeMetric("Entitas SH/AP", metrics.entities)}
-        ${makeMetric("Jenis Kebijakan", metrics.types)}
-        ${makeMetric("Selesai Endorsement", metrics.done, "green")}
-        ${makeMetric("Perlu Tindak Lanjut", metrics.followUp, "amber")}
-        ${makeMetric("Diskusi Internal", metrics.discussion, "amber")}
-        ${makeMetric("Drafting/Review", metrics.drafting + metrics.reviewFix, "purple")}
-      </div>
-    </section>
-    <section class="detail-columns">
-      <article class="detail-section">
-        <h3>Decision Points</h3>
-        <ul class="detail-action-list">
-          <li><strong>Prioritaskan ${metrics.followUp} status non-hijau</strong><span>BoD dapat meminta komitmen tanggal penyelesaian dari SH/AP terkait.</span></li>
-          <li><strong>Kunci penyelesaian diskusi internal</strong><span>Fokus pada status kuning yang menunjukkan perbedaan ketentuan atau pembahasan internal.</span></li>
-          <li><strong>Validasi evidence endorsement</strong><span>Pastikan status hijau memiliki dokumen pengesahan atau bukti implementasi.</span></li>
-        </ul>
-      </article>
-      <article class="detail-section">
-        <h3>Working Actions</h3>
-        <ul class="detail-action-list">
-          ${followUpRows.slice(0, 5).map((row) => `
-            <li><strong>${row.entity}</strong><span>${row.issues.map((issue) => issue.column).join(", ")}</span></li>
-          `).join("")}
-        </ul>
-      </article>
-    </section>
     <section class="detail-section">
       <h3>Detail Monitoring Ratifikasi</h3>
       <div class="detail-table-wrap">
