@@ -1809,7 +1809,7 @@ function normalizePolicyStatus(status, progress = 0) {
   if (value.includes("tidak")) return "no-ratification";
   if (value.includes("draft")) return "drafting";
   if (value.includes("review") || value.includes("legal") || value.includes("grc")) return "review-fix";
-  if (value.includes("pembahasan") || value.includes("diskusi")) return "discussion";
+  if (value.includes("pembahasan") || value.includes("diskusi") || value.includes("proses pengesahan")) return "discussion";
   if (value.includes("sebagian")) return Number(progress) >= 100 ? "done" : "review-fix";
   if (value.includes("selesai") || value.includes("endorsement")) return Number(progress) >= 100 || !progress ? "done" : "review-fix";
   return "drafting";
@@ -1822,7 +1822,59 @@ function normalizeDashboardStatus(status, progress = 0) {
   return "On Progress";
 }
 
+function extractPolicyMatrix(workbook) {
+  const sheetName = findSheetName(workbook, "Ratifikasi");
+  if (!sheetName) return null;
+  const matrix = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, defval: "" });
+  const entityRowIndex = matrix.findIndex((row) =>
+    row.some((cell) => String(cell || "").trim().toLowerCase().includes("pln ip"))
+  );
+  if (entityRowIndex === -1) return null;
+
+  const entityRow = matrix[entityRowIndex];
+  const entityColumns = entityRow
+    .map((cell, index) => ({ entity: String(cell || "").trim(), index }))
+    .filter((item) => item.entity);
+  const policyNameColumn = 1;
+  const policies = [];
+  let category = "";
+
+  matrix.slice(entityRowIndex + 1).forEach((row) => {
+    const no = row[0];
+    const name = String(row[policyNameColumn] || "").trim();
+    if (!name) return;
+    if (no === "" || no === null || no === undefined) {
+      category = name;
+      return;
+    }
+    policies.push({
+      name,
+      category,
+      statuses: entityColumns.map(({ index }) => normalizePolicyStatus(row[index]))
+    });
+  });
+
+  if (!entityColumns.length || !policies.length) return null;
+
+  return {
+    entities: entityColumns.map((item) => item.entity),
+    policies
+  };
+}
+
 function importPolicySheet(workbook) {
+  const matrixSource = extractPolicyMatrix(workbook);
+  if (matrixSource) {
+    policyEntities = matrixSource.entities;
+    policyTypes = matrixSource.policies.map((policy) => policy.name);
+    policyColumns = policyTypes;
+    policyData = policyEntities.map((entity, entityIndex) => ({
+      entity,
+      statuses: matrixSource.policies.map((policy) => policy.statuses[entityIndex] || "drafting")
+    }));
+    return matrixSource.policies.length * matrixSource.entities.length;
+  }
+
   const rows = sheetRows(workbook, "01_Ratifikasi");
   if (!rows.length) return 0;
   const entities = [...new Set(rows.map((row) => String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim()).filter(Boolean))];
@@ -2171,12 +2223,37 @@ async function loadGoogleStrategyDataSource() {
   }
 }
 
+async function loadEmbeddedRatificationDataSource() {
+  try {
+    const response = await fetch("./assets/data-ratifikasi-kebijakan-ga.json?v=20260814-1", { cache: "no-store" });
+    if (!response.ok) return false;
+    const source = await response.json();
+    if (!Array.isArray(source.policyData) || !Array.isArray(source.policyColumns)) return false;
+    policyData = source.policyData;
+    policyEntities = Array.isArray(source.policyEntities) ? source.policyEntities : source.policyData.map((row) => row.entity);
+    policyTypes = Array.isArray(source.policyTypes) ? source.policyTypes : source.policyColumns;
+    policyColumns = source.policyColumns;
+    return true;
+  } catch (error) {
+    console.info("Data Ratifikasi Kebijakan GA tidak dimuat:", error);
+    return false;
+  }
+}
+
 async function loadStrategyDataSource() {
   if (loadLocalStrategyDataSource({ mode: "import" })) {
     setStrategySourceStatus("File import (lokal)", new Date(), "aktif di browser ini");
     return true;
   }
-  if (await loadGoogleStrategyDataSource()) return true;
+  const googleLoaded = await loadGoogleStrategyDataSource();
+  const ratificationLoaded = await loadEmbeddedRatificationDataSource();
+  if (googleLoaded || ratificationLoaded) {
+    if (ratificationLoaded) {
+      saveLocalStrategyDataSource(googleLoaded ? "google-cache" : "asset-cache");
+      setStrategySourceStatus(googleLoaded ? "Google Sheets + Excel Ratifikasi" : "Excel Ratifikasi", new Date());
+    }
+    return true;
+  }
   if (loadLocalStrategyDataSource()) {
     const mode = localStorage.getItem(STRATEGY_LOCAL_SOURCE_MODE_KEY) || "google-cache";
     const sourceLabel = mode === "google-cache" ? "Cache Google terakhir" : "Data import lokal";

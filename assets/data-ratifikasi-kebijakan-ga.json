@@ -1,0 +1,480 @@
+{
+  "generatedAt": "2026-08-14T00:00:00+07:00",
+  "sourceFile": "Ratifikasi kebijakan GA (1).xlsx",
+  "policyEntities": [
+    "PLN IP",
+    "PLN NP",
+    "PLN ICON+",
+    "PLN EPI",
+    "PLN ES",
+    "PLN ND",
+    "PLN E",
+    "PLN Batam",
+    "PLN MCTN",
+    "PLN EMI"
+  ],
+  "policyTypes": [
+    "Kebijakan Strategis Manajemen Aset Properti (Perdir No.0001.KS/DIR/2025)",
+    "Standar Prosedur Pendayagunaan Aset Properti (Perlak No.0004.SPo/DIR/2025)",
+    "Kebijakan Strategis Pengelolaan Naskah Dinas dan Kearsipan (Perdir No.0017.P/DIR/2023)",
+    "Standar Prosedur Pengelolaan Naskah Dinas (Perlak No.0016.E/DIR/2024)",
+    "Standar Prosedur Kearsipan PT PLN (Persero) (Perlak No.0017.E/DIR/2024)",
+    "Jadwal Retensi Arsip PT PLN (Persero) (Kepdir No. 0122.K/DIR/2024)",
+    "Sistem Klasifikasi Keamanan dan Akses Arsip Dinamis PT PLN (Persero) (Kepdir No. 0123.K/DIR/2024)",
+    "Standar Prosedur Perjalanan Dinas Pegawai (Perlak No.0036.E/DIR/2023)",
+    "Standar Prosedur Perjalanan Dinas (Juknis No.0021.I.DIR.2023)",
+    "Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Juknis No.0017.PTs/DIR/2025)",
+    "Penetapan Jenis, Pagu, dan Skema Pembayaran Kendaraan serta Besaran Biaya Dalam Rangka Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Kepdir No.0118.K/DIR/2025)",
+    "Penetapan Standardisasi fasilitas Kerja (Kepdir No.0132.K/DIR/2024)",
+    "Juknis No.0003.PTs/DIR/2026 Penyediaan Fasilitas Kendaraan Operasional (KBLBB)",
+    "Indirect Procurement (Juknis No.0133.I/DIR/2024)"
+  ],
+  "policyColumns": [
+    "Kebijakan Strategis Manajemen Aset Properti (Perdir No.0001.KS/DIR/2025)",
+    "Standar Prosedur Pendayagunaan Aset Properti (Perlak No.0004.SPo/DIR/2025)",
+    "Kebijakan Strategis Pengelolaan Naskah Dinas dan Kearsipan (Perdir No.0017.P/DIR/2023)",
+    "Standar Prosedur Pengelolaan Naskah Dinas (Perlak No.0016.E/DIR/2024)",
+    "Standar Prosedur Kearsipan PT PLN (Persero) (Perlak No.0017.E/DIR/2024)",
+    "Jadwal Retensi Arsip PT PLN (Persero) (Kepdir No. 0122.K/DIR/2024)",
+    "Sistem Klasifikasi Keamanan dan Akses Arsip Dinamis PT PLN (Persero) (Kepdir No. 0123.K/DIR/2024)",
+    "Standar Prosedur Perjalanan Dinas Pegawai (Perlak No.0036.E/DIR/2023)",
+    "Standar Prosedur Perjalanan Dinas (Juknis No.0021.I.DIR.2023)",
+    "Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Juknis No.0017.PTs/DIR/2025)",
+    "Penetapan Jenis, Pagu, dan Skema Pembayaran Kendaraan serta Besaran Biaya Dalam Rangka Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Kepdir No.0118.K/DIR/2025)",
+    "Penetapan Standardisasi fasilitas Kerja (Kepdir No.0132.K/DIR/2024)",
+    "Juknis No.0003.PTs/DIR/2026 Penyediaan Fasilitas Kendaraan Operasional (KBLBB)",
+    "Indirect Procurement (Juknis No.0133.I/DIR/2024)"
+  ],
+  "policyData": [
+    {
+      "entity": "PLN IP",
+      "statuses": [
+        "done",
+        "done",
+        "done",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "review-fix",
+        "discussion",
+        "review-fix"
+      ]
+    },
+    {
+      "entity": "PLN NP",
+      "statuses": [
+        "discussion",
+        "discussion",
+        "done",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "review-fix",
+        "review-fix",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "entity": "PLN ICON+",
+      "statuses": [
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "review-fix"
+      ]
+    },
+    {
+      "entity": "PLN EPI",
+      "statuses": [
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "no-ratification",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "entity": "PLN ES",
+      "statuses": [
+        "done",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "entity": "PLN ND",
+      "statuses": [
+        "discussion",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "entity": "PLN E",
+      "statuses": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "entity": "PLN Batam",
+      "statuses": [
+        "done",
+        "done",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "entity": "PLN MCTN",
+      "statuses": [
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "entity": "PLN EMI",
+      "statuses": [
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "done",
+        "done"
+      ]
+    }
+  ],
+  "policyDetails": [
+    {
+      "no": 1,
+      "category": "Aset Properti",
+      "name": "Kebijakan Strategis Manajemen Aset Properti (Perdir No.0001.KS/DIR/2025)",
+      "statuses": [
+        "done",
+        "discussion",
+        "no-ratification",
+        "no-ratification",
+        "done",
+        "discussion",
+        "done",
+        "done",
+        "no-ratification",
+        "no-ratification"
+      ]
+    },
+    {
+      "no": 2,
+      "category": "Aset Properti",
+      "name": "Standar Prosedur Pendayagunaan Aset Properti (Perlak No.0004.SPo/DIR/2025)",
+      "statuses": [
+        "done",
+        "discussion",
+        "no-ratification",
+        "no-ratification",
+        "no-ratification",
+        "discussion",
+        "done",
+        "done",
+        "no-ratification",
+        "no-ratification"
+      ]
+    },
+    {
+      "no": 3,
+      "category": "Kearsipan",
+      "name": "Kebijakan Strategis Pengelolaan Naskah Dinas dan Kearsipan (Perdir No.0017.P/DIR/2023)",
+      "statuses": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 4,
+      "category": "Kearsipan",
+      "name": "Standar Prosedur Pengelolaan Naskah Dinas (Perlak No.0016.E/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 5,
+      "category": "Kearsipan",
+      "name": "Standar Prosedur Kearsipan PT PLN (Persero) (Perlak No.0017.E/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 6,
+      "category": "Kearsipan",
+      "name": "Jadwal Retensi Arsip PT PLN (Persero) (Kepdir No. 0122.K/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion",
+        "discussion"
+      ]
+    },
+    {
+      "no": 7,
+      "category": "Kearsipan",
+      "name": "Sistem Klasifikasi Keamanan dan Akses Arsip Dinamis PT PLN (Persero) (Kepdir No. 0123.K/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 8,
+      "category": "Perjalanan Dinas",
+      "name": "Standar Prosedur Perjalanan Dinas Pegawai (Perlak No.0036.E/DIR/2023)",
+      "statuses": [
+        "review-fix",
+        "review-fix",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 9,
+      "category": "Perjalanan Dinas",
+      "name": "Standar Prosedur Perjalanan Dinas (Juknis No.0021.I.DIR.2023)",
+      "statuses": [
+        "review-fix",
+        "review-fix",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 10,
+      "category": "BFKO dan Bantuan Biaya Transportasi",
+      "name": "Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Juknis No.0017.PTs/DIR/2025)",
+      "statuses": [
+        "review-fix",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "no": 11,
+      "category": "BFKO dan Bantuan Biaya Transportasi",
+      "name": "Penetapan Jenis, Pagu, dan Skema Pembayaran Kendaraan serta Besaran Biaya Dalam Rangka Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Kepdir No.0118.K/DIR/2025)",
+      "statuses": [
+        "review-fix",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "no-ratification"
+      ]
+    },
+    {
+      "no": 12,
+      "category": "Fasilitas Kerja",
+      "name": "Penetapan Standardisasi fasilitas Kerja (Kepdir No.0132.K/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "done",
+        "done",
+        "no-ratification",
+        "done",
+        "done",
+        "done",
+        "discussion",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 13,
+      "category": "Kendaraan Operasional",
+      "name": "Juknis No.0003.PTs/DIR/2026 Penyediaan Fasilitas Kendaraan Operasional (KBLBB)",
+      "statuses": [
+        "discussion",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done"
+      ]
+    },
+    {
+      "no": 14,
+      "category": "Indirect Procurement",
+      "name": "Indirect Procurement (Juknis No.0133.I/DIR/2024)",
+      "statuses": [
+        "review-fix",
+        "done",
+        "review-fix",
+        "no-ratification",
+        "done",
+        "no-ratification",
+        "done",
+        "no-ratification",
+        "no-ratification",
+        "done"
+      ]
+    }
+  ]
+}
