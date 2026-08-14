@@ -191,6 +191,8 @@ const statusDotClass = {
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
+const STRATEGY_GOOGLE_SHEET_ID = "1F36vfEsBGKVAWuhH2FwixSVn58scgi76";
+const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -2015,6 +2017,21 @@ function importAoOfficeSheet(workbook) {
   return Object.keys(source).length + (operationalSource ? 1 : 0);
 }
 
+function applyStrategyWorkbook(workbook) {
+  const imported = {
+    ratifikasi: importPolicySheet(workbook),
+    changeRequest: importCrSheet(workbook),
+    kinerja: importPerformanceSheet(workbook),
+    penyusunanKebijakan: importPolicyPrepSheet(workbook),
+    businessExcellence: importBusinessSheet(workbook),
+    investasi: importInvestmentSheet(workbook),
+    aoKorporat: importAoCorporateSheet(workbook),
+    aoKantorPusat: importAoOfficeSheet(workbook)
+  };
+  const hasData = Object.values(imported).some((count) => Number(count) > 0);
+  return { imported, hasData };
+}
+
 function normalizeAoSource(source, fallback = {}) {
   const normalized = { ...source };
   ["total", "realization", "rkap", "absorption", "targetRate", "projection", "projectionRate", "yoy"].forEach((key) => {
@@ -2083,7 +2100,39 @@ function renderStrategyDashboard() {
   updateDashboardMetrics();
 }
 
+async function loadGoogleStrategyDataSource() {
+  try {
+    if (!(await ensureXlsxLibrary())) return false;
+    const response = await fetch(`${STRATEGY_GOOGLE_XLSX_URL}&_=${Date.now()}`, {
+      cache: "no-store",
+      credentials: "omit"
+    });
+    if (!response.ok) {
+      console.info(`Google data source tidak dapat dimuat: HTTP ${response.status}`);
+      return false;
+    }
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType.includes("text/html")) {
+      console.info("Google data source mengembalikan halaman HTML. Pastikan file dapat diakses oleh siapa pun yang memiliki link.");
+      return false;
+    }
+    const buffer = await response.arrayBuffer();
+    const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
+    const { hasData } = applyStrategyWorkbook(workbook);
+    if (!hasData) return false;
+    const lastModified = response.headers.get("last-modified");
+    const sourceTime = lastModified ? new Date(lastModified) : new Date();
+    setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
+    saveLocalStrategyDataSource();
+    return true;
+  } catch (error) {
+    console.info("Google data source Strategi & Evaluasi tidak dimuat:", error);
+    return false;
+  }
+}
+
 async function loadStrategyDataSource() {
+  if (await loadGoogleStrategyDataSource()) return true;
   if (loadLocalStrategyDataSource()) return true;
   try {
     const response = await fetch("./assets/data-source-strategi-evaluasi.json?v=20260728-3", { cache: "no-store" });
@@ -2230,14 +2279,7 @@ async function importDataFile(file) {
     if (!(await ensureXlsxLibrary())) return;
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
-    imported.ratifikasi = importPolicySheet(workbook);
-    imported.changeRequest = importCrSheet(workbook);
-    imported.kinerja = importPerformanceSheet(workbook);
-    imported.penyusunanKebijakan = importPolicyPrepSheet(workbook);
-    imported.businessExcellence = importBusinessSheet(workbook);
-    imported.investasi = importInvestmentSheet(workbook);
-    imported.aoKorporat = importAoCorporateSheet(workbook);
-    imported.aoKantorPusat = importAoOfficeSheet(workbook);
+    Object.assign(imported, applyStrategyWorkbook(workbook).imported);
     rows = Object.values(imported).some((count) => Number(count) > 0) ? crData : [];
   } else if (extension === "csv") {
     if (!(await ensureXlsxLibrary())) return;
