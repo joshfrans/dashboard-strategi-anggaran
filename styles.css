@@ -5129,18 +5129,9 @@ td {
   background: linear-gradient(180deg, #ffffff, #f4f9ff) !important;
 }
 
-.policy-combo-head {
-  padding: 8px 12px 0;
-  color: #53627f;
-  font-size: 8px;
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
 .policy-combo-items {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   height: 100%;
 }
 
@@ -5149,17 +5140,32 @@ td {
   min-width: 0;
   display: grid;
   align-content: center;
-  gap: 4px;
-  min-height: 58px;
-  padding: 8px 12px 10px;
+  gap: 3px;
+  min-height: 45px;
+  padding: 8px 12px;
 }
 
 .policy-combo-trigger + .policy-combo-trigger {
-  border-left: 1px dashed #d6e2f2;
+  border-top: 1px dashed #d6e2f2;
 }
 
 .policy-combo-trigger:hover {
   background: rgba(26, 99, 255, 0.06);
+}
+
+.policy-combo-metric {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.policy-combo-metric strong {
+  font-size: 18px;
+}
+
+.policy-combo-metric span {
+  font-size: 10px;
 }
 
 .entity-trigger,
@@ -6792,10 +6798,6 @@ td {
   .policy-combo-trigger + .policy-combo-trigger {
     border-top: 1px solid var(--line);
     border-left: 0;
-  }
-
-  .policy-combo-head {
-    padding-bottom: 6px;
   }
 
   .detail-legend div {
