@@ -241,7 +241,7 @@ function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedA
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
   const status = `Sumber data: ${sourceLabel} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
-  element.textContent = "Data per";
+  element.textContent = `Sumber data: ${sourceLabel}`;
   element.title = status;
   element.closest(".date-card")?.setAttribute("title", status);
 }

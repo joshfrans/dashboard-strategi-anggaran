@@ -377,7 +377,7 @@ p {
 }
 
 .date-card {
-  height: 39px;
+  height: 48px;
   min-width: auto;
   grid-template-columns: 24px max-content;
   align-items: center;
@@ -395,21 +395,36 @@ p {
 
 .date-card div {
   display: flex;
-  align-items: baseline;
-  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
   white-space: nowrap;
 }
 
+.date-card small,
 .date-card span {
   color: var(--navy);
   font-size: 9px;
   line-height: 1;
 }
 
+.date-card small {
+  color: #4e5f7f;
+  font-weight: 700;
+}
+
+.date-card span {
+  font-weight: 800;
+}
+
 .date-card strong {
   color: var(--navy);
   font-size: 11px;
   line-height: 1;
+}
+
+.source-date-card {
+  min-width: 268px;
 }
 
 .export-btn,
