@@ -415,7 +415,7 @@ function renderPolicyTypes() {
   const target = document.getElementById("policyTypes");
   if (!target) return;
   target.innerHTML = policyTypes
-    .map((policy, index) => `<span><b>${index + 1}</b>${policy}</span>`)
+    .map((policy, index) => `<span title="${policy}"><b>${index + 1}</b>${policy}</span>`)
     .join("");
 }
 
