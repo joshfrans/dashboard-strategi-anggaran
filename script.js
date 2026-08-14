@@ -193,6 +193,7 @@ const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
 const STRATEGY_GOOGLE_SHEET_ID = "1F36vfEsBGKVAWuhH2FwixSVn58scgi76";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
+let strategyGoogleSourceError = "";
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -237,11 +238,11 @@ function markDatabaseUploadedNow() {
   return label;
 }
 
-function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedAt = new Date()) {
+function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedAt = new Date(), detail = "") {
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
-  const status = `Sumber data: ${sourceLabel} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
-  element.textContent = `Sumber data: ${sourceLabel}`;
+  const status = `Sumber data: ${sourceLabel}${detail ? ` - ${detail}` : ""} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
+  element.textContent = `Sumber data: ${sourceLabel}${detail ? ` (${detail})` : ""}`;
   element.title = status;
   element.closest(".date-card")?.setAttribute("title", status);
 }
@@ -2125,24 +2126,30 @@ function renderStrategyDashboard() {
 
 async function loadGoogleStrategyDataSource() {
   try {
+    strategyGoogleSourceError = "";
     if (!(await ensureXlsxLibrary())) return false;
     const response = await fetch(`${STRATEGY_GOOGLE_XLSX_URL}&_=${Date.now()}`, {
       cache: "no-store",
       credentials: "omit"
     });
     if (!response.ok) {
+      strategyGoogleSourceError = `Google ${response.status}`;
       console.info(`Google data source tidak dapat dimuat: HTTP ${response.status}`);
       return false;
     }
     const contentType = response.headers.get("content-type") || "";
     if (contentType.includes("text/html")) {
+      strategyGoogleSourceError = "Google butuh akses";
       console.info("Google data source mengembalikan halaman HTML. Pastikan file dapat diakses oleh siapa pun yang memiliki link.");
       return false;
     }
     const buffer = await response.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
     const { hasData } = applyStrategyWorkbook(workbook);
-    if (!hasData) return false;
+    if (!hasData) {
+      strategyGoogleSourceError = "format sheet tidak cocok";
+      return false;
+    }
     const lastModified = response.headers.get("last-modified");
     const sourceTime = lastModified ? new Date(lastModified) : new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
@@ -2150,6 +2157,7 @@ async function loadGoogleStrategyDataSource() {
     saveLocalStrategyDataSource();
     return true;
   } catch (error) {
+    strategyGoogleSourceError = "Google tidak terbaca";
     console.info("Google data source Strategi & Evaluasi tidak dimuat:", error);
     return false;
   }
@@ -2158,7 +2166,7 @@ async function loadGoogleStrategyDataSource() {
 async function loadStrategyDataSource() {
   if (await loadGoogleStrategyDataSource()) return true;
   if (loadLocalStrategyDataSource()) {
-    setStrategySourceStatus("Data import lokal", new Date());
+    setStrategySourceStatus("Data import lokal", new Date(), strategyGoogleSourceError);
     return true;
   }
   try {
@@ -2166,7 +2174,7 @@ async function loadStrategyDataSource() {
     if (!response.ok) return false;
     const source = await response.json();
     const applied = applyStrategyDataSource(source);
-    if (applied) setStrategySourceStatus("Data bawaan dashboard", new Date());
+    if (applied) setStrategySourceStatus("Data bawaan dashboard", new Date(), strategyGoogleSourceError);
     return applied;
   } catch (error) {
     console.info("Data source Strategi & Evaluasi tidak dimuat:", error);
