@@ -240,7 +240,10 @@ function markDatabaseUploadedNow() {
 function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedAt = new Date()) {
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
-  element.innerHTML = `Sumber data: <strong>${sourceLabel}</strong> &middot; sinkron <span>${formatSourceSyncTimestamp(syncedAt)}</span>`;
+  const status = `Sumber data: ${sourceLabel} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
+  element.textContent = "Data per";
+  element.title = status;
+  element.closest(".date-card")?.setAttribute("title", status);
 }
 
 function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
