@@ -18,7 +18,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260814-5" />
+    <link rel="stylesheet" href="./styles.css?v=20260814-6" />
   </head>
   <body>
     <div class="app-shell">
@@ -1329,28 +1329,32 @@
               <button type="button" data-detail="policy">Lihat Semua <i data-lucide="arrow-right"></i></button>
             </div>
             <div class="policy-overview">
-              <div class="policy-overview-card entity-trigger" id="entityTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="entityPopover">
-                <strong id="policyEntityCount">10</strong>
-                <span>Entitas SHAP</span>
-                <small>Klik untuk lihat entitas</small>
-                <div class="entity-popover" id="entityPopover" hidden>
-                  <div class="entity-popover-head">
-                    <strong>Entitas SH/AP</strong>
-                    <span><span id="policyEntityPopoverCount">10</span> entitas dalam monitoring ratifikasi.</span>
+              <div class="policy-overview-card policy-combo-card">
+                <div class="policy-combo-items">
+                  <div class="policy-combo-trigger entity-trigger" id="entityTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="entityPopover">
+                    <strong id="policyEntityCount">10</strong>
+                    <span>Entitas SHAP</span>
+                    <small>Klik untuk lihat entitas</small>
+                    <div class="entity-popover" id="entityPopover" hidden>
+                      <div class="entity-popover-head">
+                        <strong>Entitas SH/AP</strong>
+                        <span><span id="policyEntityPopoverCount">10</span> entitas dalam monitoring ratifikasi.</span>
+                      </div>
+                      <div class="entity-list" id="policyEntities"></div>
+                    </div>
                   </div>
-                  <div class="entity-list" id="policyEntities"></div>
-                </div>
-              </div>
-              <div class="policy-overview-card policy-type-trigger" id="policyTypeTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="policyTypePopover">
-                <strong id="policyTypeCount">7</strong>
-                <span>Jenis Kebijakan</span>
-                <small>Klik untuk lihat kebijakan</small>
-                <div class="entity-popover policy-type-popover" id="policyTypePopover" hidden>
-                  <div class="entity-popover-head">
-                    <strong>Jenis Kebijakan</strong>
-                    <span><span id="policyTypePopoverCount">7</span> kategori kebijakan yang dimonitor.</span>
+                  <div class="policy-combo-trigger policy-type-trigger" id="policyTypeTrigger" role="button" tabindex="0" aria-expanded="false" aria-controls="policyTypePopover">
+                    <strong id="policyTypeCount">7</strong>
+                    <span>Jenis Kebijakan</span>
+                    <small>Klik untuk lihat kebijakan</small>
+                    <div class="entity-popover policy-type-popover" id="policyTypePopover" hidden>
+                      <div class="entity-popover-head">
+                        <strong>Jenis Kebijakan</strong>
+                        <span><span id="policyTypePopoverCount">7</span> kategori kebijakan yang dimonitor.</span>
+                      </div>
+                      <div class="entity-list policy-type-list" id="policyTypes"></div>
+                    </div>
                   </div>
-                  <div class="entity-list policy-type-list" id="policyTypes"></div>
                 </div>
               </div>
               <div>
@@ -1821,6 +1825,6 @@
     </div>
 
     <script src="./assets/lucide.min.js?v=20260804-1"></script>
-    <script src="./script.js?v=20260814-12"></script>
+    <script src="./script.js?v=20260814-13"></script>
   </body>
 </html>

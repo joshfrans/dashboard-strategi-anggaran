@@ -5082,7 +5082,7 @@ td {
 
 .policy-overview {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 8px;
   padding: 12px 12px 2px;
 }
@@ -5115,6 +5115,35 @@ td {
   color: #61718c;
   font-size: 9px;
   font-weight: 800;
+}
+
+.policy-combo-card {
+  padding: 0 !important;
+  overflow: visible;
+}
+
+.policy-combo-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+}
+
+.policy-combo-trigger {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-height: 72px;
+  padding: 10px 12px;
+}
+
+.policy-combo-trigger + .policy-combo-trigger {
+  border-left: 1px solid var(--line);
+}
+
+.policy-combo-trigger:hover {
+  background: #f5f9ff;
 }
 
 .entity-trigger,
@@ -6737,6 +6766,16 @@ td {
   .cr-summary-row,
   .summary-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .policy-overview,
+  .policy-combo-items {
+    grid-template-columns: 1fr;
+  }
+
+  .policy-combo-trigger + .policy-combo-trigger {
+    border-top: 1px solid var(--line);
+    border-left: 0;
   }
 
   .detail-legend div {
