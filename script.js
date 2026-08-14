@@ -1644,10 +1644,11 @@ function setupDetailModal() {
 
   function openDetail(type) {
     try {
+      subtitle.hidden = false;
       if (type === "policy") {
         eyebrow.textContent = "Kebijakan & Ratifikasi";
         title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
-        subtitle.textContent = "Membantu BoD melihat entitas yang membutuhkan keputusan, evidence, dan tindak lanjut.";
+        subtitle.textContent = "";
         body.innerHTML = renderDetailPolicy();
       } else if (type === "performance") {
         eyebrow.textContent = "Monitoring Kinerja";
@@ -1665,6 +1666,7 @@ function setupDetailModal() {
         subtitle.textContent = "Membantu BoD melihat prioritas aplikasi, risiko delivery, dan action working level.";
         body.innerHTML = renderDetailCr();
       }
+      subtitle.hidden = !subtitle.textContent.trim();
       overlay.hidden = false;
       document.body.classList.add("modal-open");
       if (window.lucide) window.lucide.createIcons();
