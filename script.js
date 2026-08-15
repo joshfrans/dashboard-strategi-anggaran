@@ -326,17 +326,28 @@ const policyStatusLabel = {
   "review-fix": "On Progress"
 };
 
+const MIN_PERFORMANCE_MAIN_INDICATORS = 10;
+const performanceOfficialWeight = 100;
+
 let performanceData = [
   { no: 1, indicator: "Efisiensi Biaya", unit: "", weight: 20, target: "", targetPeriod: "", realization: "", achievement: "", score: 22, status: "Tercapai" },
-  { no: 2, indicator: "Optimalisasi penggunaan aset tanah dan bangunan", unit: "Rp Miliar", weight: 12, target: 147.74, targetPeriod: 59.83358626, realization: 85.48141199, achievement: 1.1, score: 13.2, status: "Tercapai" },
-  { no: 3, indicator: "Penyediaan Dokumen Pengadaan Barang Jasa KP sampai draft kontrak", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: 13.02, status: "Tercapai" },
-  { no: 4, indicator: "Integrated GA Management System", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: 12.72, status: "Tercapai" },
-  { no: 5, indicator: "Penyusunan Kebijakan General Affair", unit: "Waktu", weight: 12, target: "31 Desember 2026", targetPeriod: "30 Juni 2026", realization: "Nodin Kebijakan Layanan GA; Aset; Arsip", achievement: 1.069, score: 12.82, status: "Tercapai" },
-  { no: 6, indicator: "Proses Sentralisasi Pembayaran", unit: "%", weight: 10, target: 0.9392, targetPeriod: 0.9392, realization: 0.94, achievement: 1.0009, score: 10, status: "Tercapai" },
-  { no: 7, indicator: "Manajemen Kearsipan", unit: "%", weight: 10, target: 0.95, targetPeriod: 0.95, realization: 1.0561, achievement: 1.1, score: 11, status: "Tercapai" },
-  { no: 8, indicator: "Pengamanan Aset dan Lingkungan Kerja", unit: "%", weight: 5, target: 1, targetPeriod: 1, realization: 1, achievement: 1, score: 5, status: "Tercapai" },
-  { no: 9, indicator: "Pemenuhan SLA Layanan GA", unit: "%", weight: 4, target: 0.95, targetPeriod: 0.95, realization: 1, achievement: 1.0526, score: 4.2, status: "Tercapai" },
-  { no: 10, indicator: "Kepatuhan Administrasi Layanan", unit: "%", weight: 3, target: 1, targetPeriod: 1, realization: 1, achievement: 1, score: 3, status: "Tercapai" }
+  { no: "", indicator: "a. Efektifitas Biaya Administrasi Umum", unit: "Rp Miliar", weight: 14, target: "8.856,16", targetPeriod: "4.740,294", realization: "3.284,569", achievement: "110,00%", score: "15,40", status: "Tercapai" },
+  { no: "", indicator: "b. Pengendalian NAC (Non Allowable Cost)", unit: "Rp Miliar", weight: 6, target: "Sesuai SKAO Tahun 2026", targetPeriod: "451.040551784", realization: "292.145057590", achievement: "110,00%", score: "6,60", status: "Tercapai" },
+  { no: 2, indicator: "Optimalisasi penggunaan aset tanah dan bangunan", unit: "Rp Miliar", weight: 12, target: "147,74", targetPeriod: "59.83358626", realization: "85.48141199", achievement: "110,00%", score: "13,20", status: "Tercapai" },
+  { no: 3, indicator: "Penyediaan Dokumen Pengadaan Barang Jasa Kantor Pusat sampai dengan selesainya draft kontrak", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: "13,02", status: "Tercapai" },
+  { no: "", indicator: "a. Pengadaan Langsung / Penunjukan Langsung Pasca Kualifikasi", unit: "%", weight: "", target: "93,96", targetPeriod: "93.96", realization: "100.00", achievement: "106,43%", score: "3,19", status: "Tercapai" },
+  { no: "", indicator: "b. Penunjukan Langsung Prakualifikasi", unit: "%", weight: "", target: "85,19", targetPeriod: "85,19", realization: "100", achievement: "110,00%", score: "3,30", status: "Tercapai" },
+  { no: "", indicator: "c. Tender Terbuka / Tender Terbatas / Seleksi Umum / Seleksi Terbatas", unit: "%", weight: "", target: "92,86", targetPeriod: "92,85714286", realization: "100,00000000", achievement: "107,69%", score: "", status: "Tercapai" },
+  { no: "", indicator: "d. Seleksi Umum / Seleksi Terbatas / Tender Terbuka Prakualifikasi", unit: "%", weight: "", target: "83,33", targetPeriod: "83,33333333", realization: "100", achievement: "110,00%", score: "", status: "Tercapai" },
+  { no: 4, indicator: "Integrated GA Management System", unit: "", weight: 12, target: "", targetPeriod: "", realization: "", achievement: "", score: "12,72", status: "Tercapai" },
+  { no: "", indicator: "a. Optimalisasi penyerapan anggaran pemeliharaan sarana terkonsolidasi", unit: "%", weight: "", target: "95-100", targetPeriod: "95-100", realization: "98,87", achievement: "107,74%", score: "", status: "Tercapai" },
+  { no: "", indicator: "b. Pengembangan Aplikasi Transformasi GA", unit: "Waktu", weight: "", target: "31 Desember 2026", targetPeriod: "30 Juni 2026", realization: "E-Meeting: 103,71%; DigiSign: 105%; rata-rata 104,36%", achievement: "104,36%", score: "", status: "Tercapai" },
+  { no: 5, indicator: "Penyusunan Kebijakan General Affair", unit: "Waktu", weight: 12, target: "31 Desember 2026", targetPeriod: "30 Juni 2026", realization: "Nodin Kebijakan Layanan GA: 103,86%; Aset: 106,86%; Arsip: 110,00%", achievement: "106,90%", score: "12,82", status: "Tercapai" },
+  { no: 6, indicator: "Proses Sentralisasi Pembayaran", unit: "%", weight: 10, target: "93,92", targetPeriod: "93,92", realization: "94", achievement: "100,09%", score: "10,00", status: "Tercapai" },
+  { no: 7, indicator: "Manajemen Kearsipan", unit: "%", weight: 10, target: "95", targetPeriod: "95", realization: "105,61", achievement: "110,00%", score: "11,00", status: "Tercapai" },
+  { no: 8, indicator: "Implementasi smart and green building", unit: "SM 1: Waktu; SM 2: Unit", weight: 6, target: "7", targetPeriod: "31 Mei 2026", realization: "21 Mei 2026", achievement: "101,43%", score: "6,08", status: "Tercapai" },
+  { no: 9, indicator: "Usulan Anggaran Investasi Non Infrastruktur Ketenagalistrikan-Sarana Prasarana Umum untuk Tahun 2026", unit: "%", weight: 6, target: "100", targetPeriod: "100", realization: "100", achievement: "100,00%", score: "6,00", status: "Tercapai" },
+  { no: 10, indicator: "Kepatuhan, Maturity Level dan Tata Kelola Perusahaan", unit: "", weight: "", target: "", targetPeriod: "", realization: "", achievement: "", score: "0,00", status: "Tercapai" }
 ];
 let performanceOfficialScore = 106.84;
 
@@ -490,16 +501,22 @@ function performanceScoreStatus(score) {
   };
 }
 
+function performanceMainRows() {
+  const rows = performanceData.filter((row) => String(row?.no || "").trim());
+  return rows.length ? rows : performanceData.filter((row) => String(row?.indicator || "").trim());
+}
+
 function renderPerformanceRows() {
   const target = document.getElementById("performanceRows");
   if (!target) return;
+  const score = calculatePerformanceScore();
   target.innerHTML = `
     <tr class="performance-group-row"><td colspan="10"></td></tr>
     ${performanceData
       .map((row) => `
-        <tr>
+        <tr class="${row.no ? "performance-main-row" : "performance-sub-row"}">
           <td>${row.no || ""}</td>
-          <td><strong>${row.no ? `${row.no}. ` : ""}${row.indicator || ""}</strong></td>
+          <td>${row.no ? `<strong>${row.no}. ${row.indicator || ""}</strong>` : row.indicator || ""}</td>
           <td>${row.unit || ""}</td>
           <td>${smartLabel(row.weight, "plain")}</td>
           <td>${smartLabel(row.target)}</td>
@@ -511,6 +528,30 @@ function renderPerformanceRows() {
         </tr>
       `)
       .join("")}
+    <tr class="performance-total-row">
+      <td></td>
+      <td><strong>Total</strong></td>
+      <td></td>
+      <td>${performanceOfficialWeight}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>${smartLabel(score, "plain")}</td>
+      <td></td>
+    </tr>
+    <tr class="performance-total-row">
+      <td></td>
+      <td><strong>Nilai</strong></td>
+      <td></td>
+      <td>${performanceOfficialWeight}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>${smartLabel(score, "plain")}</td>
+      <td><span class="status-dot done-dot"></span></td>
+    </tr>
   `;
 }
 
@@ -1572,12 +1613,15 @@ function renderDetailPerformance() {
   if (!source) return "";
   const table = source.querySelector(".performance-table-wrap")?.outerHTML || "";
   const legend = source.querySelector(".performance-legend")?.outerHTML || "";
+  const score = calculatePerformanceScore();
+  const scoreStatus = performanceScoreStatus(score);
+  const summary = getPerformanceStatusSummary();
   return `
     <section class="detail-metrics">
-      <div class="detail-metric green"><strong>106,84</strong><span>Nilai NKO</span></div>
-      <div class="detail-metric green"><strong>Tercapai</strong><span>Status Kinerja</span></div>
-      <div class="detail-metric purple"><strong>10</strong><span>Indikator Utama</span></div>
-      <div class="detail-metric gray"><strong>100</strong><span>Total Bobot</span></div>
+      <div class="detail-metric green"><strong>${smartLabel(score, "plain")}</strong><span>Nilai NKO</span></div>
+      <div class="detail-metric green"><strong>${scoreStatus.label}</strong><span>Status Kinerja</span></div>
+      <div class="detail-metric purple"><strong>${summary.total}</strong><span>Indikator Utama</span></div>
+      <div class="detail-metric gray"><strong>${performanceOfficialWeight}</strong><span>Total Bobot</span></div>
     </section>
     <section class="detail-section performance-detail-section">
       <div class="performance-detail-head">
@@ -1593,7 +1637,7 @@ function renderDetailPerformance() {
         <div class="signal-main">
           <span>Status Manajemen</span>
           <strong>Kinerja Aman</strong>
-          <p>NKO 106,84 berada di zona hijau. Tidak ada indikator utama yang membutuhkan eskalasi saat ini.</p>
+          <p>NKO ${smartLabel(score, "plain")} berada di zona hijau. Tidak ada indikator utama yang membutuhkan eskalasi saat ini.</p>
         </div>
         <div class="signal-drivers">
           <span>Pendorong Nilai</span>
@@ -1671,7 +1715,7 @@ function renderDetailBusiness() {
 }
 
 function getPerformanceStatusSummary() {
-  const indicatorRows = performanceData.filter((row) => String(row?.indicator || "").trim());
+  const indicatorRows = performanceMainRows();
   const summary = {
     total: indicatorRows.length,
     green: 0,
@@ -2070,7 +2114,7 @@ function importCrSheet(workbook) {
 function importPerformanceSheet(workbook) {
   const rows = sheetRows(workbook, "03_Kinerja");
   if (!rows.length) return 0;
-  performanceData = rows
+  const importedRows = rows
     .map((row) => ({
       no: rowValue(row, "No"),
       indicator: rowValue(row, "Indikator Kerja"),
@@ -2084,6 +2128,16 @@ function importPerformanceSheet(workbook) {
       status: rowValue(row, "Status", "Ket.") || "Tercapai"
     }))
     .filter((row) => row.indicator);
+
+  const mainIndicatorCount = importedRows.filter((row) => String(row.no || "").trim()).length;
+  if (mainIndicatorCount < MIN_PERFORMANCE_MAIN_INDICATORS) {
+    console.info(
+      `Sheet 03_Kinerja diabaikan karena hanya memuat ${mainIndicatorCount} indikator utama. Minimal ${MIN_PERFORMANCE_MAIN_INDICATORS} indikator diperlukan.`
+    );
+    return 0;
+  }
+
+  performanceData = importedRows;
   return performanceData.length;
 }
 
@@ -2340,10 +2394,19 @@ function applyStrategyDataSource(source) {
   }
   if (Array.isArray(source.crData)) crData = source.crData;
   if (Array.isArray(source.changeRequest)) crData = source.changeRequest;
-  if (Array.isArray(source.performanceData)) performanceData = source.performanceData;
-  if (source.performanceOfficialScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceOfficialScore, performanceOfficialScore);
-  if (source.performanceScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceScore, performanceOfficialScore);
-  if (source.nko !== undefined) performanceOfficialScore = numberFromImport(source.nko, performanceOfficialScore);
+  let performanceSourceIsComplete = true;
+  if (Array.isArray(source.performanceData)) {
+    const mainIndicatorCount = source.performanceData.filter((row) => String(row?.no || "").trim()).length;
+    if (mainIndicatorCount >= MIN_PERFORMANCE_MAIN_INDICATORS) {
+      performanceData = source.performanceData;
+    } else {
+      performanceSourceIsComplete = false;
+      console.info("Data kinerja pada data source diabaikan karena indikator utama belum lengkap.");
+    }
+  }
+  if (performanceSourceIsComplete && source.performanceOfficialScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceOfficialScore, performanceOfficialScore);
+  if (performanceSourceIsComplete && source.performanceScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceScore, performanceOfficialScore);
+  if (performanceSourceIsComplete && source.nko !== undefined) performanceOfficialScore = numberFromImport(source.nko, performanceOfficialScore);
   if (Array.isArray(source.policyPrepData)) policyPrepData = source.policyPrepData;
   if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
   if (source.investmentData && typeof source.investmentData === "object") investmentData = { ...investmentData, ...source.investmentData };
