@@ -159,12 +159,14 @@ const ratificationRows = [];
 policySource.policyData.forEach((entityRow) => {
   policySource.policyTypes.forEach((policy, index) => {
     const status = entityRow.statuses[index] || "on-progress";
+    const rawStatus = entityRow.rawStatuses?.[index] || "";
+    const note = rawStatus && rawStatus !== statusLabel[status] ? `Status sumber: ${rawStatus}` : "";
     ratificationRows.push([
       entityRow.entity,
       policy,
       statusLabel[status] || "On Progress",
       status === "done" ? 100 : status === "no-ratification" ? 0 : 50,
-      ""
+      note
     ]);
   });
 });

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T00:00:00+07:00",
+  "generatedAt": "2026-08-15T23:06:05+07:00",
   "sourceFile": "Ratifikasi kebijakan GA (1).xlsx",
   "policyEntities": [
     "PLN IP",
@@ -63,6 +63,22 @@
         "on-progress",
         "on-progress",
         "on-progress"
+      ],
+      "rawStatuses": [
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Review Legal",
+        "Proses Pengesahan",
+        "Review Legal"
       ]
     },
     {
@@ -82,6 +98,22 @@
         "done",
         "done",
         "done"
+      ],
+      "rawStatuses": [
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Selesai",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "GRC",
+        "GRC",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai"
       ]
     },
     {
@@ -101,6 +133,22 @@
         "done",
         "done",
         "on-progress"
+      ],
+      "rawStatuses": [
+        "Tidak Ratifikasi",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "GRC"
       ]
     },
     {
@@ -120,6 +168,22 @@
         "no-ratification",
         "done",
         "no-ratification"
+      ],
+      "rawStatuses": [
+        "Tidak Ratifikasi",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Tidak Ratifikasi"
       ]
     },
     {
@@ -139,6 +203,22 @@
         "done",
         "done",
         "done"
+      ],
+      "rawStatuses": [
+        "Selesai",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai"
       ]
     },
     {
@@ -158,6 +238,22 @@
         "done",
         "done",
         "no-ratification"
+      ],
+      "rawStatuses": [
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Tidak Ratifikasi"
       ]
     },
     {
@@ -177,6 +273,22 @@
         "done",
         "done",
         "done"
+      ],
+      "rawStatuses": [
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai"
       ]
     },
     {
@@ -196,6 +308,22 @@
         "on-progress",
         "done",
         "no-ratification"
+      ],
+      "rawStatuses": [
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Tidak Ratifikasi"
       ]
     },
     {
@@ -215,6 +343,22 @@
         "done",
         "done",
         "no-ratification"
+      ],
+      "rawStatuses": [
+        "Tidak Ratifikasi",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Tidak Ratifikasi"
       ]
     },
     {
@@ -234,247 +378,29 @@
         "done",
         "done",
         "done"
+      ],
+      "rawStatuses": [
+        "Tidak Ratifikasi",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Proses Pengesahan",
+        "Selesai",
+        "Selesai",
+        "Selesai",
+        "Tidak Ratifikasi",
+        "Tidak Ratifikasi",
+        "Selesai",
+        "Selesai",
+        "Selesai"
       ]
     }
   ],
-  "policyDetails": [
-    {
-      "no": 1,
-      "category": "Aset Properti",
-      "name": "Kebijakan Strategis Manajemen Aset Properti (Perdir No.0001.KS/DIR/2025)",
-      "statuses": [
-        "done",
-        "on-progress",
-        "no-ratification",
-        "no-ratification",
-        "done",
-        "on-progress",
-        "done",
-        "done",
-        "no-ratification",
-        "no-ratification"
-      ]
-    },
-    {
-      "no": 2,
-      "category": "Aset Properti",
-      "name": "Standar Prosedur Pendayagunaan Aset Properti (Perlak No.0004.SPo/DIR/2025)",
-      "statuses": [
-        "done",
-        "on-progress",
-        "no-ratification",
-        "no-ratification",
-        "no-ratification",
-        "on-progress",
-        "done",
-        "done",
-        "no-ratification",
-        "no-ratification"
-      ]
-    },
-    {
-      "no": 3,
-      "category": "Kearsipan",
-      "name": "Kebijakan Strategis Pengelolaan Naskah Dinas dan Kearsipan (Perdir No.0017.P/DIR/2023)",
-      "statuses": [
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 4,
-      "category": "Kearsipan",
-      "name": "Standar Prosedur Pengelolaan Naskah Dinas (Perlak No.0016.E/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 5,
-      "category": "Kearsipan",
-      "name": "Standar Prosedur Kearsipan PT PLN (Persero) (Perlak No.0017.E/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 6,
-      "category": "Kearsipan",
-      "name": "Jadwal Retensi Arsip PT PLN (Persero) (Kepdir No. 0122.K/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress",
-        "on-progress"
-      ]
-    },
-    {
-      "no": 7,
-      "category": "Kearsipan",
-      "name": "Sistem Klasifikasi Keamanan dan Akses Arsip Dinamis PT PLN (Persero) (Kepdir No. 0123.K/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 8,
-      "category": "Perjalanan Dinas",
-      "name": "Standar Prosedur Perjalanan Dinas Pegawai (Perlak No.0036.E/DIR/2023)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 9,
-      "category": "Perjalanan Dinas",
-      "name": "Standar Prosedur Perjalanan Dinas (Juknis No.0021.I.DIR.2023)",
-      "statuses": [
-        "on-progress",
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 10,
-      "category": "BFKO dan Bantuan Biaya Transportasi",
-      "name": "Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Juknis No.0017.PTs/DIR/2025)",
-      "statuses": [
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "no-ratification"
-      ]
-    },
-    {
-      "no": 11,
-      "category": "BFKO dan Bantuan Biaya Transportasi",
-      "name": "Penetapan Jenis, Pagu, dan Skema Pembayaran Kendaraan serta Besaran Biaya Dalam Rangka Pelaksanaan Pemberian BFKO dan Bantuan Biaya Transportasi (Kepdir No.0118.K/DIR/2025)",
-      "statuses": [
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "no-ratification"
-      ]
-    },
-    {
-      "no": 12,
-      "category": "Fasilitas Kerja",
-      "name": "Penetapan Standardisasi fasilitas Kerja (Kepdir No.0132.K/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "done",
-        "done",
-        "no-ratification",
-        "done",
-        "done",
-        "done",
-        "on-progress",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 13,
-      "category": "Kendaraan Operasional",
-      "name": "Juknis No.0003.PTs/DIR/2026 Penyediaan Fasilitas Kendaraan Operasional (KBLBB)",
-      "statuses": [
-        "on-progress",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done",
-        "done"
-      ]
-    },
-    {
-      "no": 14,
-      "category": "Indirect Procurement",
-      "name": "Indirect Procurement (Juknis No.0133.I/DIR/2024)",
-      "statuses": [
-        "on-progress",
-        "done",
-        "on-progress",
-        "no-ratification",
-        "done",
-        "no-ratification",
-        "done",
-        "no-ratification",
-        "no-ratification",
-        "done"
-      ]
-    }
-  ]
+  "statusCounts": {
+    "done": 87,
+    "onProgress": 37,
+    "noRatification": 16,
+    "total": 140
+  }
 }
