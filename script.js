@@ -1006,6 +1006,7 @@ function updateDashboardMetrics() {
     analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.total} status ratifikasi: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada status ratifikasi yang masih berjalan, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
   }
 
+  renderExecutiveOverview();
   updateAnalyticsDashboard();
 }
 
@@ -1726,6 +1727,248 @@ function getPerformanceStatusSummary() {
   });
 
   return summary;
+}
+
+function overviewNumber(value, fallback = 0) {
+  const parsed = numberFromImport(value, NaN);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function overviewDecimal(value, digits = 2) {
+  return Number(value || 0).toLocaleString("id-ID", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
+}
+
+function overviewMoneyFromJt(value) {
+  const number = overviewNumber(value, 0);
+  return `${overviewDecimal(number / 1000, 2)} M`;
+}
+
+function overviewPlainMoney(value, fallback) {
+  return value ? String(value) : fallback;
+}
+
+function overviewPercent(value) {
+  const number = overviewNumber(value, 0);
+  return `${overviewDecimal(number, Number.isInteger(number) ? 0 : 1)}%`;
+}
+
+function overviewProgressWidth(value) {
+  return Math.max(0, Math.min(100, overviewNumber(value, 0)));
+}
+
+function overviewPolicyRows(limit = 2) {
+  return policyData.slice(0, limit).map((row) => {
+    const done = row.statuses.filter((status) => status === "done").length;
+    const onProgress = row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length;
+    const noRatification = row.statuses.filter((status) => status === "no-ratification").length;
+    const total = Math.max(row.statuses.length, 1);
+    return `
+      <div class="overview-policy-row">
+        <span>${row.entity}</span>
+        <b>
+          <i class="done" style="width:${done / total * 100}%"></i>
+          <i class="progress" style="width:${onProgress / total * 100}%"></i>
+          <i class="risk" style="width:${noRatification / total * 100}%"></i>
+        </b>
+        <strong>${done}/${total}</strong>
+      </div>
+    `;
+  }).join("");
+}
+
+function overviewPrepRows(limit = 2) {
+  return policyPrepData.slice(0, limit).map((row) => `
+    <div class="overview-prep-row">
+      <span>${row.scope || row.area || "Penyusunan kebijakan"}</span>
+      <b><i style="width:${overviewProgressWidth(row.progress)}%"></i></b>
+      <strong>${percentLabel(parseProgress(row.progress))}</strong>
+    </div>
+  `).join("");
+}
+
+function overviewMiniTrend(color = "blue") {
+  return `<span class="overview-mini-trend ${color}"><i></i><i></i><i></i><i></i><i></i><i></i></span>`;
+}
+
+function renderExecutiveOverview() {
+  const target = document.getElementById("executiveDashboardView");
+  if (!target) return;
+
+  const policy = policyMetrics();
+  const totalCr = crData.length;
+  const doneCr = crData.filter((row) => row.status === "Selesai").length;
+  const onProgressCr = crData.filter((row) => row.status === "On Progress").length;
+  const notStartedCr = crData.filter((row) => row.status === "Belum Mulai").length;
+  const crProgress = totalCr ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / totalCr : 0;
+  const nko = calculatePerformanceScore();
+  const nkoSummary = getPerformanceStatusSummary();
+  const businessScore = businessExcellenceData[0]?.realization ?? 0;
+  const firstBusiness = businessExcellenceData[0] || {};
+  const secondBusiness = businessExcellenceData[1] || {};
+  const prepRows = overviewPrepRows();
+  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
+  const corporateTotal = overviewNumber(aoCorporateData.total, 3533761);
+  const corporateRkap = overviewNumber(aoCorporateData.rkap, 8856163);
+  const corporateProjection = overviewNumber(aoCorporateData.projection, 7946234);
+  const officeTotal = overviewNumber(aoOfficeData.realization, 1330380);
+  const officeRkap = overviewNumber(aoOfficeData.rkap, 4003550);
+  const officeProjection = Math.round(officeRkap * 0.792);
+  const investmentAi = overviewPlainMoney(investmentData.aiRealization, "344,27 M");
+  const investmentAki = overviewPlainMoney(investmentData.akiRealization, "412,23 M");
+  const investmentAkiPct = overviewPlainMoney(investmentData.akiRealizationPct, "30,43%");
+
+  target.classList.add("overview-executive");
+  target.innerHTML = `
+    <header class="overview-topbar">
+      <div class="overview-brand">
+        <span class="overview-logo"><i data-lucide="zap"></i></span>
+        <div>
+          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
+          <p>PT PLN (Persero)</p>
+        </div>
+      </div>
+      <div class="overview-controls">
+        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
+        <span><i data-lucide="user"></i> Administrator GA</span>
+        <span class="overview-theme"><b></b><b></b><b></b><b></b></span>
+        <button type="button"><i data-lucide="moon"></i></button>
+        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
+      </div>
+    </header>
+
+    <div class="overview-titlebar">
+      <div class="overview-breadcrumb"><button type="button"><i data-lucide="arrow-left"></i></button><span>Overview</span></div>
+      <div class="overview-title">
+        <span class="overview-target"><i data-lucide="target"></i></span>
+        <div>
+          <h1>Strategi & Anggaran Umum <b>SEBAGIAN TERVERIFIKASI</b></h1>
+          <p>Vice President Strategi dan Anggaran Umum · Strategi & evaluasi GA, anggaran investasi & sarana</p>
+          <small>REALISASI BIAYA S.D. JUNI 2026 · DATA PER ${reportDate}</small>
+        </div>
+      </div>
+      <div class="overview-source-toggle"><b>Data langsung</b><span>Data statis</span></div>
+    </div>
+
+    <section class="overview-section">
+      <div class="overview-section-line"><h3>Anggaran Operasional Sarana</h3><span>Realisasi biaya s.d. Juni 2026</span><em>Data per 30 Juni 2026</em></div>
+      <div class="overview-two-col">
+        <article class="overview-board-card">
+          <div class="overview-card-head"><h4>Korporat & SHAP</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="overview-ops-grid">
+            <div class="overview-main-kpi">
+              <span>RKAP 2026</span><strong>${overviewMoneyFromJt(corporateRkap)}</strong>
+              <span>Realisasi AO</span><strong class="green">${overviewMoneyFromJt(corporateTotal)}</strong>
+              <span>Prognosa 2026</span><strong>${overviewMoneyFromJt(corporateProjection)}</strong>
+            </div>
+            <div class="overview-rate-stack">
+              <b style="--value:${overviewProgressWidth(corporateTotal / corporateRkap * 100)}"><strong>${overviewPercent(corporateTotal / corporateRkap * 100)}</strong><span>THD RKAP</span></b>
+              <b style="--value:${overviewProgressWidth(corporateTotal / corporateProjection * 100)}"><strong>${overviewPercent(corporateTotal / corporateProjection * 100)}</strong><span>THD Prognosa</span></b>
+            </div>
+            ${[
+              ["Realisasi Biaya Adm Umum", overviewMoneyFromJt(corporateTotal), "Target s.d. Juni 4.740,29 M", "▼ 74,5%"],
+              ["Biaya Sewa Non-AHG", "780,75 M", "Target s.d. Juni 866,99 M", "▼ 90,1%"],
+              ["Realisasi Biaya Pemeliharaan", "3.436,97 M", "Target s.d. Juni 3.436,97 M", "≈ 100,0%"],
+              ["Realisasi Biaya NAC", "291,04 M", "Target s.d. Juni 451,04 M", "▼ 64,5%"]
+            ].map((item) => `
+              <div class="overview-soft-kpi">
+                <span>${item[0]}</span><strong>${item[1]}</strong><small>${item[2]}</small><em>${item[3]}</em>
+              </div>
+            `).join("")}
+          </div>
+          <div class="overview-subrow"><h5>Pos Kendali Umum</h5>${["Realisasi Honorarium|1,06 T", "Realisasi SPPD Non Diklat|0,28 T", "Realisasi Konsumsi|0,12 T"].map((item) => {
+            const [label, value] = item.split("|");
+            return `<div><span>${label}</span><strong>${value}</strong><small>Target s.d. Juni terkendali</small></div>`;
+          }).join("")}</div>
+          <div class="overview-over-target"><h5>Unit Over Target</h5><span>ADM UMUM</span><b>PSER</b><b>TJBB</b><b>APBT</b><span>NAC</span><b>Electricity Services</b><b>PT EMI</b></div>
+        </article>
+
+        <article class="overview-board-card">
+          <div class="overview-card-head"><h4>Kantor Pusat</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="overview-ops-grid">
+            <div class="overview-main-kpi">
+              <span>RKAP 2026</span><strong>${overviewMoneyFromJt(officeRkap)}</strong>
+              <span>Realisasi AO</span><strong class="green">${overviewMoneyFromJt(officeTotal)}</strong>
+              <span>Prognosa 2026</span><strong>${overviewMoneyFromJt(officeProjection)}</strong>
+            </div>
+            <div class="overview-rate-stack">
+              <b style="--value:${overviewProgressWidth(officeTotal / officeRkap * 100)}"><strong>${overviewPercent(officeTotal / officeRkap * 100)}</strong><span>THD RKAP</span></b>
+              <b style="--value:${overviewProgressWidth(officeTotal / officeProjection * 100)}"><strong>${overviewPercent(officeTotal / officeProjection * 100)}</strong><span>THD Prognosa</span></b>
+            </div>
+            ${[
+              ["Realisasi Biaya Adm Umum", overviewMoneyFromJt(officeTotal), "Target s.d. Juni 2.161,92 M", "▼ 61,5%"],
+              ["Biaya Sewa Non-AHG", "59,54 M", "Target s.d. Juni 138,16 M", "▼ 43,1%"],
+              ["Realisasi Biaya Pemeliharaan", "288,38 M", "Target s.d. Juni 905,13 M", "▲ 313,9%"],
+              ["Realisasi Biaya NAC", "116,56 M", "Target s.d. Juni 226,28 M", "▼ 51,5%"]
+            ].map((item) => `
+              <div class="overview-soft-kpi">
+                <span>${item[0]}</span><strong>${item[1]}</strong><small>${item[2]}</small><em>${item[3]}</em>
+              </div>
+            `).join("")}
+          </div>
+          <div class="overview-subrow"><h5>Pos Kendali Umum</h5>${(aoOfficeData.topCosts || []).slice(0, 3).map((row) => `<div><span>${row.name}</span><strong>${overviewMoneyFromJt(row.value)}</strong><small>${row.absorption || 0}% serapan</small></div>`).join("")}</div>
+          <div class="overview-over-target"><h5>Unit Over Target</h5><span>ADM UMUM</span><b>DIVPBH</b><b>DIVANT</b><b>DIVAKT</b><span>NAC</span><b>Div. Pengadaan Strategis</b><b>Div. Teknologi Informasi</b></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="overview-section">
+      <div class="overview-section-line"><h3>Anggaran Investasi Sarana</h3><span>AI 2026 ${overviewPlainMoney(investmentData.totalInvestment, "10,89 T")} · realisasi ${investmentAi}</span><em>Report 16 Juli 2026</em></div>
+      <div class="overview-two-col compact">
+        <article class="overview-board-card overview-invest-card">
+          <div class="overview-card-head"><h4>Kantor Pusat</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="overview-invest-row">
+            <div><span>Anggaran Investasi Murni</span><strong>0,00 M</strong><small>14 paket kontrak Murni</small></div>
+            <div><span>Anggaran Investasi Lanjutan</span><strong>380,34 M</strong><small>AI Lanjutan terbit 2026</small></div>
+            <div><span>Penyerapan AKI</span><strong>380,34 M</strong><small>AKI Kantor Pusat 10.636,92 M</small></div>
+          </div>
+        </article>
+        <article class="overview-board-card overview-invest-card">
+          <div class="overview-card-head"><h4>Unit</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="overview-invest-row">
+            <div><span>Anggaran Investasi Murni</span><strong>0,00 M</strong><small>Belum tersedia</small></div>
+            <div><span>Anggaran Investasi Lanjutan</span><strong>108,54 M</strong><small>AI Lanjutan Unit 255,31 M</small></div>
+            <div><span>Penyerapan AKI</span><strong>${investmentAki}</strong><small>${investmentAkiPct} dari total AKI</small></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="overview-section">
+      <div class="overview-section-line"><h3>Strategi & Evaluasi GA</h3><span>NKO ${smartLabel(nko, "plain")} · ${performanceScoreStatus(nko).label}</span><em>Report 16 Juli 2026</em></div>
+      <div class="overview-two-col compact">
+        <article class="overview-board-card overview-strategy-card">
+          <div class="overview-card-head"><h4>Ratifikasi Kebijakan General Affairs</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="overview-policy-summary">
+            <b><strong>${policy.done}</strong><span>Selesai</span></b>
+            <b><strong>${policy.onProgress}</strong><span>On Progress</span></b>
+            <b><strong>${policy.noRatification}</strong><span>Tidak Ratifikasi</span></b>
+          </div>
+          <div class="overview-policy-bars">${overviewPolicyRows()}</div>
+        </article>
+        <article class="overview-board-card overview-strategy-card">
+          <div class="overview-card-head"><h4>Penyusunan Kebijakan Layanan GA</h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          ${prepRows || `<div class="overview-prep-row"><span>Belum ada data penyusunan kebijakan</span><b><i style="width:0%"></i></b><strong>0%</strong></div>`}
+          <div class="overview-cr-line">
+            <span>Progress Change Request</span>
+            <b><i style="width:${crProgress}%"></i></b>
+            <strong>${percentLabel(crProgress)}</strong>
+            <small>${doneCr} selesai · ${onProgressCr} on progress · ${notStartedCr} belum mulai</small>
+          </div>
+          <div class="overview-be-line">
+            <span>PLN Business Excellence</span>
+            <b>${firstBusiness.semester || "Semester 1"}: ${smartLabel(firstBusiness.realization, "plain")}</b>
+            <b>${secondBusiness.semester || "Semester 2"}: ${smartLabel(secondBusiness.realization, "plain")}</b>
+            <small>NKO ${smartLabel(nko, "plain")} · ${nkoSummary.green} indikator hijau</small>
+          </div>
+        </article>
+      </div>
+    </section>
+  `;
+
+  if (window.lucide) window.lucide.createIcons();
 }
 
 function updatePerformanceStatusPanel() {
