@@ -1292,25 +1292,6 @@ async function downloadExcel() {
     row.status,
     row.note || row.description || ""
   ]);
-  const aoCorporateRows = [
-    ["period", "Periode", aoCorporateData.period],
-    ["total", "Realisasi", aoCorporateData.total],
-    ["rkap", "RKAP", aoCorporateData.rkap],
-    ["absorption", "Serapan RKAP (%)", aoCorporateData.absorption],
-    ["targetRate", "Realisasi vs Target (%)", aoCorporateData.targetRate],
-    ["projection", "Proyeksi Setahun", aoCorporateData.projection],
-    ["projectionRate", "Proyeksi vs RKAP (%)", aoCorporateData.projectionRate],
-    ["yoy", "YoY (%)", aoCorporateData.yoy]
-  ];
-  const aoOfficeRows = [
-    ["period", "Periode", aoOfficeData.period],
-    ["selectedUnit", "Unit Prioritas", aoOfficeData.selectedUnit],
-    ["realization", "Realisasi", aoOfficeData.realization],
-    ["rank", "Peringkat", aoOfficeData.rank],
-    ["rkap", "RKAP", aoOfficeData.rkap],
-    ["absorption", "Serapan RKAP (%)", aoOfficeData.absorption],
-    ["yoy", "YoY (%)", aoOfficeData.yoy]
-  ];
   const donePolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0);
   const onProgressPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length, 0);
   const noRatificationPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "no-ratification").length, 0);
@@ -1338,9 +1319,6 @@ async function downloadExcel() {
   const performanceSheet = window.XLSX.utils.aoa_to_sheet([["No", "Indikator Kerja", "Satuan", "Bobot", "Target 2026", "Target S.D. Juni", "Realisasi", "Pencapaian", "Nilai", "Status"], ...performanceRows]);
   const prepSheet = window.XLSX.utils.aoa_to_sheet([["No", "Bidang", "Lingkup", "Progress", "Status", "Target"], ...policyPrepRows]);
   const businessSheet = window.XLSX.utils.aoa_to_sheet([["Semester", "Aktivitas", "Target", "Realisasi", "Status", "Catatan"], ...businessRows]);
-  const investmentSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...investmentExportRows()]);
-  const aoCorporateSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoCorporateRows]);
-  const aoOfficeSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoOfficeRows]);
   const strategySummarySheet = window.XLSX.utils.aoa_to_sheet([
     ["Indikator", "Rumus/Nilai", "Catatan"],
     ["Nilai NKO", performanceOfficialScore, "Nilai resmi yang ditampilkan pada card Monitoring Kinerja"],
@@ -1356,9 +1334,6 @@ async function downloadExcel() {
   window.XLSX.utils.book_append_sheet(workbook, performanceSheet, "03_Kinerja");
   window.XLSX.utils.book_append_sheet(workbook, prepSheet, "04_Penyusunan_Kebijakan");
   window.XLSX.utils.book_append_sheet(workbook, businessSheet, "05_Business_Excellence");
-  window.XLSX.utils.book_append_sheet(workbook, investmentSheet, "06_Investasi");
-  window.XLSX.utils.book_append_sheet(workbook, aoCorporateSheet, "07_AO_Korporat");
-  window.XLSX.utils.book_append_sheet(workbook, aoOfficeSheet, "08_AO_Kantor_Pusat");
   window.XLSX.utils.book_append_sheet(workbook, strategySummarySheet, "09_Ringkasan");
   window.XLSX.writeFile(workbook, "template-data-source-strategi-evaluasi.xlsx");
 }

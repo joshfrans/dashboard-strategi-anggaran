@@ -60,52 +60,6 @@ const businessRows = [
   ["Semester 2", "Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen", 100, "Belum Dinilai", "Belum Ukur", "On Progress"]
 ];
 
-const investmentRows = [
-  ["reportDate", "Periode Laporan", "Report ANG Investasi - 16 Juli 2026"],
-  ["executiveSignal", "Executive Signal", "AKI terserap 30,43% dari anggaran kas investasi. Fokus utama: evaluasi realisasi Juli, BAPP, rekomposisi AKI, dan percepatan handshake AI 2027."],
-  ["totalInvestment", "Total Anggaran Investasi 2026", "10,89 T"],
-  ["totalInvestmentNote", "Catatan Total Anggaran Investasi", "KP 10,64 T + Sarpras Unit 255,31 M"],
-  ["aiRealization", "Realisasi AI s.d. Juni", "344,27 M"],
-  ["aiRealizationNote", "Catatan Realisasi AI", "3,16% dari total AI terbit"],
-  ["aiRealizationPct", "Persentase Realisasi AI", "3,16%"],
-  ["akiTotal", "Total AKI 2026", "1,35 T"],
-  ["akiTotalNote", "Catatan Total AKI", "KP 1,18 T + Sarpras Unit 178,66 M"],
-  ["akiRealization", "Realisasi AKI s.d. Juni", "412,23 M"],
-  ["akiRealizationNote", "Catatan Realisasi AKI", "30,43% dari total AKI"],
-  ["akiRealizationPct", "Persentase Realisasi AKI", "30,43%"],
-  ["akiGaugeNote", "Narasi Gauge AKI", "412,23 M dari total AKI 1.354,51 M sudah terealisasi."],
-  ["akiRealizationChip", "Chip Realisasi AKI", "Realisasi 412,23 M"],
-  ["akiGapChip", "Chip Sisa AKI", "Sisa 942,28 M"],
-  ["akiOfficePct", "Persentase AKI Kantor Pusat", "29,02%"],
-  ["akiOfficeNote", "Catatan AKI Kantor Pusat", "341,29 M dari 1.175,85 M"],
-  ["akiSarprasPct", "Persentase AKI Sarpras Unit", "39,71%"],
-  ["akiSarprasNote", "Catatan AKI Sarpras Unit", "70,94 M dari 178,66 M"],
-  ["akiGapPct", "Persentase Gap AKI", "69,57%"],
-  ["akiGapNote", "Catatan Gap AKI", "Perlu BAPP & rekomposisi"],
-  ["akiInsight", "Insight AKI", "Serapan AKI masih 30,43%. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap."]
-];
-
-const aoCorporateRows = [
-  ["period", "Periode", "Mei 2026"],
-  ["total", "Realisasi s.d. Mei 2026", 2931185],
-  ["rkap", "RKAP 2026", 8856162],
-  ["absorption", "Penyerapan thd RKAP 2026", 33],
-  ["targetRate", "Realisasi vs Target s.d. Mei", 82],
-  ["projection", "Proyeksi Setahun 2026", 7724829],
-  ["projectionRate", "Proyeksi % RKAP", 87],
-  ["yoy", "% YoY", 113]
-];
-
-const aoOfficeRows = [
-  ["period", "Periode", "Juni 2026"],
-  ["selectedUnit", "Pilih/Cari Unit", "KPST"],
-  ["realization", "Realisasi s.d. Juni 2026", 1389043],
-  ["rank", "Peringkat di Holding", "#1 dari 39"],
-  ["rkap", "RKAP 2026 (AO)", 3647914],
-  ["absorption", "Penyerapan thd RKAP 2026", 38],
-  ["yoy", "% YoY", 129]
-];
-
 const summaryRows = [
   ["Nilai NKO", 106.84, "Wajib 106,84 sesuai laporan NKO DIV GA Juni 2026"],
   ["Total Bobot Kinerja", 100, "Total bobot indikator utama"],
@@ -164,24 +118,23 @@ guide.showGridLines = false;
 guide.getRange("A1:F1").merge();
 guide.getRange("A1").values = [["Template Data Source - Strategi & Evaluasi"]];
 guide.getRange("A1").format = { fill: "#002060", font: { bold: true, color: "#FFFFFF", size: 16 } };
-guide.getRange("A3:F13").values = [
+const guideRows = [
   ["Sheet", "Fungsi", "Catatan Pengisian", "Wajib?", "Dibaca Dashboard?", "Kontrol Error"],
   ["01_Ratifikasi", "Data 10 Entitas SH/AP x 14 Kebijakan GA", "Status hanya: Selesai, On Progress, Tidak Ratifikasi", "Ya", "Ya", "Maks. 30 entitas dan 30 kebijakan"],
   ["02_Change_Request", "Timeline Change Request Aplikasi", "Progress diisi 0-100, status mengikuti kondisi CR", "Ya", "Ya", "Aplikasi dan Change Request tidak boleh kosong"],
   ["03_Kinerja", "Detail NKO/KPI", "Minimal 10 indikator utama dengan kolom No terisi", "Ya", "Ya", "Kurang dari 10 indikator utama akan diabaikan"],
   ["04_Penyusunan_Kebijakan", "Monitoring kebijakan layanan GA", "Progress 0-100, target format yyyy-mm-dd", "Ya", "Ya", "Bidang atau lingkup harus terisi"],
   ["05_Business_Excellence", "Implementasi PLN Business Excellence", "Realisasi boleh angka atau teks Belum Dinilai", "Ya", "Ya", "Tidak mengubah NKO"],
-  ["06_Investasi", "Parameter menu Investasi", "Jangan ubah Kode, edit hanya kolom Nilai", "Opsional", "Ya", "Kode harus tetap"],
-  ["07_AO_Korporat", "Parameter AO Korporat", "Jangan ubah Kode, edit hanya kolom Nilai", "Opsional", "Ya", "Kode harus tetap"],
-  ["08_AO_Kantor_Pusat", "Parameter AO Kantor Pusat", "Jangan ubah Kode, edit hanya kolom Nilai", "Opsional", "Ya", "Kode harus tetap"],
   ["09_Ringkasan", "Parameter ringkasan/NKO", "Nilai NKO wajib 106,84 bila mengikuti PDF Juni 2026", "Ya", "Ya", "Dipakai untuk mengunci NKO"],
   ["Cara update", "Edit data di file ini / Google Sheets", "Import ke dashboard atau hubungkan link Google Drive yang sama", "Ya", "Ya", "Refresh akan mengikuti data valid terakhir"]
 ];
+const guideEndRow = guideRows.length + 2;
+guide.getRange(`A3:F${guideEndRow}`).values = guideRows;
 applyHeader(guide, guide.getRange("A3:F3"));
-guide.getRange("A3:F13").format.borders = { preset: "all", style: "thin", color: "#D9E2F3" };
-guide.getRange("A1:F13").format.wrapText = true;
+guide.getRange(`A3:F${guideEndRow}`).format.borders = { preset: "all", style: "thin", color: "#D9E2F3" };
+guide.getRange(`A1:F${guideEndRow}`).format.wrapText = true;
 ["A", "B", "C", "D", "E", "F"].forEach((col, index) => {
-  guide.getRange(`${col}1:${col}13`).format.columnWidth = [26, 34, 52, 13, 18, 34][index];
+  guide.getRange(`${col}1:${col}${guideEndRow}`).format.columnWidth = [26, 34, 52, 13, 18, 34][index];
 });
 
 addSheet(
@@ -257,9 +210,6 @@ addSheet(
   [18, 62, 14, 18, 18, 34, 18]
 );
 
-addSheet("06_Investasi", ["Kode", "Indikator", "Nilai"], investmentRows, [26, 44, 72]);
-addSheet("07_AO_Korporat", ["Kode", "Indikator", "Nilai"], aoCorporateRows, [26, 44, 28]);
-addSheet("08_AO_Kantor_Pusat", ["Kode", "Indikator", "Nilai"], aoOfficeRows, [26, 44, 28]);
 addSheet("09_Ringkasan", ["Indikator", "Nilai", "Catatan"], summaryRows, [32, 24, 58]);
 
 const inspect = await workbook.inspect({
