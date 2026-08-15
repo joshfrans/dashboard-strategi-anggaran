@@ -359,7 +359,7 @@ let policyPrepData = [
 
 let businessExcellenceData = [
   { semester: "Semester 1", activity: "Penyusunan dan updating dokumen aplikasi", target: 100, realization: 100.18, status: "Tercapai" },
-  { semester: "Semester 2", activity: "Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen", target: 293.75, realization: 100.18, status: "Tercapai" }
+  { semester: "Semester 2", activity: "Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen", target: 100, realization: "Belum Dinilai", status: "Belum Ukur" }
 ];
 
 function percentLabel(value) {
@@ -2176,18 +2176,37 @@ function importBusinessSheet(workbook) {
       const rawTarget = rowValue(row, "Target");
       const rawRealization = rowValue(row, "Realisasi");
       const rawStatus = rowValue(row, "Status");
+      const semesterText = String(rowValue(row, "Semester") || "").trim();
+      const activityText = String(rowValue(row, "Aktivitas") || "").trim();
       const realizationText = String(rawRealization ?? "").trim();
       const statusText = String(rawStatus ?? "").trim();
+      const parsedTarget = rawTarget === "" ? "" : businessPercentValue(rawTarget);
+      const parsedRealization = rawRealization === "" || rawRealization === null || rawRealization === undefined
+        ? ""
+        : businessPercentValue(rawRealization);
+      const isLegacySemesterTwoValue =
+        semesterText.toLowerCase().includes("semester 2") &&
+        activityText.toLowerCase().includes("asesmen") &&
+        Number(parsedTarget) > 100 &&
+        Number(parsedRealization) === 100.18;
+      const isPendingAssessment =
+        isLegacySemesterTwoValue ||
+        statusText.toLowerCase().includes("belum") ||
+        realizationText.toLowerCase().includes("belum");
       return {
-        semester: rowValue(row, "Semester"),
-        activity: rowValue(row, "Aktivitas"),
-        target: rawTarget === "" ? "" : businessPercentValue(rawTarget),
-        realization: realizationText && /[a-zA-Z]/.test(realizationText)
+        semester: semesterText,
+        activity: activityText,
+        target: isPendingAssessment && Number(parsedTarget) > 100 ? 100 : parsedTarget,
+        realization: isPendingAssessment
+          ? "Belum Dinilai"
+          : realizationText && /[a-zA-Z]/.test(realizationText)
           ? realizationText
           : rawRealization === "" || rawRealization === null || rawRealization === undefined
             ? (statusText.toLowerCase().includes("belum") ? "Belum Dinilai" : "")
-            : businessPercentValue(rawRealization),
-        status: rawStatus,
+            : parsedRealization,
+        status: isPendingAssessment
+          ? (statusText.toLowerCase().includes("belum") ? rawStatus : "Belum Ukur")
+          : rawStatus,
         note: rowValue(row, "Catatan")
       };
     })

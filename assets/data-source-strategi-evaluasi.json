@@ -376,9 +376,9 @@
     {
       "semester": "Semester 2",
       "activity": "Pencapaian update dokumen dan asesmen nilai skor PLN Bisnis Ekselen",
-      "target": 293.75,
-      "realization": 100.18,
-      "status": "Tercapai"
+      "target": 100,
+      "realization": "Belum Dinilai",
+      "status": "Belum Ukur"
     }
   ]
 }
