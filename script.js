@@ -190,9 +190,9 @@ const statusDotClass = {
 };
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
-const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
-const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode";
-const STRATEGY_GOOGLE_SHEET_ID = "1F36vfEsBGKVAWuhH2FwixSVn58scgi76";
+const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260815-google-1sz2";
+const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260815-google-1sz2";
+const STRATEGY_GOOGLE_SHEET_ID = "1sz2-SKZsv1dLIz79tSoAVyMeAAY6tqkj";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 const POLICY_MAX_ENTITY_COUNT = 30;
 const POLICY_MAX_TYPE_COUNT = 30;
