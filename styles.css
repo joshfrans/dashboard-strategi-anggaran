@@ -5157,14 +5157,14 @@ td {
 
 .policy-overview {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(180px, 0.85fr);
+  grid-template-columns: minmax(0, 2fr) minmax(190px, 1fr);
   gap: 8px;
   padding: 12px;
 }
 
 .policy-overview > div {
   position: relative;
-  min-height: 84px;
+  min-height: 126px;
   display: grid;
   align-content: center;
   gap: 4px;
@@ -5202,7 +5202,7 @@ td {
 
 .policy-combo-items {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   height: 100%;
 }
 
@@ -5212,12 +5212,12 @@ td {
   display: grid;
   align-content: center;
   gap: 3px;
-  min-height: 84px;
+  min-height: 63px;
   padding: 12px 14px;
 }
 
 .policy-combo-trigger + .policy-combo-trigger {
-  border-left: 1px dashed #d6e2f2;
+  border-top: 1px dashed #d6e2f2;
 }
 
 .policy-combo-trigger:hover {
