@@ -239,6 +239,167 @@
   padding: 0 20px 8px;
 }
 
+.overview-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 20px 10px;
+}
+
+.overview-exec-kpi {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 118px;
+  padding: 14px;
+  border: 1px solid #dce3ed;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(6, 26, 80, .05);
+}
+
+.overview-exec-kpi::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 4px;
+  background: #1d6fe9;
+}
+
+.overview-exec-kpi.good::before {
+  background: #0f9b55;
+}
+
+.overview-exec-kpi.warn::before {
+  background: #f59e0b;
+}
+
+.overview-exec-kpi.risk::before {
+  background: #ef4444;
+}
+
+.overview-exec-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #1764e8;
+  background: #eaf2ff;
+}
+
+.overview-exec-kpi.good .overview-exec-icon {
+  color: #078242;
+  background: #e8f7ef;
+}
+
+.overview-exec-kpi.warn .overview-exec-icon {
+  color: #c26a00;
+  background: #fff3d8;
+}
+
+.overview-exec-kpi.risk .overview-exec-icon {
+  color: #d82323;
+  background: #ffe8e8;
+}
+
+.overview-exec-kpi h3 {
+  margin: 0;
+  color: #0a1d52;
+  font-size: 12px;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+}
+
+.overview-exec-kpi strong {
+  display: block;
+  margin-top: 2px;
+  color: #111827;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.overview-exec-kpi.good strong {
+  color: #078242;
+}
+
+.overview-exec-kpi.warn strong {
+  color: #d97706;
+}
+
+.overview-exec-kpi.risk strong {
+  color: #dc2626;
+}
+
+.overview-exec-kpi p {
+  margin: 5px 0 8px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.overview-exec-kpi span:not(.overview-spark) {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: #075f32;
+  background: #dff5e8;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-exec-kpi.warn span:not(.overview-spark) {
+  color: #a35b00;
+  background: #fff1d1;
+}
+
+.overview-exec-kpi.risk span:not(.overview-spark) {
+  color: #b91c1c;
+  background: #ffe1e1;
+}
+
+.overview-spark {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 5px;
+  align-items: end;
+  opacity: .95;
+}
+
+.overview-spark i {
+  display: block;
+  width: 5px;
+  border-radius: 99px;
+  background: #1d6fe9;
+}
+
+.overview-spark i:nth-child(1) { height: 8px; }
+.overview-spark i:nth-child(2) { height: 14px; }
+.overview-spark i:nth-child(3) { height: 11px; }
+.overview-spark i:nth-child(4) { height: 17px; }
+.overview-spark i:nth-child(5) { height: 13px; }
+.overview-spark i:nth-child(6) { height: 20px; }
+
+.overview-spark.green i {
+  background: #0f9b55;
+}
+
+.overview-spark.amber i {
+  background: #f59e0b;
+}
+
+.overview-spark.red i {
+  background: #ef4444;
+}
+
 .overview-section-line {
   gap: 12px;
   margin: 8px 0;
@@ -637,6 +798,152 @@
   font-weight: 900;
 }
 
+.overview-decision-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(280px, .75fr);
+  gap: 12px;
+  padding: 0 20px 18px;
+}
+
+.overview-decision-card {
+  padding: 14px;
+  border: 1px solid #dce3ed;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(6, 26, 80, .05);
+}
+
+.overview-chip {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.overview-chip.good {
+  color: #047857;
+  background: #dff5e8;
+}
+
+.overview-chip.risk {
+  color: #b91c1c;
+  background: #ffe1e1;
+}
+
+.overview-decision-card ul,
+.overview-decision-card ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-decision-card li {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  min-height: 55px;
+  padding: 10px 76px 10px 12px;
+  border: 1px solid #e4e8ef;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.overview-decision-card ol {
+  counter-reset: overview-action;
+}
+
+.overview-decision-card ol li {
+  counter-increment: overview-action;
+  padding-left: 48px;
+}
+
+.overview-decision-card ol li::before {
+  content: counter(overview-action);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: #0b55d9;
+  background: #eaf2ff;
+  font-weight: 900;
+}
+
+.overview-decision-card li b {
+  color: #0a1d52;
+  font-size: 13px;
+}
+
+.overview-decision-card li span {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.overview-decision-card li em {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 9px;
+  border-radius: 8px;
+  color: #b45309;
+  background: #fff3d8;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.overview-decision-card li:first-child em,
+.overview-decision-card li:nth-child(3) em {
+  color: #b91c1c;
+  background: #ffe1e1;
+}
+
+.overview-status-card p {
+  display: grid;
+  grid-template-columns: 14px 130px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 9px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.overview-status-card p b {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.overview-status-card .good-dot {
+  background: #0f9b55;
+}
+
+.overview-status-card .warn-dot {
+  background: #f59e0b;
+}
+
+.overview-status-card .risk-dot {
+  background: #ef4444;
+}
+
+.overview-status-card p span {
+  font-weight: 900;
+}
+
+.overview-status-card p small {
+  color: #64748b;
+  font-weight: 700;
+}
+
 @media (max-width: 1280px) {
   .overview-topbar,
   .overview-controls {
@@ -645,11 +952,13 @@
   }
 
   .overview-titlebar,
+  .overview-kpi-strip,
   .overview-two-col,
   .overview-ops-grid,
   .overview-subrow,
   .overview-over-target,
-  .overview-invest-row {
+  .overview-invest-row,
+  .overview-decision-grid {
     grid-template-columns: 1fr;
   }
 }

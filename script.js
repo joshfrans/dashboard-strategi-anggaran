@@ -1789,8 +1789,8 @@ function overviewPrepRows(limit = 2) {
   `).join("");
 }
 
-function overviewMiniTrend(color = "blue") {
-  return `<span class="overview-mini-trend ${color}"><i></i><i></i><i></i><i></i><i></i><i></i></span>`;
+function overviewSpark(color = "blue") {
+  return `<span class="overview-spark ${color}"><i></i><i></i><i></i><i></i><i></i><i></i></span>`;
 }
 
 function renderExecutiveOverview() {
@@ -1819,6 +1819,10 @@ function renderExecutiveOverview() {
   const investmentAi = overviewPlainMoney(investmentData.aiRealization, "344,27 M");
   const investmentAki = overviewPlainMoney(investmentData.akiRealization, "412,23 M");
   const investmentAkiPct = overviewPlainMoney(investmentData.akiRealizationPct, "30,43%");
+  const investmentAiPct = overviewPlainMoney(investmentData.aiRealizationPct, "3,16%");
+  const corporateAbsorption = overviewNumber(aoCorporateData.absorption, corporateTotal / corporateRkap * 100);
+  const policyAttention = policy.onProgress + policy.noRatification;
+  const crAttention = onProgressCr + notStartedCr;
 
   target.classList.add("overview-executive");
   target.innerHTML = `
@@ -1851,6 +1855,27 @@ function renderExecutiveOverview() {
       </div>
       <div class="overview-source-toggle"><b>Data langsung</b><span>Data statis</span></div>
     </div>
+
+    <section class="overview-kpi-strip" aria-label="Executive Summary KPI Strategis">
+      ${[
+        ["Penyerapan AI", investmentAiPct, `${investmentAi} dari ${overviewPlainMoney(investmentData.totalInvestment, "10,89 T")}`, "Kritis", "risk", "chart-no-axes-column-increasing", "red"],
+        ["Penyerapan AKI", investmentAkiPct, `${investmentAki} dari ${overviewPlainMoney(investmentData.akiTotal, "1,35 T")}`, "Perlu Percepatan", "warn", "database", "amber"],
+        ["Penyerapan AO", overviewPercent(corporateAbsorption), `${overviewMoneyFromJt(corporateTotal)} dari RKAP ${overviewMoneyFromJt(corporateRkap)}`, "Monitor", "watch", "coins", "green"],
+        ["NKO Strategi & Evaluasi", smartLabel(nko, "plain"), `${nkoSummary.green} dari ${nkoSummary.total} indikator hijau`, "On Track", "good", "target", "green"],
+        ["Progress Change Request", percentLabel(crProgress), `${doneCr} selesai · ${onProgressCr} on progress · ${notStartedCr} belum mulai`, crAttention ? "Perlu Percepatan" : "On Track", crAttention ? "warn" : "good", "clipboard-list", "amber"]
+      ].map((item) => `
+        <article class="overview-exec-kpi ${item[4]}">
+          <div class="overview-exec-icon"><i data-lucide="${item[5]}"></i></div>
+          <div>
+            <h3>${item[0]}</h3>
+            <strong>${item[1]}</strong>
+            <p>${item[2]}</p>
+            <span>${item[3]}</span>
+          </div>
+          ${overviewSpark(item[6])}
+        </article>
+      `).join("")}
+    </section>
 
     <section class="overview-section">
       <div class="overview-section-line"><h3>Anggaran Operasional Sarana</h3><span>Realisasi biaya s.d. Juni 2026</span><em>Data per 30 Juni 2026</em></div>
@@ -1965,6 +1990,31 @@ function renderExecutiveOverview() {
           </div>
         </article>
       </div>
+    </section>
+
+    <section class="overview-decision-grid" aria-label="Analitik dan keputusan manajemen">
+      <article class="overview-decision-card">
+        <div class="overview-card-head"><h4>Early Warning Center</h4><span class="overview-chip risk">Top Risiko</span></div>
+        <ul>
+          <li><b>Ratifikasi belum selesai</b><span>${policyAttention} status perlu tindak lanjut agar implementasi kebijakan SH/AP seragam.</span><em>${policy.noRatification ? "Kritis" : "Perlu"}</em></li>
+          <li><b>Change Request aplikasi</b><span>${crAttention} CR masih membutuhkan percepatan owner, target, dan resource delivery.</span><em>Perlu</em></li>
+          <li><b>Gap AKI</b><span>${overviewPlainMoney(investmentData.akiGapChip, "Sisa 942,28 M")} belum terserap, perlu BAPP dan rekomposisi.</span><em>Kritis</em></li>
+        </ul>
+      </article>
+      <article class="overview-decision-card">
+        <div class="overview-card-head"><h4>Executive Action Needed</h4><span class="overview-chip good">Prioritas</span></div>
+        <ol>
+          <li><b>Kunci target ratifikasi</b><span>Validasi evidence dan komitmen penyelesaian untuk status on progress/tidak ratifikasi.</span></li>
+          <li><b>Percepat CR prioritas</b><span>Lock owner ESPPD Manage Service dan Reengineering dalam forum koordinasi mingguan.</span></li>
+          <li><b>Monitor serapan investasi</b><span>Review gap AKI dan percepat realisasi AI/AKI berbasis pipeline bulan berjalan.</span></li>
+        </ol>
+      </article>
+      <article class="overview-decision-card overview-status-card">
+        <div class="overview-card-head"><h4>Keterangan Status</h4></div>
+        <p><b class="good-dot"></b><span>On Track</span><small>Aman atau sesuai target</small></p>
+        <p><b class="warn-dot"></b><span>Perlu Percepatan</span><small>Perlu monitoring dan tindakan</small></p>
+        <p><b class="risk-dot"></b><span>Kritis</span><small>Butuh keputusan/tindak lanjut segera</small></p>
+      </article>
     </section>
   `;
 
