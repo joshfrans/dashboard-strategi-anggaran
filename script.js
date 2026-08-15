@@ -1251,11 +1251,17 @@ async function downloadExcel() {
   if (!(await ensureXlsxLibrary())) return;
 
   const policyRows = policyData.flatMap((row) =>
-    policyColumns.map((type, index) => [
-      row.entity,
-      type,
-      policyStatusLabel[row.statuses[index]] || row.statuses[index] || ""
-    ])
+    policyColumns.map((type, index) => {
+      const statusKey = row.statuses[index];
+      const progress = statusKey === "done" ? 100 : statusKey === "no-ratification" ? 0 : 50;
+      return [
+        row.entity,
+        type,
+        policyStatusLabel[statusKey] || statusKey || "",
+        progress,
+        ""
+      ];
+    })
   );
   const crRows = crExportRows();
   const performanceRows = performanceData.map((row) => [
@@ -1283,7 +1289,8 @@ async function downloadExcel() {
     row.activity,
     row.target,
     row.realization,
-    row.status
+    row.status,
+    row.note || row.description || ""
   ]);
   const aoCorporateRows = [
     ["period", "Periode", aoCorporateData.period],
@@ -1326,16 +1333,24 @@ async function downloadExcel() {
     ["Change Request", "Total CR", crData.length],
     ["Change Request", "Progress keseluruhan", percentLabel(crProgress)]
   ]);
-  const policySheet = window.XLSX.utils.aoa_to_sheet([["Entitas SH/AP", "Jenis Kebijakan", "Status"], ...policyRows]);
+  const policySheet = window.XLSX.utils.aoa_to_sheet([["Entitas SH/AP", "Jenis Kebijakan", "Status", "Progress", "Catatan"], ...policyRows]);
   const crSheet = window.XLSX.utils.aoa_to_sheet([["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"], ...crRows]);
   const performanceSheet = window.XLSX.utils.aoa_to_sheet([["No", "Indikator Kerja", "Satuan", "Bobot", "Target 2026", "Target S.D. Juni", "Realisasi", "Pencapaian", "Nilai", "Status"], ...performanceRows]);
   const prepSheet = window.XLSX.utils.aoa_to_sheet([["No", "Bidang", "Lingkup", "Progress", "Status", "Target"], ...policyPrepRows]);
-  const businessSheet = window.XLSX.utils.aoa_to_sheet([["Semester", "Aktivitas", "Target", "Realisasi", "Status"], ...businessRows]);
+  const businessSheet = window.XLSX.utils.aoa_to_sheet([["Semester", "Aktivitas", "Target", "Realisasi", "Status", "Catatan"], ...businessRows]);
   const investmentSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...investmentExportRows()]);
   const aoCorporateSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoCorporateRows]);
   const aoOfficeSheet = window.XLSX.utils.aoa_to_sheet([["Kode", "Indikator", "Nilai"], ...aoOfficeRows]);
+  const strategySummarySheet = window.XLSX.utils.aoa_to_sheet([
+    ["Indikator", "Rumus/Nilai", "Catatan"],
+    ["Nilai NKO", performanceOfficialScore, "Nilai resmi yang ditampilkan pada card Monitoring Kinerja"],
+    ["Total Bobot", 100, "Bobot kinerja penuh"],
+    ["Total Entitas SH/AP", policyData.length, "Dihitung dari sheet 01_Ratifikasi"],
+    ["Total Kebijakan GA", policyColumns.length, "Dihitung dari sheet 01_Ratifikasi"],
+    ["Total Change Request", crData.length, "Dihitung dari sheet 02_Change_Request"]
+  ]);
 
-  window.XLSX.utils.book_append_sheet(workbook, summarySheet, "Ringkasan");
+  window.XLSX.utils.book_append_sheet(workbook, summarySheet, "00_Panduan");
   window.XLSX.utils.book_append_sheet(workbook, policySheet, "01_Ratifikasi");
   window.XLSX.utils.book_append_sheet(workbook, crSheet, "02_Change_Request");
   window.XLSX.utils.book_append_sheet(workbook, performanceSheet, "03_Kinerja");
@@ -1344,6 +1359,7 @@ async function downloadExcel() {
   window.XLSX.utils.book_append_sheet(workbook, investmentSheet, "06_Investasi");
   window.XLSX.utils.book_append_sheet(workbook, aoCorporateSheet, "07_AO_Korporat");
   window.XLSX.utils.book_append_sheet(workbook, aoOfficeSheet, "08_AO_Kantor_Pusat");
+  window.XLSX.utils.book_append_sheet(workbook, strategySummarySheet, "09_Ringkasan");
   window.XLSX.writeFile(workbook, "template-data-source-strategi-evaluasi.xlsx");
 }
 
