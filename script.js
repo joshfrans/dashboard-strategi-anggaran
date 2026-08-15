@@ -194,6 +194,9 @@ const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource";
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode";
 const STRATEGY_GOOGLE_SHEET_ID = "1F36vfEsBGKVAWuhH2FwixSVn58scgi76";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
+const POLICY_MAX_ENTITY_COUNT = 30;
+const POLICY_MAX_TYPE_COUNT = 30;
+const POLICY_STATUS_KEYS = new Set(["done", "on-progress", "no-ratification"]);
 let strategyGoogleSourceError = "";
 
 function formatDatabaseTimestamp(date = new Date()) {
@@ -286,6 +289,12 @@ function loadLocalStrategyDataSource(options = {}) {
     if (!stored) return false;
     const source = JSON.parse(stored);
     const applied = applyStrategyDataSource(source);
+    if (applied && !isValidPolicySource({ policyData, policyColumns })) {
+      console.info("Data source lokal diabaikan karena struktur ratifikasi tidak valid.");
+      localStorage.removeItem(STRATEGY_LOCAL_SOURCE_KEY);
+      localStorage.removeItem(STRATEGY_LOCAL_SOURCE_MODE_KEY);
+      return false;
+    }
     if (applied && source.databaseUpdatedAt) setDatabaseUpdatedAt(source.databaseUpdatedAt, true);
     return applied;
   } catch (error) {
@@ -679,7 +688,7 @@ function updateAnalyticsDashboard() {
 
   const executiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (executiveMessage) {
-    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.done} dari ${policy.total} status selesai endorsement, Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai. Pada Investasi, total anggaran ${investmentData.totalInvestment || "-"}, realisasi AI ${investmentData.aiRealization || "-"}, total AKI ${investmentData.akiTotal || "-"}, dan AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}. AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, sementara AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.followUp} status ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
+    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.total} status: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai. Pada Investasi, total anggaran ${investmentData.totalInvestment || "-"}, realisasi AI ${investmentData.aiRealization || "-"}, total AKI ${investmentData.akiTotal || "-"}, dan AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}. AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, sementara AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.onProgress} status on progress, ${policy.noRatification} tidak ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
   }
 
   const mainMessage = document.getElementById("analyticsMainMessage");
@@ -749,7 +758,7 @@ function updateAlertCenter() {
   const alerts = [
     policy.followUp > 0 && {
       area: "Strategi & Evaluasi",
-      text: `${policy.followUp} status ratifikasi belum selesai endorsement dan perlu update evidence SH/AP.`,
+      text: `${policy.onProgress} status ratifikasi on progress dan ${policy.noRatification} tidak ratifikasi perlu update keputusan/evidence SH/AP.`,
       level: policy.followUp >= 15 ? "High" : "Medium"
     },
     priorityCr && {
@@ -874,7 +883,7 @@ function updateDashboardMetrics() {
     summaryPolicyFollowUp: policy.noRatification,
     analyticsPolicyDone: policy.done,
     analyticsPolicyTotal: policy.total,
-    analyticsPolicyFollowUp: policy.followUp,
+    analyticsPolicyFollowUp: policy.noRatification,
     analyticsCrTotal: total,
     analyticsCrOpen: onProgress,
     analyticsCrNotStarted: notStarted,
@@ -909,7 +918,7 @@ function updateDashboardMetrics() {
 
   const analyticsExecutiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (analyticsExecutiveMessage) {
-    analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.done} dari ${policy.total} status ratifikasi telah selesai endorsement, NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada ${policy.followUp} status ratifikasi yang belum selesai, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
+    analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.total} status ratifikasi: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada status ratifikasi yang masih berjalan, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
   }
 
   updateAnalyticsDashboard();
@@ -1783,8 +1792,22 @@ function sheetRows(workbook, sheetName) {
 function normalizePolicyStatus(status, progress = 0) {
   const value = String(status || "").toLowerCase();
   if (value.includes("tidak")) return "no-ratification";
+  if (value.includes("sebagian")) return "on-progress";
   if (value.includes("selesai")) return "done";
-  if (value.includes("endorsement")) return Number(progress) >= 100 ? "done" : "on-progress";
+  if (
+    value.includes("proses") ||
+    value.includes("pengesahan") ||
+    value.includes("grc") ||
+    value.includes("review") ||
+    value.includes("legal") ||
+    value.includes("endorsement") ||
+    value.includes("draft") ||
+    value.includes("pembahasan") ||
+    value.includes("diskusi") ||
+    value.includes("on progres") ||
+    value.includes("on progress")
+  ) return "on-progress";
+  if (Number(progress) >= 100) return "done";
   return "on-progress";
 }
 
@@ -1793,6 +1816,55 @@ function normalizeDashboardStatus(status, progress = 0) {
   if (value.includes("selesai") || Number(progress) >= 100) return "Selesai";
   if (value.includes("belum")) return "Belum Mulai";
   return "On Progress";
+}
+
+function isPolicyEntityName(value) {
+  const text = String(value || "").trim();
+  if (!text) return false;
+  return /^PLN\b/i.test(text) || /^PT PLN\b/i.test(text);
+}
+
+function canonicalPolicyStatus(status) {
+  return POLICY_STATUS_KEYS.has(status) ? status : normalizePolicyStatus(status);
+}
+
+function isValidPolicySource(source) {
+  const rows = Array.isArray(source?.policyData) ? source.policyData : [];
+  const columns = Array.isArray(source?.policyColumns) ? source.policyColumns : Array.isArray(source?.policyTypes) ? source.policyTypes : [];
+  if (!rows.length || !columns.length) return false;
+  if (rows.length > POLICY_MAX_ENTITY_COUNT || columns.length > POLICY_MAX_TYPE_COUNT) return false;
+  return rows.every((row) =>
+    row &&
+    String(row.entity || "").trim() &&
+    Array.isArray(row.statuses) &&
+    row.statuses.length === columns.length &&
+    row.statuses.every((status) => POLICY_STATUS_KEYS.has(canonicalPolicyStatus(status)))
+  );
+}
+
+function normalizePolicySource(source) {
+  const columns = Array.isArray(source?.policyColumns)
+    ? source.policyColumns.map((column) => String(column || "").trim()).filter(Boolean)
+    : Array.isArray(source?.policyTypes)
+      ? source.policyTypes.map((column) => String(column || "").trim()).filter(Boolean)
+      : [];
+  const rows = Array.isArray(source?.policyData)
+    ? source.policyData
+        .map((row) => ({
+          entity: String(row?.entity || "").trim(),
+          statuses: Array.isArray(row?.statuses)
+            ? row.statuses.slice(0, columns.length).map((status) => canonicalPolicyStatus(status))
+            : []
+        }))
+        .filter((row) => row.entity)
+    : [];
+  const normalized = {
+    policyData: rows,
+    policyEntities: rows.map((row) => row.entity),
+    policyTypes: columns,
+    policyColumns: columns
+  };
+  return isValidPolicySource(normalized) ? normalized : null;
 }
 
 function extractPolicyMatrix(workbook) {
@@ -1807,7 +1879,7 @@ function extractPolicyMatrix(workbook) {
   const entityRow = matrix[entityRowIndex];
   const entityColumns = entityRow
     .map((cell, index) => ({ entity: String(cell || "").trim(), index }))
-    .filter((item) => item.entity);
+    .filter((item) => isPolicyEntityName(item.entity));
   const policyNameColumn = 1;
   const policies = [];
   let category = "";
@@ -1820,6 +1892,7 @@ function extractPolicyMatrix(workbook) {
       category = name;
       return;
     }
+    if (!Number.isFinite(numberFromImport(no, NaN))) return;
     policies.push({
       name,
       category,
@@ -1850,9 +1923,21 @@ function importPolicySheet(workbook) {
 
   const rows = sheetRows(workbook, "01_Ratifikasi");
   if (!rows.length) return 0;
-  const entities = [...new Set(rows.map((row) => String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim()).filter(Boolean))];
-  const types = [...new Set(rows.map((row) => String(rowValue(row, "Jenis Kebijakan", "Kebijakan") || "").trim()).filter(Boolean))];
+  const validRows = rows
+    .map((row) => ({
+      entity: String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim(),
+      type: String(rowValue(row, "Jenis Kebijakan", "Kebijakan") || "").trim(),
+      status: rowValue(row, "Status"),
+      progress: rowValue(row, "Progress", "Progres")
+    }))
+    .filter((row) => row.entity && row.type && (String(row.status || "").trim() || String(row.progress || "").trim()));
+  const entities = [...new Set(validRows.map((row) => row.entity))];
+  const types = [...new Set(validRows.map((row) => row.type))];
   if (!entities.length || !types.length) return 0;
+  if (entities.length > POLICY_MAX_ENTITY_COUNT || types.length > POLICY_MAX_TYPE_COUNT) {
+    console.info(`Data ratifikasi diabaikan: ${entities.length} entitas dan ${types.length} kebijakan terbaca di luar batas aman.`);
+    return 0;
+  }
 
   policyEntities = entities;
   policyTypes = types;
@@ -1860,14 +1945,14 @@ function importPolicySheet(workbook) {
   policyData = entities.map((entity) => ({
     entity,
     statuses: types.map((type) => {
-      const match = rows.find((row) =>
-        String(rowValue(row, "Entitas SH/AP", "Entitas") || "").trim() === entity &&
-        String(rowValue(row, "Jenis Kebijakan", "Kebijakan") || "").trim() === type
+      const match = validRows.find((row) =>
+        row.entity === entity &&
+        row.type === type
       );
-      return normalizePolicyStatus(rowValue(match || {}, "Status"), parseProgress(rowValue(match || {}, "Progress", "Progres")));
+      return normalizePolicyStatus(match?.status, parseProgress(match?.progress));
     })
   }));
-  return rows.length;
+  return entities.length * types.length;
 }
 
 function importCrSheet(workbook) {
@@ -2126,13 +2211,14 @@ function normalizeAoSource(source, fallback = {}) {
 function applyStrategyDataSource(source) {
   if (!source || typeof source !== "object") return false;
 
-  if (Array.isArray(source.policyData)) policyData = source.policyData;
-  if (Array.isArray(source.policyEntities)) policyEntities = source.policyEntities;
-  if (Array.isArray(source.policyTypes)) policyTypes = source.policyTypes;
-  if (Array.isArray(source.policyColumns)) {
-    policyColumns = source.policyColumns;
-  } else if (Array.isArray(source.policyTypes)) {
-    policyColumns = source.policyTypes;
+  const normalizedPolicy = normalizePolicySource(source);
+  if (normalizedPolicy) {
+    policyData = normalizedPolicy.policyData;
+    policyEntities = normalizedPolicy.policyEntities;
+    policyTypes = normalizedPolicy.policyTypes;
+    policyColumns = normalizedPolicy.policyColumns;
+  } else if (Array.isArray(source.policyData) || Array.isArray(source.policyColumns) || Array.isArray(source.policyTypes)) {
+    console.info("Data ratifikasi pada data source diabaikan karena struktur tidak valid.");
   }
   if (Array.isArray(source.crData)) crData = source.crData;
   if (Array.isArray(source.changeRequest)) crData = source.changeRequest;
