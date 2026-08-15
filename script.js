@@ -1726,6 +1726,7 @@ function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
   const indicatorCard = document.querySelector(".performance-indicator-card");
+  const metaIndicator = document.getElementById("performanceMetaIndicator");
   const scoreElement = document.getElementById("performanceScore");
   const mainStatus = document.getElementById("performanceMainStatus");
   if (!grid) return;
@@ -1738,6 +1739,7 @@ function updatePerformanceStatusPanel() {
   if (indicatorCard) {
     indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
   }
+  if (metaIndicator) metaIndicator.textContent = `${summary.total} Indikator`;
   if (message) {
     message.textContent = "";
     message.hidden = true;
