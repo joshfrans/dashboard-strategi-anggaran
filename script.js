@@ -194,11 +194,16 @@ const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v202608
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260815-google-1ZuKo8";
 const STRATEGY_GOOGLE_SHEET_ID = "1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
+const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
+const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const POLICY_MAX_ENTITY_COUNT = 30;
 const POLICY_MAX_TYPE_COUNT = 30;
 const POLICY_STATUS_KEYS = new Set(["done", "on-progress", "no-ratification"]);
 let strategyGoogleSourceError = "";
 let strategyGoogleImported = {};
+let strategyRealtimeTimer;
+let strategyRealtimeInFlight = false;
+let strategyManualImportUntil = 0;
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -2499,10 +2504,6 @@ async function loadEmbeddedRatificationDataSource() {
 }
 
 async function loadStrategyDataSource() {
-  if (loadLocalStrategyDataSource({ mode: "import" })) {
-    setStrategySourceStatus("File import (lokal)", new Date(), "aktif di browser ini");
-    return true;
-  }
   const googleLoaded = await loadGoogleStrategyDataSource();
   const googleHasRatification = googleLoaded && Number(strategyGoogleImported.ratifikasi || 0) > 0;
   const ratificationLoaded = googleHasRatification ? false : await loadEmbeddedRatificationDataSource();
@@ -2517,6 +2518,10 @@ async function loadStrategyDataSource() {
       saveLocalStrategyDataSource("asset-cache");
       setStrategySourceStatus("Excel Ratifikasi", new Date());
     }
+    return true;
+  }
+  if (loadLocalStrategyDataSource({ mode: "import" })) {
+    setStrategySourceStatus("File import (lokal)", new Date(), "cadangan browser ini");
     return true;
   }
   if (loadLocalStrategyDataSource()) {
@@ -2536,6 +2541,50 @@ async function loadStrategyDataSource() {
     console.info("Data source Strategi & Evaluasi tidak dimuat:", error);
     return false;
   }
+}
+
+async function refreshOnlineDashboardData(options = {}) {
+  const { force = false, silent = true } = options;
+  if (strategyRealtimeInFlight) return false;
+  if (!force && Date.now() < strategyManualImportUntil) return false;
+  strategyRealtimeInFlight = true;
+  try {
+    const googleLoaded = await loadGoogleStrategyDataSource();
+    if (!googleLoaded) {
+      if (!silent) {
+        showImportToast(
+          "Sinkronisasi online belum berhasil",
+          `Dashboard tetap memakai cache terakhir. Detail: ${strategyGoogleSourceError || "sumber online tidak terbaca"}.`
+        );
+      }
+      return false;
+    }
+    renderStrategyDashboard();
+    setStrategySourceStatus("Google Sheets (online)", new Date(), "auto refresh aktif");
+    if (!silent) {
+      showImportToast(
+        "Sinkronisasi online berhasil",
+        `Dashboard sudah membaca data terbaru dari Google Sheets. Data per ${formatDatabaseTimestamp()}.`
+      );
+    }
+    return true;
+  } finally {
+    strategyRealtimeInFlight = false;
+  }
+}
+
+function startRealtimeDataSync() {
+  window.clearInterval(strategyRealtimeTimer);
+  strategyRealtimeTimer = window.setInterval(() => {
+    if (document.hidden) return;
+    refreshOnlineDashboardData({ silent: true });
+  }, STRATEGY_REALTIME_REFRESH_MS);
+  window.addEventListener("focus", () => {
+    refreshOnlineDashboardData({ silent: true });
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refreshOnlineDashboardData({ silent: true });
+  });
 }
 
 function normalizeRow(row) {
@@ -2659,6 +2708,7 @@ async function importInvestmentDataFile(file) {
     return;
   }
   const uploadedAt = markDatabaseUploadedNow();
+  strategyManualImportUntil = Date.now() + STRATEGY_IMPORT_GRACE_MS;
   setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
   updateInvestmentDashboard();
@@ -2715,6 +2765,7 @@ async function importDataFile(file) {
 
   refreshStrategyMenuAfterImport();
   const uploadedAt = markDatabaseUploadedNow();
+  strategyManualImportUntil = Date.now() + STRATEGY_IMPORT_GRACE_MS;
   setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
   const message = [];
@@ -2734,7 +2785,8 @@ async function importDataFile(file) {
     message.push(`${rows.length} Change Request dimuat.`);
   }
   message.push(`Data per ${uploadedAt}.`);
-  if (saved) message.push("Data tersimpan untuk refresh berikutnya.");
+  if (saved) message.push("Data tersimpan untuk browser ini.");
+  message.push("Untuk realtime semua pengguna, update sumber resmi di Google Sheets.");
   showImportToast("Import data Strategi & Evaluasi berhasil", message.join(" "));
 }
 
@@ -2875,6 +2927,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupExportMenu();
   setupDetailModal();
   setupImportToast();
+  startRealtimeDataSync();
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });
