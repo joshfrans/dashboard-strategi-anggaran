@@ -198,6 +198,7 @@ const POLICY_MAX_ENTITY_COUNT = 30;
 const POLICY_MAX_TYPE_COUNT = 30;
 const POLICY_STATUS_KEYS = new Set(["done", "on-progress", "no-ratification"]);
 let strategyGoogleSourceError = "";
+let strategyGoogleImported = {};
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -1960,6 +1961,13 @@ function extractPolicyMatrix(workbook) {
 function importPolicySheet(workbook) {
   const matrixSource = extractPolicyMatrix(workbook);
   if (matrixSource) {
+    if (
+      matrixSource.entities.length > POLICY_MAX_ENTITY_COUNT ||
+      matrixSource.policies.length > POLICY_MAX_TYPE_COUNT
+    ) {
+      console.info(`Data matrix ratifikasi diabaikan: ${matrixSource.entities.length} entitas dan ${matrixSource.policies.length} kebijakan terbaca di luar batas aman.`);
+      return 0;
+    }
     policyEntities = matrixSource.entities;
     policyTypes = matrixSource.policies.map((policy) => policy.name);
     policyColumns = policyTypes;
@@ -2301,6 +2309,7 @@ function renderStrategyDashboard() {
 async function loadGoogleStrategyDataSource() {
   try {
     strategyGoogleSourceError = "";
+    strategyGoogleImported = {};
     if (!(await ensureXlsxLibrary())) return false;
     const response = await fetch(`${STRATEGY_GOOGLE_XLSX_URL}&_=${Date.now()}`, {
       cache: "no-store",
@@ -2319,11 +2328,12 @@ async function loadGoogleStrategyDataSource() {
     }
     const buffer = await response.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
-    const { hasData } = applyStrategyWorkbook(workbook);
+    const { imported, hasData } = applyStrategyWorkbook(workbook);
     if (!hasData) {
       strategyGoogleSourceError = "format sheet tidak cocok";
       return false;
     }
+    strategyGoogleImported = imported || {};
     const lastModified = response.headers.get("last-modified");
     const sourceTime = new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
@@ -2331,6 +2341,7 @@ async function loadGoogleStrategyDataSource() {
     saveLocalStrategyDataSource("google-cache");
     return true;
   } catch (error) {
+    strategyGoogleImported = {};
     strategyGoogleSourceError = "Google tidak terbaca";
     console.info("Google data source Strategi & Evaluasi tidak dimuat:", error);
     return false;
@@ -2360,11 +2371,18 @@ async function loadStrategyDataSource() {
     return true;
   }
   const googleLoaded = await loadGoogleStrategyDataSource();
-  const ratificationLoaded = await loadEmbeddedRatificationDataSource();
+  const googleHasRatification = googleLoaded && Number(strategyGoogleImported.ratifikasi || 0) > 0;
+  const ratificationLoaded = googleHasRatification ? false : await loadEmbeddedRatificationDataSource();
   if (googleLoaded || ratificationLoaded) {
-    if (ratificationLoaded) {
-      saveLocalStrategyDataSource(googleLoaded ? "google-cache" : "asset-cache");
-      setStrategySourceStatus(googleLoaded ? "Google Sheets + Excel Ratifikasi" : "Excel Ratifikasi", new Date());
+    if (googleLoaded) {
+      saveLocalStrategyDataSource("google-cache");
+      setStrategySourceStatus(
+        googleHasRatification ? "Google Sheets (online)" : "Google Sheets + Excel Ratifikasi",
+        new Date()
+      );
+    } else if (ratificationLoaded) {
+      saveLocalStrategyDataSource("asset-cache");
+      setStrategySourceStatus("Excel Ratifikasi", new Date());
     }
     return true;
   }
