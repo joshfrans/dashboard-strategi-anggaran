@@ -1032,6 +1032,7 @@ function setupNavigation() {
   });
 
   window.addEventListener("hashchange", () => setActiveNav(routeTarget()));
+  window.setDashboardNav = setActiveNav;
   setActiveNav(routeTarget());
 }
 
@@ -1106,6 +1107,52 @@ async function ensureXlsxLibrary() {
   }
 }
 
+let importToastTimer;
+
+function showImportToast(title, message) {
+  const toast = document.getElementById("importToast");
+  const titleElement = document.getElementById("importToastTitle");
+  const messageElement = document.getElementById("importToastMessage");
+  if (!toast || !titleElement || !messageElement) {
+    alert(`${title}\n${message}`);
+    return;
+  }
+  titleElement.textContent = title;
+  messageElement.textContent = message;
+  toast.hidden = false;
+  requestAnimationFrame(() => toast.classList.add("is-visible"));
+  if (window.lucide) window.lucide.createIcons();
+  clearTimeout(importToastTimer);
+  importToastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+    setTimeout(() => {
+      toast.hidden = true;
+    }, 220);
+  }, 5200);
+}
+
+function setupImportToast() {
+  const toast = document.getElementById("importToast");
+  const close = document.getElementById("importToastClose");
+  if (!toast || !close) return;
+  close.addEventListener("click", () => {
+    clearTimeout(importToastTimer);
+    toast.classList.remove("is-visible");
+    setTimeout(() => {
+      toast.hidden = true;
+    }, 180);
+  });
+}
+
+function refreshStrategyMenuAfterImport() {
+  renderStrategyDashboard();
+  const route = "strategi-evaluasi";
+  if (window.location.hash !== `#${route}`) {
+    window.location.hash = route;
+  }
+  window.setDashboardNav?.("strategy");
+}
+
 function downloadCsv() {
   const header = ["No", "Aplikasi", "Change Request", "Progress", "Status", "Target Selesai"];
   const rows = crExportRows();
@@ -1178,7 +1225,8 @@ async function downloadExcel() {
     ["yoy", "YoY (%)", aoOfficeData.yoy]
   ];
   const donePolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "done").length, 0);
-  const followUpPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done").length, 0);
+  const onProgressPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length, 0);
+  const noRatificationPolicy = policyData.reduce((sum, row) => sum + row.statuses.filter((status) => status === "no-ratification").length, 0);
   const crProgress = crData.length
     ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crData.length
     : 0;
@@ -1192,8 +1240,9 @@ async function downloadExcel() {
     ["Area", "Indikator", "Nilai"],
     ["Ratifikasi Kebijakan", "Entitas SH/AP", policyData.length],
     ["Ratifikasi Kebijakan", "Jenis Kebijakan", policyColumns.length],
-    ["Ratifikasi Kebijakan", "Selesai endorsement", donePolicy],
-    ["Ratifikasi Kebijakan", "Perlu tindak lanjut", followUpPolicy],
+    ["Ratifikasi Kebijakan", "Selesai", donePolicy],
+    ["Ratifikasi Kebijakan", "On Progress", onProgressPolicy],
+    ["Ratifikasi Kebijakan", "Tidak Ratifikasi", noRatificationPolicy],
     ["Change Request", "Total CR", crData.length],
     ["Change Request", "Progress keseluruhan", percentLabel(crProgress)]
   ]);
@@ -2461,7 +2510,12 @@ async function importInvestmentDataFile(file) {
   const uploadedAt = markDatabaseUploadedNow();
   setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
-  alert(`Import data Investasi berhasil. ${count} nilai dashboard diperbarui.\nData per: ${uploadedAt}${saved ? "\nData tersimpan untuk refresh berikutnya." : ""}`);
+  updateInvestmentDashboard();
+  updateDashboardMetrics();
+  showImportToast(
+    "Import data Investasi berhasil",
+    `${count} nilai dashboard diperbarui. Data per ${uploadedAt}${saved ? " dan tersimpan untuk refresh berikutnya." : "."}`
+  );
 }
 
 async function importDataFile(file) {
@@ -2508,11 +2562,11 @@ async function importDataFile(file) {
     return;
   }
 
-  renderStrategyDashboard();
+  refreshStrategyMenuAfterImport();
   const uploadedAt = markDatabaseUploadedNow();
   setStrategySourceStatus("File import (lokal)", new Date());
   const saved = saveLocalStrategyDataSource();
-  const message = ["Import berhasil."];
+  const message = [];
   if (imported.dataSource) {
     message.push("Data source Strategi & Evaluasi lengkap dimuat.");
   } else if (Object.keys(imported).length) {
@@ -2527,9 +2581,9 @@ async function importDataFile(file) {
   } else {
     message.push(`${rows.length} Change Request dimuat.`);
   }
-  message.push(`Data per: ${uploadedAt}`);
+  message.push(`Data per ${uploadedAt}.`);
   if (saved) message.push("Data tersimpan untuk refresh berikutnya.");
-  alert(message.join("\n"));
+  showImportToast("Import data Strategi & Evaluasi berhasil", message.join(" "));
 }
 
 function setupFilters() {
@@ -2668,6 +2722,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupPeriodPicker();
   setupExportMenu();
   setupDetailModal();
+  setupImportToast();
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });

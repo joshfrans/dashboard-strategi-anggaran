@@ -1238,7 +1238,7 @@
               <div><i data-lucide="file-spreadsheet"></i></div>
               <span>Template</span>
               <h3>Export Data Source</h3>
-              <p>Download template Excel/JSON aktif untuk update data dan backup dashboard.</p>
+              <p>Generate template Excel aktif dari browser untuk update data dan backup dashboard tanpa menyimpan file sumber di GitHub publik.</p>
               <button type="button" id="settingsExportExcel">Export Excel</button>
             </article>
             <article class="settings-card">
@@ -1820,6 +1820,15 @@
         </header>
         <div class="detail-body" id="detailBody"></div>
       </section>
+    </div>
+
+    <div class="import-toast" id="importToast" role="status" aria-live="polite" hidden>
+      <div class="import-toast-icon"><i data-lucide="check-circle"></i></div>
+      <div>
+        <strong id="importToastTitle">Import berhasil</strong>
+        <p id="importToastMessage">Data source berhasil diperbarui.</p>
+      </div>
+      <button type="button" id="importToastClose" aria-label="Tutup notifikasi"><i data-lucide="x"></i></button>
     </div>
 
     <script src="./assets/lucide.min.js?v=20260804-1"></script>
