@@ -452,6 +452,42 @@ function performanceDotClass(status) {
   return "done-dot";
 }
 
+function performanceStatusBucket(row) {
+  const normalized = String(row?.status || "").toLowerCase();
+  if (normalized.includes("belum")) return "gray";
+  if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "red";
+  if (normalized.includes("hampir") || normalized.includes("kuning")) return "amber";
+  if (normalized.includes("tercapai") || normalized.includes("hijau")) return "green";
+
+  const achievement = numberFromImport(row?.achievement, NaN);
+  if (Number.isFinite(achievement)) {
+    const achievementRate = achievement > 2 ? achievement / 100 : achievement;
+    if (achievementRate >= 1) return "green";
+    if (achievementRate >= 0.95) return "amber";
+    return "red";
+  }
+  return "gray";
+}
+
+function performanceScoreStatus(score) {
+  if (score >= 100) {
+    return {
+      label: "Tercapai",
+      message: "Semua indikator utama berada di zona hijau."
+    };
+  }
+  if (score >= 95) {
+    return {
+      label: "Hampir Tercapai",
+      message: "Kinerja mendekati target, perlu monitoring indikator prioritas."
+    };
+  }
+  return {
+    label: "Perlu Peningkatan",
+    message: "NKO masih di bawah target, perlu tindak lanjut pada indikator prioritas."
+  };
+}
+
 function renderPerformanceRows() {
   const target = document.getElementById("performanceRows");
   if (!target) return;
@@ -1633,12 +1669,7 @@ function renderDetailBusiness() {
 }
 
 function getPerformanceStatusSummary() {
-  const rows = Array.from(document.querySelectorAll(".performance-table tbody tr"));
-  const indicatorRows = rows.filter((row) => {
-    if (row.classList.contains("performance-group-row") || row.classList.contains("performance-total-row")) return false;
-    const firstCell = row.querySelector("td");
-    return /^\d+$/.test(firstCell?.textContent.trim() || "");
-  });
+  const indicatorRows = performanceData.filter((row) => String(row?.indicator || "").trim());
   const summary = {
     total: indicatorRows.length,
     green: 0,
@@ -1648,16 +1679,7 @@ function getPerformanceStatusSummary() {
   };
 
   indicatorRows.forEach((row) => {
-    const dot = row.querySelector(".status-dot");
-    if (!dot || dot.classList.contains("gray-dot")) {
-      summary.gray += 1;
-    } else if (dot.classList.contains("red-dot")) {
-      summary.red += 1;
-    } else if (dot.classList.contains("amber-dot")) {
-      summary.amber += 1;
-    } else {
-      summary.green += 1;
-    }
+    summary[performanceStatusBucket(row)] += 1;
   });
 
   return summary;
@@ -1667,9 +1689,15 @@ function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
   const indicatorCard = document.querySelector(".performance-indicator-card");
+  const scoreElement = document.getElementById("performanceScore");
+  const mainStatus = document.getElementById("performanceMainStatus");
   if (!grid) return;
 
   const summary = getPerformanceStatusSummary();
+  const score = calculatePerformanceScore();
+  const scoreStatus = performanceScoreStatus(score);
+  if (scoreElement) scoreElement.textContent = smartLabel(score, "plain");
+  if (mainStatus) mainStatus.textContent = scoreStatus.label;
   if (indicatorCard) {
     indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
   }
@@ -1688,7 +1716,7 @@ function updatePerformanceStatusPanel() {
   } else if (summary.gray > 0) {
     message.textContent = `${summary.green} hijau, ${summary.gray} belum diukur. Lengkapi pengukuran indikator.`;
   } else {
-    message.textContent = "Semua indikator utama berada di zona hijau.";
+    message.textContent = scoreStatus.message;
   }
 }
 
@@ -1826,9 +1854,10 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
-  const scoreSum = performanceData.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
-  const weightSum = performanceData.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
-  if (weightSum > 110) return scoreSum * (100 / weightSum);
+  const scoredRows = performanceData.filter((row) => Number.isFinite(numberFromImport(row.score, NaN)));
+  const scoreSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
+  const weightSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
+  if (weightSum > 0 && Math.abs(weightSum - 100) > 0.01) return scoreSum * (100 / weightSum);
   return scoreSum;
 }
 
