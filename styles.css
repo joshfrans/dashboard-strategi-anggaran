@@ -6643,6 +6643,13 @@ td {
   white-space: nowrap;
 }
 
+.detail-legend span em {
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 950;
+  color: var(--navy);
+}
+
 @media (max-width: 1500px) {
   .overview-strategy-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

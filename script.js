@@ -1496,6 +1496,7 @@ function makeMetric(label, value, tone = "") {
 }
 
 function renderDetailPolicy() {
+  const metrics = policyMetrics();
   const detailRows = policyData
     .map((row) => `
       <tr>
@@ -1525,9 +1526,9 @@ function renderDetailPolicy() {
       <div class="detail-legend">
         <strong>Keterangan Status</strong>
         <div>
-          <span><b class="dot green-dot"></b>Selesai</span>
-          <span><b class="dot amber-dot"></b>On Progress</span>
-          <span><b class="dot peach-dot"></b>Tidak Ratifikasi</span>
+          <span><b class="dot green-dot"></b><em>${metrics.done}</em> Selesai</span>
+          <span><b class="dot amber-dot"></b><em>${metrics.onProgress}</em> On Progress</span>
+          <span><b class="dot peach-dot"></b><em>${metrics.noRatification}</em> Tidak Ratifikasi</span>
         </div>
       </div>
     </section>
