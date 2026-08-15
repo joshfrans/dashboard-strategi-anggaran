@@ -1738,23 +1738,16 @@ function updatePerformanceStatusPanel() {
   if (indicatorCard) {
     indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
   }
+  if (message) {
+    message.textContent = "";
+    message.hidden = true;
+  }
 
   grid.innerHTML = `
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
     <div class="status-red"><strong>${summary.red}</strong><span>Perlu Peningkatan</span></div>
   `;
-
-  if (!message) return;
-  if (summary.red > 0) {
-    message.textContent = `${summary.green} hijau, ${summary.red} merah. Perlu perhatian pada indikator merah.`;
-  } else if (summary.amber > 0) {
-    message.textContent = `${summary.green} hijau, ${summary.amber} kuning. Monitor indikator yang hampir tercapai.`;
-  } else if (summary.gray > 0) {
-    message.textContent = `${summary.green} hijau, ${summary.gray} belum diukur. Lengkapi pengukuran indikator.`;
-  } else {
-    message.textContent = scoreStatus.message;
-  }
 }
 
 function setupDetailModal() {
