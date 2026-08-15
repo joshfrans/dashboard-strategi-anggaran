@@ -236,7 +236,7 @@
 }
 
 .overview-section {
-  padding: 0 20px 10px;
+  padding: 0 20px 8px;
 }
 
 .overview-section-line {
@@ -285,22 +285,22 @@
 
 .overview-board-card {
   overflow: hidden;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border: 1px solid #dfded9;
-  border-radius: 22px;
+  border-radius: 18px;
   background: #fff;
 }
 
 .overview-card-head {
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .overview-card-head h4 {
   margin: 0;
   color: #171717;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .overview-card-head button {
@@ -315,8 +315,9 @@
 
 .overview-ops-grid {
   display: grid;
-  grid-template-columns: 1.2fr .38fr 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1.18fr) 78px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 7px;
+  align-items: stretch;
 }
 
 .overview-main-kpi,
@@ -333,7 +334,8 @@
   align-content: center;
   gap: 2px;
   grid-row: span 2;
-  padding: 14px;
+  min-height: 154px;
+  padding: 12px;
 }
 
 .overview-main-kpi span,
@@ -346,9 +348,9 @@
 }
 
 .overview-main-kpi strong {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #111;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
 }
 
@@ -359,7 +361,7 @@
 
 .overview-rate-stack {
   display: grid;
-  gap: 12px;
+  gap: 8px;
   grid-row: span 2;
   align-content: center;
 }
@@ -368,8 +370,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   margin-inline: auto;
   border-radius: 50%;
   background: conic-gradient(#2da16b calc(var(--value) * 1%), #f1f1ee 0);
@@ -378,7 +380,7 @@
 .overview-rate-stack b::after {
   content: "";
   position: absolute;
-  inset: 9px;
+  inset: 8px;
   border-radius: 50%;
   background: #fff;
 }
@@ -390,7 +392,7 @@
 }
 
 .overview-rate-stack strong {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .overview-rate-stack span {
@@ -402,27 +404,28 @@
 
 .overview-soft-kpi {
   position: relative;
-  min-height: 86px;
-  padding: 12px;
+  min-height: 74px;
+  padding: 10px;
 }
 
 .overview-soft-kpi strong {
   display: block;
   margin: 2px 0;
   color: #111;
-  font-size: 21px;
+  font-size: 18px;
+  line-height: 1.05;
 }
 
 .overview-soft-kpi small {
   display: block;
   color: #6b7280;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .overview-soft-kpi em {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 10px;
+  bottom: 8px;
   color: #23a162;
   font-style: normal;
   font-size: 11px;
@@ -432,8 +435,8 @@
 .overview-subrow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 8px;
+  gap: 7px;
+  margin-top: 7px;
 }
 
 .overview-subrow h5,
@@ -447,7 +450,7 @@
 }
 
 .overview-subrow div {
-  padding: 10px 12px;
+  padding: 9px 10px;
 }
 
 .overview-subrow span,
@@ -463,7 +466,7 @@
   display: block;
   margin: 2px 0;
   color: #111;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .overview-subrow small {
@@ -474,10 +477,10 @@
 .overview-over-target {
   display: grid;
   grid-template-columns: 1fr repeat(3, minmax(0, .8fr)) 1fr repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
   align-items: center;
-  margin-top: 8px;
-  padding: 10px 12px;
+  margin-top: 7px;
+  padding: 9px 10px;
 }
 
 .overview-over-target h5 {
@@ -496,13 +499,13 @@
 }
 
 .overview-invest-row div {
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 .overview-invest-row strong {
   display: block;
   color: #0b65e5;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .overview-invest-row small {
@@ -556,6 +559,10 @@
   gap: 8px;
   align-items: center;
   min-height: 26px;
+}
+
+.overview-strategy-card .overview-prep-row {
+  grid-template-columns: minmax(220px, 1.15fr) minmax(0, 1fr) 52px;
 }
 
 .overview-policy-row span,
