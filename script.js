@@ -535,8 +535,8 @@ function renderBusinessExcellence() {
   businessExcellenceData.slice(0, 2).forEach((row, index) => {
     const target = document.getElementById(`businessSemester${index + 1}`);
     if (!target) return;
-    const targetLabel = smartLabel(row.target, Number(row.target) <= 1 ? "percent" : "plain");
-    const realizationLabel = smartLabel(row.realization, Number(row.realization) <= 1 ? "percent" : "plain");
+    const targetLabel = smartLabel(row.target, "plain");
+    const realizationLabel = smartLabel(row.realization, "plain");
     target.innerHTML = `
       <div>
         <strong>${row.semester || `Semester ${index + 1}`}</strong>
@@ -1635,7 +1635,7 @@ function renderDetailBusiness() {
       <h3>Executive Snapshot</h3>
       <div class="detail-metrics">
         ${makeMetric("Semester Dimonitor", businessExcellenceData.length)}
-        ${makeMetric("Rata-rata Realisasi", percentLabel(avgRealization), "green")}
+        ${makeMetric("Rata-rata Realisasi", smartLabel(avgRealization, "plain"), "green")}
         ${makeMetric("Semester Tercapai", businessExcellenceData.filter((row) => String(row.status || "").toLowerCase().includes("tercapai")).length, "green")}
         ${makeMetric("Perlu Follow-up", businessExcellenceData.filter((row) => !Number.isFinite(Number(row.realization)) || Number(row.realization || 0) < Number(row.target || 0)).length, "amber")}
       </div>
@@ -2121,17 +2121,28 @@ function importPolicyPrepSheet(workbook) {
 function importBusinessSheet(workbook) {
   const rows = sheetRows(workbook, "05_Business_Excellence");
   if (!rows.length) return 0;
+  function businessPercentValue(value) {
+    const numeric = numberFromImport(value, NaN);
+    if (!Number.isFinite(numeric)) return "";
+    return numeric > 0 && numeric <= 2 ? numeric * 100 : numeric;
+  }
   businessExcellenceData = rows
     .map((row) => {
       const rawTarget = rowValue(row, "Target");
       const rawRealization = rowValue(row, "Realisasi");
+      const rawStatus = rowValue(row, "Status");
       const realizationText = String(rawRealization ?? "").trim();
+      const statusText = String(rawStatus ?? "").trim();
       return {
         semester: rowValue(row, "Semester"),
         activity: rowValue(row, "Aktivitas"),
-        target: rawTarget === "" ? "" : parseProgress(rawTarget),
-        realization: realizationText && /[a-zA-Z]/.test(realizationText) ? realizationText : parseProgress(rawRealization || 0),
-        status: rowValue(row, "Status"),
+        target: rawTarget === "" ? "" : businessPercentValue(rawTarget),
+        realization: realizationText && /[a-zA-Z]/.test(realizationText)
+          ? realizationText
+          : rawRealization === "" || rawRealization === null || rawRealization === undefined
+            ? (statusText.toLowerCase().includes("belum") ? "Belum Dinilai" : "")
+            : businessPercentValue(rawRealization),
+        status: rawStatus,
         note: rowValue(row, "Catatan")
       };
     })
