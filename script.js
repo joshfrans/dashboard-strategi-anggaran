@@ -262,6 +262,7 @@ function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
     policyColumns,
     crData,
     performanceData,
+    performanceOfficialScore,
     policyPrepData,
     businessExcellenceData,
     investmentData,
@@ -337,6 +338,7 @@ let performanceData = [
   { no: 9, indicator: "Pemenuhan SLA Layanan GA", unit: "%", weight: 4, target: 0.95, targetPeriod: 0.95, realization: 1, achievement: 1.0526, score: 4.2, status: "Tercapai" },
   { no: 10, indicator: "Kepatuhan Administrasi Layanan", unit: "%", weight: 3, target: 1, targetPeriod: 1, realization: 1, achievement: 1, score: 3, status: "Tercapai" }
 ];
+let performanceOfficialScore = 106.84;
 
 let policyPrepData = [
   { no: 1, area: "Fasilitas", scope: "Petunjuk Teknis Fasilitas Komunikasi", progress: 81, status: "On Progress", target: "31 Juli 2026" },
@@ -1854,6 +1856,9 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
+  if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
+    return numberFromImport(performanceOfficialScore, 106.84);
+  }
   const scoredRows = performanceData.filter((row) => Number.isFinite(numberFromImport(row.score, NaN)));
   const scoreSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
   const weightSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
@@ -2082,6 +2087,21 @@ function importPerformanceSheet(workbook) {
   return performanceData.length;
 }
 
+function importStrategySummarySheet(workbook) {
+  const rows = sheetRows(workbook, "09_Ringkasan");
+  if (!rows.length) return 0;
+  let imported = 0;
+  rows.forEach((row) => {
+    const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
+    const value = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
+    if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "") {
+      performanceOfficialScore = numberFromImport(value, performanceOfficialScore);
+      imported += 1;
+    }
+  });
+  return imported;
+}
+
 function importPolicyPrepSheet(workbook) {
   const rows = sheetRows(workbook, "04_Penyusunan_Kebijakan");
   if (!rows.length) return 0;
@@ -2256,6 +2276,7 @@ function applyStrategyWorkbook(workbook) {
     ratifikasi: importPolicySheet(workbook),
     changeRequest: importCrSheet(workbook),
     kinerja: importPerformanceSheet(workbook),
+    ringkasan: importStrategySummarySheet(workbook),
     penyusunanKebijakan: importPolicyPrepSheet(workbook),
     businessExcellence: importBusinessSheet(workbook),
     investasi: importInvestmentSheet(workbook),
@@ -2309,6 +2330,9 @@ function applyStrategyDataSource(source) {
   if (Array.isArray(source.crData)) crData = source.crData;
   if (Array.isArray(source.changeRequest)) crData = source.changeRequest;
   if (Array.isArray(source.performanceData)) performanceData = source.performanceData;
+  if (source.performanceOfficialScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceOfficialScore, performanceOfficialScore);
+  if (source.performanceScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceScore, performanceOfficialScore);
+  if (source.nko !== undefined) performanceOfficialScore = numberFromImport(source.nko, performanceOfficialScore);
   if (Array.isArray(source.policyPrepData)) policyPrepData = source.policyPrepData;
   if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
   if (source.investmentData && typeof source.investmentData === "object") investmentData = { ...investmentData, ...source.investmentData };
@@ -2620,6 +2644,7 @@ async function importDataFile(file) {
     message.push(`Ratifikasi: ${imported.ratifikasi} baris.`);
     message.push(`Change Request: ${imported.changeRequest} baris.`);
     message.push(`Kinerja: ${imported.kinerja} indikator.`);
+    if (imported.ringkasan) message.push(`Nilai NKO: ${smartLabel(performanceOfficialScore, "plain")}.`);
     message.push(`Penyusunan Kebijakan: ${imported.penyusunanKebijakan} baris.`);
     message.push(`Business Excellence: ${imported.businessExcellence} baris.`);
     message.push(`Investasi: ${imported.investasi} nilai.`);
