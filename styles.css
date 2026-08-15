@@ -5157,18 +5157,18 @@ td {
 
 .policy-overview {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.7fr) minmax(180px, 0.85fr);
   gap: 8px;
-  padding: 12px 12px 2px;
+  padding: 12px;
 }
 
 .policy-overview > div {
   position: relative;
-  min-height: 58px;
+  min-height: 84px;
   display: grid;
   align-content: center;
   gap: 4px;
-  padding: 10px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: linear-gradient(180deg, #ffffff, #f7fbff);
@@ -5176,7 +5176,7 @@ td {
 
 .policy-overview strong {
   color: var(--green);
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1;
 }
 
@@ -5202,7 +5202,7 @@ td {
 
 .policy-combo-items {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   height: 100%;
 }
 
@@ -5212,12 +5212,12 @@ td {
   display: grid;
   align-content: center;
   gap: 3px;
-  min-height: 45px;
-  padding: 8px 12px;
+  min-height: 84px;
+  padding: 12px 14px;
 }
 
 .policy-combo-trigger + .policy-combo-trigger {
-  border-top: 1px dashed #d6e2f2;
+  border-left: 1px dashed #d6e2f2;
 }
 
 .policy-combo-trigger:hover {
@@ -5232,7 +5232,7 @@ td {
 }
 
 .policy-combo-metric strong {
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .policy-combo-metric span {
