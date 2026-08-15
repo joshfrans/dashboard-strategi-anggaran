@@ -1,0 +1,94 @@
+name: Daily Dashboard Backup
+
+on:
+  schedule:
+    # Runs every day at 18:00 UTC / 01:00 WIB.
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+env:
+  DASHBOARD_NAME: dashboard-strategi-evaluasi
+  GDRIVE_FOLDER_ID: 1qTohLBmsuVdBO0UNKwgm4tq2uzMamQ5k
+  STRATEGY_SHEET_ID: 1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0
+  HAS_GDRIVE_SECRET: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON != '' }}
+
+jobs:
+  full-backup:
+    name: Full Dashboard Backup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare backup metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          STAMP="$(TZ=Asia/Jakarta date +'%Y%m%d-%H%M%S')"
+          echo "stamp=${STAMP}" >> "$GITHUB_OUTPUT"
+          echo "zip_name=${DASHBOARD_NAME}-backup-${STAMP}.zip" >> "$GITHUB_OUTPUT"
+          echo "backup_time=$(TZ=Asia/Jakarta date +'%d %B %Y %H:%M:%S WIB')" >> "$GITHUB_OUTPUT"
+
+      - name: Capture online data sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p backup-data-sources
+          curl -L --fail --retry 3 \
+            "https://docs.google.com/spreadsheets/d/${STRATEGY_SHEET_ID}/export?format=xlsx" \
+            -o "backup-data-sources/strategi-evaluasi-google-source.xlsx" || true
+          cat > backup-data-sources/BACKUP_INFO.txt <<EOF
+          Backup dashboard: ${DASHBOARD_NAME}
+          Waktu backup: ${{ steps.meta.outputs.backup_time }}
+          Repository: ${{ github.repository }}
+          Commit: ${{ github.sha }}
+          Data source Strategi & Evaluasi: Google Sheets ${STRATEGY_SHEET_ID}
+          Catatan: Jika file Google Sheets tidak dapat diunduh, backup repository tetap dibuat.
+          EOF
+
+      - name: Create full backup ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -r "${{ steps.meta.outputs.zip_name }}" . \
+            -x ".git/*" \
+            -x "${{ steps.meta.outputs.zip_name }}" \
+            -x "node_modules/*"
+          ls -lh "${{ steps.meta.outputs.zip_name }}"
+
+      - name: Store backup as GitHub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.zip_name }}
+          path: ${{ steps.meta.outputs.zip_name }}
+          retention-days: 90
+
+      - name: Upload backup to Google Drive
+        if: ${{ env.HAS_GDRIVE_SECRET == 'true' }}
+        shell: bash
+        env:
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y rclone
+          SERVICE_ACCOUNT_FILE="${RUNNER_TEMP}/gdrive-service-account.json"
+          printf '%s' "${GDRIVE_SERVICE_ACCOUNT_JSON}" > "${SERVICE_ACCOUNT_FILE}"
+          rclone config create dashboard_backup_drive drive \
+            scope drive \
+            service_account_file "${SERVICE_ACCOUNT_FILE}" \
+            root_folder_id "${GDRIVE_FOLDER_ID}"
+          rclone copy "${{ steps.meta.outputs.zip_name }}" dashboard_backup_drive: --progress
+          rclone lsf dashboard_backup_drive: | tail -n 20
+
+      - name: Google Drive setup notice
+        if: ${{ env.HAS_GDRIVE_SECRET != 'true' }}
+        shell: bash
+        run: |
+          echo "Backup ZIP sudah tersimpan sebagai GitHub Artifact."
+          echo "Untuk upload otomatis ke Google Drive, tambahkan secret GDRIVE_SERVICE_ACCOUNT_JSON dan share folder Drive ke email service account."
