@@ -2190,6 +2190,203 @@ function renderExecutiveOverview() {
   if (window.lucide) window.lucide.createIcons();
 }
 
+function renderExecutiveOverview() {
+  const target = document.getElementById("executiveDashboardView");
+  if (!target) return;
+
+  const policy = policyMetrics();
+  const totalCr = crData.length || 0;
+  const doneCr = crData.filter((row) => row.status === "Selesai").length;
+  const onProgressCr = crData.filter((row) => row.status === "On Progress").length;
+  const notStartedCr = crData.filter((row) => row.status === "Belum Mulai").length;
+  const crProgress = totalCr ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / totalCr : 0;
+  const nko = calculatePerformanceScore();
+  const performanceSummary = getPerformanceStatusSummary();
+  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
+
+  const toNumber = (value, fallback = 0) => overviewNumber(value, fallback);
+  const money = (value) => overviewMoneyFromJt(value || 0);
+  const percent = (value) => overviewPercent(value || 0);
+  const width = (value) => overviewProgressWidth(value || 0);
+  const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
+
+  const corporateTotal = toNumber(aoCorporateData.total, 0);
+  const corporateRkap = toNumber(aoCorporateData.rkap, 0);
+  const corporateProjection = toNumber(aoCorporateData.projection, 0);
+  const corporateAbsorption = Number(aoCorporateData.absorption || (corporateRkap ? corporateTotal / corporateRkap * 100 : 0));
+  const officeTotal = toNumber(aoOfficeData.realization, 0);
+  const officeRkap = toNumber(aoOfficeData.rkap, 0);
+  const officeAbsorption = Number(aoOfficeData.absorption || (officeRkap ? officeTotal / officeRkap * 100 : 0));
+  const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
+  const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
+  const topCorporateCost = (aoCorporateData.topCosts || [])[0];
+  const topOfficeCost = (aoOfficeData.topCosts || [])[0];
+  const priorityCr = [...crData].sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0)).find((row) => row.status !== "Selesai");
+  const moneyToTrillion = (value) => {
+    if (typeof value === "number") return value / 1000000;
+    const text = String(value || "").toLowerCase();
+    const numeric = overviewNumber(text, 0);
+    if (text.includes("m")) return numeric / 1000;
+    if (text.includes("t")) return numeric;
+    return numeric > 1000 ? numeric / 1000000 : numeric;
+  };
+
+  const statusBadge = (value, goodAt = 90, warnAt = 60) => {
+    if (Number(value) >= goodAt) return "Aman";
+    if (Number(value) >= warnAt) return "Monitor";
+    return "Perlu Tindak Lanjut";
+  };
+
+  const domainCard = ({ icon, title, status, tone, main, label, supporting, rows, action }) => `
+    <article class="ovm-domain-card ${tone}">
+      <div class="ovm-domain-head">
+        <span><i data-lucide="${icon}"></i></span>
+        <div>
+          <h3>${title}</h3>
+          <b>${status}</b>
+        </div>
+      </div>
+      <div class="ovm-domain-main">
+        <strong>${main}</strong>
+        <small>${label}</small>
+      </div>
+      <p>${supporting}</p>
+      <div class="ovm-domain-rows">
+        ${rows.map((row) => `<div><span>${row[0]}</span><b>${row[1]}</b><em style="width:${width(row[2])}%"></em></div>`).join("")}
+      </div>
+      <div class="ovm-action">${action}</div>
+    </article>
+  `;
+
+  const chartBars = [
+    ["AI", moneyToTrillion(investmentData.totalInvestment), moneyToTrillion(investmentData.aiRealization), 0],
+    ["AKI", moneyToTrillion(investmentData.akiTotal), moneyToTrillion(investmentData.akiRealization), 0],
+    ["AO", moneyToTrillion(corporateRkap), moneyToTrillion(corporateTotal), moneyToTrillion(corporateProjection)]
+  ];
+
+  target.classList.remove("overview-reference");
+  target.classList.add("overview-executive", "overview-management");
+  target.innerHTML = `
+    <header class="overview-topbar ovm-topbar">
+      <div class="overview-brand">
+        <span class="overview-logo"><i data-lucide="zap"></i></span>
+        <div>
+          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
+          <p>PT PLN (Persero)</p>
+        </div>
+      </div>
+      <div class="overview-controls">
+        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
+        <span><i data-lucide="user"></i> Administrator GA</span>
+        <button type="button"><i data-lucide="refresh-cw"></i></button>
+        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
+      </div>
+    </header>
+
+    <section class="ovm-hero">
+      <div>
+        <span class="ovm-eyebrow">Overview Manajemen</span>
+        <h1>Monitoring Strategi, Anggaran, dan Investasi</h1>
+        <p>Ringkasan lintas Strategi & Evaluasi, Anggaran Korporat, Anggaran Kantor Pusat, dan Investasi untuk membantu manajemen melihat status utama, risiko, dan prioritas tindak lanjut.</p>
+      </div>
+      <div class="ovm-freshness">
+        <i data-lucide="database"></i>
+        <span>Data per</span>
+        <strong>${reportDate}</strong>
+      </div>
+    </section>
+
+    <section class="ovm-signal-strip">
+      <article><span>Status Strategi</span><strong>${policy.done}/${policy.total}</strong><small>Kebijakan selesai</small></article>
+      <article><span>Progress CR</span><strong>${overviewDecimal(crProgress, 2)}%</strong><small>${doneCr} selesai · ${onProgressCr} berjalan</small></article>
+      <article><span>NKO</span><strong>${smartLabel(nko, "plain")}</strong><small>${performanceSummary.green} indikator hijau</small></article>
+      <article><span>Serapan AKI</span><strong>${safe(investmentData.akiRealizationPct)}</strong><small>${safe(investmentData.akiGapChip)} belum terserap</small></article>
+      <article><span>Serapan AO</span><strong>${percent(corporateAbsorption)}</strong><small>Korporat & SHAP</small></article>
+    </section>
+
+    <section class="ovm-domain-grid">
+      ${domainCard({
+        icon: "clipboard-check",
+        title: "Strategi & Evaluasi",
+        status: statusBadge(policy.done / Math.max(policy.total, 1) * 100, 70, 50),
+        tone: "strategy",
+        main: `${policy.total}`,
+        label: "Status kebijakan dimonitor",
+        supporting: `${policy.done} selesai, ${policy.onProgress} on progress, ${policy.noRatification} tidak ratifikasi. CR aplikasi berada pada ${overviewDecimal(crProgress, 2)}%.`,
+        rows: [["Ratifikasi selesai", policy.done, policy.done / Math.max(policy.total, 1) * 100], ["CR selesai", `${doneCr}/${totalCr}`, doneCr / Math.max(totalCr, 1) * 100], ["NKO tercapai", smartLabel(nko, "plain"), Math.min(nko, 100)]],
+        action: priorityCr ? `Fokus: percepat ${priorityCr.app}` : "Fokus: jaga evidence dan update data."
+      })}
+      ${domainCard({
+        icon: "building-2",
+        title: "Anggaran Korporat",
+        status: statusBadge(corporateAbsorption, 80, 50),
+        tone: "corporate",
+        main: money(corporateTotal),
+        label: `Realisasi dari RKAP ${money(corporateRkap)}`,
+        supporting: `Proyeksi ${money(corporateProjection)}. Kontributor terbesar: ${topCorporateCost?.name || "belum tersedia"}.`,
+        rows: [["Serapan RKAP", percent(corporateAbsorption), corporateAbsorption], ["Proyeksi vs RKAP", percent(corporateRkap ? corporateProjection / corporateRkap * 100 : 0), corporateRkap ? corporateProjection / corporateRkap * 100 : 0], ["Top biaya", topCorporateCost ? money(topCorporateCost.value) : "-", topCorporateCost?.rkap || 0]],
+        action: corporateAbsorption < 50 ? "Fokus: percepat realisasi dan review pos biaya besar." : "Fokus: monitor pos biaya dominan."
+      })}
+      ${domainCard({
+        icon: "landmark",
+        title: "Anggaran Kantor Pusat",
+        status: statusBadge(officeAbsorption, 80, 50),
+        tone: "office",
+        main: money(officeTotal),
+        label: `Serapan ${percent(officeAbsorption)} dari RKAP ${money(officeRkap)}`,
+        supporting: `${aoOfficeData.selectedUnit || "Unit prioritas"} ${aoOfficeData.rank || ""}. Kontributor terbesar: ${topOfficeCost?.name || "belum tersedia"}.`,
+        rows: [["Serapan RKAP", percent(officeAbsorption), officeAbsorption], ["YoY", percent(Number(aoOfficeData.yoy || 0)), Number(aoOfficeData.yoy || 0)], ["Top biaya", topOfficeCost ? money(topOfficeCost.value) : "-", topOfficeCost?.absorption || topOfficeCost?.rkap || 0]],
+        action: officeAbsorption > 90 ? "Fokus: kendalikan unit over target." : "Fokus: pantau unit dan pos biaya prioritas."
+      })}
+      ${domainCard({
+        icon: "chart-no-axes-column-increasing",
+        title: "Investasi",
+        status: akiProgress >= 70 ? "Aman" : "Perlu Percepatan",
+        tone: "investment",
+        main: safe(investmentData.aiRealization),
+        label: `Realisasi AI dari ${safe(investmentData.totalInvestment)}`,
+        supporting: `AKI terserap ${safe(investmentData.akiRealizationPct)}; ${safe(investmentData.akiGapChip)} perlu dimonitor untuk BAPP dan rekomposisi.`,
+        rows: [["Realisasi AI", safe(investmentData.aiRealizationPct), aiProgress], ["Realisasi AKI", safe(investmentData.akiRealizationPct), akiProgress], ["Gap AKI", safe(investmentData.akiGapPct), investmentPercentValue(investmentData.akiGapPct)]],
+        action: akiProgress < 70 ? "Fokus: tutup gap AKI dan validasi BAPP." : "Fokus: jaga pipeline realisasi."
+      })}
+    </section>
+
+    <section class="ovm-lower-grid">
+      <article class="ovm-chart-card">
+        <div class="ovm-card-title"><h3>Perbandingan RKAP, Realisasi & Forecast</h3><span>Rp Triliun</span></div>
+        <div class="ovm-bars">
+          ${chartBars.map((group) => {
+            const max = Math.max(...chartBars.flatMap((row) => row.slice(1).map((item) => Number(item) || 0)), 1);
+            return `
+              <div class="ovm-bar-group">
+                <div class="ovm-bar-set">
+                  <b class="rkap" style="height:${Math.max(8, Number(group[1] || 0) / max * 100)}%"><span>${overviewDecimal(group[1], 2)}</span></b>
+                  <b class="real" style="height:${Math.max(8, Number(group[2] || 0) / max * 100)}%"><span>${overviewDecimal(group[2], 2)}</span></b>
+                  <b class="forecast" style="height:${Math.max(8, Number(group[3] || 0) / max * 100)}%"><span>${group[3] ? overviewDecimal(group[3], 2) : "-"}</span></b>
+                </div>
+                <strong>${group[0]}</strong>
+              </div>
+            `;
+          }).join("")}
+        </div>
+        <div class="ovm-legend"><span><i class="blue"></i>RKAP</span><span><i class="green"></i>Realisasi</span><span><i class="orange"></i>Forecast</span></div>
+      </article>
+
+      <article class="ovm-priority-card">
+        <div class="ovm-card-title"><h3>Prioritas Manajemen</h3><span>Action list</span></div>
+        <div class="ovm-priority-list">
+          <div><b>1</b><span>Tutup ${policy.onProgress + policy.noRatification} status kebijakan yang belum selesai/tidak ratifikasi.</span><em>Strategi</em></div>
+          <div><b>2</b><span>Percepat ${onProgressCr} CR on progress dan kunci target untuk ${notStartedCr} CR belum mulai.</span><em>Aplikasi</em></div>
+          <div><b>3</b><span>Monitor serapan AO Korporat ${percent(corporateAbsorption)} dan AO Kantor Pusat ${percent(officeAbsorption)}.</span><em>Anggaran</em></div>
+          <div><b>4</b><span>Validasi ${safe(investmentData.akiGapChip)} gap AKI melalui BAPP dan rekomposisi.</span><em>Investasi</em></div>
+        </div>
+      </article>
+    </section>
+  `;
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
