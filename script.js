@@ -4009,6 +4009,7 @@ function renderEvInfrastructure() {
         <div><i data-lucide="settings"></i><span><b>Metodologi</b> Kategori mengikuti klasifikasi jarak SPKLU terdekat. Perhitungan jarak aktual dapat diaktifkan bila data koordinat SPKLU tersedia.</span></div>
         <div><i data-lucide="info"></i><span><b>Keterangan</b> Fast Charging: DC atau AC/DC; Normal Charging: AC.</span></div>
         <div><i data-lucide="shield-check"></i><span><b>Disclaimer</b> Analisis bersifat spasial berdasarkan jarak, faktor operasional lapangan tetap perlu dikonfirmasi.</span></div>
+        <div class="ev-sustainability"><i data-lucide="sprout"></i><strong>Mendorong masa depan<br>energi bersih dan berkelanjutan<br>bersama PLN</strong><i data-lucide="car-front"></i></div>
       </footer>
     </div>
   `;

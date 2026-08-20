@@ -542,9 +542,9 @@
 
 .ev-footnotes {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1.15fr 270px;
   gap: 7px;
-  padding: 7px 9px;
+  padding: 5px 9px;
 }
 
 .ev-footnotes div {
@@ -567,6 +567,36 @@
 .ev-footnotes b {
   color: #06164c;
   text-transform: uppercase;
+}
+
+.ev-footnotes .ev-sustainability {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  min-height: 36px;
+  align-items: center;
+  justify-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border: 1px solid #d8ead8;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fff6 100%);
+  color: #16843b;
+  box-shadow: inset 0 0 0 1px rgba(22, 132, 59, 0.04);
+}
+
+.ev-footnotes .ev-sustainability svg {
+  width: 24px;
+  height: 24px;
+  color: #4fae35;
+}
+
+.ev-footnotes .ev-sustainability strong {
+  color: #15813c;
+  font-size: 9px;
+  line-height: 1.08;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
 .ev-tone-teal {
