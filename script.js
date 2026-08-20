@@ -3598,7 +3598,7 @@ function renderExecutiveOverview() {
   const beScore = businessExcellenceData.length
     ? businessExcellenceData.reduce((sum, row) => sum + overviewNumber(row.realization, 0), 0) / businessExcellenceData.length
     : 0;
-  const policyTopRows = policyData.slice(0, 3).map((row) => {
+  const policyTopRows = policyData.slice(0, 2).map((row) => {
     const done = row.statuses.filter((status) => status === "done").length;
     const onProgress = row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length;
     const noRatification = row.statuses.filter((status) => status === "no-ratification").length;
@@ -3610,7 +3610,7 @@ function renderExecutiveOverview() {
   const crPriorityRows = [...crData]
     .filter((row) => row.status !== "Selesai")
     .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))
-    .slice(0, 3);
+    .slice(0, 2);
   const corporateTopCosts = (aoCorporateData.topCosts || []).slice(0, 3);
   const officeTopCosts = (aoOfficeData.topCosts || []).slice(0, 3);
 

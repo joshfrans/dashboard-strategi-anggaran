@@ -2143,7 +2143,7 @@
 
 .overview-redesign {
   min-height: 100vh;
-  padding: 0 18px 22px;
+  padding: 0 16px 20px;
   overflow-x: hidden;
   color: #061a50;
   background:
@@ -2247,13 +2247,13 @@
 
 .ovx-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 330px;
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
   align-items: stretch;
-  margin-bottom: 14px;
-  padding: 22px;
-  border: 1px solid rgba(255, 255, 255, .3);
-  border-radius: 24px;
+  margin-bottom: 12px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 20px;
   color: #fff;
   background:
     linear-gradient(120deg, rgba(0, 166, 81, .22), transparent 42%),
@@ -2263,8 +2263,8 @@
 
 .ovx-section-label {
   display: inline-flex;
-  margin-bottom: 10px;
-  padding: 6px 10px;
+  margin-bottom: 8px;
+  padding: 5px 9px;
   border-radius: 999px;
   color: #dff7ff;
   background: rgba(255, 255, 255, .14);
@@ -2277,13 +2277,13 @@
 .ovx-hero h1 {
   max-width: 850px;
   margin: 0;
-  font-size: 36px;
+  font-size: 31px;
   line-height: 1.08;
 }
 
 .ovx-hero p {
   max-width: 900px;
-  margin: 12px 0 0;
+  margin: 9px 0 0;
   color: rgba(255, 255, 255, .82);
   font-size: 14px;
   line-height: 1.55;
@@ -2291,14 +2291,14 @@
 
 .ovx-hero-tags {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .ovx-hero-tags span {
   gap: 7px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
   color: #fff;
@@ -2315,8 +2315,8 @@
 .ovx-decision {
   display: grid;
   align-content: center;
-  gap: 7px;
-  padding: 18px;
+  gap: 6px;
+  padding: 16px;
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 18px;
   background: rgba(255, 255, 255, .13);
@@ -2332,7 +2332,7 @@
 }
 
 .ovx-decision strong {
-  font-size: 52px;
+  font-size: 44px;
   line-height: .95;
 }
 
@@ -2351,18 +2351,18 @@
 .ovx-kpi-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .ovx-kpi {
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 12px;
-  min-height: 128px;
-  padding: 16px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 112px;
+  padding: 13px;
   border: 1px solid #d7e3f2;
   border-top: 4px solid #1769e8;
   border-radius: 18px;
@@ -2385,9 +2385,9 @@
 .ovx-kpi-icon {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
   color: #1769e8;
   background: #eaf2ff;
 }
@@ -2421,16 +2421,16 @@
 
 .ovx-kpi strong {
   display: block;
-  margin-top: 7px;
+  margin-top: 5px;
   color: #061a50;
-  font-size: 30px;
+  font-size: 25px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .ovx-kpi small {
   display: block;
-  margin-top: 8px;
+  margin-top: 6px;
   color: #475569;
   font-size: 12px;
   font-weight: 700;
@@ -2441,7 +2441,7 @@
   grid-column: 1 / -1;
   display: inline-flex;
   width: fit-content;
-  padding: 5px 9px;
+  padding: 4px 8px;
   border-radius: 999px;
   color: #0757ff;
   background: #edf4ff;
@@ -2468,17 +2468,17 @@
 .ovx-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .ovx-panel {
   overflow: hidden;
-  grid-column: span 4;
+  grid-column: span 6;
   display: grid;
   align-content: start;
-  gap: 14px;
-  min-height: 330px;
-  padding: 17px;
+  gap: 12px;
+  min-height: 292px;
+  padding: 15px;
   border: 1px solid #d7e3f2;
   border-radius: 20px;
   background: #fff;
@@ -2504,7 +2504,7 @@
 .ovx-panel-head h3 {
   margin: 5px 0 0;
   color: #061a50;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.2;
 }
 
@@ -2541,14 +2541,14 @@
 .ovx-pill-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
+  gap: 8px;
 }
 
 .ovx-pill {
   display: grid;
   gap: 3px;
-  min-height: 70px;
-  padding: 11px;
+  min-height: 62px;
+  padding: 9px;
   border: 1px solid #dce7f5;
   border-radius: 14px;
   color: #43516c;
@@ -2559,7 +2559,7 @@
 
 .ovx-pill b {
   color: #061a50;
-  font-size: 24px;
+  font-size: 21px;
   line-height: 1;
 }
 
@@ -2590,7 +2590,7 @@
 .ovx-progress-row {
   display: grid;
   grid-template-columns: minmax(150px, 1fr) auto;
-  gap: 8px 12px;
+  gap: 6px 10px;
   align-items: center;
 }
 
@@ -2637,7 +2637,7 @@
 .ovx-invest-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .ovx-invest-cards {
@@ -2646,7 +2646,7 @@
 
 .ovx-budget-hero div,
 .ovx-invest-cards div {
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #dce7f5;
   border-radius: 14px;
   background: #f8fbff;
@@ -2655,9 +2655,9 @@
 .ovx-budget-hero strong,
 .ovx-invest-cards strong {
   display: block;
-  margin-top: 7px;
+  margin-top: 6px;
   color: #0757ff;
-  font-size: 23px;
+  font-size: 20px;
   line-height: 1;
 }
 
@@ -2675,7 +2675,9 @@
 }
 
 .ovx-mini-table {
-  padding: 12px;
+  overflow: hidden;
+  max-height: 152px;
+  padding: 10px;
   border-radius: 14px;
   background: #f7fbff;
 }
@@ -2693,7 +2695,7 @@
 }
 
 .ovx-mini-table td {
-  padding: 8px 0;
+  padding: 6px 0;
   border-top: 1px solid #e0e8f3;
   color: #061a50;
   font-weight: 800;
@@ -2720,9 +2722,9 @@
 .ovx-chart {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
+  gap: 20px;
   align-items: end;
-  min-height: 190px;
+  min-height: 170px;
   padding: 8px 12px 0;
   border-bottom: 1px solid #e0e8f3;
 }
@@ -2738,7 +2740,7 @@
   justify-content: center;
   align-items: end;
   gap: 9px;
-  height: 150px;
+  height: 130px;
 }
 
 .ovx-chart-bars b {
@@ -2810,7 +2812,7 @@
 
 .ovx-action-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2818,10 +2820,10 @@
 
 .ovx-action-list li {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #e0e8f3;
   border-radius: 14px;
   background: #fbfdff;
@@ -2830,8 +2832,8 @@
 .ovx-action-list b {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 11px;
   color: #0757ff;
   background: #eaf2ff;
