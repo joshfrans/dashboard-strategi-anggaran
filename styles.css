@@ -1087,6 +1087,442 @@
   background: #fff7e6;
 }
 
+.overview-reference {
+  background: #efeeec;
+}
+
+.overview-titlebar.compact {
+  min-height: 78px;
+}
+
+.ov-ref-section {
+  padding: 0 8px 8px;
+}
+
+.ov-ref-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.ov-ref-section-title::before {
+  content: "";
+  width: 4px;
+  height: 17px;
+  border-radius: 3px;
+  background: #1580d8;
+}
+
+.ov-ref-section-title h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 13px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+
+.ov-ref-section-title span {
+  color: #8a8f99;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ov-ref-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ov-ref-two.compact .ov-ref-panel {
+  min-height: 116px;
+}
+
+.ov-ref-panel {
+  overflow: hidden;
+  padding: 12px 14px 10px;
+  border: 1px solid #dddcd8;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(6, 26, 80, .04);
+}
+
+.ov-ref-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ov-ref-head h4 {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+  color: #111;
+  font-size: 16px;
+}
+
+.ov-ref-head h4 svg {
+  width: 14px;
+  height: 14px;
+  color: #9aa0a6;
+}
+
+.ov-ref-head button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 4px 10px;
+  border: 1px solid #e0e0dd;
+  border-radius: 999px;
+  color: #8a8f99;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ov-ref-head button svg {
+  width: 13px;
+  height: 13px;
+}
+
+.ov-ref-operational {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.05fr) 78px repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ov-ref-main,
+.ov-ref-mini,
+.ov-ref-control,
+.ov-ref-overbox,
+.ov-ref-invest-row > div {
+  border-radius: 14px;
+  background: #f7f7f5;
+}
+
+.ov-ref-main {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  grid-row: span 2;
+  min-height: 172px;
+  padding: 14px;
+}
+
+.ov-ref-main span,
+.ov-ref-mini span,
+.ov-ref-control span,
+.ov-ref-invest-row span {
+  color: #7b8392;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+}
+
+.ov-ref-main strong {
+  color: #070b18;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.ov-ref-main strong.green {
+  color: #0ba55a;
+}
+
+.ov-ref-rings {
+  display: grid;
+  gap: 11px;
+  grid-row: span 2;
+  align-content: center;
+  justify-items: center;
+}
+
+.ov-ref-rings b {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: conic-gradient(#2ea365 calc(var(--value) * 1%), #f0f0ed 0);
+}
+
+.ov-ref-rings b::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.ov-ref-rings strong,
+.ov-ref-rings span {
+  position: relative;
+  z-index: 1;
+}
+
+.ov-ref-rings strong {
+  font-size: 12px;
+}
+
+.ov-ref-rings span {
+  max-width: 42px;
+  color: #7b8392;
+  font-size: 8px;
+  text-align: center;
+}
+
+.ov-ref-mini {
+  position: relative;
+  min-height: 82px;
+  padding: 10px 12px;
+}
+
+.ov-ref-mini strong {
+  display: block;
+  color: #070b18;
+  font-size: 24px;
+  line-height: .95;
+}
+
+.ov-ref-mini small,
+.ov-ref-control small {
+  display: block;
+  color: #687386;
+  font-size: 10px;
+}
+
+.ov-ref-mini small b,
+.ov-ref-control small b {
+  color: #111827;
+}
+
+.ov-ref-mini em,
+.ov-ref-control em {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  display: grid;
+  gap: 2px;
+  font-style: normal;
+  text-align: right;
+}
+
+.ov-ref-mini i,
+.ov-ref-control i {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ov-ref-mini i.down,
+.ov-ref-control i.down {
+  color: #16a05a;
+}
+
+.ov-ref-mini i.up,
+.ov-ref-control i.up {
+  color: #f97316;
+}
+
+.ov-ref-subtitle {
+  margin: 8px 0 4px;
+  padding-left: 8px;
+  border-left: 3px solid #5bb7ff;
+  color: #607087;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.ov-ref-controls-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ov-ref-control {
+  position: relative;
+  min-height: 86px;
+  padding: 10px 12px;
+}
+
+.ov-ref-control strong {
+  display: block;
+  color: #070b18;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.ov-ref-overgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ov-ref-overbox {
+  min-height: 88px;
+  padding: 10px 12px;
+}
+
+.ov-ref-overbox div,
+.ov-ref-overbox p {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 5px;
+}
+
+.ov-ref-overbox div b {
+  color: #0f172a;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.ov-ref-overbox div em {
+  grid-column: 3;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #ef4444;
+  background: #ffe4e4;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ov-ref-overbox p span {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.ov-ref-overbox p small {
+  color: #687386;
+}
+
+.ov-ref-overbox p strong {
+  color: #f97316;
+}
+
+.ov-ref-invest-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ov-ref-invest-row > div {
+  position: relative;
+  min-height: 74px;
+  padding: 10px 12px;
+}
+
+.ov-ref-invest-row em {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  color: #fb8c00;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ov-ref-invest-row strong {
+  display: block;
+  color: #0875d9;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.ov-ref-invest-row small {
+  color: #687386;
+  font-size: 10px;
+}
+
+.ov-ref-invest-row b {
+  overflow: hidden;
+  display: block;
+  height: 5px;
+  margin-top: 5px;
+  border-radius: 999px;
+  background: #e8edf5;
+}
+
+.ov-ref-invest-row b i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #0875d9;
+}
+
+.ov-ref-invest-row b.green i {
+  background: #2ea365;
+}
+
+.ov-ref-policy-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 34px;
+  margin-bottom: 10px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  background: #f7f7f5;
+}
+
+.ov-ref-policy-summary b {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ov-ref-policy-summary strong {
+  color: #0ba55a;
+  font-size: 20px;
+}
+
+.ov-ref-policy-summary b:nth-child(2) strong,
+.ov-ref-policy-summary b:nth-child(3) strong {
+  color: #f97316;
+}
+
+.ov-ref-policy-summary span {
+  color: #7b8392;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ov-ref-policy-bars {
+  display: grid;
+  gap: 8px;
+}
+
+.ov-ref-prep {
+  display: grid;
+  gap: 11px;
+  padding: 7px 4px;
+}
+
+.overview-reference .overview-policy-row {
+  grid-template-columns: 105px minmax(0, 1fr) 42px;
+}
+
+.overview-reference .overview-prep-row {
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 1.8fr) 54px;
+}
+
+.overview-reference .overview-policy-row b,
+.overview-reference .overview-prep-row b {
+  height: 7px;
+}
+
 .overview-decision-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(280px, .75fr);
@@ -1249,7 +1685,12 @@
   .overview-subrow,
   .overview-over-target,
   .overview-invest-row,
-  .overview-decision-grid {
+  .overview-decision-grid,
+  .ov-ref-two,
+  .ov-ref-operational,
+  .ov-ref-controls-row,
+  .ov-ref-overgrid,
+  .ov-ref-invest-row {
     grid-template-columns: 1fr;
   }
 }

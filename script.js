@@ -1988,6 +1988,208 @@ function renderExecutiveOverview() {
   if (window.lucide) window.lucide.createIcons();
 }
 
+function renderExecutiveOverview() {
+  const target = document.getElementById("executiveDashboardView");
+  if (!target) return;
+
+  const policy = policyMetrics();
+  const totalCr = crData.length || 1;
+  const doneCr = crData.filter((row) => row.status === "Selesai").length;
+  const crProgress = crData.length ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crData.length : 0;
+  const nko = calculatePerformanceScore();
+  const prepRows = overviewPrepRows();
+  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
+
+  const jtToT = (value, fallback = 0) => `${overviewDecimal(overviewNumber(value, fallback) / 1000000, 2)} T`;
+  const pct = (value, fallback = 0) => overviewPercent(overviewNumber(value, fallback));
+  const money = (value) => overviewMoneyFromJt(value || 0);
+  const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
+  const corpTotal = overviewNumber(aoCorporateData.total, 0);
+  const corpRkap = overviewNumber(aoCorporateData.rkap, 0);
+  const corpProjection = overviewNumber(aoCorporateData.projection, 0);
+  const officeTotal = overviewNumber(aoOfficeData.realization, 0);
+  const officeRkap = overviewNumber(aoOfficeData.rkap, 0);
+  const officeProjection = Math.round(officeRkap * 0.945);
+  const corpRate = corpRkap ? corpTotal / corpRkap * 100 : 0;
+  const officeRate = officeRkap ? officeTotal / officeRkap * 100 : 0;
+  const investmentAi = overviewPlainMoney(investmentData.aiRealization, safe(investmentData.aiRealization));
+  const corpCosts = Array.isArray(aoCorporateData.topCosts) ? aoCorporateData.topCosts : [];
+  const officeCosts = Array.isArray(aoOfficeData.topCosts) ? aoOfficeData.topCosts : [];
+  const corpUnits = Array.isArray(aoCorporateData.topUnits) ? aoCorporateData.topUnits : [];
+  const officeUnits = Array.isArray(aoOfficeData.topUnits) ? aoOfficeData.topUnits : [];
+
+  const metricSignals = (row) => {
+    const signals = [];
+    if (row?.rkap != null) signals.push(`▼ ${pct(row.rkap)}`);
+    if (row?.absorption != null) signals.push(`▼ ${pct(row.absorption)}`);
+    if (row?.yoy != null) signals.push(`${Number(row.yoy) > 100 ? "▲" : "▼"} ${pct(row.yoy)}`);
+    return signals.length ? signals : ["-"];
+  };
+
+  const miniMetric = (row, index) => `
+    <div class="ov-ref-mini">
+      <span>${row?.name || `Komponen Biaya ${index + 1}`}</span>
+      <strong>${money(row?.value)}</strong>
+      <small>Target s.d. Juli&nbsp;&nbsp;<b>${safe(row?.target, "-")}</b></small>
+      <small>RKAP 2026&nbsp;&nbsp;<b>${safe(row?.rkap != null ? pct(row.rkap) : null, "-")}</b></small>
+      <small>YoY&nbsp;&nbsp;<b>${safe(row?.yoy != null ? pct(row.yoy) : null, "-")}</b></small>
+      <em>${metricSignals(row).map((item) => `<i class="${item.includes("▲") ? "up" : "down"}">${item}</i>`).join("")}</em>
+    </div>
+  `;
+
+  const controlMetric = (row, index) => `
+    <div class="ov-ref-control">
+      <span>${row?.name || `Pos Kendali ${index + 1}`}</span>
+      <strong>${money(row?.value)}</strong>
+      <small>Target s.d. Juli&nbsp;&nbsp;<b>${safe(row?.target, "-")}</b></small>
+      <small>Serapan RKAP&nbsp;&nbsp;<b>${safe(row?.rkap != null ? pct(row.rkap) : row?.absorption != null ? pct(row.absorption) : null, "-")}</b></small>
+      <small>YoY&nbsp;&nbsp;<b>${safe(row?.yoy != null ? pct(row.yoy) : null, "-")}</b></small>
+      <em>${metricSignals(row).map((item) => `<i class="${item.includes("▲") ? "up" : "down"}">${item}</i>`).join("")}</em>
+    </div>
+  `;
+
+  const overTarget = (title, rows, badge) => `
+    <div class="ov-ref-overbox">
+      <div><b>${title}</b><em>${badge}</em></div>
+      ${rows.length ? rows.map((row) => `<p><span>${row.unit || row.name || "-"}</span><small>${money(row.value)}</small><strong>${safe(row.absorption != null ? pct(row.absorption) : row.yoy != null ? pct(row.yoy) : null, "-")}</strong></p>`).join("") : `<p><span>Belum ada data</span><small>-</small><strong>-</strong></p>`}
+    </div>
+  `;
+
+  target.classList.add("overview-executive", "overview-reference");
+  target.innerHTML = `
+    <header class="overview-topbar">
+      <div class="overview-brand">
+        <span class="overview-logo"><i data-lucide="zap"></i></span>
+        <div>
+          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
+          <p>PT PLN (Persero)</p>
+        </div>
+      </div>
+      <div class="overview-controls">
+        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
+        <span><i data-lucide="user"></i> Administrator GA</span>
+        <span class="overview-theme"><b></b><b></b><b></b><b></b></span>
+        <button type="button"><i data-lucide="moon"></i></button>
+        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
+      </div>
+    </header>
+
+    <div class="overview-titlebar compact">
+      <div class="overview-breadcrumb"><button type="button"><i data-lucide="arrow-left"></i></button><span>Overview</span></div>
+      <div class="overview-title">
+        <span class="overview-target"><i data-lucide="target"></i></span>
+        <div>
+          <h1>Strategi & Anggaran Umum <b>SEBAGIAN TERVERIFIKASI</b></h1>
+          <p>Strategi & evaluasi GA, anggaran investasi & sarana · Data per ${reportDate}</p>
+        </div>
+      </div>
+      <div class="overview-source-toggle"><b>Data langsung</b><span>Data statis</span></div>
+    </div>
+
+    <section class="ov-ref-section">
+      <div class="ov-ref-section-title"><h3>Anggaran Operasional Sarana</h3><span>Realisasi biaya s.d Juli 2026</span></div>
+      <div class="ov-ref-two">
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Korporat & SHAP <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-operational">
+            <div class="ov-ref-main">
+              <span>RKAP 2026</span><strong>${jtToT(corpRkap)}</strong>
+              <span>Realisasi AO</span><strong class="green">${jtToT(corpTotal)}</strong>
+              <span>Prognosa 2026</span><strong>${jtToT(corpProjection)}</strong>
+            </div>
+            <div class="ov-ref-rings">
+              <b style="--value:${overviewProgressWidth(corpRate)}"><strong>${pct(corpRate)}</strong><span>THD RKAP</span></b>
+              <b style="--value:${overviewProgressWidth(corpTotal / Math.max(corpProjection, 1) * 100)}"><strong>${pct(corpTotal / Math.max(corpProjection, 1) * 100)}</strong><span>THD Prognosa</span></b>
+            </div>
+            ${[...corpCosts].slice(0, 4).map(miniMetric).join("") || [0, 1, 2, 3].map((_, index) => miniMetric(null, index)).join("")}
+          </div>
+          <div class="ov-ref-subtitle">Pos Kendali Umum</div>
+          <div class="ov-ref-controls-row">
+            ${corpCosts.slice(4, 7).map(controlMetric).join("") || corpCosts.slice(0, 3).map(controlMetric).join("")}
+          </div>
+          <div class="ov-ref-subtitle">Unit Over Target</div>
+          <div class="ov-ref-overgrid">
+            ${overTarget("ADM UMUM", corpUnits.slice(0, 3), `${corpUnits.slice(0, 3).length} UNIT`)}
+            ${overTarget("NAC", corpUnits.slice(3, 6), `${corpUnits.slice(3, 6).length} UNIT`)}
+          </div>
+        </article>
+
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Kantor Pusat <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-operational">
+            <div class="ov-ref-main">
+              <span>RKAP 2026</span><strong>${jtToT(officeRkap)}</strong>
+              <span>Realisasi AO</span><strong class="green">${jtToT(officeTotal)}</strong>
+              <span>Prognosa 2026</span><strong>${jtToT(officeProjection)}</strong>
+            </div>
+            <div class="ov-ref-rings">
+              <b style="--value:${overviewProgressWidth(officeRate)}"><strong>${pct(officeRate)}</strong><span>THD RKAP</span></b>
+              <b style="--value:${overviewProgressWidth(officeTotal / Math.max(officeProjection, 1) * 100)}"><strong>${pct(officeTotal / Math.max(officeProjection, 1) * 100)}</strong><span>THD Prognosa</span></b>
+            </div>
+            ${[...officeCosts].slice(0, 4).map(miniMetric).join("") || [0, 1, 2, 3].map((_, index) => miniMetric(null, index)).join("")}
+          </div>
+          <div class="ov-ref-subtitle">Pos Kendali Umum</div>
+          <div class="ov-ref-controls-row">
+            ${officeCosts.slice(0, 3).map(controlMetric).join("")}
+          </div>
+          <div class="ov-ref-subtitle">Unit Over Target</div>
+          <div class="ov-ref-overgrid">
+            ${overTarget("ADM UMUM", officeUnits.slice(0, 3), `${officeUnits.slice(0, 3).length} UNIT`)}
+            ${overTarget("NAC", officeUnits.slice(3, 6), `${officeUnits.slice(3, 6).length} UNIT`)}
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="ov-ref-section">
+      <div class="ov-ref-section-title"><h3>Anggaran Investasi Sarana</h3><span>AI 2026 ${overviewPlainMoney(investmentData.totalInvestment, safe(investmentData.totalInvestment))} · realisasi ${investmentAi}</span></div>
+      <div class="ov-ref-two compact">
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Kantor Pusat <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-invest-row">
+            <div><span>Realisasi AI</span><em>${safe(investmentData.aiRealizationPct)}</em><strong>${investmentAi}</strong><small>${safe(investmentData.aiRealizationNote)}</small><b><i style="width:${investmentPercentValue(investmentData.aiRealizationPct)}%"></i></b></div>
+            <div><span>Total AKI</span><em>${safe(investmentData.akiRealizationPct)}</em><strong>${safe(investmentData.akiTotal)}</strong><small>${safe(investmentData.akiTotalNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiRealizationPct)}%"></i></b></div>
+            <div><span>Penyerapan AKI</span><em>${safe(investmentData.akiOfficePct)}</em><strong>${safe(investmentData.akiRealization)}</strong><small>${safe(investmentData.akiOfficeNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiOfficePct)}%"></i></b></div>
+          </div>
+        </article>
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Unit <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-invest-row">
+            <div><span>Total Investasi</span><em>${safe(investmentData.aiRealizationPct)}</em><strong>${safe(investmentData.totalInvestment)}</strong><small>${safe(investmentData.totalInvestmentNote)}</small><b><i style="width:${investmentPercentValue(investmentData.aiRealizationPct)}%"></i></b></div>
+            <div><span>AKI Sarpras Unit</span><em>${safe(investmentData.akiSarprasPct)}</em><strong>${safe(investmentData.akiRealization)}</strong><small>${safe(investmentData.akiSarprasNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiSarprasPct)}%"></i></b></div>
+            <div><span>Gap AKI</span><em>${safe(investmentData.akiGapPct)}</em><strong>${safe(investmentData.akiGapChip)}</strong><small>${safe(investmentData.akiGapNote)}</small><b class="green"><i style="width:${investmentPercentValue(investmentData.akiGapPct)}%"></i></b></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="ov-ref-section">
+      <div class="ov-ref-section-title"><h3>Strategi & Evaluasi GA</h3></div>
+      <div class="ov-ref-two compact">
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Ratifikasi Kebijakan General Affairs <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-policy-summary">
+            <b><strong>${policy.done}</strong><span>Selesai</span></b>
+            <b><strong>${policy.onProgress}</strong><span>On Progress</span></b>
+            <b><strong>${policy.noRatification}</strong><span>Tidak Ratifikasi</span></b>
+          </div>
+          <div class="ov-ref-policy-bars">${overviewPolicyRows(2)}</div>
+        </article>
+        <article class="ov-ref-panel">
+          <div class="ov-ref-head"><h4>Penyusunan Kebijakan Layanan GA <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
+          <div class="ov-ref-prep">
+            ${prepRows || `<div class="overview-prep-row"><span>Belum ada data penyusunan kebijakan</span><b><i style="width:0%"></i></b><strong>0%</strong></div>`}
+            <div class="overview-prep-row"><span>NKO Strategi & Evaluasi</span><b><i style="width:100%"></i></b><strong>${smartLabel(nko, "plain")}</strong></div>
+            <div class="overview-prep-row"><span>Progress CR</span><b><i style="width:${crProgress}%"></i></b><strong>${doneCr}/${totalCr}</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  `;
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
