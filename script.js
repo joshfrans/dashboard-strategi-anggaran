@@ -217,6 +217,29 @@ const evInfrastructureData = {
   ]
 };
 
+const evGeoPriorityUnits = [
+  { unit: "UP3 Tahuna", mapX: 487, mapY: 63, spkluX: 478, spkluY: 98, category: ">= 200 KM", distance: 241.6, nearestSpklu: "SPKLU PLN Kantor ULP Paniki", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN Kawasan Megamas Manado", fastKm: 247.2, normal: "SPKLU PLN ULP Ratahan", normalKm: 241.6 },
+  { unit: "UPP Papua", mapX: 645, mapY: 154, spkluX: 641, spkluY: 142, category: "50 - < 100 KM", distance: 83.3, nearestSpklu: "SPKLU PLN UP3 Biak", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Nabire Kota", fastKm: 191.1, normal: "SPKLU PLN UP3 Biak", normalKm: 83.3 },
+  { unit: "UP3 Luwuk", mapX: 447, mapY: 139, spkluX: 440, spkluY: 147, category: "50 - < 100 KM", distance: 77.2, nearestSpklu: "SPKLU PLN ULP Toili", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN UP3 Gorontalo", fastKm: 170.3, normal: "SPKLU PLN ULP Toili", normalKm: 77.2 },
+  { unit: "UPP Sumbagut 4", mapX: 107, mapY: 80, spkluX: 110, spkluY: 81, category: "25 - < 50 KM", distance: 25.7, nearestSpklu: "SPKLU PLN ULP Aek Kanopan", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Balige", fastKm: 49, normal: "SPKLU PLN ULP Aek Kanopan", normalKm: 25.7 },
+  { unit: "UPP Sumbagsel3", mapX: 175, mapY: 206, spkluX: 173, spkluY: 208, category: "10 - < 25 KM", distance: 21.8, nearestSpklu: "SPKLU Kapel Krui", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Kota Agung", fastKm: 87.2, normal: "SPKLU Kapel Krui", normalKm: 21.8 },
+  { unit: "UPK Punagaya", mapX: 400, mapY: 215, spkluX: 403, spkluY: 216, category: "10 - < 25 KM", distance: 20.9, nearestSpklu: "SPKLU PLN ULP Jeneponto", chargingClass: "Fast-capable (DC / AC+DC)", chargerType: "AC/DC", powerKw: 22, fast: "SPKLU PLN ULP Jeneponto", fastKm: 20.9, normal: "SPKLU Fakultas Teknik Universitas Hasanuddin", normalKm: 44 },
+  { unit: "UPK Sebalang", mapX: 194, mapY: 215, spkluX: 192, spkluY: 214, category: "10 - < 25 KM", distance: 15.7, nearestSpklu: "SPKLU Hotel Marriott Resort Lampung", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU Rest Area KM 49-A Lampung", fastKm: 16.4, normal: "SPKLU Hotel Marriott Resort Lampung", normalKm: 15.7 },
+  { unit: "UP3 Lbuk Pakam", mapX: 101, mapY: 68, spkluX: 102, spkluY: 69, category: "10 - < 25 KM", distance: 14.1, nearestSpklu: "SPKLU PLN ULP Dolok Masihul", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Tebing Tinggi", fastKm: 16.4, normal: "SPKLU PLN ULP Dolok Masihul", normalKm: 14.1 },
+  { unit: "UPDK Pandan", mapX: 90, mapY: 80, spkluX: 91, spkluY: 78, category: "10 - < 25 KM", distance: 13.5, nearestSpklu: "SPKLU HVT Hotel Berristera Dairi", chargingClass: "Fast-capable (DC / AC+DC)", chargerType: "DC", powerKw: 60, fast: "SPKLU HVT Hotel Berristera Dairi", fastKm: 13.5, normal: "SPKLU PLN ULP Rimo", normalKm: 43.8 },
+  { unit: "UPK Teluk Sirih", mapX: 121, mapY: 141, spkluX: 121, spkluY: 139, category: "10 - < 25 KM", distance: 11.8, nearestSpklu: "SPKLU PLN ULP Indarung", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 7, fast: "SPKLU PLN UIW Sumbar", fastKm: 14.4, normal: "SPKLU PLN ULP Indarung", normalKm: 11.8 },
+  { unit: "UPDK Bengkulu", mapX: 152, mapY: 182, spkluX: 152, spkluY: 180, category: "10 - < 25 KM", distance: 11.5, nearestSpklu: "SPKLU PLN ULP Curup", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Teluk Segara", fastKm: 39.3, normal: "SPKLU PLN ULP Curup", normalKm: 11.5 },
+  { unit: "UPDK Palangkara", mapX: 360, mapY: 140, spkluX: 359, spkluY: 139, category: "10 - < 25 KM", distance: 11.3, nearestSpklu: "SPKLU Utomo Charge+ Rumah Teknologi IKN", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 7, fast: "SPKLU PLN IKN 1", fastKm: 11.5, normal: "SPKLU Utomo Charge+ Rumah Teknologi IKN", normalKm: 11.3 },
+  { unit: "UPK Tarahan", mapX: 193, mapY: 214, spkluX: 192, spkluY: 214, category: "5 - < 10 KM", distance: 9.9, nearestSpklu: "SPKLU Hotel Marriott Resort Lampung", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN UP3 Tanjung Karang", fastKm: 15, normal: "SPKLU Hotel Marriott Resort Lampung", normalKm: 9.9 },
+  { unit: "UPDK Balikpapan", mapX: 360, mapY: 142, spkluX: 359, spkluY: 143, category: "5 - < 10 KM", distance: 9.3, nearestSpklu: "SPKLU PLN KP Penajam", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU Mobile Kaltimra", fastKm: 12.5, normal: "SPKLU PLN KP Penajam", normalKm: 9.3 },
+  { unit: "UPK Nagan Raya", mapX: 60, mapY: 55, spkluX: 59, spkluY: 55, category: "5 - < 10 KM", distance: 8.9, nearestSpklu: "SPKLU PLN ULP Meulaboh Kota", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU UP3 Meulaboh", fastKm: 8.9, normal: "SPKLU PLN ULP Meulaboh Kota", normalKm: 8.9 },
+  { unit: "UPP Kalbagtim4", mapX: 340, mapY: 185, spkluX: 339, spkluY: 185, category: "5 - < 10 KM", distance: 8.5, nearestSpklu: "SPKLU PLN ULP Satui", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Batulicin", fastKm: 68.3, normal: "SPKLU PLN ULP Satui", normalKm: 8.5 },
+  { unit: "UPK Bukit Asam", mapX: 171, mapY: 184, spkluX: 170, spkluY: 183, category: "5 - < 10 KM", distance: 7.5, nearestSpklu: "SPKLU PLN ULP Muara Enim", chargingClass: "Fast-capable (DC / AC+DC)", chargerType: "AC/DC", powerKw: 22, fast: "SPKLU PLN ULP Muara Enim", fastKm: 7.5, normal: "SPKLU Hotel Santika Lahat", normalKm: 25.7 },
+  { unit: "UP3 Saumlaki", mapX: 571, mapY: 253, spkluX: 571, spkluY: 254, category: "5 - < 10 KM", distance: 6.8, nearestSpklu: "SPKLU PLN ULP Saumlaki", chargingClass: "Fast-capable (DC / AC+DC)", chargerType: "DC", powerKw: 25, fast: "SPKLU PLN ULP Saumlaki", fastKm: 6.8, normal: "SPKLU PLN ULP Kobisonta", normalKm: 568.2 },
+  { unit: "UPT Kaltimra", mapX: 361, mapY: 142, spkluX: 361, spkluY: 143, category: "5 - < 10 KM", distance: 6.7, nearestSpklu: "SPKLU PLN ULP Balikpapan Utara", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 7, fast: "SPKLU Mobile Kaltimra", fastKm: 10.6, normal: "SPKLU PLN ULP Balikpapan Utara", normalKm: 6.7 },
+  { unit: "UPK Tambora", mapX: 360, mapY: 267, spkluX: 360, spkluY: 267, category: "5 - < 10 KM", distance: 6.5, nearestSpklu: "SPKLU PLN ULP Taliwang", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Selong", fastKm: 29, normal: "SPKLU PLN ULP Taliwang", normalKm: 6.5 }
+];
+
 const statusClass = {
   "Selesai": "done",
   "On Progress": "progress",
@@ -1139,6 +1162,7 @@ function setupNavigation() {
       dashboard.classList.add("ev-infra-mode");
       title.textContent = "Infrastruktur Kesiapan EV";
       description.textContent = "Monitoring kesiapan infrastruktur SPKLU untuk program kendaraan EV berdasarkan data lokasi SPKLU dan unit pelaksana PLN.";
+      setTimeout(initEvGeoMap, 80);
     } else if (target === "alerts") {
       dashboard.classList.add("alerts-mode");
       title.textContent = "Alert Center";
@@ -4008,6 +4032,31 @@ function renderEvInfrastructure() {
         </article>
       </section>
 
+      <section class="ev-card ev-geo-card">
+        <div class="ev-geo-head">
+          <div>
+            <h2>Geolocation Unit Prioritas & SPKLU Terdekat</h2>
+            <p>Klik nama unit untuk melihat posisi unit, SPKLU terdekat, dan jaraknya.</p>
+          </div>
+          <span>${evGeoPriorityUnits.length} unit &gt; 5 km</span>
+        </div>
+        <div class="ev-geo-layout">
+          <div class="ev-unit-list" id="evUnitList">
+            ${evGeoPriorityUnits.map((item, index) => `
+              <button type="button" class="ev-unit-button${index === 0 ? " is-active" : ""}" data-ev-unit="${index}">
+                <span>${item.unit}</span>
+                <b>${evFormatKm(item.distance)}</b>
+                <small>${item.category}</small>
+              </button>
+            `).join("")}
+          </div>
+          <div class="ev-map-wrap">
+            <div id="evGeoMap" class="ev-geo-map" role="img" aria-label="Peta geolocation unit pelaksana dan SPKLU terdekat"></div>
+          </div>
+          <aside class="ev-map-detail" id="evMapDetail"></aside>
+        </div>
+      </section>
+
       <footer class="ev-footnotes">
         <div><i data-lucide="settings"></i><span><b>Metodologi</b> Kategori mengikuti klasifikasi jarak SPKLU terdekat. Perhitungan jarak aktual dapat diaktifkan bila data koordinat SPKLU tersedia.</span></div>
         <div><i data-lucide="info"></i><span><b>Keterangan</b> Fast Charging: DC atau AC/DC; Normal Charging: AC.</span></div>
@@ -4018,6 +4067,106 @@ function renderEvInfrastructure() {
   `;
 
   if (window.lucide) window.lucide.createIcons();
+  setTimeout(initEvGeoMap, 80);
+}
+
+let evGeoMapState = null;
+
+function evMapTone(category) {
+  return {
+    "5 - < 10 KM": "#f5b400",
+    "10 - < 25 KM": "#f97316",
+    "25 - < 50 KM": "#ef233c",
+    "50 - < 100 KM": "#7c3fbc",
+    ">= 200 KM": "#44266f"
+  }[category] || "#0b9daa";
+}
+
+function evFormatKm(value) {
+  return `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 1 })} km`;
+}
+
+function renderEvMapDetail(item) {
+  const detail = document.getElementById("evMapDetail");
+  if (!detail || !item) return;
+  detail.innerHTML = `
+    <div class="ev-detail-badge" style="--marker-color:${evMapTone(item.category)}">${item.category}</div>
+    <h3>${item.unit}</h3>
+    <div class="ev-distance-box">
+      <small>Jarak SPKLU terdekat</small>
+      <strong>${evFormatKm(item.distance)}</strong>
+    </div>
+    <dl>
+      <div><dt>SPKLU Terdekat</dt><dd>${item.nearestSpklu}</dd></div>
+      <div><dt>Tipe Charging</dt><dd>${item.chargerType} · ${item.powerKw} kW</dd></div>
+      <div><dt>Kategori</dt><dd>${item.chargingClass}</dd></div>
+      <div><dt>Fast Terdekat</dt><dd>${item.fast} (${evFormatKm(item.fastKm)})</dd></div>
+      <div><dt>Normal Terdekat</dt><dd>${item.normal} (${evFormatKm(item.normalKm)})</dd></div>
+    </dl>
+  `;
+}
+
+function renderEvStaticMap(index = 0) {
+  const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
+  const unit = { x: item.mapX, y: item.mapY };
+  const spklu = { x: item.spkluX, y: item.spkluY };
+  const tone = evMapTone(item.category);
+  const points = evGeoPriorityUnits.map((row, rowIndex) => {
+    const point = { x: row.mapX, y: row.mapY };
+    return `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${rowIndex === index ? 6 : 3.5}" fill="${evMapTone(row.category)}" stroke="#fff" stroke-width="2"><title>${row.unit} - ${evFormatKm(row.distance)}</title></circle>`;
+  }).join("");
+
+  return `
+    <svg class="ev-static-map" viewBox="0 0 740 330" role="img" aria-label="Peta skematik unit prioritas EV">
+      <defs>
+        <linearGradient id="evSea" x1="0" x2="1">
+          <stop offset="0" stop-color="#eff8ff" />
+          <stop offset="1" stop-color="#e8f2fb" />
+        </linearGradient>
+      </defs>
+      <rect width="740" height="330" rx="12" fill="url(#evSea)" />
+      <path d="M85 150c50-18 94-21 142-6 69 21 131 4 178-10 63-18 118-7 165 13 40 17 82 12 122-9" fill="none" stroke="#c7d8e9" stroke-width="38" stroke-linecap="round" opacity=".8"/>
+      <path d="M94 150c48-15 87-17 130-4 69 21 129 3 176-10 60-16 113-6 160 14 42 18 83 13 124-8" fill="none" stroke="#f8fbff" stroke-width="25" stroke-linecap="round"/>
+      <line x1="${unit.x.toFixed(1)}" y1="${unit.y.toFixed(1)}" x2="${spklu.x.toFixed(1)}" y2="${spklu.y.toFixed(1)}" stroke="${tone}" stroke-width="3" stroke-dasharray="8 7" />
+      ${points}
+      <circle cx="${spklu.x.toFixed(1)}" cy="${spklu.y.toFixed(1)}" r="8" fill="#0b61d8" stroke="#ffffff" stroke-width="3" />
+      <text x="${spklu.x.toFixed(1)}" y="${(spklu.y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="9" font-weight="900">S</text>
+      <g transform="translate(18 18)">
+        <rect width="244" height="56" rx="10" fill="#ffffff" opacity=".94" />
+        <text x="12" y="20" fill="#06164c" font-size="12" font-weight="900">${item.unit}</text>
+        <text x="12" y="39" fill="${tone}" font-size="19" font-weight="900">${evFormatKm(item.distance)}</text>
+        <text x="118" y="39" fill="#526280" font-size="11" font-weight="800">ke SPKLU terdekat</text>
+      </g>
+    </svg>
+  `;
+}
+
+function bindEvUnitList(onSelect) {
+  document.querySelectorAll("[data-ev-unit]").forEach((button) => {
+    button.addEventListener("click", () => onSelect(Number(button.dataset.evUnit)));
+  });
+}
+
+function initEvGeoMap() {
+  const mapEl = document.getElementById("evGeoMap");
+  if (!mapEl || !document.querySelector(".dashboard.ev-infra-mode")) return;
+
+  const setActiveButton = (index) => {
+    document.querySelectorAll("[data-ev-unit]").forEach((button) => {
+      button.classList.toggle("is-active", Number(button.dataset.evUnit) === index);
+    });
+  };
+
+  function select(index) {
+    const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
+    setActiveButton(index);
+    renderEvMapDetail(item);
+    mapEl.innerHTML = renderEvStaticMap(index);
+  }
+
+  bindEvUnitList(select);
+  evGeoMapState = { select, container: mapEl };
+  select(0);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
