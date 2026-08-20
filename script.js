@@ -173,6 +173,47 @@ const investmentFieldLabels = {
   akiInsight: "Insight AKI"
 };
 
+const evInfrastructureData = {
+  sourceUpdated: "Juli 2026",
+  spkluLocations: 3313,
+  chargerUnits: 5206,
+  implementingUnits: 359,
+  categories: [
+    { label: "Satu Lokasi", units: 128, percent: 35.7, icon: "building-2", tone: "teal", note: "SPKLU berada di lokasi yang sama dengan kantor UP" },
+    { label: "< 5 KM", units: 211, percent: 58.8, icon: "map-pin", tone: "green", note: "SPKLU terdekat berada dalam radius kurang dari 5 km" },
+    { label: "5 - < 10 KM", units: 8, percent: 2.2, icon: "map-pin", tone: "yellow", note: "Perlu monitoring akses operasional" },
+    { label: "10 - < 25 KM", units: 8, percent: 2.2, icon: "map-pin", tone: "orange", note: "Perlu prioritas charging plan" },
+    { label: "25 - < 50 KM", units: 1, percent: 0.3, icon: "map-pin", tone: "red", note: "Perlu mitigasi rute dan kesiapan operasional" },
+    { label: "50 - < 100 KM", units: 2, percent: 0.6, icon: "map-pin", tone: "purple", note: "Membutuhkan dukungan charging khusus" },
+    { label: "100 - < 200 KM", units: 0, percent: 0, icon: "map-pin", tone: "blue", note: "Tidak ada unit pada kategori ini" },
+    { label: ">= 200 KM", units: 1, percent: 0.3, icon: "zap", tone: "indigo", note: "Membutuhkan solusi charging khusus" }
+  ],
+  riskGroups: [
+    { label: "5 - < 10 KM", units: 8, range: "6,5 - 9,9 km", tone: "yellow", unitsList: ["UPK Tambora", "UPT Kaltimra", "UP3 Saumlaki", "UPK Bukit Asam", "UPP Kalbagtim 4", "UPK Nagan Raya", "UPDK Balikpapan", "UPK Tarahan"] },
+    { label: "10 - < 25 KM", units: 8, range: "11,3 - 21,8 km", tone: "orange", unitsList: ["UPDK Palangkara", "UPDK Bengkulu", "UPK Teluk Sirih", "UPDK Pandan", "UPK Sebalang", "UPK Punagaya", "UP3 Lubuk Pakam", "UPP Sumbagsel3"] },
+    { label: "25 - < 50 KM", units: 1, range: "25,7 km", tone: "red", unitsList: ["UPP Sumbagut 4"] },
+    { label: "50 - < 100 KM", units: 2, range: "77,2 - 83,3 km", tone: "purple", unitsList: ["UP3 Luwuk", "UPP Papua"] },
+    { label: ">= 200 KM", units: 1, range: "241,6 km", tone: "indigo", unitsList: ["UP3 Tahuna"] }
+  ],
+  chargingAccess: [
+    { label: "Fast Charging (DC / AC / DC)", units: 359, percent: 100, icon: "zap" },
+    { label: "Normal Charging (AC)", units: 358, percent: 99.7, icon: "plug" },
+    { label: "Akses SPKLU <= 300 KM", units: 359, percent: 100, icon: "route" }
+  ],
+  insights: [
+    "94,4% unit pelaksana memiliki SPKLU terdekat kurang dari 5 km atau berada di lokasi yang sama.",
+    "99,4% unit pelaksana memiliki akses SPKLU dalam radius 100 km.",
+    "100% unit pelaksana memiliki akses ke SPKLU dengan fast charger dalam radius 300 km.",
+    "1 unit pelaksana membutuhkan solusi charging khusus karena jarak SPKLU terdekat >= 200 km."
+  ],
+  recommendations: [
+    { title: "GO", text: "Program EV dapat dilanjutkan secara bertahap.", icon: "check-circle-2" },
+    { title: "PRIORITIZE", text: "Prioritaskan 128 unit satu lokasi dan 211 unit dalam radius < 5 km.", icon: "map-pin" },
+    { title: "MONITOR & SUPPORT", text: "Monitor 20 unit dengan jarak > 5 km dan siapkan dukungan infrastruktur jika diperlukan.", icon: "bar-chart-3" },
+    { title: "EXCEPTION PLAN", text: "Siapkan solusi charging khusus untuk UP3 Tahuna.", icon: "zap" }
+  ]
+};
+
 const statusClass = {
   "Selesai": "done",
   "On Progress": "progress",
@@ -1021,6 +1062,7 @@ function setupNavigation() {
     dashboard: "overview",
     strategy: "strategi-evaluasi",
     investment: "investasi",
+    "ev-infra": "infrastruktur-kesiapan-ev",
     ao: "ao-kantor-pusat",
     "ao-office": "ao-korporat",
     analytics: "laporan-analitik",
@@ -1036,6 +1078,9 @@ function setupNavigation() {
     "strategi-evaluasi-ga": "strategy",
     investasi: "investment",
     investment: "investment",
+    "infrastruktur-kesiapan-ev": "ev-infra",
+    "ev-infra": "ev-infra",
+    ev: "ev-infra",
     "ao-kantor-pusat": "ao",
     "ao-kp": "ao",
     ao: "ao",
@@ -1066,7 +1111,7 @@ function setupNavigation() {
     navItems.forEach((nav) => nav.classList.remove("is-active"));
     item.classList.add("is-active");
 
-    dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "dashboard-mode", "analytics-mode", "alerts-mode", "settings-mode");
+    dashboard.classList.remove("ao-mode", "ao-office-mode", "investment-mode", "ev-infra-mode", "dashboard-mode", "analytics-mode", "alerts-mode", "settings-mode");
     if (target === "dashboard") {
       dashboard.classList.add("dashboard-mode");
       title.textContent = "Dashboard";
@@ -1087,6 +1132,10 @@ function setupNavigation() {
       dashboard.classList.add("investment-mode");
       title.textContent = "Investasi";
       description.textContent = "Monitoring AI dan AKI 2026, usulan AI 2027, rekomposisi anggaran, serta prioritas tindak lanjut investasi.";
+    } else if (target === "ev-infra") {
+      dashboard.classList.add("ev-infra-mode");
+      title.textContent = "Infrastruktur Kesiapan EV";
+      description.textContent = "Monitoring kesiapan infrastruktur SPKLU untuk program kendaraan EV berdasarkan data lokasi SPKLU dan unit pelaksana PLN.";
     } else if (target === "alerts") {
       dashboard.classList.add("alerts-mode");
       title.textContent = "Alert Center";
@@ -3810,11 +3859,169 @@ function renderExecutiveOverview() {
   if (window.lucide) window.lucide.createIcons();
 }
 
+function renderEvInfrastructure() {
+  const container = document.getElementById("evInfraView");
+  if (!container) return;
+
+  const data = evInfrastructureData;
+  const formatPercent = (value) => `${Number(value).toLocaleString("id-ID", { minimumFractionDigits: value % 1 ? 1 : 0, maximumFractionDigits: 1 })}%`;
+  const formatNumber = (value) => Number(value).toLocaleString("id-ID");
+  const riskTotal = data.categories
+    .filter((item) => item.units > 0 && !["Satu Lokasi", "< 5 KM"].includes(item.label))
+    .reduce((sum, item) => sum + item.units, 0);
+
+  const summaryCards = data.categories
+    .filter((item) => ["Satu Lokasi", "< 5 KM", "50 - < 100 KM", ">= 200 KM"].includes(item.label))
+    .map((item) => `
+      <div class="ev-summary-item ev-tone-${item.tone}">
+        <span class="ev-icon"><i data-lucide="${item.icon}"></i></span>
+        <div>
+          <small>${item.label}</small>
+          <strong>${formatNumber(item.units)} <em>UP</em></strong>
+          <b>${formatPercent(item.percent)}</b>
+          <p>${item.note}</p>
+        </div>
+      </div>
+    `).join("");
+
+  const funnelRows = data.categories.map((item, index) => `
+    <div class="ev-funnel-row ev-tone-${item.tone}" style="--ev-indent:${index * 13}px">
+      <div class="ev-funnel-label"><i data-lucide="${item.icon}"></i><span>${item.label}</span></div>
+      <strong>${formatNumber(item.units)}</strong>
+      <b>${formatPercent(item.percent)}</b>
+    </div>
+  `).join("");
+
+  const riskGroups = data.riskGroups.map((group) => `
+    <article class="ev-risk-item ev-tone-${group.tone}">
+      <div class="ev-risk-head">
+        <span><i data-lucide="map-pin"></i>${group.label}</span>
+        <b>${group.units} unit</b>
+      </div>
+      <div class="ev-risk-body">
+        <ol>${group.unitsList.map((unit) => `<li>${unit}</li>`).join("")}</ol>
+        <aside>Jarak Terdekat<strong>${group.range}</strong></aside>
+      </div>
+    </article>
+  `).join("");
+
+  const accessCards = data.chargingAccess.map((item) => `
+    <div class="ev-access-card">
+      <i data-lucide="${item.icon}"></i>
+      <small>${item.label}</small>
+      <strong>${formatNumber(item.units)} <span>UP</span></strong>
+      <b>${formatPercent(item.percent)}</b>
+      <p>Memiliki akses charging dalam radius 300 km</p>
+    </div>
+  `).join("");
+
+  const compactRows = data.categories.map((item) => `
+    <tr>
+      <td>${item.label}</td>
+      <td>${formatNumber(item.units)}</td>
+      <td>${formatPercent(item.percent)}</td>
+    </tr>
+  `).join("");
+
+  const insights = data.insights.map((item) => `
+    <li><i data-lucide="check-circle-2"></i><span>${item}</span></li>
+  `).join("");
+
+  const recommendations = data.recommendations.map((item) => `
+    <li>
+      <i data-lucide="${item.icon}"></i>
+      <div><strong>${item.title}</strong><span>${item.text}</span></div>
+    </li>
+  `).join("");
+
+  container.innerHTML = `
+    <div class="ev-shell">
+      <header class="ev-hero">
+        <div class="ev-brand">
+          <img src="assets/pln-logo.png?v=20260715-6" alt="PLN">
+        </div>
+        <div class="ev-title">
+          <h1>KESIAPAN INFRASTRUKTUR SPKLU UNTUK PROGRAM KENDARAAN EV</h1>
+          <strong>${formatNumber(data.implementingUnits)} UNIT PELAKSANA PLN</strong>
+          <p>Analisis jarak SPKLU terdekat dari kantor unit pelaksana berdasarkan data SPKLU terbaru</p>
+        </div>
+        <div class="ev-source">
+          <small>Sumber Data</small>
+          <b>SPKLU & Unit Pelaksana</b>
+          <em>${formatNumber(data.spkluLocations)} lokasi / ${formatNumber(data.chargerUnits)} charger</em>
+          <span>Update ${data.sourceUpdated}</span>
+        </div>
+      </header>
+
+      <main class="ev-main-grid">
+        <section class="ev-card ev-summary">
+          <h2>Ringkasan Utama</h2>
+          ${summaryCards}
+          <div class="ev-total">
+            <small>Total</small>
+            <strong>${formatNumber(data.implementingUnits)}</strong>
+            <span>Unit Pelaksana</span>
+          </div>
+        </section>
+
+        <section class="ev-card ev-funnel">
+          <h2>Distribusi ${formatNumber(data.implementingUnits)} Unit Pelaksana Berdasarkan Jarak SPKLU Terdekat</h2>
+          <p>Kategori eksklusif, tidak tumpang tindih</p>
+          <div class="ev-funnel-head"><span>Kategori Jarak</span><span>Jumlah UP</span><span>% Total</span></div>
+          ${funnelRows}
+          <div class="ev-funnel-total"><span>Total</span><strong>${formatNumber(data.implementingUnits)}</strong><b>100%</b></div>
+        </section>
+
+        <section class="ev-card ev-risk">
+          <h2>Unit Pelaksana dengan Jarak SPKLU Terdekat &gt; 5 KM</h2>
+          <div class="ev-risk-total"><strong>${riskTotal}</strong><span>unit perlu monitoring dan dukungan kesiapan charging</span></div>
+          ${riskGroups}
+          <div class="ev-alert"><i data-lucide="triangle-alert"></i><span>UP3 Tahuna menjadi satu-satunya unit dengan SPKLU terdekat >= 200 km dan perlu solusi charging khusus.</span></div>
+        </section>
+      </main>
+
+      <section class="ev-bottom-grid">
+        <article class="ev-card ev-access">
+          <h2>Akses Charging (&lt;= 300 KM)</h2>
+          <div class="ev-access-grid">${accessCards}</div>
+        </article>
+
+        <article class="ev-card ev-table-card">
+          <h2>Rincian Distribusi Unit Pelaksana</h2>
+          <table>
+            <thead><tr><th>Kategori Jarak</th><th>Jumlah UP</th><th>% Total</th></tr></thead>
+            <tbody>${compactRows}</tbody>
+          </table>
+        </article>
+
+        <article class="ev-card ev-insight">
+          <h2>Highlight Insight</h2>
+          <ul>${insights}</ul>
+        </article>
+
+        <article class="ev-card ev-recommendation">
+          <h2>Rekomendasi untuk Direksi</h2>
+          <ul>${recommendations}</ul>
+        </article>
+      </section>
+
+      <footer class="ev-footnotes">
+        <div><i data-lucide="settings"></i><span><b>Metodologi</b> Kategori mengikuti klasifikasi jarak SPKLU terdekat. Perhitungan jarak aktual dapat diaktifkan bila data koordinat SPKLU tersedia.</span></div>
+        <div><i data-lucide="info"></i><span><b>Keterangan</b> Fast Charging: DC atau AC/DC; Normal Charging: AC.</span></div>
+        <div><i data-lucide="shield-check"></i><span><b>Disclaimer</b> Analisis bersifat spasial berdasarkan jarak, faktor operasional lapangan tetap perlu dikonfirmasi.</span></div>
+      </footer>
+    </div>
+  `;
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   setDatabaseUpdatedAt(localStorage.getItem("dashboardDatabaseUpdatedAt") || DEFAULT_DATABASE_UPDATED_AT);
   setupNavigation();
   renderExecutiveOverview();
+  renderEvInfrastructure();
   await loadStrategyDataSource();
   renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
