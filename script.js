@@ -177,10 +177,12 @@ const evInfrastructureData = {
   sourceUpdated: "Juli 2026",
   spkluLocations: 3313,
   chargerUnits: 5206,
+  spkluWithCoordinate: 3313,
+  nearestRows: 10770,
   implementingUnits: 359,
   categories: [
-    { label: "Satu Lokasi", units: 128, percent: 35.7, icon: "building-2", tone: "teal", note: "SPKLU berada di lokasi yang sama dengan kantor UP" },
-    { label: "< 5 KM", units: 211, percent: 58.8, icon: "map-pin", tone: "green", note: "SPKLU terdekat berada dalam radius kurang dari 5 km" },
+    { label: "Satu Lokasi", units: 151, percent: 42.1, icon: "building-2", tone: "teal", note: "SPKLU berada di lokasi yang sama dengan kantor UP" },
+    { label: "< 5 KM", units: 188, percent: 52.4, icon: "map-pin", tone: "green", note: "SPKLU terdekat berada dalam radius kurang dari 5 km" },
     { label: "5 - < 10 KM", units: 8, percent: 2.2, icon: "map-pin", tone: "yellow", note: "Perlu monitoring akses operasional" },
     { label: "10 - < 25 KM", units: 8, percent: 2.2, icon: "map-pin", tone: "orange", note: "Perlu prioritas charging plan" },
     { label: "25 - < 50 KM", units: 1, percent: 0.3, icon: "map-pin", tone: "red", note: "Perlu mitigasi rute dan kesiapan operasional" },
@@ -190,25 +192,26 @@ const evInfrastructureData = {
   ],
   riskGroups: [
     { label: "5 - < 10 KM", units: 8, range: "6,5 - 9,9 km", tone: "yellow", unitsList: ["UPK Tambora", "UPT Kaltimra", "UP3 Saumlaki", "UPK Bukit Asam", "UPP Kalbagtim 4", "UPK Nagan Raya", "UPDK Balikpapan", "UPK Tarahan"] },
-    { label: "10 - < 25 KM", units: 8, range: "11,3 - 21,8 km", tone: "orange", unitsList: ["UPDK Palangkara", "UPDK Bengkulu", "UPK Teluk Sirih", "UPDK Pandan", "UPK Sebalang", "UPK Punagaya", "UP3 Lubuk Pakam", "UPP Sumbagsel3"] },
+    { label: "10 - < 25 KM", units: 8, range: "11,3 - 21,8 km", tone: "orange", unitsList: ["UPDK Palangkara", "UPDK Bengkulu", "UPK Teluk Sirih", "UPDK Pandan", "UP3 Lbuk Pakam", "UPK Sebalang", "UPK Punagaya", "UPP Sumbagsel3"] },
     { label: "25 - < 50 KM", units: 1, range: "25,7 km", tone: "red", unitsList: ["UPP Sumbagut 4"] },
     { label: "50 - < 100 KM", units: 2, range: "77,2 - 83,3 km", tone: "purple", unitsList: ["UP3 Luwuk", "UPP Papua"] },
+    { label: "100 - < 200 KM", units: 0, range: "-", tone: "blue", unitsList: [] },
     { label: ">= 200 KM", units: 1, range: "241,6 km", tone: "indigo", unitsList: ["UP3 Tahuna"] }
   ],
   chargingAccess: [
-    { label: "Fast Charging (DC / AC / DC)", units: 359, percent: 100, icon: "zap" },
-    { label: "Normal Charging (AC)", units: 358, percent: 99.7, icon: "plug" },
+    { label: "Fast Charging (DC / AC / DC)", units: 358, percent: 99.7, icon: "zap" },
+    { label: "Normal Charging (AC)", units: 357, percent: 99.4, icon: "plug" },
     { label: "Akses SPKLU <= 300 KM", units: 359, percent: 100, icon: "route" }
   ],
   insights: [
-    "94,4% unit pelaksana memiliki SPKLU terdekat kurang dari 5 km atau berada di lokasi yang sama.",
-    "99,4% unit pelaksana memiliki akses SPKLU dalam radius 100 km.",
-    "100% unit pelaksana memiliki akses ke SPKLU dengan fast charger dalam radius 300 km.",
+    "339 unit pelaksana (94,4%) memiliki SPKLU terdekat kurang dari 5 km atau berada di lokasi yang sama.",
+    "358 unit pelaksana (99,7%) memiliki akses SPKLU dalam radius 100 km.",
+    "358 unit pelaksana (99,7%) memiliki akses ke fast charging dalam radius 300 km.",
     "1 unit pelaksana membutuhkan solusi charging khusus karena jarak SPKLU terdekat >= 200 km."
   ],
   recommendations: [
     { title: "GO", text: "Program EV dapat dilanjutkan secara bertahap.", icon: "check-circle-2" },
-    { title: "PRIORITIZE", text: "Prioritaskan 128 unit satu lokasi dan 211 unit dalam radius < 5 km.", icon: "map-pin" },
+    { title: "PRIORITIZE", text: "Prioritaskan 151 unit satu lokasi dan 188 unit dalam radius < 5 km.", icon: "map-pin" },
     { title: "MONITOR & SUPPORT", text: "Monitor 20 unit dengan jarak > 5 km dan siapkan dukungan infrastruktur jika diperlukan.", icon: "bar-chart-3" },
     { title: "EXCEPTION PLAN", text: "Siapkan solusi charging khusus untuk UP3 Tahuna.", icon: "zap" }
   ]
@@ -3899,7 +3902,7 @@ function renderEvInfrastructure() {
         <b>${group.units} unit</b>
       </div>
       <div class="ev-risk-body">
-        <ol>${group.unitsList.map((unit) => `<li>${unit}</li>`).join("")}</ol>
+        <ol>${group.unitsList.length ? group.unitsList.map((unit) => `<li>${unit}</li>`).join("") : "<li>Tidak ada unit</li>"}</ol>
         <aside>Jarak Terdekat<strong>${group.range}</strong></aside>
       </div>
     </article>
