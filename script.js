@@ -4120,22 +4120,58 @@ function renderEvStaticMap(index = 0) {
     <svg class="ev-static-map" viewBox="0 0 740 330" role="img" aria-label="Peta skematik unit prioritas EV">
       <defs>
         <linearGradient id="evSea" x1="0" x2="1">
-          <stop offset="0" stop-color="#eff8ff" />
-          <stop offset="1" stop-color="#e8f2fb" />
+          <stop offset="0" stop-color="#eaf7ff" />
+          <stop offset="1" stop-color="#f6fbff" />
         </linearGradient>
+        <linearGradient id="evLand" x1="0" x2="1">
+          <stop offset="0" stop-color="#d9f1df" />
+          <stop offset="1" stop-color="#c8e8d4" />
+        </linearGradient>
+        <filter id="evMapShadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#06164c" flood-opacity=".12" />
+        </filter>
       </defs>
       <rect width="740" height="330" rx="12" fill="url(#evSea)" />
-      <path d="M85 150c50-18 94-21 142-6 69 21 131 4 178-10 63-18 118-7 165 13 40 17 82 12 122-9" fill="none" stroke="#c7d8e9" stroke-width="38" stroke-linecap="round" opacity=".8"/>
-      <path d="M94 150c48-15 87-17 130-4 69 21 129 3 176-10 60-16 113-6 160 14 42 18 83 13 124-8" fill="none" stroke="#f8fbff" stroke-width="25" stroke-linecap="round"/>
+      <g opacity=".42" stroke="#c4d8ec" stroke-width="1">
+        <path d="M20 66h700M20 132h700M20 198h700M20 264h700" />
+        <path d="M100 20v292M220 20v292M340 20v292M460 20v292M580 20v292" />
+      </g>
+      <g class="ev-indonesia-land" filter="url(#evMapShadow)">
+        <path d="M49 67c29-20 69-21 96-1 20 15 30 40 42 61 11 20 31 36 31 60 0 20-25 27-43 21-30-11-45-43-66-65-21-23-56-36-60-76z" />
+        <path d="M116 230c46 0 91 1 136 10 17 3 34 8 49 18-55 6-113 3-168-8-13-3-24-9-17-20z" />
+        <path d="M299 88c42-23 101-24 141 3 26 18 39 51 26 79-14 32-56 41-91 39-41-3-76-23-96-54-16-26-9-51 20-67z" />
+        <path d="M453 108c26-14 49 4 56 28 9 28 35 34 49 56-28 4-58-5-76-27-15-18-39-30-29-57z" />
+        <path d="M492 61c16 13 37 14 50 31 8 11 6 26-6 34-21-10-37-27-52-45z" />
+        <path d="M536 217c48-21 108-27 156-3 18 9 20 30 5 42-44 35-115 17-160-7-11-6-12-25-1-32z" />
+        <path d="M331 248c22-6 45-4 66 4 8 3 8 15-1 18-23 8-49 4-70-8-8-5-4-12 5-14z" />
+        <path d="M415 249c21-8 46-7 68 1 10 4 9 17-2 21-24 8-51 2-72-9-7-4-2-11 6-13z" />
+        <path d="M507 184c13-11 36-12 51-3 9 6 9 19 0 25-17 11-43 8-56-8-4-5-1-10 5-14z" />
+      </g>
+      <g class="ev-map-labels">
+        <text x="85" y="116">Sumatra</text>
+        <text x="174" y="261">Jawa</text>
+        <text x="357" y="148">Kalimantan</text>
+        <text x="497" y="151">Sulawesi</text>
+        <text x="618" y="238">Papua</text>
+        <text x="410" y="286">Nusa Tenggara</text>
+      </g>
       <line x1="${unit.x.toFixed(1)}" y1="${unit.y.toFixed(1)}" x2="${spklu.x.toFixed(1)}" y2="${spklu.y.toFixed(1)}" stroke="${tone}" stroke-width="3" stroke-dasharray="8 7" />
       ${points}
       <circle cx="${spklu.x.toFixed(1)}" cy="${spklu.y.toFixed(1)}" r="8" fill="#0b61d8" stroke="#ffffff" stroke-width="3" />
       <text x="${spklu.x.toFixed(1)}" y="${(spklu.y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="9" font-weight="900">S</text>
       <g transform="translate(18 18)">
-        <rect width="244" height="56" rx="10" fill="#ffffff" opacity=".94" />
-        <text x="12" y="20" fill="#06164c" font-size="12" font-weight="900">${item.unit}</text>
-        <text x="12" y="39" fill="${tone}" font-size="19" font-weight="900">${evFormatKm(item.distance)}</text>
-        <text x="118" y="39" fill="#526280" font-size="11" font-weight="800">ke SPKLU terdekat</text>
+        <rect width="260" height="70" rx="12" fill="#ffffff" opacity=".96" />
+        <text x="12" y="19" fill="#526280" font-size="10" font-weight="900">PETA INDONESIA - UNIT PRIORITAS</text>
+        <text x="12" y="39" fill="#06164c" font-size="13" font-weight="900">${item.unit}</text>
+        <text x="12" y="60" fill="${tone}" font-size="20" font-weight="900">${evFormatKm(item.distance)}</text>
+        <text x="126" y="60" fill="#526280" font-size="11" font-weight="800">ke SPKLU terdekat</text>
+      </g>
+      <g class="ev-map-legend" transform="translate(526 22)">
+        <rect width="190" height="54" rx="11" fill="#ffffff" opacity=".94" />
+        <circle cx="16" cy="18" r="5" fill="${tone}" stroke="#ffffff" stroke-width="2" />
+        <text x="28" y="22">Unit dipilih</text>
+        <circle cx="16" cy="39" r="6" fill="#0b61d8" stroke="#ffffff" stroke-width="2" />
+        <text x="28" y="43">SPKLU terdekat</text>
       </g>
     </svg>
   `;
