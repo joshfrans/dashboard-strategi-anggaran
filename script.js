@@ -3571,16 +3571,256 @@ function setupExportMenu() {
   });
 }
 
+function renderExecutiveOverview() {
+  const target = document.getElementById("executiveDashboardView");
+  if (!target) return;
+
+  const policy = policyMetrics();
+  const totalCr = crData.length || 0;
+  const doneCr = crData.filter((row) => row.status === "Selesai").length;
+  const onProgressCr = crData.filter((row) => row.status === "On Progress").length;
+  const notStartedCr = crData.filter((row) => row.status === "Belum Mulai").length;
+  const crProgress = totalCr ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / totalCr : 0;
+  const nko = calculatePerformanceScore();
+  const performanceSummary = getPerformanceStatusSummary();
+  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
+  const policyProgress = policy.total ? policy.done / policy.total * 100 : 0;
+  const policyOpen = Math.max(0, policy.onProgress + policy.noRatification);
+  const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
+  const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
+  const corporateTotal = overviewNumber(aoCorporateData.total, 0);
+  const corporateRkap = overviewNumber(aoCorporateData.rkap, 0);
+  const corporateProjection = overviewNumber(aoCorporateData.projection, 0);
+  const corporateAbsorption = Number(aoCorporateData.absorption || (corporateRkap ? corporateTotal / corporateRkap * 100 : 0));
+  const officeTotal = overviewNumber(aoOfficeData.realization, 0);
+  const officeRkap = overviewNumber(aoOfficeData.rkap, 0);
+  const officeAbsorption = Number(aoOfficeData.absorption || (officeRkap ? officeTotal / officeRkap * 100 : 0));
+  const beScore = businessExcellenceData.length
+    ? businessExcellenceData.reduce((sum, row) => sum + overviewNumber(row.realization, 0), 0) / businessExcellenceData.length
+    : 0;
+  const policyTopRows = policyData.slice(0, 3).map((row) => {
+    const done = row.statuses.filter((status) => status === "done").length;
+    const onProgress = row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length;
+    const noRatification = row.statuses.filter((status) => status === "no-ratification").length;
+    return {
+      name: row.entity,
+      status: `${done} selesai · ${onProgress} proses · ${noRatification} tidak ratifikasi`
+    };
+  });
+  const crPriorityRows = [...crData]
+    .filter((row) => row.status !== "Selesai")
+    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))
+    .slice(0, 3);
+  const corporateTopCosts = (aoCorporateData.topCosts || []).slice(0, 3);
+  const officeTopCosts = (aoOfficeData.topCosts || []).slice(0, 3);
+
+  const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
+  const money = (value) => overviewMoneyFromJt(value || 0);
+  const pct = (value) => overviewPercent(value || 0);
+  const width = (value) => Math.max(4, Math.min(100, Number(value) || 0));
+  const trillion = (value) => {
+    if (typeof value === "number") return value / 1000000;
+    const text = String(value || "").toLowerCase();
+    const parsed = overviewNumber(text, 0);
+    if (text.includes("t")) return parsed;
+    if (text.includes("m")) return parsed / 1000;
+    return parsed > 1000 ? parsed / 1000000 : parsed;
+  };
+  const scoreTone = (value, good = 90, warn = 60) => {
+    if (Number(value) >= good) return "good";
+    if (Number(value) >= warn) return "watch";
+    return "risk";
+  };
+  const kpiCard = ({ icon, title, value, label, tone, meta }) => `
+    <article class="ovx-kpi ${tone}">
+      <span class="ovx-kpi-icon"><i data-lucide="${icon}"></i></span>
+      <div>
+        <p>${title}</p>
+        <strong>${value}</strong>
+        <small>${label}</small>
+      </div>
+      <em>${meta}</em>
+    </article>
+  `;
+  const metricPill = (label, value, tone = "neutral") => `<span class="ovx-pill ${tone}"><b>${value}</b>${label}</span>`;
+  const progressRow = (label, value, percentValue, tone = "blue") => `
+    <div class="ovx-progress-row ${tone}">
+      <span>${label}</span>
+      <b>${value}</b>
+      <i><em style="width:${width(percentValue)}%"></em></i>
+    </div>
+  `;
+  const tableRows = (rows, fallback) => rows.length ? rows.map((row) => `
+    <tr>
+      <td>${row.name || row.entity || row.app || "-"}</td>
+      <td>${row.status || row.value || row.progress || "-"}</td>
+    </tr>
+  `).join("") : `<tr><td colspan="2">${fallback}</td></tr>`;
+  const crRows = crPriorityRows.length ? crPriorityRows : [{ app: "Tidak ada CR prioritas", status: "Terkendali" }];
+  const chartRows = [
+    ["AI", trillion(investmentData.totalInvestment), trillion(investmentData.aiRealization), 0],
+    ["AKI", trillion(investmentData.akiTotal), trillion(investmentData.akiRealization), trillion(investmentData.akiTotal) * 0.88],
+    ["AO", trillion(corporateRkap), trillion(corporateTotal), trillion(corporateProjection)]
+  ];
+  const chartMax = Math.max(...chartRows.flatMap((row) => row.slice(1).map((item) => Number(item) || 0)), 1);
+
+  target.className = "executive-dashboard-view overview-executive overview-redesign";
+  target.innerHTML = `
+    <header class="ovx-shellbar">
+      <div class="ovx-brand">
+        <span><i data-lucide="zap"></i></span>
+        <div><h2>Executive Dashboard</h2><p>PT PLN (Persero)</p></div>
+        <b>Umum & Aset Properti</b>
+      </div>
+      <div class="ovx-toolbar">
+        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
+        <span><i data-lucide="user-round"></i> Administrator GA</span>
+        <button type="button"><i data-lucide="refresh-cw"></i></button>
+        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
+      </div>
+    </header>
+
+    <section class="ovx-hero">
+      <div class="ovx-hero-main">
+        <span class="ovx-section-label">Overview Manajemen</span>
+        <h1>Strategi, Anggaran, Investasi, dan Kinerja dalam satu kendali</h1>
+        <p>Ringkasan lintas Strategi & Evaluasi, AO Korporat, AO Kantor Pusat, dan Investasi agar manajemen dapat melihat posisi, risiko, dan keputusan yang perlu diprioritaskan.</p>
+        <div class="ovx-hero-tags">
+          <span><i data-lucide="database"></i> Data per ${reportDate}</span>
+          <span><i data-lucide="shield-check"></i> Data source aktif</span>
+          <span><i data-lucide="activity"></i> Siap untuk review manajemen</span>
+        </div>
+      </div>
+      <aside class="ovx-decision">
+        <small>Prioritas keputusan</small>
+        <strong>${policyOpen + onProgressCr + notStartedCr}</strong>
+        <span>item perlu perhatian lintas kebijakan dan aplikasi</span>
+        <p>Fokus utama: selesaikan status kebijakan terbuka, dorong CR prioritas, dan tutup gap investasi/anggaran.</p>
+      </aside>
+    </section>
+
+    <section class="ovx-kpi-grid">
+      ${kpiCard({ icon: "clipboard-check", title: "Ratifikasi Kebijakan", value: `${policy.done}/${policy.total}`, label: `${policyOpen} perlu tindak lanjut`, tone: scoreTone(policyProgress, 70, 50), meta: `${overviewDecimal(policyProgress, 1)}% selesai` })}
+      ${kpiCard({ icon: "code-2", title: "Change Request", value: `${overviewDecimal(crProgress, 2)}%`, label: `${doneCr} selesai · ${onProgressCr} on progress · ${notStartedCr} belum mulai`, tone: scoreTone(crProgress, 80, 50), meta: `${totalCr} CR` })}
+      ${kpiCard({ icon: "gauge", title: "NKO Strategi & Evaluasi", value: smartLabel(nko, "plain"), label: `${performanceSummary.green} indikator hijau`, tone: scoreTone(nko, 100, 95), meta: "Target >= 100" })}
+      ${kpiCard({ icon: "building-2", title: "Serapan AO Korporat", value: pct(corporateAbsorption), label: `${money(corporateTotal)} dari RKAP ${money(corporateRkap)}`, tone: scoreTone(corporateAbsorption, 80, 50), meta: `YoY ${safe(aoCorporateData.yoy, "monitor")}` })}
+      ${kpiCard({ icon: "chart-no-axes-column-increasing", title: "Serapan AKI", value: safe(investmentData.akiRealizationPct), label: `${safe(investmentData.akiRealization)} dari ${safe(investmentData.akiTotal)}`, tone: scoreTone(akiProgress, 70, 40), meta: `Gap ${safe(investmentData.akiGapChip)}` })}
+    </section>
+
+    <main class="ovx-grid">
+      <article class="ovx-panel ovx-strategy">
+        <div class="ovx-panel-head">
+          <div><span>Strategi & Evaluasi</span><h3>Kontrol Kebijakan, CR, NKO, dan Business Excellence</h3></div>
+          <b class="ovx-status good">Terkendali</b>
+        </div>
+        <div class="ovx-pill-row">
+          ${metricPill("Kebijakan", policy.total, "blue")}
+          ${metricPill("Selesai", policy.done, "green")}
+          ${metricPill("On Progress", policy.onProgress, "amber")}
+          ${metricPill("Tidak Ratifikasi", policy.noRatification, "red")}
+        </div>
+        ${progressRow("Progress Change Request", `${overviewDecimal(crProgress, 2)}%`, crProgress, "blue")}
+        ${progressRow("NKO Strategi & Evaluasi", smartLabel(nko, "plain"), Math.min(nko, 100), "green")}
+        ${progressRow("PLN Business Excellence", `${overviewDecimal(beScore, 2)}%`, Math.min(beScore, 100), "teal")}
+        <div class="ovx-mini-table">
+          <h4>Fokus detail</h4>
+          <table><tbody>${tableRows(policyTopRows, "Tidak ada status kritikal.")}${tableRows(crRows, "Tidak ada CR prioritas.")}</tbody></table>
+        </div>
+      </article>
+
+      <article class="ovx-panel">
+        <div class="ovx-panel-head">
+          <div><span>Anggaran Operasional Sarana</span><h3>AO Korporat & SHAP</h3></div>
+          <b class="ovx-status ${scoreTone(corporateAbsorption, 80, 50)}">${pct(corporateAbsorption)}</b>
+        </div>
+        <div class="ovx-budget-hero">
+          <div><span>RKAP 2026</span><strong>${money(corporateRkap)}</strong></div>
+          <div><span>Realisasi AO</span><strong>${money(corporateTotal)}</strong></div>
+          <div><span>Proyeksi 2026</span><strong>${money(corporateProjection)}</strong></div>
+        </div>
+        <div class="ovx-cost-list">
+          ${(corporateTopCosts.length ? corporateTopCosts : [{ name: "Belum ada data", value: 0, absorption: 0 }]).map((item) => progressRow(item.name, money(item.value), item.absorption || 0, "blue")).join("")}
+        </div>
+      </article>
+
+      <article class="ovx-panel">
+        <div class="ovx-panel-head">
+          <div><span>Anggaran Kantor Pusat</span><h3>Monitoring Realisasi per Unit</h3></div>
+          <b class="ovx-status ${scoreTone(officeAbsorption, 80, 50)}">${pct(officeAbsorption)}</b>
+        </div>
+        <div class="ovx-budget-hero">
+          <div><span>Realisasi</span><strong>${money(officeTotal)}</strong></div>
+          <div><span>RKAP</span><strong>${money(officeRkap)}</strong></div>
+          <div><span>Unit pilihan</span><strong>${safe(aoOfficeData.selectedUnit, "KPST")}</strong></div>
+        </div>
+        <div class="ovx-cost-list">
+          ${(officeTopCosts.length ? officeTopCosts : [{ name: "Belum ada data", value: 0, absorption: 0 }]).map((item) => progressRow(item.name, money(item.value), item.absorption || 0, "teal")).join("")}
+        </div>
+      </article>
+
+      <article class="ovx-panel ovx-investment">
+        <div class="ovx-panel-head">
+          <div><span>Investasi</span><h3>AI, AKI, dan Gap Serapan</h3></div>
+          <b class="ovx-status ${scoreTone(akiProgress, 70, 40)}">${safe(investmentData.akiRealizationPct)}</b>
+        </div>
+        <div class="ovx-invest-cards">
+          <div><span>Realisasi AI</span><strong>${safe(investmentData.aiRealization)}</strong><small>${safe(investmentData.aiRealizationPct)} dari ${safe(investmentData.totalInvestment)}</small></div>
+          <div><span>Realisasi AKI</span><strong>${safe(investmentData.akiRealization)}</strong><small>${safe(investmentData.akiRealizationPct)} dari ${safe(investmentData.akiTotal)}</small></div>
+        </div>
+        ${progressRow("Kantor Pusat", safe(investmentData.akiOfficePct), investmentPercentValue(investmentData.akiOfficePct), "teal")}
+        ${progressRow("Sarpras Unit", safe(investmentData.akiSarprasPct), investmentPercentValue(investmentData.akiSarprasPct), "teal")}
+        <div class="ovx-alert"><i data-lucide="alert-circle"></i> Gap AKI ${safe(investmentData.akiGapChip)} perlu BAPP dan rekomposisi.</div>
+      </article>
+
+      <article class="ovx-panel ovx-chart-panel">
+        <div class="ovx-panel-head">
+          <div><span>Perbandingan</span><h3>RKAP, Realisasi & Forecast</h3></div>
+          <b class="ovx-status neutral">Rp Triliun</b>
+        </div>
+        <div class="ovx-chart">
+          ${chartRows.map((row) => `
+            <div class="ovx-chart-group">
+              <div class="ovx-chart-bars">
+                <b class="blue" style="height:${Math.max(10, row[1] / chartMax * 100)}%"><span>${overviewDecimal(row[1], 2)}</span></b>
+                <b class="green" style="height:${Math.max(10, row[2] / chartMax * 100)}%"><span>${overviewDecimal(row[2], 2)}</span></b>
+                <b class="orange" style="height:${Math.max(10, row[3] / chartMax * 100)}%"><span>${row[3] ? overviewDecimal(row[3], 2) : "-"}</span></b>
+              </div>
+              <strong>${row[0]}</strong>
+            </div>
+          `).join("")}
+        </div>
+        <div class="ovx-chart-legend"><span><i class="blue"></i>RKAP</span><span><i class="green"></i>Realisasi</span><span><i class="orange"></i>Forecast</span></div>
+      </article>
+
+      <article class="ovx-panel ovx-action-panel">
+        <div class="ovx-panel-head">
+          <div><span>Executive Action</span><h3>Keputusan yang perlu dikunci</h3></div>
+          <b class="ovx-status watch">Prioritas</b>
+        </div>
+        <ol class="ovx-action-list">
+          <li><b>1</b><span>Validasi ${policyOpen} status kebijakan yang belum selesai/tidak ratifikasi dengan PIC SH/AP.</span></li>
+          <li><b>2</b><span>Kunci resource dan target untuk ${onProgressCr} CR berjalan serta ${notStartedCr} CR belum mulai.</span></li>
+          <li><b>3</b><span>Monitor AO Korporat ${pct(corporateAbsorption)} dan AO Kantor Pusat ${pct(officeAbsorption)} agar tetap terkendali.</span></li>
+          <li><b>4</b><span>Tutup gap AKI ${safe(investmentData.akiGapChip)} melalui BAPP, rekomposisi, dan konfirmasi pipeline.</span></li>
+        </ol>
+      </article>
+    </main>
+  `;
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".priority-card").forEach((card) => card.remove());
   setDatabaseUpdatedAt(localStorage.getItem("dashboardDatabaseUpdatedAt") || DEFAULT_DATABASE_UPDATED_AT);
+  setupNavigation();
+  renderExecutiveOverview();
   await loadStrategyDataSource();
   renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
   setupInfoPopover("policyTypeTrigger", "policyTypePopover");
   renderAoCorporate();
   updateInvestmentDashboard();
-  setupNavigation();
   setupFilters();
   setupPeriodPicker();
   setupExportMenu();
