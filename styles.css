@@ -552,6 +552,20 @@
   height: 330px;
 }
 
+.ev-map-grid path {
+  stroke: #d5e4f2;
+  stroke-width: 1;
+  opacity: 0.68;
+}
+
+.ev-map-roads path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 9;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
 .ev-indonesia-land path {
   fill: url("#evLand");
   stroke: #8fc7a2;
@@ -563,6 +577,49 @@
   fill: #51617e;
   font-size: 10px;
   font-weight: 900;
+}
+
+.ev-map-distance-line {
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 7;
+  opacity: 0.92;
+}
+
+.ev-map-unit-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ev-map-unit-dot:hover {
+  opacity: 0.9;
+}
+
+.ev-map-pin text,
+.ev-map-distance-chip text {
+  dominant-baseline: middle;
+}
+
+.ev-map-distance-chip rect {
+  filter: drop-shadow(0 5px 12px rgba(6, 22, 76, 0.16));
+  stroke: #e0e9f5;
+}
+
+.ev-map-zoom rect,
+.ev-map-legend rect {
+  filter: drop-shadow(0 6px 14px rgba(6, 22, 76, 0.13));
+  stroke: #dde8f5;
+}
+
+.ev-map-zoom text {
+  fill: #06164c;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.ev-map-zoom path {
+  stroke: #d9e4f2;
+  stroke-width: 1.2;
 }
 
 .ev-map-detail {
