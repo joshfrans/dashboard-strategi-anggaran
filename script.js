@@ -4303,14 +4303,14 @@ function initEvGeoMap() {
       weight: 2
     }).addTo(map);
     marker.bindTooltip(row.unit, { direction: "top", offset: [0, -6] });
-    marker.on("click", () => select(rowIndex, true));
+    marker.on("click", () => select(rowIndex, true, true));
     return marker;
   });
 
   let spkluMarker = null;
   let distanceLine = null;
 
-  function select(index, shouldFit = true) {
+  function select(index, shouldFit = true, shouldOpenPopup = false) {
     const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
     const unitLatLng = evUnitLatLng(item);
     const spkluLatLng = evSpkluLatLng(item);
@@ -4349,9 +4349,12 @@ function initEvGeoMap() {
     }).addTo(map);
 
     const popupHtml = `
-      <strong>${item.unit}</strong><br>
-      SPKLU terdekat: ${item.nearestSpklu}<br>
-      Jarak: ${evFormatKm(item.distance)}
+      <div class="ev-map-popup">
+        <strong>${item.unit}</strong>
+        <span>SPKLU terdekat</span>
+        <b>${item.nearestSpklu}</b>
+        <em>${evFormatKm(item.distance)} · ${item.chargerType} · ${item.chargingClass}</em>
+      </div>
     `;
     unitMarkers[index]?.bindPopup(popupHtml);
     spkluMarker.bindPopup(popupHtml);
@@ -4362,9 +4365,13 @@ function initEvGeoMap() {
         padding: [48, 48]
       });
     }
+
+    if (shouldOpenPopup) {
+      setTimeout(() => unitMarkers[index]?.openPopup(), shouldFit ? 280 : 0);
+    }
   }
 
-  bindEvUnitList((index) => select(index, true));
+  bindEvUnitList((index) => select(index, true, true));
   evGeoMapState = { map, select, unitMarkers, container: mapEl };
   select(0, false);
   setTimeout(() => map.invalidateSize(), 150);

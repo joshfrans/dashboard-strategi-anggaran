@@ -559,6 +559,37 @@
   line-height: 1.45;
 }
 
+.ev-map-popup {
+  display: grid;
+  gap: 3px;
+  min-width: 190px;
+}
+
+.ev-map-popup strong {
+  color: #06164c;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.ev-map-popup span {
+  color: #5d6b86;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ev-map-popup b {
+  color: #0b61d8;
+  font-size: 12px;
+}
+
+.ev-map-popup em {
+  color: #f97316;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .ev-leaflet-spklu-marker {
   display: grid;
   place-items: center;
