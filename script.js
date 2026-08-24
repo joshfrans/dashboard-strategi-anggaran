@@ -4041,19 +4041,21 @@ function renderEvInfrastructure() {
           <span>${evGeoPriorityUnits.length} unit &gt; 5 km</span>
         </div>
         <div class="ev-geo-layout">
-          <div class="ev-unit-list" id="evUnitList">
-            ${evGeoPriorityUnits.map((item, index) => `
-              <button type="button" class="ev-unit-button${index === 0 ? " is-active" : ""}" data-ev-unit="${index}">
-                <span>${item.unit}</span>
-                <b>${evFormatKm(item.distance)}</b>
-                <small>${item.category}</small>
-              </button>
-            `).join("")}
-          </div>
           <div class="ev-map-wrap">
             <div id="evGeoMap" class="ev-geo-map" role="img" aria-label="Peta geolocation unit pelaksana dan SPKLU terdekat"></div>
           </div>
-          <aside class="ev-map-detail" id="evMapDetail"></aside>
+          <div class="ev-geo-support">
+            <div class="ev-unit-list" id="evUnitList">
+              ${evGeoPriorityUnits.map((item, index) => `
+                <button type="button" class="ev-unit-button${index === 0 ? " is-active" : ""}" data-ev-unit="${index}">
+                  <span>${item.unit}</span>
+                  <b>${evFormatKm(item.distance)}</b>
+                  <small>${item.category}</small>
+                </button>
+              `).join("")}
+            </div>
+            <aside class="ev-map-detail" id="evMapDetail"></aside>
+          </div>
         </div>
       </section>
 
