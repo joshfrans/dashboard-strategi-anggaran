@@ -4086,6 +4086,24 @@ function evFormatKm(value) {
   return `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 1 })} km`;
 }
 
+function evPointToLatLng(x, y) {
+  const minLon = 94;
+  const maxLon = 141;
+  const minLat = -11;
+  const maxLat = 6;
+  const lon = minLon + ((Number(x) - 28) / 684) * (maxLon - minLon);
+  const lat = maxLat - ((Number(y) - 24) / 280) * (maxLat - minLat);
+  return [lat, lon];
+}
+
+function evUnitLatLng(item) {
+  return evPointToLatLng(item.mapX, item.mapY);
+}
+
+function evSpkluLatLng(item) {
+  return evPointToLatLng(item.spkluX, item.spkluY);
+}
+
 function renderEvMapDetail(item) {
   const detail = document.getElementById("evMapDetail");
   if (!detail || !item) return;
@@ -4229,16 +4247,125 @@ function initEvGeoMap() {
     });
   };
 
-  function select(index) {
-    const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
-    setActiveButton(index);
-    renderEvMapDetail(item);
-    mapEl.innerHTML = renderEvStaticMap(index);
+  if (!window.L) {
+    function selectStatic(index) {
+      const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
+      setActiveButton(index);
+      renderEvMapDetail(item);
+      mapEl.innerHTML = renderEvStaticMap(index);
+    }
+
+    bindEvUnitList(selectStatic);
+    evGeoMapState = { select: selectStatic, container: mapEl };
+    selectStatic(0);
+    return;
   }
 
-  bindEvUnitList(select);
-  evGeoMapState = { select, container: mapEl };
-  select(0);
+  if (evGeoMapState?.map) {
+    evGeoMapState.map.remove();
+  }
+
+  mapEl.innerHTML = "";
+  const map = L.map(mapEl, {
+    attributionControl: true,
+    scrollWheelZoom: false,
+    zoomControl: true
+  }).setView([-2.6, 118.2], 5);
+
+  const tileLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap",
+    maxZoom: 18
+  }).addTo(map);
+
+  tileLayer.once("tileerror", () => {
+    const activeIndex = document.querySelector("[data-ev-unit].is-active")?.dataset.evUnit || 0;
+    map.remove();
+    const index = Number(activeIndex);
+    const selectStatic = (nextIndex) => {
+      const item = evGeoPriorityUnits[nextIndex] || evGeoPriorityUnits[0];
+      setActiveButton(nextIndex);
+      renderEvMapDetail(item);
+      mapEl.innerHTML = renderEvStaticMap(nextIndex);
+    };
+    bindEvUnitList(selectStatic);
+    evGeoMapState = { select: selectStatic, container: mapEl };
+    selectStatic(index);
+  });
+
+  const unitMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
+    const marker = L.circleMarker(evUnitLatLng(row), {
+      radius: 6,
+      color: "#ffffff",
+      fillColor: evMapTone(row.category),
+      fillOpacity: 0.95,
+      weight: 2
+    }).addTo(map);
+    marker.bindTooltip(row.unit, { direction: "top", offset: [0, -6] });
+    marker.on("click", () => select(rowIndex, true));
+    return marker;
+  });
+
+  let spkluMarker = null;
+  let distanceLine = null;
+
+  function select(index, shouldFit = true) {
+    const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
+    const unitLatLng = evUnitLatLng(item);
+    const spkluLatLng = evSpkluLatLng(item);
+
+    setActiveButton(index);
+    renderEvMapDetail(item);
+
+    unitMarkers.forEach((marker, markerIndex) => {
+      const row = evGeoPriorityUnits[markerIndex];
+      marker.setStyle({
+        radius: markerIndex === index ? 9 : 5.5,
+        color: markerIndex === index ? "#06164c" : "#ffffff",
+        fillColor: evMapTone(row.category),
+        fillOpacity: markerIndex === index ? 1 : 0.88,
+        weight: markerIndex === index ? 3 : 2
+      });
+    });
+
+    if (distanceLine) map.removeLayer(distanceLine);
+    if (spkluMarker) map.removeLayer(spkluMarker);
+
+    distanceLine = L.polyline([unitLatLng, spkluLatLng], {
+      color: evMapTone(item.category),
+      dashArray: "8 8",
+      opacity: 0.95,
+      weight: 3
+    }).addTo(map);
+
+    spkluMarker = L.marker(spkluLatLng, {
+      icon: L.divIcon({
+        className: "",
+        html: '<span class="ev-leaflet-spklu-marker">S</span>',
+        iconAnchor: [12, 12],
+        iconSize: [24, 24]
+      })
+    }).addTo(map);
+
+    const popupHtml = `
+      <strong>${item.unit}</strong><br>
+      SPKLU terdekat: ${item.nearestSpklu}<br>
+      Jarak: ${evFormatKm(item.distance)}
+    `;
+    unitMarkers[index]?.bindPopup(popupHtml);
+    spkluMarker.bindPopup(popupHtml);
+
+    if (shouldFit) {
+      map.fitBounds(L.latLngBounds([unitLatLng, spkluLatLng]), {
+        maxZoom: 8,
+        padding: [48, 48]
+      });
+    }
+  }
+
+  bindEvUnitList((index) => select(index, true));
+  evGeoMapState = { map, select, unitMarkers, container: mapEl };
+  select(0, false);
+  setTimeout(() => map.invalidateSize(), 150);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
