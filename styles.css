@@ -666,6 +666,32 @@
   font-weight: 900;
 }
 
+.ev-spklu-div-icon,
+.ev-spklu-tag-div-icon {
+  border: 0;
+  background: transparent;
+}
+
+.ev-spklu-tag-div-icon {
+  pointer-events: none;
+}
+
+.ev-leaflet-spklu-label {
+  display: inline-grid;
+  place-items: center;
+  min-width: 58px;
+  height: 22px;
+  padding: 0 9px;
+  border: 1px solid #bfd7ff;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(6, 22, 76, 0.18);
+  color: #0b61d8;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+}
+
 .ev-leaflet-spklu-tagged {
   display: inline-grid;
   grid-template-columns: 24px auto;

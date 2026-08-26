@@ -4394,6 +4394,7 @@ function initEvGeoMap() {
   });
 
   let spkluMarker = null;
+  let spkluTagMarker = null;
   let distanceLine = null;
 
   function select(index, shouldFit = true, shouldOpenPopup = false) {
@@ -4417,6 +4418,7 @@ function initEvGeoMap() {
 
     if (distanceLine) map.removeLayer(distanceLine);
     if (spkluMarker) map.removeLayer(spkluMarker);
+    if (spkluTagMarker) map.removeLayer(spkluTagMarker);
 
     distanceLine = L.polyline([unitLatLng, spkluLatLng], {
       color: evMapTone(item.category),
@@ -4427,18 +4429,22 @@ function initEvGeoMap() {
 
     spkluMarker = L.marker(spkluLatLng, {
       icon: L.divIcon({
-        className: "",
-        html: '<span class="ev-leaflet-spklu-tagged"><b class="ev-leaflet-spklu-marker">S</b><em>SPKLU</em></span>',
+        className: "ev-spklu-div-icon",
+        html: '<span class="ev-leaflet-spklu-marker">S</span>',
         iconAnchor: [12, 12],
-        iconSize: [82, 28]
+        iconSize: [24, 24]
       })
-    }).addTo(map);
-    spkluMarker.bindTooltip("SPKLU terdekat", {
-      permanent: true,
-      direction: "right",
-      offset: [14, 0],
-      className: "ev-spklu-tooltip"
-    });
+    }).addTo(map).setZIndexOffset(900);
+
+    spkluTagMarker = L.marker(spkluLatLng, {
+      interactive: false,
+      icon: L.divIcon({
+        className: "ev-spklu-tag-div-icon",
+        html: '<span class="ev-leaflet-spklu-label">SPKLU</span>',
+        iconAnchor: [-18, 13],
+        iconSize: [68, 24]
+      })
+    }).addTo(map).setZIndexOffset(1000);
 
     const popupSpkluRows = evSpkluList(item).map((spklu, rowIndex) => `
       <li>
@@ -4459,6 +4465,7 @@ function initEvGeoMap() {
     `;
     unitMarkers[index]?.bindPopup(popupHtml);
     spkluMarker.bindPopup(popupHtml);
+    spkluTagMarker.bindPopup(popupHtml);
 
     if (shouldFit) {
       map.fitBounds(L.latLngBounds([unitLatLng, spkluLatLng]), {
