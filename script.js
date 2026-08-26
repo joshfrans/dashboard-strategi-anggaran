@@ -4039,10 +4039,10 @@ function renderEvInfrastructure() {
       <section class="ev-card ev-geo-card">
         <div class="ev-geo-head">
           <div>
-            <h2>Geolocation Unit Prioritas & SPKLU Terdekat</h2>
-            <p>Klik nama unit untuk melihat posisi unit, SPKLU terdekat, dan jaraknya.</p>
+            <h2>Geolocation Seluruh Unit & SPKLU Terdekat</h2>
+            <p>Klik nama unit atau titik peta untuk melihat daftar SPKLU diurutkan berdasarkan jarak terdekat.</p>
           </div>
-          <span>${evGeoPriorityUnits.length} unit &gt; 5 km</span>
+          <span>${formatNumber(evGeoPriorityUnits.length)} unit · ${formatNumber(window.evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
         </div>
         <div class="ev-geo-layout">
           <div class="ev-map-wrap">
@@ -4080,10 +4080,13 @@ let evGeoMapState = null;
 
 function evMapTone(category) {
   return {
+    "Satu Lokasi": "#00a876",
+    "< 5 KM": "#1683ff",
     "5 - < 10 KM": "#f5b400",
     "10 - < 25 KM": "#f97316",
     "25 - < 50 KM": "#ef233c",
     "50 - < 100 KM": "#7c3fbc",
+    "100 - < 200 KM": "#1e6091",
     ">= 200 KM": "#44266f"
   }[category] || "#0b9daa";
 }
