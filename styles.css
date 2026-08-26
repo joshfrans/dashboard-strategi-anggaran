@@ -562,8 +562,8 @@
 .ev-map-popup {
   display: grid;
   gap: 6px;
-  min-width: 235px;
-  max-width: 285px;
+  min-width: 285px;
+  max-width: 340px;
 }
 
 .ev-map-popup strong {
@@ -579,40 +579,61 @@
   text-transform: uppercase;
 }
 
-.ev-map-popup b {
-  color: #0b61d8;
-  font-size: 12px;
-  line-height: 1.25;
+.ev-map-popup ol,
+.ev-spklu-ranking ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.ev-map-popup dl {
+.ev-map-popup li,
+.ev-spklu-ranking li {
   display: grid;
-  gap: 5px;
-  margin: 2px 0 0;
-}
-
-.ev-map-popup dl div {
-  display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
+  grid-template-columns: 22px minmax(0, 1fr) auto;
   gap: 8px;
-  align-items: start;
-  padding-top: 5px;
+  align-items: center;
+  padding-top: 6px;
   border-top: 1px solid #e5edf7;
 }
 
-.ev-map-popup dt {
-  color: #5d6b86;
-  font-size: 9px;
+.ev-map-popup li > span,
+.ev-spklu-ranking li > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #eaf2ff;
+  color: #0b61d8;
+  font-size: 10px;
   font-weight: 900;
-  text-transform: uppercase;
 }
 
-.ev-map-popup dd {
-  margin: 0;
+.ev-map-popup li b,
+.ev-spklu-ranking li b {
+  display: block;
+  overflow: hidden;
   color: #06164c;
+  font-size: 11px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+}
+
+.ev-map-popup li small,
+.ev-spklu-ranking li small {
+  display: block;
+  color: #5d6b86;
+  font-size: 9.5px;
+  font-weight: 900;
+}
+
+.ev-map-popup li strong,
+.ev-spklu-ranking li strong {
+  color: #d71920;
   font-size: 10.5px;
-  font-weight: 800;
-  line-height: 1.28;
+  white-space: nowrap;
 }
 
 .ev-leaflet-spklu-marker {
@@ -793,6 +814,23 @@
   font-size: 11px;
   line-height: 1.28;
   font-weight: 800;
+}
+
+.ev-spklu-ranking {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #dce7f5;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.ev-spklu-ranking h4 {
+  margin: 0;
+  color: #06164c;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .ev-map-marker,

@@ -4106,9 +4106,69 @@ function evSpkluLatLng(item) {
   return evPointToLatLng(item.spkluX, item.spkluY);
 }
 
+function evSpkluList(item) {
+  const candidates = [
+    {
+      name: item.nearestSpklu,
+      distance: item.distance,
+      label: "Terdekat",
+      type: item.chargerType,
+      powerKw: item.powerKw,
+      chargingClass: item.chargingClass
+    },
+    {
+      name: item.fast,
+      distance: item.fastKm,
+      label: "Fast",
+      type: item.fast === item.nearestSpklu ? item.chargerType : "DC/AC-DC",
+      powerKw: item.fast === item.nearestSpklu ? item.powerKw : null,
+      chargingClass: "Fast Charging"
+    },
+    {
+      name: item.normal,
+      distance: item.normalKm,
+      label: "Normal",
+      type: item.normal === item.nearestSpklu ? item.chargerType : "AC",
+      powerKw: item.normal === item.nearestSpklu ? item.powerKw : null,
+      chargingClass: "Normal Charging"
+    }
+  ];
+
+  const merged = new Map();
+  candidates.forEach((candidate) => {
+    if (!candidate.name || Number.isNaN(Number(candidate.distance))) return;
+    const key = candidate.name.trim().toLowerCase();
+    const existing = merged.get(key);
+    const nextDistance = Number(candidate.distance);
+    if (!existing || nextDistance < existing.distance) {
+      merged.set(key, { ...candidate, distance: nextDistance, labels: new Set([candidate.label]) });
+    } else {
+      existing.labels.add(candidate.label);
+    }
+  });
+
+  return Array.from(merged.values())
+    .sort((a, b) => a.distance - b.distance)
+    .map((spklu) => ({
+      ...spklu,
+      labels: Array.from(spklu.labels).join(" / ")
+    }));
+}
+
 function renderEvMapDetail(item) {
   const detail = document.getElementById("evMapDetail");
   if (!detail || !item) return;
+  const spkluRows = evSpkluList(item).map((spklu, index) => `
+    <li>
+      <span>${index + 1}</span>
+      <div>
+        <b>${spklu.name}</b>
+        <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
+      </div>
+      <strong>${evFormatKm(spklu.distance)}</strong>
+    </li>
+  `).join("");
+
   detail.innerHTML = `
     <div class="ev-detail-badge" style="--marker-color:${evMapTone(item.category)}">${item.category}</div>
     <h3>${item.unit}</h3>
@@ -4123,6 +4183,10 @@ function renderEvMapDetail(item) {
       <div><dt>Fast Terdekat</dt><dd>${item.fast} (${evFormatKm(item.fastKm)})</dd></div>
       <div><dt>Normal Terdekat</dt><dd>${item.normal} (${evFormatKm(item.normalKm)})</dd></div>
     </dl>
+    <div class="ev-spklu-ranking">
+      <h4>SPKLU di unit ini berdasarkan jarak</h4>
+      <ol>${spkluRows}</ol>
+    </div>
   `;
 }
 
@@ -4348,18 +4412,21 @@ function initEvGeoMap() {
       })
     }).addTo(map);
 
+    const popupSpkluRows = evSpkluList(item).map((spklu, rowIndex) => `
+      <li>
+        <span>${rowIndex + 1}</span>
+        <div>
+          <b>${spklu.name}</b>
+          <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
+        </div>
+        <strong>${evFormatKm(spklu.distance)}</strong>
+      </li>
+    `).join("");
     const popupHtml = `
       <div class="ev-map-popup">
         <strong>${item.unit}</strong>
-        <span>SPKLU terdekat</span>
-        <b>${item.nearestSpklu}</b>
-        <dl>
-          <div><dt>Jarak</dt><dd>${evFormatKm(item.distance)}</dd></div>
-          <div><dt>Tipe</dt><dd>${item.chargerType} · ${item.powerKw} kW</dd></div>
-          <div><dt>Kategori</dt><dd>${item.chargingClass}</dd></div>
-          <div><dt>Fast Terdekat</dt><dd>${item.fast} (${evFormatKm(item.fastKm)})</dd></div>
-          <div><dt>Normal Terdekat</dt><dd>${item.normal} (${evFormatKm(item.normalKm)})</dd></div>
-        </dl>
+        <span>Daftar SPKLU berdasarkan jarak</span>
+        <ol>${popupSpkluRows}</ol>
       </div>
     `;
     unitMarkers[index]?.bindPopup(popupHtml);
