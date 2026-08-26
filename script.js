@@ -4049,14 +4049,25 @@ function renderEvInfrastructure() {
             <div id="evGeoMap" class="ev-geo-map" role="img" aria-label="Peta geolocation unit pelaksana dan SPKLU terdekat"></div>
           </div>
           <div class="ev-geo-support">
-            <div class="ev-unit-list" id="evUnitList">
-              ${evGeoPriorityUnits.map((item, index) => `
-                <button type="button" class="ev-unit-button${index === 0 ? " is-active" : ""}" data-ev-unit="${index}">
-                  <span>${item.unit}</span>
-                  <b>${evFormatKm(item.distance)}</b>
-                  <small>${item.category}</small>
-                </button>
-              `).join("")}
+            <div class="ev-unit-panel">
+              <label class="ev-unit-search">
+                <i data-lucide="search"></i>
+                <input id="evUnitSearch" type="search" placeholder="Cari unit, SPKLU, atau kategori jarak" autocomplete="off">
+              </label>
+              <div class="ev-map-legend-strip" aria-label="Keterangan marker maps">
+                <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+                <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
+                <span><i class="ev-legend-selected"></i> Dipilih</span>
+              </div>
+              <div class="ev-unit-list" id="evUnitList">
+                ${evGeoPriorityUnits.map((item, index) => `
+                  <button type="button" class="ev-unit-button${index === 0 ? " is-active" : ""}" data-ev-unit="${index}">
+                    <span>${item.unit}</span>
+                    <b>${evFormatKm(item.distance)}</b>
+                    <small>${item.category}</small>
+                  </button>
+                `).join("")}
+              </div>
             </div>
             <aside class="ev-map-detail" id="evMapDetail"></aside>
           </div>
@@ -4325,6 +4336,37 @@ function bindEvUnitList(onSelect) {
   });
 }
 
+function bindEvUnitSearch(onSelect) {
+  const searchInput = document.getElementById("evUnitSearch");
+  const buttons = Array.from(document.querySelectorAll("[data-ev-unit]"));
+  if (!searchInput || !buttons.length) return;
+
+  const searchableText = (item) => [
+    item.unit,
+    item.category,
+    item.nearestSpklu,
+    item.chargingClass,
+    item.chargerType,
+    ...(Array.isArray(item.spkluList) ? item.spkluList.map((spklu) => spklu.name) : [])
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  searchInput.addEventListener("input", () => {
+    const keyword = searchInput.value.trim().toLowerCase();
+    buttons.forEach((button) => {
+      const item = evGeoPriorityUnits[Number(button.dataset.evUnit)];
+      button.hidden = keyword ? !searchableText(item).includes(keyword) : false;
+    });
+  });
+
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    const firstVisible = buttons.find((button) => !button.hidden);
+    if (!firstVisible) return;
+    event.preventDefault();
+    onSelect(Number(firstVisible.dataset.evUnit));
+  });
+}
+
 function initEvGeoMap() {
   const mapEl = document.getElementById("evGeoMap");
   if (!mapEl || !document.querySelector(".dashboard.ev-infra-mode")) return;
@@ -4344,6 +4386,7 @@ function initEvGeoMap() {
     }
 
     bindEvUnitList(selectStatic);
+    bindEvUnitSearch(selectStatic);
     evGeoMapState = { select: selectStatic, container: mapEl };
     selectStatic(0);
     return;
@@ -4365,6 +4408,19 @@ function initEvGeoMap() {
     maxZoom: 18
   }).addTo(map);
 
+  const mapLegend = L.control({ position: "topright" });
+  mapLegend.onAdd = () => {
+    const div = L.DomUtil.create("div", "ev-map-leaflet-legend");
+    div.innerHTML = `
+      <strong>Keterangan Maps</strong>
+      <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+      <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
+      <span><i class="ev-legend-selected"></i> Dipilih</span>
+    `;
+    return div;
+  };
+  mapLegend.addTo(map);
+
   tileLayer.once("tileerror", () => {
     const activeIndex = document.querySelector("[data-ev-unit].is-active")?.dataset.evUnit || 0;
     map.remove();
@@ -4376,6 +4432,7 @@ function initEvGeoMap() {
       mapEl.innerHTML = renderEvStaticMap(nextIndex);
     };
     bindEvUnitList(selectStatic);
+    bindEvUnitSearch(selectStatic);
     evGeoMapState = { select: selectStatic, container: mapEl };
     selectStatic(index);
   });
@@ -4398,8 +4455,8 @@ function initEvGeoMap() {
       icon: L.divIcon({
         className: "ev-spklu-triangle-div-icon",
         html: '<span class="ev-spklu-triangle-marker"></span>',
-        iconAnchor: [8, 8],
-        iconSize: [16, 16]
+        iconAnchor: [7, 7],
+        iconSize: [14, 14]
       })
     }).addTo(map);
     marker.bindTooltip(`SPKLU: ${row.nearestSpklu}`, { direction: "top", offset: [0, -6] });
@@ -4490,6 +4547,7 @@ function initEvGeoMap() {
   }
 
   bindEvUnitList((index) => select(index, true, true));
+  bindEvUnitSearch((index) => select(index, true, true));
   evGeoMapState = { map, select, unitMarkers, container: mapEl };
   select(0, false);
   setTimeout(() => map.invalidateSize(), 150);
