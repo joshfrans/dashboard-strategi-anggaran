@@ -54,13 +54,12 @@ jobs:
           allow_issue_writing: false
           artifact_name: "zap-baseline-report"
           rules_file_name: ".zap/rules.tsv"
-          cmd_options: "-J zap-report.json -w zap-report.md"
 
       - name: Publish DAST summary
         if: always()
         run: |
-          if [ -f zap-report.md ]; then
-            cat zap-report.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -f report_md.md ]; then
+            cat report_md.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "ZAP report was not generated. Open the zap-baseline-report artifact for details." >> "$GITHUB_STEP_SUMMARY"
           fi
