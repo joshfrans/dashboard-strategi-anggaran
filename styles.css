@@ -666,6 +666,40 @@
   font-weight: 900;
 }
 
+.ev-leaflet-spklu-tagged {
+  display: inline-grid;
+  grid-template-columns: 24px auto;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.ev-leaflet-spklu-tagged em {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border: 1px solid #bfd7ff;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(6, 22, 76, 0.16);
+  color: #0b61d8;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.ev-spklu-tooltip {
+  border: 1px solid #bfd7ff;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(6, 22, 76, 0.14);
+  color: #0b61d8;
+  font-size: 10px;
+  font-weight: 900;
+}
+
 .ev-map-fallback {
   display: grid;
   place-items: center;
@@ -710,10 +744,20 @@
 }
 
 .ev-map-labels text,
-.ev-map-legend text {
+.ev-map-legend text,
+.ev-map-spklu-tag text {
   fill: #51617e;
   font-size: 10px;
   font-weight: 900;
+}
+
+.ev-map-spklu-tag rect {
+  filter: drop-shadow(0 5px 12px rgba(6, 22, 76, 0.15));
+  stroke: #bfd7ff;
+}
+
+.ev-map-spklu-tag text {
+  fill: #0b61d8;
 }
 
 .ev-map-distance-line {

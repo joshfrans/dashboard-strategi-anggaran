@@ -4285,6 +4285,10 @@ function renderEvStaticMap(index = 0) {
         <circle r="6" fill="#ffffff" opacity=".94" />
         <text y="3.2" text-anchor="middle" fill="#1467d8" font-size="8.5" font-weight="900">S</text>
       </g>
+      <g class="ev-map-spklu-tag" transform="translate(${(spklu.x + 18).toFixed(1)} ${(spklu.y - 26).toFixed(1)})">
+        <rect width="64" height="22" rx="11" fill="#ffffff" />
+        <text x="32" y="14.5" text-anchor="middle">SPKLU</text>
+      </g>
       <g class="ev-map-distance-chip" transform="translate(${Math.min(Math.max(midpoint.x - 54, 24), 610).toFixed(1)} ${Math.min(Math.max(midpoint.y - 16, 80), 280).toFixed(1)})">
         <rect width="108" height="31" rx="15.5" fill="#ffffff" />
         <text x="54" y="20" text-anchor="middle" fill="${tone}" font-size="13" font-weight="900">${evFormatKm(item.distance)}</text>
@@ -4424,11 +4428,17 @@ function initEvGeoMap() {
     spkluMarker = L.marker(spkluLatLng, {
       icon: L.divIcon({
         className: "",
-        html: '<span class="ev-leaflet-spklu-marker">S</span>',
+        html: '<span class="ev-leaflet-spklu-tagged"><b class="ev-leaflet-spklu-marker">S</b><em>SPKLU</em></span>',
         iconAnchor: [12, 12],
-        iconSize: [24, 24]
+        iconSize: [82, 28]
       })
     }).addTo(map);
+    spkluMarker.bindTooltip("SPKLU terdekat", {
+      permanent: true,
+      direction: "right",
+      offset: [14, 0],
+      className: "ev-spklu-tooltip"
+    });
 
     const popupSpkluRows = evSpkluList(item).map((spklu, rowIndex) => `
       <li>
