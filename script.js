@@ -4393,7 +4393,19 @@ function initEvGeoMap() {
     return marker;
   });
 
-  let spkluMarker = null;
+  const spkluMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
+    const marker = L.circleMarker(evSpkluLatLng(row), {
+      radius: 4.8,
+      color: "#ffffff",
+      fillColor: "#1467d8",
+      fillOpacity: 0.8,
+      weight: 1.8
+    }).addTo(map);
+    marker.bindTooltip(`SPKLU: ${row.nearestSpklu}`, { direction: "top", offset: [0, -6] });
+    marker.on("click", () => select(rowIndex, true, true));
+    return marker;
+  });
+
   let spkluTagMarker = null;
   let distanceLine = null;
 
@@ -4416,8 +4428,17 @@ function initEvGeoMap() {
       });
     });
 
+    spkluMarkers.forEach((marker, markerIndex) => {
+      marker.setStyle({
+        radius: markerIndex === index ? 8 : 4.8,
+        color: markerIndex === index ? "#06164c" : "#ffffff",
+        fillColor: "#1467d8",
+        fillOpacity: markerIndex === index ? 1 : 0.74,
+        weight: markerIndex === index ? 3 : 1.8
+      });
+    });
+
     if (distanceLine) map.removeLayer(distanceLine);
-    if (spkluMarker) map.removeLayer(spkluMarker);
     if (spkluTagMarker) map.removeLayer(spkluTagMarker);
 
     distanceLine = L.polyline([unitLatLng, spkluLatLng], {
@@ -4426,15 +4447,6 @@ function initEvGeoMap() {
       opacity: 0.95,
       weight: 3
     }).addTo(map);
-
-    spkluMarker = L.circleMarker(spkluLatLng, {
-      radius: 8,
-      color: "#ffffff",
-      fillColor: "#1467d8",
-      fillOpacity: 0.95,
-      weight: 3
-    }).addTo(map);
-    spkluMarker.bindTooltip(`SPKLU: ${item.nearestSpklu}`, { direction: "top", offset: [0, -8] });
 
     spkluTagMarker = L.marker(spkluLatLng, {
       interactive: false,
@@ -4464,7 +4476,7 @@ function initEvGeoMap() {
       </div>
     `;
     unitMarkers[index]?.bindPopup(popupHtml);
-    spkluMarker.bindPopup(popupHtml);
+    spkluMarkers[index]?.bindPopup(popupHtml);
     spkluTagMarker.bindPopup(popupHtml);
 
     if (shouldFit) {
