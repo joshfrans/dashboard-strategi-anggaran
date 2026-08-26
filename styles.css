@@ -561,8 +561,9 @@
 
 .ev-map-popup {
   display: grid;
-  gap: 3px;
-  min-width: 190px;
+  gap: 6px;
+  min-width: 235px;
+  max-width: 285px;
 }
 
 .ev-map-popup strong {
@@ -581,13 +582,37 @@
 .ev-map-popup b {
   color: #0b61d8;
   font-size: 12px;
+  line-height: 1.25;
 }
 
-.ev-map-popup em {
-  color: #f97316;
-  font-size: 11px;
-  font-style: normal;
+.ev-map-popup dl {
+  display: grid;
+  gap: 5px;
+  margin: 2px 0 0;
+}
+
+.ev-map-popup dl div {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding-top: 5px;
+  border-top: 1px solid #e5edf7;
+}
+
+.ev-map-popup dt {
+  color: #5d6b86;
+  font-size: 9px;
   font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ev-map-popup dd {
+  margin: 0;
+  color: #06164c;
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1.28;
 }
 
 .ev-leaflet-spklu-marker {

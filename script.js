@@ -4353,7 +4353,13 @@ function initEvGeoMap() {
         <strong>${item.unit}</strong>
         <span>SPKLU terdekat</span>
         <b>${item.nearestSpklu}</b>
-        <em>${evFormatKm(item.distance)} · ${item.chargerType} · ${item.chargingClass}</em>
+        <dl>
+          <div><dt>Jarak</dt><dd>${evFormatKm(item.distance)}</dd></div>
+          <div><dt>Tipe</dt><dd>${item.chargerType} · ${item.powerKw} kW</dd></div>
+          <div><dt>Kategori</dt><dd>${item.chargingClass}</dd></div>
+          <div><dt>Fast Terdekat</dt><dd>${item.fast} (${evFormatKm(item.fastKm)})</dd></div>
+          <div><dt>Normal Terdekat</dt><dd>${item.normal} (${evFormatKm(item.normalKm)})</dd></div>
+        </dl>
       </div>
     `;
     unitMarkers[index]?.bindPopup(popupHtml);
