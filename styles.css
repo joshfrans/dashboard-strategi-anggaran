@@ -457,6 +457,41 @@
   font-weight: 900;
 }
 
+.ev-geo-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.ev-geo-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ev-geo-actions button:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.ev-geo-actions svg {
+  width: 14px;
+  height: 14px;
+}
+
 .ev-geo-layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -1331,6 +1366,16 @@
   .ev-brand {
     display: grid;
     place-items: center;
+  }
+
+  .ev-geo-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ev-geo-actions {
+    justify-content: flex-start;
+    width: 100%;
   }
 }
 

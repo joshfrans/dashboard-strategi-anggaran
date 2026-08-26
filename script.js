@@ -173,7 +173,7 @@ const investmentFieldLabels = {
   akiInsight: "Insight AKI"
 };
 
-const evInfrastructureData = {
+let evInfrastructureData = {
   sourceUpdated: "Juli 2026",
   spkluLocations: 3313,
   chargerUnits: 5206,
@@ -240,7 +240,16 @@ const evGeoPriorityUnitsFallback = [
   { unit: "UPK Tambora", mapX: 360, mapY: 267, spkluX: 360, spkluY: 267, category: "5 - < 10 KM", distance: 6.5, nearestSpklu: "SPKLU PLN ULP Taliwang", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Selong", fastKm: 29, normal: "SPKLU PLN ULP Taliwang", normalKm: 6.5 }
 ];
 
-const evGeoPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
+let evGeoDataSummary = window.evGeoDataSummary || {
+  source: "Data bawaan dashboard",
+  units: 20,
+  spkluCandidates: 0,
+  sameLocation: 0,
+  under5: 0,
+  over5: 20
+};
+
+let evGeoPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
   ? window.evGeoPriorityUnitsData
   : evGeoPriorityUnitsFallback;
 
@@ -267,6 +276,7 @@ const STRATEGY_GOOGLE_SHEET_ID = "1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
+const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
 const POLICY_MAX_ENTITY_COUNT = 30;
 const POLICY_MAX_TYPE_COUNT = 30;
 const POLICY_STATUS_KEYS = new Set(["done", "on-progress", "no-ratification"]);
@@ -3458,6 +3468,374 @@ async function importInvestmentDataFile(file) {
   );
 }
 
+function evClassifyDistance(distance) {
+  const km = numberFromImport(distance, 0);
+  if (km <= 0.05) return "Satu Lokasi";
+  if (km < 5) return "< 5 KM";
+  if (km < 10) return "5 - < 10 KM";
+  if (km < 25) return "10 - < 25 KM";
+  if (km < 50) return "25 - < 50 KM";
+  if (km < 100) return "50 - < 100 KM";
+  if (km < 200) return "100 - < 200 KM";
+  return ">= 200 KM";
+}
+
+function evProjectCoordinate(latitude, longitude, fallbackX = 370, fallbackY = 165) {
+  const lat = numberFromImport(latitude, NaN);
+  const lon = numberFromImport(longitude, NaN);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    return { x: fallbackX, y: fallbackY };
+  }
+  const minLon = 94;
+  const maxLon = 141;
+  const minLat = -11;
+  const maxLat = 6;
+  const x = 28 + ((lon - minLon) / (maxLon - minLon)) * 684;
+  const y = 24 + ((maxLat - lat) / (maxLat - minLat)) * 280;
+  return {
+    x: Math.max(28, Math.min(712, Math.round(x))),
+    y: Math.max(24, Math.min(304, Math.round(y)))
+  };
+}
+
+function evBuildSummaryFromUnits(units, source = "File import") {
+  const orderedCategories = ["Satu Lokasi", "< 5 KM", "5 - < 10 KM", "10 - < 25 KM", "25 - < 50 KM", "50 - < 100 KM", "100 - < 200 KM", ">= 200 KM"];
+  const toneMap = {
+    "Satu Lokasi": ["building-2", "teal", "SPKLU berada di lokasi yang sama dengan kantor UP"],
+    "< 5 KM": ["map-pin", "green", "SPKLU terdekat berada dalam radius kurang dari 5 km"],
+    "5 - < 10 KM": ["map-pin", "yellow", "Perlu monitoring akses operasional"],
+    "10 - < 25 KM": ["map-pin", "orange", "Perlu prioritas charging plan"],
+    "25 - < 50 KM": ["map-pin", "red", "Perlu mitigasi rute dan kesiapan operasional"],
+    "50 - < 100 KM": ["map-pin", "purple", "Membutuhkan dukungan charging khusus"],
+    "100 - < 200 KM": ["map-pin", "blue", "Perlu pengecekan operasional tambahan"],
+    ">= 200 KM": ["zap", "indigo", "Membutuhkan solusi charging khusus"]
+  };
+  const total = units.length || 1;
+  const counts = Object.fromEntries(orderedCategories.map((category) => [category, 0]));
+  units.forEach((unit) => {
+    counts[unit.category] = (counts[unit.category] || 0) + 1;
+  });
+  const categories = orderedCategories.map((label) => {
+    const [icon, tone, note] = toneMap[label];
+    const count = counts[label] || 0;
+    return { label, units: count, percent: count / total * 100, icon, tone, note };
+  });
+  const riskGroups = orderedCategories.slice(2).map((label) => {
+    const rows = units.filter((unit) => unit.category === label).sort((a, b) => b.distance - a.distance);
+    const distances = rows.map((unit) => numberFromImport(unit.distance, 0));
+    return {
+      label,
+      units: rows.length,
+      range: rows.length ? `${evFormatKm(Math.min(...distances))} - ${evFormatKm(Math.max(...distances))}` : "-",
+      tone: toneMap[label][1],
+      unitsList: rows.slice(0, 10).map((unit) => unit.unit)
+    };
+  });
+  const fastCount = units.filter((unit) => numberFromImport(unit.fastKm, 9999) <= 300).length;
+  const normalCount = units.filter((unit) => numberFromImport(unit.normalKm, 9999) <= 300).length;
+  const accessibleCount = units.filter((unit) => numberFromImport(unit.distance, 9999) <= 300).length;
+  const nearCount = (counts["Satu Lokasi"] || 0) + (counts["< 5 KM"] || 0);
+  const over5 = units.filter((unit) => numberFromImport(unit.distance, 0) >= 5).length;
+  const farthest = [...units].sort((a, b) => b.distance - a.distance)[0];
+
+  evGeoDataSummary = {
+    source,
+    units: units.length,
+    spkluCandidates: units.reduce((sum, unit) => sum + evSpkluList(unit).length, 0),
+    sameLocation: counts["Satu Lokasi"] || 0,
+    under5: counts["< 5 KM"] || 0,
+    over5
+  };
+
+  evInfrastructureData = {
+    ...evInfrastructureData,
+    sourceUpdated: formatDatabaseTimestamp(),
+    implementingUnits: units.length,
+    nearestRows: evGeoDataSummary.spkluCandidates,
+    categories,
+    riskGroups,
+    chargingAccess: [
+      { label: "Fast Charging (DC / AC / DC)", units: fastCount, percent: fastCount / total * 100, icon: "zap" },
+      { label: "Normal Charging (AC)", units: normalCount, percent: normalCount / total * 100, icon: "plug" },
+      { label: "Akses SPKLU <= 300 KM", units: accessibleCount, percent: accessibleCount / total * 100, icon: "route" }
+    ],
+    insights: [
+      `${nearCount} unit pelaksana (${(nearCount / total * 100).toLocaleString("id-ID", { maximumFractionDigits: 1 })}%) memiliki SPKLU terdekat kurang dari 5 km atau berada di lokasi yang sama.`,
+      `${accessibleCount} unit pelaksana (${(accessibleCount / total * 100).toLocaleString("id-ID", { maximumFractionDigits: 1 })}%) memiliki akses SPKLU dalam radius 300 km.`,
+      `${fastCount} unit pelaksana (${(fastCount / total * 100).toLocaleString("id-ID", { maximumFractionDigits: 1 })}%) memiliki akses ke fast charging dalam radius 300 km.`,
+      farthest ? `${farthest.unit} menjadi unit terjauh dari SPKLU terdekat dengan jarak ${evFormatKm(farthest.distance)}.` : "Tidak ada unit prioritas jarak jauh."
+    ],
+    recommendations: [
+      { title: "GO", text: "Program EV dapat dilanjutkan bertahap untuk unit dengan akses SPKLU memadai.", icon: "check-circle-2" },
+      { title: "PRIORITIZE", text: `Prioritaskan ${nearCount} unit yang sudah dekat SPKLU untuk implementasi awal.`, icon: "map-pin" },
+      { title: "MONITOR & SUPPORT", text: `Monitor ${over5} unit dengan jarak >= 5 km dan siapkan dukungan operasional jika diperlukan.`, icon: "bar-chart-3" },
+      { title: "EXCEPTION PLAN", text: farthest ? `Siapkan solusi khusus untuk ${farthest.unit}.` : "Tidak ada exception plan utama.", icon: "zap" }
+    ]
+  };
+}
+
+function evExportRows() {
+  return evGeoPriorityUnits.map((unit) => [
+    unit.unit,
+    unit.category,
+    unit.distance,
+    unit.nearestSpklu,
+    unit.chargingClass,
+    unit.chargerType,
+    unit.powerKw,
+    unit.fast,
+    unit.fastKm,
+    unit.normal,
+    unit.normalKm,
+    unit.mapX,
+    unit.mapY,
+    unit.spkluX,
+    unit.spkluY
+  ]);
+}
+
+function downloadEvCsv() {
+  const header = ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y"];
+  const csv = [header, ...evExportRows()]
+    .map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(","))
+    .join("\n");
+  downloadBlob(`\ufeff${csv}`, "data-source-kesiapan-infrastruktur-ev.csv", "text/csv;charset=utf-8");
+}
+
+function downloadEvJson() {
+  downloadBlob(
+    JSON.stringify({ generatedAt: new Date().toISOString(), summary: evGeoDataSummary, units: evGeoPriorityUnits }, null, 2),
+    "data-source-kesiapan-infrastruktur-ev.json",
+    "application/json;charset=utf-8"
+  );
+}
+
+async function downloadEvExcel() {
+  if (!(await ensureXlsxLibrary())) return;
+  const workbook = window.XLSX.utils.book_new();
+  const sourceSheet = window.XLSX.utils.aoa_to_sheet([
+    ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y"],
+    ...evExportRows()
+  ]);
+  const spkluRows = evGeoPriorityUnits.flatMap((unit, unitIndex) =>
+    evSpkluList(unit).map((spklu) => [
+      unitIndex + 1,
+      unit.unit,
+      spklu.name,
+      spklu.distance,
+      spklu.chargingClass || spklu.class || "",
+      spklu.type || "",
+      spklu.powerKw || ""
+    ])
+  );
+  const spkluSheet = window.XLSX.utils.aoa_to_sheet([
+    ["No UP", "Unit Pelaksana", "SPKLU", "Jarak KM", "Class", "AC/DC", "Daya KW"],
+    ...spkluRows
+  ]);
+  const guideSheet = window.XLSX.utils.aoa_to_sheet([
+    ["Panduan Update Data Infrastruktur Kesiapan EV"],
+    ["1. Untuk import dari file analisis asli, gunakan sheet Ringkasan 359 UP dan 30 SPKLU Terdekat per UP."],
+    ["2. Untuk import dari export dashboard ini, gunakan sheet Data EV."],
+    ["3. Kolom koordinat mentah tidak wajib; dashboard dapat memakai Map X/Map Y dan SPKLU X/SPKLU Y."],
+    ["4. Data tersimpan lokal di browser setelah import dan bisa di-export kembali sebagai backup."]
+  ]);
+  window.XLSX.utils.book_append_sheet(workbook, sourceSheet, "Data EV");
+  window.XLSX.utils.book_append_sheet(workbook, spkluSheet, "30 SPKLU Terdekat per UP");
+  window.XLSX.utils.book_append_sheet(workbook, guideSheet, "Panduan");
+  window.XLSX.writeFile(workbook, "template-data-source-kesiapan-infrastruktur-ev.xlsx");
+}
+
+async function exportEvData(format = "xlsx") {
+  if (format === "xlsx") await downloadEvExcel();
+  if (format === "csv") downloadEvCsv();
+  if (format === "json") downloadEvJson();
+  if (format === "pdf") window.print();
+}
+
+function applyEvImportedUnits(units, source = "File import") {
+  const cleanUnits = units
+    .map((unit) => ({
+      ...unit,
+      distance: numberFromImport(unit.distance, 0),
+      fastKm: numberFromImport(unit.fastKm, 0),
+      normalKm: numberFromImport(unit.normalKm, 0),
+      powerKw: numberFromImport(unit.powerKw, 0)
+    }))
+    .filter((unit) => unit.unit && unit.nearestSpklu);
+  if (!cleanUnits.length) return 0;
+  evGeoPriorityUnits = cleanUnits.sort((a, b) => b.distance - a.distance);
+  evBuildSummaryFromUnits(evGeoPriorityUnits, source);
+  localStorage.setItem(EV_LOCAL_SOURCE_KEY, JSON.stringify({
+    summary: evGeoDataSummary,
+    data: evInfrastructureData,
+    units: evGeoPriorityUnits,
+    savedAt: new Date().toISOString()
+  }));
+  renderEvInfrastructure();
+  return evGeoPriorityUnits.length;
+}
+
+function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
+  const exportedSheetName = findSheetName(workbook, "Data EV");
+  const firstSheetName = workbook.SheetNames[0];
+  const firstRows = firstSheetName ? window.XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { defval: "" }) : [];
+  const firstHeaders = firstRows[0] ? Object.keys(firstRows[0]).map(normalizeImportKey) : [];
+  const firstSheetLooksLikeEvExport =
+    firstHeaders.includes("unit pelaksana") &&
+    (firstHeaders.includes("spklu terdekat") || firstHeaders.includes("spklu"));
+  if (exportedSheetName || firstSheetLooksLikeEvExport) {
+    const sheetName = exportedSheetName || firstSheetName;
+    const rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+    const units = rows.map((row) => {
+      const mapX = numberFromImport(rowValue(row, "Map X", "mapX"), NaN);
+      const mapY = numberFromImport(rowValue(row, "Map Y", "mapY"), NaN);
+      const spkluX = numberFromImport(rowValue(row, "SPKLU X", "spkluX"), mapX);
+      const spkluY = numberFromImport(rowValue(row, "SPKLU Y", "spkluY"), mapY);
+      const distance = numberFromImport(rowValue(row, "SPKLU Terdekat KM", "Jarak KM", "Distance", "distance"), 0);
+      return {
+        unit: String(rowValue(row, "Unit Pelaksana", "Unit", "unit") || "").trim(),
+        mapX: Number.isFinite(mapX) ? mapX : 370,
+        mapY: Number.isFinite(mapY) ? mapY : 165,
+        spkluX: Number.isFinite(spkluX) ? spkluX : mapX,
+        spkluY: Number.isFinite(spkluY) ? spkluY : mapY,
+        category: rowValue(row, "Kategori Jarak", "category") || evClassifyDistance(distance),
+        distance,
+        nearestSpklu: String(rowValue(row, "SPKLU Terdekat", "SPKLU", "nearestSpklu") || "").trim(),
+        chargingClass: rowValue(row, "Class", "Kategori", "chargingClass") || "Normal Charging",
+        chargerType: rowValue(row, "AC/DC", "Tipe Charging", "chargerType") || "AC",
+        powerKw: numberFromImport(rowValue(row, "Daya KW", "powerKw"), 0),
+        fast: rowValue(row, "Fast Terdekat", "fast") || rowValue(row, "SPKLU Terdekat", "nearestSpklu"),
+        fastKm: numberFromImport(rowValue(row, "Fast Terdekat KM", "fastKm"), distance),
+        normal: rowValue(row, "Normal Terdekat", "normal") || rowValue(row, "SPKLU Terdekat", "nearestSpklu"),
+        normalKm: numberFromImport(rowValue(row, "Normal Terdekat KM", "normalKm"), distance)
+      };
+    });
+    return { units, sourceName };
+  }
+
+  const summarySheetName = findSheetName(workbook, "Ringkasan 359 UP") || workbook.SheetNames.find((name) => normalizeImportKey(name).includes("ringkasan"));
+  if (!summarySheetName) return { units: [], sourceName };
+  const summaryRows = window.XLSX.utils.sheet_to_json(workbook.Sheets[summarySheetName], { defval: "" });
+  const spkluSheetName = findSheetName(workbook, "30 SPKLU Terdekat per UP") || workbook.SheetNames.find((name) => normalizeImportKey(name).includes("spklu terdekat"));
+  const spkluRows = spkluSheetName ? window.XLSX.utils.sheet_to_json(workbook.Sheets[spkluSheetName], { defval: "" }) : [];
+  const spkluByUnit = new Map();
+  spkluRows.forEach((row) => {
+    const unitName = String(rowValue(row, "UNIT PELAKSANA", "Unit Pelaksana", "Unit") || "").trim();
+    const spkluName = String(rowValue(row, "SPKLU", "Nama SPKLU") || "").trim();
+    if (!unitName || !spkluName) return;
+    const list = spkluByUnit.get(unitName.toLowerCase()) || [];
+    list.push({
+      name: spkluName,
+      distance: numberFromImport(rowValue(row, "JARAK KM", "Jarak KM", "Distance"), 0),
+      labels: "SPKLU",
+      type: rowValue(row, "AC/DC", "Tipe Charging") || "",
+      powerKw: numberFromImport(rowValue(row, "DAYA KW", "Daya KW"), 0),
+      chargingClass: rowValue(row, "CLASS", "Class") || "",
+      point: evProjectCoordinate(rowValue(row, "LAT", "Latitude"), rowValue(row, "LON", "Longitude"))
+    });
+    spkluByUnit.set(unitName.toLowerCase(), list);
+  });
+
+  const units = summaryRows.map((row, index) => {
+    const unitName = String(rowValue(row, "UNIT PELAKSANA", "Unit Pelaksana", "Unit") || "").trim();
+    const distance = numberFromImport(rowValue(row, "SPKLU TERDEKAT KM", "SPKLU Terdekat KM", "Jarak KM"), 0);
+    const unitPoint = evProjectCoordinate(rowValue(row, "LATITUDE UNIT", "Latitude Unit", "Lat Unit"), rowValue(row, "LONGITUDE UNIT", "Longitude Unit", "Lon Unit"), 70 + (index % 12) * 50, 60 + (index % 7) * 34);
+    const candidates = (spkluByUnit.get(unitName.toLowerCase()) || []).sort((a, b) => a.distance - b.distance);
+    const nearestCandidate = candidates[0];
+    const spkluPoint = nearestCandidate?.point ||
+      { x: numberFromImport(rowValue(row, "SPKLU X", "spkluX"), unitPoint.x), y: numberFromImport(rowValue(row, "SPKLU Y", "spkluY"), unitPoint.y) };
+    const nearestName = String(rowValue(row, "SPKLU TERDEKAT", "SPKLU Terdekat") || nearestCandidate?.name || "").trim();
+    return {
+      unit: unitName,
+      mapX: unitPoint.x,
+      mapY: unitPoint.y,
+      spkluX: spkluPoint.x,
+      spkluY: spkluPoint.y,
+      category: evClassifyDistance(distance),
+      distance,
+      nearestSpklu: nearestName,
+      chargingClass: nearestCandidate?.chargingClass || "Normal Charging",
+      chargerType: nearestCandidate?.type || "AC",
+      powerKw: nearestCandidate?.powerKw || 0,
+      fast: rowValue(row, "FAST TERDEKAT", "Fast Terdekat") || nearestName,
+      fastKm: numberFromImport(rowValue(row, "FAST TERDEKAT KM", "Fast Terdekat KM"), distance),
+      normal: rowValue(row, "NORMAL TERDEKAT", "Normal Terdekat") || nearestName,
+      normalKm: numberFromImport(rowValue(row, "NORMAL TERDEKAT KM", "Normal Terdekat KM"), distance),
+      spkluList: candidates
+    };
+  });
+  return { units, sourceName };
+}
+
+function loadLocalEvDataSource() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(EV_LOCAL_SOURCE_KEY) || "null");
+    if (!stored?.units?.length) return false;
+    evGeoDataSummary = stored.summary || evGeoDataSummary;
+    evInfrastructureData = stored.data || evInfrastructureData;
+    evGeoPriorityUnits = stored.units;
+    renderEvInfrastructure();
+    return true;
+  } catch (error) {
+    console.info("Data EV lokal tidak dapat dimuat:", error);
+    return false;
+  }
+}
+
+async function importEvDataFile(file) {
+  const extension = file.name.split(".").pop().toLowerCase();
+  let count = 0;
+
+  if (["xlsx", "xls"].includes(extension)) {
+    if (!(await ensureXlsxLibrary())) return;
+    const buffer = await file.arrayBuffer();
+    const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
+    const parsed = parseEvRowsFromWorkbook(workbook, file.name);
+    count = applyEvImportedUnits(parsed.units, parsed.sourceName);
+  } else if (extension === "csv") {
+    if (!(await ensureXlsxLibrary())) return;
+    const workbook = window.XLSX.read(await file.text(), { type: "string" });
+    count = applyEvImportedUnits(parseEvRowsFromWorkbook(workbook, file.name).units, file.name);
+  } else if (extension === "json") {
+    const json = JSON.parse(await file.text());
+    count = applyEvImportedUnits(json.units || json.evGeoPriorityUnits || json.data || [], file.name);
+  }
+
+  if (!count) {
+    alert("Data EV tidak terbaca. Pastikan file memakai sheet Ringkasan 359 UP atau sheet Data EV hasil export dashboard.");
+    return;
+  }
+  const uploadedAt = markDatabaseUploadedNow();
+  showImportToast(
+    "Import data EV berhasil",
+    `${count} unit pelaksana diperbarui. Data per ${uploadedAt} dan tersimpan untuk refresh berikutnya.`
+  );
+}
+
+function setupEvDataControls() {
+  const importButton = document.getElementById("evImportData");
+  const exportButton = document.getElementById("evExportData");
+  const fileInput = document.getElementById("evDataFile");
+  if (importButton && fileInput && importButton.dataset.bound !== "true") {
+    importButton.dataset.bound = "true";
+    importButton.addEventListener("click", () => fileInput.click());
+  }
+  if (fileInput && fileInput.dataset.bound !== "true") {
+    fileInput.dataset.bound = "true";
+    fileInput.addEventListener("change", async (event) => {
+      const file = event.target.files?.[0];
+      if (file) await importEvDataFile(file);
+      event.target.value = "";
+    });
+  }
+  if (exportButton && exportButton.dataset.bound !== "true") {
+    exportButton.dataset.bound = "true";
+    exportButton.addEventListener("click", async () => {
+      await downloadEvExcel();
+    });
+  }
+}
+
 async function importDataFile(file) {
   const extension = file.name.split(".").pop().toLowerCase();
   let rows = [];
@@ -3632,6 +4010,10 @@ function setupExportMenu() {
     closeMenu();
     if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
       await exportInvestment(format);
+      return;
+    }
+    if (document.querySelector(".dashboard")?.classList.contains("ev-infra-mode")) {
+      await exportEvData(format);
       return;
     }
     if (format === "pdf") exportPdf();
@@ -4042,7 +4424,12 @@ function renderEvInfrastructure() {
             <h2>Geolocation Seluruh Unit & SPKLU Terdekat</h2>
             <p>Klik nama unit atau titik peta untuk melihat daftar SPKLU diurutkan berdasarkan jarak terdekat.</p>
           </div>
-          <span>${formatNumber(evGeoPriorityUnits.length)} unit · ${formatNumber(window.evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
+          <div class="ev-geo-actions">
+            <span>${formatNumber(evGeoPriorityUnits.length)} unit · ${formatNumber(evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
+            <button type="button" id="evImportData"><i data-lucide="upload"></i> Import Data</button>
+            <button type="button" id="evExportData"><i data-lucide="download"></i> Export Data</button>
+            <input class="sr-only" type="file" id="evDataFile" accept=".xlsx,.xls,.csv,.json" aria-label="Import data source Infrastruktur Kesiapan EV">
+          </div>
         </div>
         <div class="ev-geo-layout">
           <div class="ev-map-wrap">
@@ -4084,6 +4471,7 @@ function renderEvInfrastructure() {
   `;
 
   if (window.lucide) window.lucide.createIcons();
+  setupEvDataControls();
   setTimeout(initEvGeoMap, 80);
 }
 
@@ -4558,7 +4946,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setDatabaseUpdatedAt(localStorage.getItem("dashboardDatabaseUpdatedAt") || DEFAULT_DATABASE_UPDATED_AT);
   setupNavigation();
   renderExecutiveOverview();
-  renderEvInfrastructure();
+  if (!loadLocalEvDataSource()) renderEvInfrastructure();
   await loadStrategyDataSource();
   renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
@@ -4571,6 +4959,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupDetailModal();
   setupImportToast();
   startRealtimeDataSync();
+  setupEvDataControls();
   document.getElementById("importData").addEventListener("click", () => {
     document.getElementById("dataFile").click();
   });
@@ -4579,6 +4968,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (file) {
       if (document.querySelector(".dashboard")?.classList.contains("investment-mode")) {
         await importInvestmentDataFile(file);
+      } else if (document.querySelector(".dashboard")?.classList.contains("ev-infra-mode")) {
+        await importEvDataFile(file);
       } else {
         await importDataFile(file);
       }
