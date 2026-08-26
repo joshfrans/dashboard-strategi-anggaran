@@ -566,6 +566,12 @@
   max-width: 340px;
 }
 
+.ev-map-popup ol {
+  max-height: 230px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
 .ev-map-popup strong {
   color: #06164c;
   font-size: 13px;
@@ -823,6 +829,12 @@
   border: 1px solid #dce7f5;
   border-radius: 9px;
   background: #ffffff;
+}
+
+.ev-spklu-ranking ol {
+  max-height: 232px;
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .ev-spklu-ranking h4 {

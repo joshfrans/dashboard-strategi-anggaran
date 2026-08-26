@@ -217,7 +217,7 @@ const evInfrastructureData = {
   ]
 };
 
-const evGeoPriorityUnits = [
+const evGeoPriorityUnitsFallback = [
   { unit: "UP3 Tahuna", mapX: 487, mapY: 63, spkluX: 478, spkluY: 98, category: ">= 200 KM", distance: 241.6, nearestSpklu: "SPKLU PLN Kantor ULP Paniki", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN Kawasan Megamas Manado", fastKm: 247.2, normal: "SPKLU PLN ULP Ratahan", normalKm: 241.6 },
   { unit: "UPP Papua", mapX: 645, mapY: 154, spkluX: 641, spkluY: 142, category: "50 - < 100 KM", distance: 83.3, nearestSpklu: "SPKLU PLN UP3 Biak", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Nabire Kota", fastKm: 191.1, normal: "SPKLU PLN UP3 Biak", normalKm: 83.3 },
   { unit: "UP3 Luwuk", mapX: 447, mapY: 139, spkluX: 440, spkluY: 147, category: "50 - < 100 KM", distance: 77.2, nearestSpklu: "SPKLU PLN ULP Toili", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN UP3 Gorontalo", fastKm: 170.3, normal: "SPKLU PLN ULP Toili", normalKm: 77.2 },
@@ -239,6 +239,10 @@ const evGeoPriorityUnits = [
   { unit: "UPT Kaltimra", mapX: 361, mapY: 142, spkluX: 361, spkluY: 143, category: "5 - < 10 KM", distance: 6.7, nearestSpklu: "SPKLU PLN ULP Balikpapan Utara", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 7, fast: "SPKLU Mobile Kaltimra", fastKm: 10.6, normal: "SPKLU PLN ULP Balikpapan Utara", normalKm: 6.7 },
   { unit: "UPK Tambora", mapX: 360, mapY: 267, spkluX: 360, spkluY: 267, category: "5 - < 10 KM", distance: 6.5, nearestSpklu: "SPKLU PLN ULP Taliwang", chargingClass: "Normal Charging", chargerType: "AC", powerKw: 22, fast: "SPKLU PLN ULP Selong", fastKm: 29, normal: "SPKLU PLN ULP Taliwang", normalKm: 6.5 }
 ];
+
+const evGeoPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
+  ? window.evGeoPriorityUnitsData
+  : evGeoPriorityUnitsFallback;
 
 const statusClass = {
   "Selesai": "done",
@@ -4107,6 +4111,17 @@ function evSpkluLatLng(item) {
 }
 
 function evSpkluList(item) {
+  if (Array.isArray(item.spkluList) && item.spkluList.length) {
+    return item.spkluList
+      .filter((spklu) => spklu?.name && !Number.isNaN(Number(spklu.distance)))
+      .map((spklu) => ({
+        ...spklu,
+        distance: Number(spklu.distance),
+        labels: spklu.labels || spklu.label || "SPKLU"
+      }))
+      .sort((a, b) => a.distance - b.distance);
+  }
+
   const candidates = [
     {
       name: item.nearestSpklu,
