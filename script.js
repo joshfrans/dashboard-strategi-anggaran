@@ -4427,21 +4427,21 @@ function initEvGeoMap() {
       weight: 3
     }).addTo(map);
 
-    spkluMarker = L.marker(spkluLatLng, {
-      icon: L.divIcon({
-        className: "ev-spklu-div-icon",
-        html: '<span class="ev-leaflet-spklu-marker">S</span>',
-        iconAnchor: [12, 12],
-        iconSize: [24, 24]
-      })
-    }).addTo(map).setZIndexOffset(900);
+    spkluMarker = L.circleMarker(spkluLatLng, {
+      radius: 8,
+      color: "#ffffff",
+      fillColor: "#1467d8",
+      fillOpacity: 0.95,
+      weight: 3
+    }).addTo(map);
+    spkluMarker.bindTooltip(`SPKLU: ${item.nearestSpklu}`, { direction: "top", offset: [0, -8] });
 
     spkluTagMarker = L.marker(spkluLatLng, {
       interactive: false,
       icon: L.divIcon({
         className: "ev-spklu-tag-div-icon",
         html: '<span class="ev-leaflet-spklu-label">SPKLU</span>',
-        iconAnchor: [-18, 13],
+        iconAnchor: [-14, 26],
         iconSize: [68, 24]
       })
     }).addTo(map).setZIndexOffset(1000);
