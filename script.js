@@ -4394,12 +4394,13 @@ function initEvGeoMap() {
   });
 
   const spkluMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
-    const marker = L.circleMarker(evSpkluLatLng(row), {
-      radius: 4.8,
-      color: "#ffffff",
-      fillColor: "#1467d8",
-      fillOpacity: 0.8,
-      weight: 1.8
+    const marker = L.marker(evSpkluLatLng(row), {
+      icon: L.divIcon({
+        className: "ev-spklu-triangle-div-icon",
+        html: '<span class="ev-spklu-triangle-marker"></span>',
+        iconAnchor: [8, 8],
+        iconSize: [16, 16]
+      })
     }).addTo(map);
     marker.bindTooltip(`SPKLU: ${row.nearestSpklu}`, { direction: "top", offset: [0, -6] });
     marker.on("click", () => select(rowIndex, true, true));
@@ -4429,13 +4430,10 @@ function initEvGeoMap() {
     });
 
     spkluMarkers.forEach((marker, markerIndex) => {
-      marker.setStyle({
-        radius: markerIndex === index ? 8 : 4.8,
-        color: markerIndex === index ? "#06164c" : "#ffffff",
-        fillColor: "#1467d8",
-        fillOpacity: markerIndex === index ? 1 : 0.74,
-        weight: markerIndex === index ? 3 : 1.8
-      });
+      const element = marker.getElement();
+      if (element) {
+        element.classList.toggle("is-active-spklu", markerIndex === index);
+      }
     });
 
     if (distanceLine) map.removeLayer(distanceLine);

@@ -667,9 +667,34 @@
 }
 
 .ev-spklu-div-icon,
-.ev-spklu-tag-div-icon {
+.ev-spklu-tag-div-icon,
+.ev-spklu-triangle-div-icon {
   border: 0;
   background: transparent;
+}
+
+.ev-spklu-triangle-div-icon {
+  display: grid;
+  place-items: center;
+}
+
+.ev-spklu-triangle-marker {
+  display: block;
+  width: 0;
+  height: 0;
+  border-right: 8px solid transparent;
+  border-bottom: 15px solid #ff7a00;
+  border-left: 8px solid transparent;
+  filter: drop-shadow(0 3px 7px rgba(6, 22, 76, 0.3));
+  transform: rotate(0deg);
+}
+
+.ev-spklu-triangle-div-icon.is-active-spklu .ev-spklu-triangle-marker {
+  border-right-width: 11px;
+  border-bottom-width: 20px;
+  border-left-width: 11px;
+  border-bottom-color: #d71920;
+  filter: drop-shadow(0 5px 12px rgba(215, 25, 32, 0.34));
 }
 
 .ev-spklu-tag-div-icon {
