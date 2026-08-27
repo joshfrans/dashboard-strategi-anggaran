@@ -572,12 +572,6 @@ function performanceDotClass(status) {
 }
 
 function performanceStatusBucket(row) {
-  const normalized = String(row?.status || "").toLowerCase();
-  if (normalized.includes("belum")) return "gray";
-  if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "red";
-  if (normalized.includes("hampir") || normalized.includes("kuning")) return "amber";
-  if (normalized.includes("tercapai") || normalized.includes("hijau")) return "green";
-
   const achievement = numberFromImport(row?.achievement, NaN);
   if (Number.isFinite(achievement)) {
     const achievementRate = achievement > 2 ? achievement / 100 : achievement;
@@ -585,6 +579,19 @@ function performanceStatusBucket(row) {
     if (achievementRate >= 0.95) return "amber";
     return "red";
   }
+  const score = numberFromImport(row?.score, NaN);
+  const weight = numberFromImport(row?.weight, NaN);
+  if (Number.isFinite(score) && Number.isFinite(weight) && weight > 0) {
+    const achievementRate = score / weight;
+    if (achievementRate >= 1) return "green";
+    if (achievementRate >= 0.95) return "amber";
+    return "red";
+  }
+  const normalized = String(row?.status || "").toLowerCase();
+  if (normalized.includes("hampir") || normalized.includes("kuning")) return "amber";
+  if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "red";
+  if (normalized === "tercapai" || normalized.includes("hijau")) return "green";
+  if (normalized.includes("belum")) return "gray";
   return "gray";
 }
 
