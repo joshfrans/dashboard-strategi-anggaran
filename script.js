@@ -4081,6 +4081,24 @@ function setupPeriodPicker() {
       .join("");
   }
 
+  function positionPicker() {
+    const rect = trigger.getBoundingClientRect();
+    const pickerWidth = Math.min(242, window.innerWidth - 24);
+    const left = Math.min(Math.max(12, rect.left), window.innerWidth - pickerWidth - 12);
+    const arrowLeft = Math.min(Math.max(24, rect.left + rect.width / 2 - left - 6), pickerWidth - 24);
+
+    picker.style.width = `${pickerWidth}px`;
+    picker.style.left = `${left}px`;
+    picker.style.top = `${rect.bottom + 8}px`;
+    picker.style.setProperty("--period-picker-arrow-left", `${arrowLeft}px`);
+  }
+
+  function openPicker() {
+    positionPicker();
+    picker.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+  }
+
   function closePicker() {
     picker.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
@@ -4088,8 +4106,11 @@ function setupPeriodPicker() {
 
   trigger.addEventListener("click", (event) => {
     event.stopPropagation();
-    picker.hidden = !picker.hidden;
-    trigger.setAttribute("aria-expanded", String(!picker.hidden));
+    if (picker.hidden) {
+      openPicker();
+    } else {
+      closePicker();
+    }
   });
 
   prevYear?.addEventListener("click", () => {
@@ -4125,6 +4146,14 @@ function setupPeriodPicker() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closePicker();
   });
+
+  window.addEventListener("resize", () => {
+    if (!picker.hidden) positionPicker();
+  });
+
+  window.addEventListener("scroll", () => {
+    if (!picker.hidden) positionPicker();
+  }, true);
 
   renderMonths();
   updateStrategyPeriodLabels();
