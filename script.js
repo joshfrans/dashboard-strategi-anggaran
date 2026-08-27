@@ -270,9 +270,9 @@ const statusDotClass = {
 };
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
-const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260815-google-1ZuKo8";
-const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260815-google-1ZuKo8";
-const STRATEGY_GOOGLE_SHEET_ID = "1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0";
+const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260827-google-14Nch";
+const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260827-google-14Nch";
+const STRATEGY_GOOGLE_SHEET_ID = "14NchUhs2ov2Wn-nLAV6DlDtuZLszP1Fg";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
@@ -300,7 +300,7 @@ let strategyGoogleImported = {};
 let strategyRealtimeTimer;
 let strategyRealtimeInFlight = false;
 let strategyManualImportUntil = 0;
-let selectedStrategyPeriod = { month: 5, year: 2026 };
+let selectedStrategyPeriod = { month: 6, year: 2026 };
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -453,7 +453,7 @@ let performanceData = [
   { no: 9, indicator: "Usulan Anggaran Investasi Non Infrastruktur Ketenagalistrikan-Sarana Prasarana Umum untuk Tahun 2026", unit: "%", weight: 6, target: "100", targetPeriod: "100", realization: "100", achievement: "100,00%", score: "6,00", status: "Tercapai" },
   { no: 10, indicator: "Kepatuhan, Maturity Level dan Tata Kelola Perusahaan", unit: "", weight: "", target: "", targetPeriod: "", realization: "", achievement: "", score: "0,00", status: "Tercapai" }
 ];
-let performanceOfficialScore = 106.84;
+let performanceOfficialScore = NaN;
 let performancePeriodData = {};
 let performanceScoreByPeriod = {};
 
@@ -662,9 +662,9 @@ function applySelectedPerformancePeriod() {
   const selectedRows = performancePeriodData[activeKey] || performancePeriodData[availableKeys.at(-1)];
   if (!selectedRows?.length) return false;
   performanceData = selectedRows;
-  const selectedScore = performanceScoreByPeriod?.[activeKey] ?? performanceScoreByPeriod?.[availableKeys.at(-1)];
+  const selectedScore = performanceScoreByPeriod?.[activeKey];
   if (selectedScore !== undefined && selectedScore !== "") {
-    performanceOfficialScore = numberFromImport(selectedScore, performanceOfficialScore);
+    performanceOfficialScore = numberFromImport(selectedScore, NaN);
   }
   return true;
 }
@@ -1177,7 +1177,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja s.d. Juni 2026 mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
+    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 
   document.querySelectorAll('[id="analyticsCrProgress"]').forEach((element) => {
@@ -1818,7 +1818,7 @@ function renderDetailPerformance() {
         <h3>Laporan Pencapaian KPI Tahun 2026</h3>
         <label class="performance-period-chip">
           <span>Periode</span>
-          <strong>S.D. Juni 2026 <i data-lucide="calendar-days"></i></strong>
+          <strong>${strategyPeriodUntilLabel()} <i data-lucide="calendar-days"></i></strong>
         </label>
       </div>
       ${table}
@@ -2629,7 +2629,7 @@ function setupDetailModal() {
       } else if (type === "performance") {
         eyebrow.textContent = "Monitoring Kinerja";
         title.textContent = "Detail Monitoring Kinerja Divisi Umum dan Aset Properti";
-        subtitle.textContent = "Menampilkan detail NKO s.d. Juni 2026 berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.";
+        subtitle.textContent = `Menampilkan detail NKO ${strategyPeriodUntilLabel()} berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.`;
         body.innerHTML = renderDetailPerformance();
       } else if (type === "business") {
         eyebrow.textContent = "Business Excellence";
@@ -2743,14 +2743,22 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
-  if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
-    return numberFromImport(performanceOfficialScore, 106.84);
+  const periodScore = performanceScoreByPeriod?.[strategyPeriodKey()];
+  if (periodScore !== undefined && periodScore !== "" && Number.isFinite(numberFromImport(periodScore, NaN))) {
+    return numberFromImport(periodScore, 0);
   }
-  const scoredRows = performanceData.filter((row) => Number.isFinite(numberFromImport(row.score, NaN)));
+  const scoredRows = performanceData.filter((row) =>
+    Number.isFinite(numberFromImport(row.score, NaN)) &&
+    Number.isFinite(numberFromImport(row.weight, NaN)) &&
+    numberFromImport(row.weight, 0) > 0
+  );
   const scoreSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
   const weightSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
-  if (weightSum > 0 && Math.abs(weightSum - 100) > 0.01) return scoreSum * (100 / weightSum);
-  return scoreSum;
+  if (weightSum > 0) return scoreSum * (100 / weightSum);
+  if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
+    return numberFromImport(performanceOfficialScore, 0);
+  }
+  return 0;
 }
 
 function sheetRows(workbook, sheetName) {
@@ -2957,7 +2965,25 @@ function importCrSheet(workbook) {
 function importPerformanceSheet(workbook) {
   const rows = sheetRows(workbook, "03_Kinerja");
   if (!rows.length) return 0;
-  const importedRows = rows
+  const hasWideMonthColumns = STRATEGY_MONTHS_FULL.some((month) =>
+    Object.keys(rows[0] || {}).some((key) => normalizeImportKey(key).startsWith(normalizeImportKey(month)))
+  );
+  const sourceRows = hasWideMonthColumns
+    ? rows.flatMap((row) => {
+        const year = periodYearNumber(rowValue(row, "Tahun", "Year"));
+        return STRATEGY_MONTHS_FULL.map((monthName, monthIndex) => ({
+          ...row,
+          Periode: monthName,
+          Tahun: year,
+          "Target Bulanan": rowValue(row, `${monthName} Target Bulanan`, `${monthName} Target`, `${STRATEGY_MONTHS_SHORT[monthIndex]} Target Bulanan`),
+          Realisasi: rowValue(row, `${monthName} Realisasi`, `${STRATEGY_MONTHS_SHORT[monthIndex]} Realisasi`),
+          Pencapaian: rowValue(row, `${monthName} Pencapaian`, `${STRATEGY_MONTHS_SHORT[monthIndex]} Pencapaian`),
+          Nilai: rowValue(row, `${monthName} Nilai`, `${STRATEGY_MONTHS_SHORT[monthIndex]} Nilai`),
+          Status: rowValue(row, `${monthName} Status`, `${STRATEGY_MONTHS_SHORT[monthIndex]} Status`, "Status")
+        }));
+      })
+    : rows;
+  const importedRows = sourceRows
     .map((row) => {
       const periodKey = rowStrategyPeriodKey(row);
       const periodMonth = periodKey ? Number(periodKey.slice(5, 7)) - 1 : selectedStrategyPeriod.month;
@@ -3003,12 +3029,15 @@ function importStrategySummarySheet(workbook) {
   let imported = 0;
   rows.forEach((row) => {
     const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
-    const value = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
-    if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "") {
+    const formulaOrValue = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
+    const validationValue = rowValue(row, "Nilai Validasi", "Validasi", "Calculated Value");
+    const value = String(formulaOrValue ?? "").trim().startsWith("=") ? validationValue : formulaOrValue;
+    const numericValue = numberFromImport(value, NaN);
+    if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "" && Number.isFinite(numericValue)) {
       const key = rowStrategyPeriodKey(row);
-      if (key) performanceScoreByPeriod[key] = numberFromImport(value, performanceOfficialScore);
+      if (key) performanceScoreByPeriod[key] = numericValue;
       if (!key || key === strategyPeriodKey()) {
-        performanceOfficialScore = numberFromImport(value, performanceOfficialScore);
+        performanceOfficialScore = numericValue;
       }
       imported += 1;
     }
