@@ -9721,6 +9721,14 @@ td {
   border: 1px solid #d8dde6;
   border-radius: 7px;
   background: #f8fbff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.performance-period-chip:hover {
+  border-color: #1764e8;
+  box-shadow: 0 8px 18px rgba(23, 100, 232, 0.12);
+  transform: translateY(-1px);
 }
 
 .performance-period-chip span {

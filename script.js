@@ -277,6 +277,21 @@ const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRAT
 const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
+const STRATEGY_MONTHS_FULL = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember"
+];
+const STRATEGY_MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Juli", "Agu", "Sep", "Okt", "Nov", "Des"];
 const POLICY_MAX_ENTITY_COUNT = 30;
 const POLICY_MAX_TYPE_COUNT = 30;
 const POLICY_STATUS_KEYS = new Set(["done", "on-progress", "no-ratification"]);
@@ -285,6 +300,7 @@ let strategyGoogleImported = {};
 let strategyRealtimeTimer;
 let strategyRealtimeInFlight = false;
 let strategyManualImportUntil = 0;
+let selectedStrategyPeriod = { month: 5, year: 2026 };
 
 function formatDatabaseTimestamp(date = new Date()) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -349,6 +365,8 @@ function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
     crData,
     performanceData,
     performanceOfficialScore,
+    performancePeriodData,
+    performanceScoreByPeriod,
     policyPrepData,
     businessExcellenceData,
     investmentData,
@@ -436,6 +454,8 @@ let performanceData = [
   { no: 10, indicator: "Kepatuhan, Maturity Level dan Tata Kelola Perusahaan", unit: "", weight: "", target: "", targetPeriod: "", realization: "", achievement: "", score: "0,00", status: "Tercapai" }
 ];
 let performanceOfficialScore = 106.84;
+let performancePeriodData = {};
+let performanceScoreByPeriod = {};
 
 let policyPrepData = [
   { no: 1, area: "Fasilitas", scope: "Petunjuk Teknis Fasilitas Komunikasi", progress: 81, status: "On Progress", target: "31 Juli 2026" },
@@ -590,6 +610,88 @@ function performanceScoreStatus(score) {
 function performanceMainRows() {
   const rows = performanceData.filter((row) => String(row?.no || "").trim());
   return rows.length ? rows : performanceData.filter((row) => String(row?.indicator || "").trim());
+}
+
+function strategyPeriodKey(month = selectedStrategyPeriod.month, year = selectedStrategyPeriod.year) {
+  return `${year}-${String(Number(month) + 1).padStart(2, "0")}`;
+}
+
+function strategyPeriodFullLabel(month = selectedStrategyPeriod.month, year = selectedStrategyPeriod.year) {
+  return `${STRATEGY_MONTHS_FULL[month] || STRATEGY_MONTHS_FULL[5]} ${year}`;
+}
+
+function strategyPeriodShortLabel(month = selectedStrategyPeriod.month, year = selectedStrategyPeriod.year) {
+  return `${STRATEGY_MONTHS_SHORT[month] || STRATEGY_MONTHS_SHORT[5]} ${year}`;
+}
+
+function strategyPeriodUntilLabel(month = selectedStrategyPeriod.month, year = selectedStrategyPeriod.year) {
+  return `S.D. ${strategyPeriodFullLabel(month, year)}`;
+}
+
+function periodMonthNumber(value) {
+  if (typeof value === "number" && value >= 1 && value <= 12) return value;
+  const text = String(value ?? "").trim();
+  if (/^\d{1,2}$/.test(text)) {
+    const number = Number(text);
+    return number >= 1 && number <= 12 ? number : 0;
+  }
+  return monthIndex(text);
+}
+
+function periodYearNumber(...values) {
+  for (const value of values) {
+    const match = String(value ?? "").match(/20\d{2}/);
+    if (match) return Number(match[0]);
+  }
+  return selectedStrategyPeriod.year;
+}
+
+function rowStrategyPeriodKey(row) {
+  const periodValue = rowValue(row, "Periode", "Bulan", "Bulan dan Tahun", "Period", "Month");
+  const yearValue = rowValue(row, "Tahun", "Year");
+  const monthNumber = periodMonthNumber(periodValue);
+  if (!monthNumber) return "";
+  const year = periodYearNumber(periodValue, yearValue);
+  return strategyPeriodKey(monthNumber - 1, year);
+}
+
+function applySelectedPerformancePeriod() {
+  const activeKey = strategyPeriodKey();
+  const availableKeys = Object.keys(performancePeriodData || {}).sort();
+  if (!availableKeys.length) return false;
+  const selectedRows = performancePeriodData[activeKey] || performancePeriodData[availableKeys.at(-1)];
+  if (!selectedRows?.length) return false;
+  performanceData = selectedRows;
+  const selectedScore = performanceScoreByPeriod?.[activeKey] ?? performanceScoreByPeriod?.[availableKeys.at(-1)];
+  if (selectedScore !== undefined && selectedScore !== "") {
+    performanceOfficialScore = numberFromImport(selectedScore, performanceOfficialScore);
+  }
+  return true;
+}
+
+function updateStrategyPeriodLabels() {
+  const periodLabel = document.getElementById("periodLabel");
+  const performancePeriod = document.getElementById("performancePeriod");
+  const performanceScoreLabel = document.getElementById("performanceScoreLabel");
+  const analyticsPeriod = document.querySelector(".analytics-period strong");
+  if (periodLabel) periodLabel.textContent = strategyPeriodFullLabel();
+  if (performancePeriod) performancePeriod.textContent = strategyPeriodUntilLabel();
+  if (performanceScoreLabel) performanceScoreLabel.textContent = `Nilai NKO s.d. ${strategyPeriodFullLabel()}`;
+  if (analyticsPeriod) analyticsPeriod.textContent = strategyPeriodFullLabel();
+  document.querySelectorAll(".performance-table thead th").forEach((header) => {
+    if (normalizeImportKey(header.textContent).startsWith("target s d")) {
+      header.textContent = `Target S.D. ${STRATEGY_MONTHS_FULL[selectedStrategyPeriod.month]}`;
+    }
+  });
+}
+
+function applyStrategyPeriod(month, year) {
+  selectedStrategyPeriod = { month, year };
+  applySelectedPerformancePeriod();
+  updateStrategyPeriodLabels();
+  renderStrategyDashboard();
+  renderExecutiveOverview();
+  if (window.lucide) window.lucide.createIcons();
 }
 
 function renderPerformanceRows() {
@@ -2856,21 +2958,33 @@ function importPerformanceSheet(workbook) {
   const rows = sheetRows(workbook, "03_Kinerja");
   if (!rows.length) return 0;
   const importedRows = rows
-    .map((row) => ({
-      no: rowValue(row, "No"),
-      indicator: rowValue(row, "Indikator Kerja"),
-      unit: rowValue(row, "Satuan"),
-      weight: rowValue(row, "Bobot"),
-      target: rowValue(row, "Target 2026"),
-      targetPeriod: rowValue(row, "Target S.D. Juni", "Target Bulanan"),
-      realization: rowValue(row, "Realisasi", "Realisasi Bulan Current"),
-      achievement: rowValue(row, "Pencapaian", "%"),
-      score: rowValue(row, "Nilai"),
-      status: rowValue(row, "Status", "Ket.") || "Tercapai"
-    }))
+    .map((row) => {
+      const periodKey = rowStrategyPeriodKey(row);
+      const periodMonth = periodKey ? Number(periodKey.slice(5, 7)) - 1 : selectedStrategyPeriod.month;
+      return {
+        periodKey,
+        no: rowValue(row, "No"),
+        indicator: rowValue(row, "Indikator Kerja"),
+        unit: rowValue(row, "Satuan"),
+        weight: rowValue(row, "Bobot"),
+        target: rowValue(row, "Target 2026"),
+        targetPeriod: rowValue(row, `Target S.D. ${STRATEGY_MONTHS_FULL[periodMonth]}`, "Target S.D. Juni", "Target Bulanan"),
+        realization: rowValue(row, "Realisasi", "Realisasi Bulan Current"),
+        achievement: rowValue(row, "Pencapaian", "%"),
+        score: rowValue(row, "Nilai"),
+        status: rowValue(row, "Status", "Ket.") || "Tercapai"
+      };
+    })
     .filter((row) => row.indicator);
 
-  const mainIndicatorCount = importedRows.filter((row) => String(row.no || "").trim()).length;
+  const grouped = importedRows.reduce((result, row) => {
+    if (!row.periodKey) return result;
+    result[row.periodKey] = result[row.periodKey] || [];
+    result[row.periodKey].push(row);
+    return result;
+  }, {});
+  const activeRows = grouped[strategyPeriodKey()] || Object.values(grouped).at(-1) || importedRows;
+  const mainIndicatorCount = activeRows.filter((row) => String(row.no || "").trim()).length;
   if (mainIndicatorCount < MIN_PERFORMANCE_MAIN_INDICATORS) {
     console.info(
       `Sheet 03_Kinerja diabaikan karena hanya memuat ${mainIndicatorCount} indikator utama. Minimal ${MIN_PERFORMANCE_MAIN_INDICATORS} indikator diperlukan.`
@@ -2878,8 +2992,9 @@ function importPerformanceSheet(workbook) {
     return 0;
   }
 
-  performanceData = importedRows;
-  return performanceData.length;
+  performancePeriodData = Object.keys(grouped).length ? grouped : {};
+  performanceData = activeRows;
+  return importedRows.length;
 }
 
 function importStrategySummarySheet(workbook) {
@@ -2890,10 +3005,15 @@ function importStrategySummarySheet(workbook) {
     const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
     const value = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
     if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "") {
-      performanceOfficialScore = numberFromImport(value, performanceOfficialScore);
+      const key = rowStrategyPeriodKey(row);
+      if (key) performanceScoreByPeriod[key] = numberFromImport(value, performanceOfficialScore);
+      if (!key || key === strategyPeriodKey()) {
+        performanceOfficialScore = numberFromImport(value, performanceOfficialScore);
+      }
       imported += 1;
     }
   });
+  applySelectedPerformancePeriod();
   return imported;
 }
 
@@ -3164,9 +3284,20 @@ function applyStrategyDataSource(source) {
       console.info("Data kinerja pada data source diabaikan karena indikator utama belum lengkap.");
     }
   }
+  if (source.performancePeriodData && typeof source.performancePeriodData === "object") {
+    performancePeriodData = source.performancePeriodData;
+    applySelectedPerformancePeriod();
+  }
+  if (source.performanceScoreByPeriod && typeof source.performanceScoreByPeriod === "object") {
+    performanceScoreByPeriod = source.performanceScoreByPeriod;
+    applySelectedPerformancePeriod();
+  }
   if (performanceSourceIsComplete && source.performanceOfficialScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceOfficialScore, performanceOfficialScore);
   if (performanceSourceIsComplete && source.performanceScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceScore, performanceOfficialScore);
   if (performanceSourceIsComplete && source.nko !== undefined) performanceOfficialScore = numberFromImport(source.nko, performanceOfficialScore);
+  if (Object.keys(performancePeriodData || {}).length || Object.keys(performanceScoreByPeriod || {}).length) {
+    applySelectedPerformancePeriod();
+  }
   if (Array.isArray(source.policyPrepData)) policyPrepData = source.policyPrepData;
   if (Array.isArray(source.businessExcellenceData)) businessExcellenceData = source.businessExcellenceData;
   if (source.investmentData && typeof source.investmentData === "object") investmentData = { ...investmentData, ...source.investmentData };
@@ -3925,7 +4056,6 @@ function setupFilters() {
 }
 
 function setupPeriodPicker() {
-  const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Juli", "Agu", "Sep", "Okt", "Nov", "Des"];
   const trigger = document.getElementById("periodTrigger");
   const picker = document.getElementById("periodPicker");
   const yearLabel = document.getElementById("periodYear");
@@ -3933,15 +4063,16 @@ function setupPeriodPicker() {
   const monthGrid = document.getElementById("monthGrid");
   const prevYear = document.getElementById("prevYear");
   const nextYear = document.getElementById("nextYear");
-  let selectedMonth = 6;
-  let selectedYear = 2026;
+  const performanceTrigger = document.querySelector(".performance-period-chip");
+  let selectedMonth = selectedStrategyPeriod.month;
+  let selectedYear = selectedStrategyPeriod.year;
 
   if (!trigger || !picker || !yearLabel || !periodLabel || !monthGrid) return;
 
   function renderMonths() {
     yearLabel.textContent = selectedYear;
-    periodLabel.textContent = `${months[selectedMonth]} ${selectedYear}`;
-    monthGrid.innerHTML = months
+    periodLabel.textContent = strategyPeriodFullLabel(selectedMonth, selectedYear);
+    monthGrid.innerHTML = STRATEGY_MONTHS_SHORT
       .map((month, index) => `
         <button class="${index === selectedMonth ? "active" : ""}" type="button" data-month="${index}">
           ${month}
@@ -3977,6 +4108,12 @@ function setupPeriodPicker() {
     selectedMonth = Number(button.dataset.month);
     renderMonths();
     closePicker();
+    applyStrategyPeriod(selectedMonth, selectedYear);
+  });
+
+  performanceTrigger?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    trigger.click();
   });
 
   document.addEventListener("click", (event) => {
@@ -3990,6 +4127,7 @@ function setupPeriodPicker() {
   });
 
   renderMonths();
+  updateStrategyPeriodLabels();
 }
 
 function setupExportMenu() {
