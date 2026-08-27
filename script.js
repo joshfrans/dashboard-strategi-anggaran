@@ -1116,6 +1116,7 @@ function updateDashboardMetrics() {
   const prepNotStarted = policyPrepData.filter((row) => row.status === "Belum Mulai").length;
   const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
+  const performanceAttention = performanceAttentionCount(performanceSummary);
   const businessScore = businessExcellenceData[0]?.realization ?? 0;
 
   const values = {
@@ -1177,7 +1178,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceSummary.red} perlu peningkatan. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
+    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceAttention} indikator perlu perhatian/tidak tercapai. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 
   document.querySelectorAll('[id="analyticsCrProgress"]').forEach((element) => {
@@ -1921,6 +1922,10 @@ function getPerformanceStatusSummary() {
   return summary;
 }
 
+function performanceAttentionCount(summary = getPerformanceStatusSummary()) {
+  return Number(summary.red || 0) + Number(summary.gray || 0);
+}
+
 function overviewNumber(value, fallback = 0) {
   const parsed = numberFromImport(value, NaN);
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -2589,6 +2594,7 @@ function updatePerformanceStatusPanel() {
   if (!grid) return;
 
   const summary = getPerformanceStatusSummary();
+  const attentionCount = performanceAttentionCount(summary);
   const score = calculatePerformanceScore();
   const scoreStatus = performanceScoreStatus(score);
   if (scoreElement) scoreElement.textContent = smartLabel(score, "plain");
@@ -2605,7 +2611,7 @@ function updatePerformanceStatusPanel() {
   grid.innerHTML = `
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
-    <div class="status-red"><strong>${summary.red}</strong><span>Perlu Peningkatan</span></div>
+    <div class="status-red"><strong>${attentionCount}</strong><span>Tidak Tercapai</span></div>
   `;
 }
 
