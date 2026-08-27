@@ -3813,13 +3813,16 @@ async function importEvDataFile(file) {
 }
 
 function setupEvDataControls() {
-  const importButton = document.getElementById("evImportData");
-  const exportButton = document.getElementById("evExportData");
   const fileInput = document.getElementById("evDataFile");
-  if (importButton && fileInput && importButton.dataset.bound !== "true") {
-    importButton.dataset.bound = "true";
-    importButton.addEventListener("click", () => fileInput.click());
-  }
+  const importButtons = document.querySelectorAll("[data-ev-import], #evImportData");
+  const exportButtons = document.querySelectorAll("[data-ev-export], #evExportData");
+
+  importButtons.forEach((button) => {
+    if (!fileInput || button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => fileInput.click());
+  });
+
   if (fileInput && fileInput.dataset.bound !== "true") {
     fileInput.dataset.bound = "true";
     fileInput.addEventListener("change", async (event) => {
@@ -3828,12 +3831,14 @@ function setupEvDataControls() {
       event.target.value = "";
     });
   }
-  if (exportButton && exportButton.dataset.bound !== "true") {
-    exportButton.dataset.bound = "true";
-    exportButton.addEventListener("click", async () => {
+
+  exportButtons.forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", async () => {
       await downloadEvExcel();
     });
-  }
+  });
 }
 
 async function importDataFile(file) {
@@ -4366,6 +4371,17 @@ function renderEvInfrastructure() {
         </div>
       </header>
 
+      <section class="ev-card ev-data-source-panel">
+        <div class="ev-data-source-copy">
+          <h2>Data Source Infrastruktur EV</h2>
+          <p>Import file analisis SPKLU untuk update peta, unit prioritas, jarak terdekat, dan ringkasan kesiapan EV.</p>
+        </div>
+        <div class="ev-data-source-actions">
+          <button type="button" data-ev-import><i data-lucide="upload"></i><span>Import Data</span></button>
+          <button type="button" data-ev-export="xlsx"><i data-lucide="download"></i><span>Export Data</span></button>
+        </div>
+      </section>
+
       <main class="ev-main-grid">
         <section class="ev-card ev-summary">
           <h2>Ringkasan Utama</h2>
@@ -4426,8 +4442,8 @@ function renderEvInfrastructure() {
           </div>
           <div class="ev-geo-actions">
             <span>${formatNumber(evGeoPriorityUnits.length)} unit · ${formatNumber(evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
-            <button type="button" id="evImportData"><i data-lucide="upload"></i> Import Data</button>
-            <button type="button" id="evExportData"><i data-lucide="download"></i> Export Data</button>
+            <button type="button" id="evImportData" data-ev-import><i data-lucide="upload"></i> Import Data</button>
+            <button type="button" id="evExportData" data-ev-export="xlsx"><i data-lucide="download"></i> Export Data</button>
             <input class="sr-only" type="file" id="evDataFile" accept=".xlsx,.xls,.csv,.json" aria-label="Import data source Infrastruktur Kesiapan EV">
           </div>
         </div>
@@ -5000,3 +5016,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.lucide.createIcons();
   }
 });
+
