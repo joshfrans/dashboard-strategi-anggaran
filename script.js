@@ -270,8 +270,8 @@ const statusDotClass = {
 };
 
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
-const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260827-google-14Nch";
-const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260827-google-14Nch";
+const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260828-rkm-period-status";
+const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260828-rkm-period-status";
 const STRATEGY_GOOGLE_SHEET_ID = "14NchUhs2ov2Wn-nLAV6DlDtuZLszP1Fg";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
@@ -595,6 +595,46 @@ function performanceStatusBucket(row) {
   if (normalized === "tercapai" || normalized.includes("hijau")) return "green";
   if (normalized.includes("belum")) return "gray";
   return "gray";
+}
+
+function normalizePerformanceStatusValue(value) {
+  const normalized = String(value || "").toLowerCase();
+  if (normalized.includes("hampir") || normalized.includes("kuning")) return "Hampir Tercapai";
+  if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "Perlu Peningkatan";
+  if (normalized === "tercapai" || normalized.includes("hijau")) return "Tercapai";
+  if (normalized.includes("belum")) return "Belum Diukur";
+  return "";
+}
+
+function calculatedAchievementFromValues(targetPeriod, realization, achievement) {
+  const explicitAchievement = numberFromImport(achievement, NaN);
+  if (Number.isFinite(explicitAchievement)) return explicitAchievement;
+  const targetNumber = numberFromImport(targetPeriod, NaN);
+  const realizationNumber = numberFromImport(realization, NaN);
+  if (!Number.isFinite(targetNumber) || !Number.isFinite(realizationNumber) || targetNumber <= 0) return "";
+  return realizationNumber / targetNumber;
+}
+
+function calculatedScoreFromValues(weight, achievement, score) {
+  const explicitScore = numberFromImport(score, NaN);
+  if (Number.isFinite(explicitScore)) return score;
+  const weightNumber = numberFromImport(weight, NaN);
+  const achievementNumber = numberFromImport(achievement, NaN);
+  if (!Number.isFinite(weightNumber) || !Number.isFinite(achievementNumber) || weightNumber <= 0) return "";
+  const achievementRate = achievementNumber > 2 ? achievementNumber / 100 : achievementNumber;
+  return Math.min(achievementRate, 1.1) * weightNumber;
+}
+
+function derivePerformanceStatus(rawStatus, achievement, score, weight) {
+  const normalizedStatus = normalizePerformanceStatusValue(rawStatus);
+  if (normalizedStatus && normalizedStatus !== "Tercapai") return normalizedStatus;
+  const bucket = performanceStatusBucket({ achievement, score, weight, status: normalizedStatus || rawStatus });
+  return {
+    green: "Tercapai",
+    amber: "Hampir Tercapai",
+    red: "Perlu Peningkatan",
+    gray: "Belum Diukur"
+  }[bucket] || "Belum Diukur";
 }
 
 function performanceScoreStatus(score) {
@@ -1917,6 +1957,52 @@ function renderDetailBusiness() {
   `;
 }
 
+function summarizePerformanceRows(rows = []) {
+  const indicatorRows = rows.filter((row) => String(row?.no || "").trim());
+  const summary = {
+    total: indicatorRows.length,
+    green: 0,
+    amber: 0,
+    red: 0,
+    gray: 0
+  };
+  indicatorRows.forEach((row) => {
+    summary[performanceStatusBucket(row)] += 1;
+  });
+  return summary;
+}
+
+function calculatePerformanceScoreFromRows(rows = []) {
+  const indicatorRows = rows.filter((row) => String(row?.no || "").trim());
+  let scoreTotal = 0;
+  let weightTotal = 0;
+  indicatorRows.forEach((row) => {
+    const score = numberFromImport(row?.score, NaN);
+    const weight = numberFromImport(row?.weight, NaN);
+    if (Number.isFinite(score) && Number.isFinite(weight) && weight > 0) {
+      scoreTotal += score;
+      weightTotal += weight;
+    }
+  });
+  return weightTotal > 0 ? (scoreTotal / weightTotal) * 100 : NaN;
+}
+
+function refreshPerformanceMetricsByPeriodFromRows() {
+  const grouped = Object.keys(performancePeriodData || {}).length
+    ? performancePeriodData
+    : { [strategyPeriodKey()]: performanceData };
+  Object.entries(grouped).forEach(([key, rows]) => {
+    const summary = summarizePerformanceRows(rows);
+    if (summary.total >= MIN_PERFORMANCE_MAIN_INDICATORS) {
+      performanceStatusByPeriod[key] = summary;
+    }
+    const score = calculatePerformanceScoreFromRows(rows);
+    if (Number.isFinite(score)) {
+      performanceScoreByPeriod[key] = score;
+    }
+  });
+}
+
 function getPerformanceStatusSummary() {
   const periodSummary = performanceStatusByPeriod?.[strategyPeriodKey()];
   if (periodSummary && typeof periodSummary === "object") {
@@ -1930,20 +2016,7 @@ function getPerformanceStatusSummary() {
     summary.total = summary.total || summary.green + summary.amber + summary.red + summary.gray;
     return summary;
   }
-  const indicatorRows = performanceMainRows();
-  const summary = {
-    total: indicatorRows.length,
-    green: 0,
-    amber: 0,
-    red: 0,
-    gray: 0
-  };
-
-  indicatorRows.forEach((row) => {
-    summary[performanceStatusBucket(row)] += 1;
-  });
-
-  return summary;
+  return summarizePerformanceRows(performanceMainRows());
 }
 
 function performanceAttentionCount(summary = getPerformanceStatusSummary()) {
@@ -3018,18 +3091,28 @@ function importPerformanceSheet(workbook) {
     .map((row) => {
       const periodKey = rowStrategyPeriodKey(row);
       const periodMonth = periodKey ? Number(periodKey.slice(5, 7)) - 1 : selectedStrategyPeriod.month;
+      const weight = rowValue(row, "Bobot");
+      const targetPeriod = rowValue(row, `Target S.D. ${STRATEGY_MONTHS_FULL[periodMonth]}`, "Target S.D. Juni", "Target Bulanan");
+      const realization = rowValue(row, "Realisasi", "Realisasi Bulan Current");
+      const achievement = calculatedAchievementFromValues(
+        targetPeriod,
+        realization,
+        rowValue(row, "Pencapaian", "%")
+      );
+      const score = calculatedScoreFromValues(weight, achievement, rowValue(row, "Nilai"));
+      const status = derivePerformanceStatus(rowValue(row, "Status", "Ket."), achievement, score, weight);
       return {
         periodKey,
         no: rowValue(row, "No"),
         indicator: rowValue(row, "Indikator Kerja"),
         unit: rowValue(row, "Satuan"),
-        weight: rowValue(row, "Bobot"),
+        weight,
         target: rowValue(row, "Target 2026"),
-        targetPeriod: rowValue(row, `Target S.D. ${STRATEGY_MONTHS_FULL[periodMonth]}`, "Target S.D. Juni", "Target Bulanan"),
-        realization: rowValue(row, "Realisasi", "Realisasi Bulan Current"),
-        achievement: rowValue(row, "Pencapaian", "%"),
-        score: rowValue(row, "Nilai"),
-        status: rowValue(row, "Status", "Ket.") || "Tercapai"
+        targetPeriod,
+        realization,
+        achievement,
+        score,
+        status
       };
     })
     .filter((row) => row.indicator);
@@ -3051,6 +3134,7 @@ function importPerformanceSheet(workbook) {
 
   performancePeriodData = Object.keys(grouped).length ? grouped : {};
   performanceData = activeRows;
+  refreshPerformanceMetricsByPeriodFromRows();
   return importedRows.length;
 }
 
@@ -3319,6 +3403,7 @@ function applyStrategyWorkbook(workbook) {
     aoKorporat: importAoCorporateSheet(workbook),
     aoKantorPusat: importAoOfficeSheet(workbook)
   };
+  refreshPerformanceMetricsByPeriodFromRows();
   const hasData = Object.values(imported).some((count) => Number(count) > 0);
   return { imported, hasData };
 }
