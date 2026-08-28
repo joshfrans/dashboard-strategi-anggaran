@@ -1979,17 +1979,10 @@ function summarizePerformanceRows(rows = []) {
 
 function calculatePerformanceScoreFromRows(rows = []) {
   const indicatorRows = rows.filter((row) => String(row?.no || "").trim());
-  let scoreTotal = 0;
-  let weightTotal = 0;
-  indicatorRows.forEach((row) => {
-    const score = numberFromImport(row?.score, NaN);
-    const weight = numberFromImport(row?.weight, NaN);
-    if (Number.isFinite(score) && Number.isFinite(weight) && weight > 0) {
-      scoreTotal += score;
-      weightTotal += weight;
-    }
-  });
-  return weightTotal > 0 ? (scoreTotal / weightTotal) * 100 : NaN;
+  const scores = indicatorRows
+    .map((row) => numberFromImport(row?.score, NaN))
+    .filter((score) => Number.isFinite(score));
+  return scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : NaN;
 }
 
 function refreshPerformanceMetricsByPeriodFromRows() {
@@ -2860,18 +2853,12 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
+  const rkmScore = calculatePerformanceScoreFromRows(performanceData);
+  if (Number.isFinite(rkmScore)) return rkmScore;
   const periodScore = performanceScoreByPeriod?.[strategyPeriodKey()];
   if (periodScore !== undefined && periodScore !== "" && Number.isFinite(numberFromImport(periodScore, NaN))) {
     return numberFromImport(periodScore, 0);
   }
-  const scoredRows = performanceData.filter((row) =>
-    Number.isFinite(numberFromImport(row.score, NaN)) &&
-    Number.isFinite(numberFromImport(row.weight, NaN)) &&
-    numberFromImport(row.weight, 0) > 0
-  );
-  const scoreSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.score, 0), 0);
-  const weightSum = scoredRows.reduce((sum, row) => sum + numberFromImport(row.weight, 0), 0);
-  if (weightSum > 0) return scoreSum * (100 / weightSum);
   if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
     return numberFromImport(performanceOfficialScore, 0);
   }
