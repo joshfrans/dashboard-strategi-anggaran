@@ -367,6 +367,7 @@ function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
     performanceOfficialScore,
     performancePeriodData,
     performanceScoreByPeriod,
+    performanceStatusByPeriod,
     policyPrepData,
     businessExcellenceData,
     investmentData,
@@ -456,6 +457,7 @@ let performanceData = [
 let performanceOfficialScore = NaN;
 let performancePeriodData = {};
 let performanceScoreByPeriod = {};
+let performanceStatusByPeriod = {};
 
 let policyPrepData = [
   { no: 1, area: "Fasilitas", scope: "Petunjuk Teknis Fasilitas Komunikasi", progress: 81, status: "On Progress", target: "31 Juli 2026" },
@@ -1124,6 +1126,9 @@ function updateDashboardMetrics() {
   const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
   const performanceAttention = performanceAttentionCount(performanceSummary);
+  const performancePendingText = performanceSummary.gray
+    ? `, ${performanceAttention} tidak tercapai, dan ${performanceSummary.gray} belum diukur`
+    : `, dan ${performanceAttention} tidak tercapai`;
   const businessScore = businessExcellenceData[0]?.realization ?? 0;
 
   const values = {
@@ -1185,7 +1190,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai, dan ${performanceAttention} indikator perlu perhatian/tidak tercapai. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
+    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai${performancePendingText}. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 
   document.querySelectorAll('[id="analyticsCrProgress"]').forEach((element) => {
@@ -1913,6 +1918,18 @@ function renderDetailBusiness() {
 }
 
 function getPerformanceStatusSummary() {
+  const periodSummary = performanceStatusByPeriod?.[strategyPeriodKey()];
+  if (periodSummary && typeof periodSummary === "object") {
+    const summary = {
+      total: Number(periodSummary.total || 0),
+      green: Number(periodSummary.green || 0),
+      amber: Number(periodSummary.amber || 0),
+      red: Number(periodSummary.red || 0),
+      gray: Number(periodSummary.gray || 0)
+    };
+    summary.total = summary.total || summary.green + summary.amber + summary.red + summary.gray;
+    return summary;
+  }
   const indicatorRows = performanceMainRows();
   const summary = {
     total: indicatorRows.length,
@@ -1930,7 +1947,7 @@ function getPerformanceStatusSummary() {
 }
 
 function performanceAttentionCount(summary = getPerformanceStatusSummary()) {
-  return Number(summary.red || 0) + Number(summary.gray || 0);
+  return Number(summary.red || 0);
 }
 
 function overviewNumber(value, fallback = 0) {
@@ -2619,6 +2636,7 @@ function updatePerformanceStatusPanel() {
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
     <div class="status-red"><strong>${attentionCount}</strong><span>Tidak Tercapai</span></div>
+    <div class="status-gray"><strong>${summary.gray}</strong><span>Belum Diukur</span></div>
   `;
 }
 
@@ -3040,6 +3058,7 @@ function importStrategySummarySheet(workbook) {
   const rows = sheetRows(workbook, "09_Ringkasan");
   if (!rows.length) return 0;
   let imported = 0;
+  performanceStatusByPeriod = {};
   rows.forEach((row) => {
     const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
     const formulaOrValue = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
@@ -3051,6 +3070,36 @@ function importStrategySummarySheet(workbook) {
       if (key) performanceScoreByPeriod[key] = numericValue;
       if (!key || key === strategyPeriodKey()) {
         performanceOfficialScore = numericValue;
+      }
+      imported += 1;
+    }
+    const key = rowStrategyPeriodKey(row);
+    if (!key) return;
+    if (indicator.includes("indikator") || indicator.includes("status")) {
+      const countValue = Math.round(numberFromImport(value, NaN));
+      if (!Number.isFinite(countValue)) return;
+      performanceStatusByPeriod[key] = performanceStatusByPeriod[key] || {
+        total: 0,
+        green: 0,
+        amber: 0,
+        red: 0,
+        gray: 0
+      };
+      if (indicator.includes("total")) {
+        performanceStatusByPeriod[key].total = countValue;
+        imported += 1;
+        return;
+      }
+      if (indicator.includes("hampir")) {
+        performanceStatusByPeriod[key].amber = countValue;
+      } else if (indicator.includes("tidak") || indicator.includes("perlu")) {
+        performanceStatusByPeriod[key].red = countValue;
+      } else if (indicator.includes("belum")) {
+        performanceStatusByPeriod[key].gray = countValue;
+      } else if (indicator.includes("tercapai")) {
+        performanceStatusByPeriod[key].green = countValue;
+      } else {
+        return;
       }
       imported += 1;
     }
@@ -3333,6 +3382,9 @@ function applyStrategyDataSource(source) {
   if (source.performanceScoreByPeriod && typeof source.performanceScoreByPeriod === "object") {
     performanceScoreByPeriod = source.performanceScoreByPeriod;
     applySelectedPerformancePeriod();
+  }
+  if (source.performanceStatusByPeriod && typeof source.performanceStatusByPeriod === "object") {
+    performanceStatusByPeriod = source.performanceStatusByPeriod;
   }
   if (performanceSourceIsComplete && source.performanceOfficialScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceOfficialScore, performanceOfficialScore);
   if (performanceSourceIsComplete && source.performanceScore !== undefined) performanceOfficialScore = numberFromImport(source.performanceScore, performanceOfficialScore);

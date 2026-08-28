@@ -9901,11 +9901,11 @@ td {
 }
 
 .performance-status-grid div {
-  min-height: 29px;
+  min-height: 27px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
+  padding: 5px 10px;
   border: 0;
   border-radius: 0;
 }
@@ -9939,10 +9939,11 @@ td {
 
 .performance-status-grid .status-gray {
   border-color: #dce2ef;
-  background: #f7f9fc;
+  background: #eef2f8;
 }
 
-.performance-status-grid .status-gray strong {
+.performance-status-grid .status-gray strong,
+.performance-status-grid .status-gray span {
   color: #73809c;
 }
 

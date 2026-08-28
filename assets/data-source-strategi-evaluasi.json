@@ -380,5 +380,18 @@
       "realization": "Belum Dinilai",
       "status": "Belum Ukur"
     }
-  ]
+  ],
+  "performanceScoreByPeriod": {
+    "2026-07": 103.941239964965
+  },
+  "performanceStatusByPeriod": {
+    "2026-07": {
+      "total": 10,
+      "green": 8,
+      "amber": 1,
+      "red": 0,
+      "gray": 1
+    }
+  },
+  "performanceOfficialScore": 103.941239964965
 }
