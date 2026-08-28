@@ -2687,12 +2687,12 @@ function renderExecutiveOverview() {
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
-  const scoreCard = document.querySelector(".performance-score-card");
-  const scoreRing = document.querySelector(".performance-score-ring");
   const indicatorCard = document.querySelector(".performance-indicator-card");
   const metaIndicator = document.getElementById("performanceMetaIndicator");
   const scoreElement = document.getElementById("performanceScore");
   const mainStatus = document.getElementById("performanceMainStatus");
+  const scoreCard = scoreElement?.closest(".performance-score-card");
+  const scoreRing = scoreElement?.closest(".performance-score-ring");
   if (!grid) return;
 
   const summary = getPerformanceStatusSummary();
@@ -2701,6 +2701,7 @@ function updatePerformanceStatusPanel() {
   const scoreStatus = performanceScoreStatus(score);
   if (scoreElement) scoreElement.textContent = smartLabel(score, "plain");
   if (mainStatus) mainStatus.textContent = scoreStatus.label;
+  if (scoreCard) scoreCard.dataset.tone = scoreStatus.tone;
   [scoreCard, scoreRing, scoreElement, mainStatus].forEach((element) => {
     if (!element) return;
     element.classList.remove("status-tone-green", "status-tone-amber", "status-tone-red");

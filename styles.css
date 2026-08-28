@@ -9841,6 +9841,27 @@ td {
     #ffffff;
 }
 
+.performance-score-card[data-tone="green"] {
+  border-color: #cfe7db;
+  background:
+    linear-gradient(135deg, rgba(0, 132, 61, 0.10), rgba(9, 163, 166, 0.05)),
+    #ffffff;
+}
+
+.performance-score-card[data-tone="amber"] {
+  border-color: #f4d27a;
+  background:
+    linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(255, 242, 0, 0.06)),
+    #ffffff;
+}
+
+.performance-score-card[data-tone="red"] {
+  border-color: #f7b4b4;
+  background:
+    linear-gradient(135deg, rgba(255, 0, 0, 0.11), rgba(255, 240, 240, 0.35)),
+    #ffffff;
+}
+
 .performance-score-ring.status-tone-green {
   background:
     radial-gradient(circle at center, #ffffff 57%, transparent 58%),
@@ -9868,6 +9889,33 @@ td {
     0 8px 18px rgba(229, 37, 42, 0.14);
 }
 
+.performance-score-card[data-tone="green"] .performance-score-ring {
+  background:
+    radial-gradient(circle at center, #ffffff 57%, transparent 58%),
+    conic-gradient(#00843d 0 100%, #e5edf5 0);
+  box-shadow:
+    inset 0 0 0 1px #d9efe3,
+    0 8px 18px rgba(0, 132, 61, 0.12);
+}
+
+.performance-score-card[data-tone="amber"] .performance-score-ring {
+  background:
+    radial-gradient(circle at center, #ffffff 57%, transparent 58%),
+    conic-gradient(#f5a400 0 100%, #e5edf5 0);
+  box-shadow:
+    inset 0 0 0 1px #fff0c2,
+    0 8px 18px rgba(245, 164, 0, 0.14);
+}
+
+.performance-score-card[data-tone="red"] .performance-score-ring {
+  background:
+    radial-gradient(circle at center, #ffffff 57%, transparent 58%),
+    conic-gradient(#e5252a 0 100%, #e5edf5 0);
+  box-shadow:
+    inset 0 0 0 1px #ffd6d7,
+    0 8px 18px rgba(229, 37, 42, 0.14);
+}
+
 .performance-score-ring.status-tone-green span,
 #performanceScore.status-tone-green,
 #performanceMainStatus.status-tone-green {
@@ -9883,6 +9931,27 @@ td {
 .performance-score-ring.status-tone-red span,
 #performanceScore.status-tone-red,
 #performanceMainStatus.status-tone-red {
+  color: #d71920;
+}
+
+.performance-score-card[data-tone="green"] .performance-score-ring span,
+.performance-score-card[data-tone="green"] #performanceScore,
+.performance-score-card[data-tone="green"] #performanceMainStatus,
+.performance-score-card[data-tone="green"] small {
+  color: #00843d;
+}
+
+.performance-score-card[data-tone="amber"] .performance-score-ring span,
+.performance-score-card[data-tone="amber"] #performanceScore,
+.performance-score-card[data-tone="amber"] #performanceMainStatus,
+.performance-score-card[data-tone="amber"] small {
+  color: #c47a00;
+}
+
+.performance-score-card[data-tone="red"] .performance-score-ring span,
+.performance-score-card[data-tone="red"] #performanceScore,
+.performance-score-card[data-tone="red"] #performanceMainStatus,
+.performance-score-card[data-tone="red"] small {
   color: #d71920;
 }
 
