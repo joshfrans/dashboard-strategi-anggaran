@@ -981,8 +981,10 @@ function updateAnalyticsDashboard() {
 
   setText("analyticsAkiProgress", investmentData.akiRealizationPct || percentLabel(akiProgress));
   setText("analyticsAkiGap", `Gap AKI ${akiGap.replace(/^Sisa\s+/i, "")} perlu dimonitor`);
+  setText("analyticsAoMainValue", `${numberLabel(aoCorporateData.total || 0)} jt`);
   setText("analyticsAoAbsorption", percentLabel(aoAbsorption));
   setText("analyticsAoProjection", aoProjection);
+  setText("analyticsAoTopCost", topAoCost?.name || "Biaya utama");
   setText("analyticsAoOfficeAbsorption", percentLabel(aoOfficeAbsorption));
   setText("analyticsAoOfficeUnit", `${aoOfficeData.selectedUnit || "Unit prioritas"} - ${aoOfficeData.rank || "peringkat belum tersedia"}`);
 
@@ -1025,7 +1027,7 @@ function updateAnalyticsDashboard() {
       ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan dengan serapan RKAP ${percentLabel(aoAbsorption)}; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
       ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} mencatat serapan RKAP ${percentLabel(aoOfficeAbsorption)} dan YoY ${percentLabel(Number(aoOfficeData.yoy || 0))}; perlu monitoring unit/divisi prioritas.`]
     ]
-      .map(([title, text]) => `<div><b>${title}</b><span>${text}</span></div>`)
+      .map(([title, text]) => `<li><b>${title}</b><span>${text}</span></li>`)
       .join("");
   }
 
@@ -1045,13 +1047,13 @@ function updateAnalyticsDashboard() {
   const actionRows = document.getElementById("analyticsActionRows");
   if (actionRows) {
     actionRows.innerHTML = [
-      ["Validasi evidence ratifikasi", `${policy.followUp} status non-hijau terkunci owner dan due date`, policy.followUp ? "Tinggi" : "Monitor"],
-      ["Lock owner CR prioritas", priorityCr ? `${priorityCr.app} memiliki target delivery mingguan` : "Monitoring pasca implementasi CR", crOpen || crNotStarted ? "Tinggi" : "Monitor"],
-      ["Review realisasi AI dan gap AKI", `AI ${investmentData.aiRealization || "-"}; ${akiGap} terpetakan BAPP dan rekomposisi`, akiProgress < 70 ? "Tinggi" : "Medium"],
-      ["Analisa AO Korporat", `${topAoCost?.name || "Biaya dominan"} dan proyeksi akhir tahun tervalidasi`, aoAbsorption > 90 ? "Tinggi" : "Medium"],
-      ["Analisa AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} dan serapan RKAP ditindaklanjuti`, aoOfficeAbsorption > 90 ? "Tinggi" : "Medium"]
+      ["Strategi & Evaluasi", `${policy.done} selesai dari ${policy.total} status kebijakan`, policy.followUp ? "Perlu Monitoring" : "Baik", `${policy.followUp} status perlu follow-up evidence dan target penyelesaian.`],
+      ["Change Request", `${percentLabel(crProgress)} dari ${crTotal} CR`, crOpen || crNotStarted ? "Perlu Percepatan" : "Baik", priorityCr ? `${priorityCr.app} menjadi prioritas delivery mingguan.` : "Monitoring pasca implementasi CR."],
+      ["Investasi", `AI ${investmentData.aiRealization || "-"}; AKI ${investmentData.akiRealizationPct || percentLabel(akiProgress)}`, akiProgress < 70 ? "Perlu Perhatian" : "Baik", `${akiGap} perlu BAPP, rekomposisi, dan validasi realisasi.`],
+      ["AO Korporat", `Serapan RKAP ${percentLabel(aoAbsorption)}`, aoAbsorption > 90 ? "Perlu Kontrol" : "Monitor", `${topAoCost?.name || "Biaya dominan"} menjadi fokus pengendalian proyeksi.`],
+      ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} serapan ${percentLabel(aoOfficeAbsorption)}`, aoOfficeAbsorption > 90 ? "Perlu Kontrol" : "Monitor", `Pantau unit/divisi dengan realisasi dan YoY tertinggi.`]
     ]
-      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`)
+      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`)
       .join("");
   }
 

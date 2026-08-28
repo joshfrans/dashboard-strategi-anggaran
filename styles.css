@@ -5649,6 +5649,461 @@ p {
   font-weight: 900;
 }
 
+.rapim-report {
+  position: relative;
+  overflow: hidden;
+  padding: 12px;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, rgba(21, 177, 190, 0.14) 0 72px, transparent 72px),
+    linear-gradient(135deg, #e7fbfc 0%, #f7fbff 42%, #ffffff 100%);
+}
+
+.rapim-report::before,
+.rapim-report::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 26px;
+  transform: rotate(45deg);
+}
+
+.rapim-report::before {
+  left: -78px;
+  top: 70px;
+  width: 190px;
+  height: 190px;
+  background: rgba(13, 158, 178, 0.28);
+}
+
+.rapim-report::after {
+  right: -72px;
+  bottom: 48px;
+  width: 150px;
+  height: 150px;
+  border: 12px solid rgba(18, 177, 205, 0.24);
+}
+
+.rapim-report > * {
+  position: relative;
+  z-index: 1;
+}
+
+.rapim-cover {
+  min-height: 178px;
+  padding: 20px 24px;
+  color: #fff;
+  border-radius: 11px;
+  background:
+    linear-gradient(135deg, rgba(8, 166, 181, 0.94) 0%, rgba(6, 100, 131, 0.94) 43%, rgba(5, 31, 73, 0.98) 100%),
+    radial-gradient(circle at 82% 74%, rgba(126, 220, 239, 0.38), transparent 32%);
+  box-shadow: var(--shadow);
+}
+
+.rapim-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-weight: 900;
+}
+
+.rapim-brand-row strong {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+.rapim-brand-row span {
+  padding: 9px 13px;
+  border-radius: 8px;
+  background: rgba(2, 18, 62, 0.58);
+  font-size: 12px;
+}
+
+.rapim-cover-copy {
+  max-width: 920px;
+  margin-top: 30px;
+}
+
+.rapim-cover-copy span {
+  color: #b9f5ff;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.rapim-cover-copy h2 {
+  margin-top: 8px;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.rapim-cover-copy p {
+  max-width: 960px;
+  margin-top: 10px;
+  color: #eaf9ff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.rapim-summary-row {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.78fr) minmax(0, 1.42fr);
+  gap: 12px;
+}
+
+.rapim-headline-card,
+.rapim-narrative,
+.rapim-table-card,
+.rapim-strategy-cards article {
+  border: 1px solid rgba(3, 95, 93, 0.32);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.rapim-headline-card {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 16px;
+  align-items: center;
+  min-height: 132px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(90deg, rgba(238, 252, 245, 0.95), rgba(255, 255, 255, 0.96)),
+    #fff;
+}
+
+.rapim-headline-icon {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  color: #18562b;
+  border: 3px solid #236a3a;
+  border-radius: 8px;
+  background: #f7fff4;
+}
+
+.rapim-headline-icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+.rapim-headline-card span,
+.rapim-table-title,
+.rapim-strategy-cards span {
+  color: #173557;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.rapim-headline-card strong {
+  display: block;
+  margin: 8px 0 5px;
+  color: #0a7f39;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.rapim-headline-card small {
+  color: #48546a;
+  font-size: 13px;
+}
+
+.rapim-headline-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.rapim-headline-stats em {
+  display: grid;
+  gap: 3px;
+  min-height: 54px;
+  padding: 9px 10px;
+  border: 1px solid #d7eadf;
+  border-radius: 8px;
+  background: #ffffff;
+  font-style: normal;
+}
+
+.rapim-headline-stats b {
+  color: var(--navy);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.rapim-headline-stats span {
+  color: #64728a;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.rapim-narrative {
+  min-height: 132px;
+  padding: 16px 20px;
+}
+
+.rapim-narrative h3 {
+  width: max-content;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  color: var(--navy);
+  border-bottom: 4px solid #ff9b00;
+  font-size: 20px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.rapim-narrative ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rapim-narrative li {
+  display: grid;
+  grid-template-columns: 165px 1fr;
+  gap: 12px;
+  color: #132248;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.rapim-narrative b {
+  color: #0b572e;
+}
+
+.rapim-score-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.rapim-score-grid article {
+  min-height: 104px;
+  padding: 13px 14px;
+  border-top-width: 0;
+  border-left: 5px solid var(--green);
+}
+
+.rapim-score-grid strong {
+  font-size: 27px;
+}
+
+.rapim-score-grid article:nth-child(2) {
+  border-left-color: var(--purple);
+}
+
+.rapim-score-grid article:nth-child(3) {
+  border-left-color: #0a9f9b;
+}
+
+.rapim-score-grid article:nth-child(4),
+.rapim-score-grid article:nth-child(5) {
+  border-left-color: var(--amber);
+}
+
+.rapim-table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.rapim-table-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: #fff;
+  background: var(--navy);
+}
+
+.rapim-table-title h3 {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.rapim-table-title svg {
+  width: 22px;
+  height: 22px;
+}
+
+.rapim-analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.rapim-analysis-table th,
+.rapim-analysis-table td {
+  padding: 11px 13px;
+  border: 1px solid #cbdced;
+  text-align: left;
+  vertical-align: top;
+}
+
+.rapim-analysis-table th {
+  color: #fff;
+  background: #071d55;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.rapim-analysis-table td:first-child {
+  width: 190px;
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.rapim-analysis-table td:nth-child(3) {
+  width: 150px;
+  color: #0a7f39;
+  font-weight: 900;
+}
+
+.rapim-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 12px;
+}
+
+.rapim-bottom-grid .analytics-panel {
+  min-height: 230px;
+  padding: 16px;
+}
+
+.rapim-investment-card .analytics-investment-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rapim-investment-card .analytics-investment-grid div {
+  min-height: 86px;
+  padding: 11px;
+}
+
+.rapim-investment-card .analytics-investment-grid strong {
+  font-size: 22px;
+}
+
+.rapim-progress-card .analytics-bars {
+  gap: 12px;
+}
+
+.rapim-progress-card .analytics-bars div {
+  grid-template-columns: 170px 1fr 70px;
+}
+
+.rapim-main-message {
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid #cfe2ff;
+  border-radius: 8px;
+  background: #f2f7ff;
+}
+
+.rapim-strategy-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rapim-strategy-cards article {
+  position: relative;
+  min-height: 176px;
+  padding: 18px 22px 18px 104px;
+  overflow: hidden;
+}
+
+.rapim-strategy-cards article:nth-child(2) {
+  border-color: #2267d8;
+}
+
+.rapim-strategy-cards article:nth-child(3) {
+  border-color: #ff6a00;
+}
+
+.rapim-strategy-cards b {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  border-radius: 8px;
+  background: #0b5b2d;
+  font-size: 24px;
+}
+
+.rapim-strategy-cards article:nth-child(2) b {
+  background: #0d3c91;
+}
+
+.rapim-strategy-cards article:nth-child(3) b {
+  background: #ff5a00;
+}
+
+.rapim-strategy-cards i {
+  position: absolute;
+  top: 66px;
+  left: 23px;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  color: #18562b;
+  border-radius: 50%;
+  background: #eef8ef;
+}
+
+.rapim-strategy-cards i svg {
+  width: 32px;
+  height: 32px;
+}
+
+.rapim-strategy-cards article:nth-child(2) i {
+  color: #0d3c91;
+  background: #eef4ff;
+}
+
+.rapim-strategy-cards article:nth-child(3) i {
+  color: #ff5a00;
+  background: #fff0e8;
+}
+
+.rapim-strategy-cards h3 {
+  color: #0a572c;
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.rapim-strategy-cards article:nth-child(2) h3 {
+  color: #0d3c91;
+}
+
+.rapim-strategy-cards article:nth-child(3) h3 {
+  color: #ff5a00;
+}
+
+.rapim-strategy-cards p {
+  margin-top: 12px;
+  padding-top: 11px;
+  color: #142142;
+  border-top: 1px solid #bfd1dd;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .executive-dashboard-view {
   max-width: 1600px;
   margin: 0 auto;
