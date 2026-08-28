@@ -640,17 +640,20 @@ function derivePerformanceStatus(rawStatus, achievement, score, weight) {
 function performanceScoreStatus(score) {
   if (score >= 100) {
     return {
+      tone: "green",
       label: "Tercapai",
       message: "Semua indikator utama berada di zona hijau."
     };
   }
   if (score >= 95) {
     return {
+      tone: "amber",
       label: "Hampir Tercapai",
       message: "Kinerja mendekati target, perlu monitoring indikator prioritas."
     };
   }
   return {
+    tone: "red",
     label: "Perlu Peningkatan",
     message: "NKO masih di bawah target, perlu tindak lanjut pada indikator prioritas."
   };
@@ -2684,6 +2687,8 @@ function renderExecutiveOverview() {
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
+  const scoreCard = document.querySelector(".performance-score-card");
+  const scoreRing = document.querySelector(".performance-score-ring");
   const indicatorCard = document.querySelector(".performance-indicator-card");
   const metaIndicator = document.getElementById("performanceMetaIndicator");
   const scoreElement = document.getElementById("performanceScore");
@@ -2696,6 +2701,11 @@ function updatePerformanceStatusPanel() {
   const scoreStatus = performanceScoreStatus(score);
   if (scoreElement) scoreElement.textContent = smartLabel(score, "plain");
   if (mainStatus) mainStatus.textContent = scoreStatus.label;
+  [scoreCard, scoreRing, scoreElement, mainStatus].forEach((element) => {
+    if (!element) return;
+    element.classList.remove("status-tone-green", "status-tone-amber", "status-tone-red");
+    element.classList.add(`status-tone-${scoreStatus.tone}`);
+  });
   if (indicatorCard) {
     indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
   }
