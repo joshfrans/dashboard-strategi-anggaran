@@ -1,13 +1,17 @@
 // Generated from Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx
-// Approved sanitized public fields only: unit, SPKLU name, distance, charger type, charging class, kW, and generalized visual map points.
-// Raw addresses and GPS coordinates are not stored in this public dashboard asset.
+// Unit coordinates refreshed from Data Lokasi Pegawai PLN Daily 26082026.
+// Public asset stores unit-level coordinates only; employee/person-level fields are excluded.
 window.evGeoDataSummary = {
   "source": "Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx",
   "units": 359,
   "spkluCandidates": 10770,
   "sameLocation": 151,
   "under5": 188,
-  "over5": 20
+  "over5": 20,
+  "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026",
+  "unitCoordinatesUpdated": 346,
+  "unitCoordinatesFallback": 13,
+  "unitCoordinatesUpdatedAt": "2026-08-31"
 };
 window.evGeoPriorityUnitsData = [
   {
@@ -267,12 +271,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": 3.603859,
+    "unitLng": 125.511073,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Papua",
-    "mapX": 645,
-    "mapY": 154,
+    "mapX": 707,
+    "mapY": 165,
     "spkluX": 641,
     "spkluY": 142,
     "category": "50 - < 100 KM",
@@ -526,7 +533,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.574069,
+    "unitLng": 140.689928,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Luwuk",
@@ -785,12 +795,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.955677,
+    "unitLng": 122.789469,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagut 4",
-    "mapX": 107,
-    "mapY": 80,
+    "mapX": 336,
+    "mapY": 264,
     "spkluX": 110,
     "spkluY": 81,
     "category": "25 - < 50 KM",
@@ -1044,12 +1057,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.583019,
+    "unitLng": 115.180618,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagsel3",
-    "mapX": 175,
-    "mapY": 206,
+    "mapX": 299,
+    "mapY": 253,
     "spkluX": 173,
     "spkluY": 208,
     "category": "10 - < 25 KM",
@@ -1303,7 +1319,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.919103,
+    "unitLng": 112.654598,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Punagaya",
@@ -1562,7 +1581,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.622792,
+    "unitLng": 119.552256,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Sebalang",
@@ -1821,12 +1843,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.58339,
+    "unitLng": 105.388343,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Lbuk Pakam",
-    "mapX": 101,
-    "mapY": 68,
+    "mapX": 99,
+    "mapY": 64,
     "spkluX": 102,
     "spkluY": 69,
     "category": "10 - < 25 KM",
@@ -2080,7 +2105,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.546881,
+    "unitLng": 98.864996,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Pandan",
@@ -2339,12 +2367,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.620506,
+    "unitLng": 98.290392,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Teluk Sirih",
     "mapX": 121,
-    "mapY": 141,
+    "mapY": 300,
     "spkluX": 121,
     "spkluY": 139,
     "category": "10 - < 25 KM",
@@ -2598,7 +2629,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -10.753424,
+    "unitLng": 100.373967,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Bengkulu",
@@ -2857,12 +2891,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.565255,
+    "unitLng": 102.521934,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Palangkara",
-    "mapX": 360,
-    "mapY": 140,
+    "mapX": 322,
+    "mapY": 169,
     "spkluX": 359,
     "spkluY": 139,
     "category": "10 - < 25 KM",
@@ -3116,7 +3153,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.822362,
+    "unitLng": 114.209062,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Tarahan",
@@ -3375,7 +3415,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.522408,
+    "unitLng": 105.351634,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Balikpapan",
@@ -3634,7 +3677,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.166712,
+    "unitLng": 116.791052,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Nagan Raya",
@@ -3893,12 +3939,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 4.107379,
+    "unitLng": 96.196592,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagtim4",
-    "mapX": 340,
-    "mapY": 185,
+    "mapX": 331,
+    "mapY": 179,
     "spkluX": 339,
     "spkluY": 185,
     "category": "5 - < 10 KM",
@@ -4152,7 +4201,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.438418,
+    "unitLng": 114.827259,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Bukit Asam",
@@ -4411,7 +4463,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -3.730492,
+    "unitLng": 103.797159,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Saumlaki",
@@ -4670,12 +4725,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -7.913219,
+    "unitLng": 131.301406,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Kaltimra",
     "mapX": 361,
-    "mapY": 142,
+    "mapY": 304,
     "spkluX": 361,
     "spkluY": 143,
     "category": "5 - < 10 KM",
@@ -4929,7 +4987,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.492318,
+    "unitLng": 116.877672,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Tambora",
@@ -5188,7 +5249,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -8.740493,
+    "unitLng": 116.779172,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Babel",
@@ -5447,7 +5511,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.07761,
+    "unitLng": 106.149625,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Uphk Medan",
@@ -5706,7 +5773,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 3.71549,
+    "unitLng": 98.66478,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Pekanbaru",
@@ -5965,7 +6035,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": 0.496507,
+    "unitLng": 101.355075,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Uphk Palembang",
@@ -6224,7 +6297,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -3.032461,
+    "unitLng": 104.743976,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Sumbagsel",
@@ -6483,7 +6559,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -3.030576,
+    "unitLng": 104.743172,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Keramasan",
@@ -6742,7 +6821,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -3.031619,
+    "unitLng": 104.744957,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Ombilin",
@@ -7001,7 +7083,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -0.6097,
+    "unitLng": 100.752354,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Flores",
@@ -7260,7 +7345,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -8.596063,
+    "unitLng": 122.190436,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Pandaan",
@@ -7519,7 +7607,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.679106,
+    "unitLng": 112.704951,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Jateng&Diy",
@@ -7778,7 +7869,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -7.158974,
+    "unitLng": 110.410951,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Semarang",
@@ -8037,7 +8131,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -7.15916,
+    "unitLng": 110.41043,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ogan Ilir",
@@ -8296,7 +8393,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -3.237549,
+    "unitLng": 104.666746,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Asam-Asam",
@@ -8555,7 +8655,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -3.924706,
+    "unitLng": 115.106464,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Papua Brt",
@@ -8814,7 +8917,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.845915,
+    "unitLng": 134.051818,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Ptg Siantar",
@@ -9073,7 +9179,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.96587,
+    "unitLng": 99.10526,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Sis Minaha",
@@ -9332,7 +9441,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.314567,
+    "unitLng": 124.851525,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Barito",
@@ -9591,7 +9703,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.308959,
+    "unitLng": 114.569498,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Timor",
@@ -9850,7 +9965,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -10.172374,
+    "unitLng": 123.585716,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Kupang",
@@ -10109,7 +10227,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -10.172544,
+    "unitLng": 123.586015,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Banda Aceh",
@@ -10368,7 +10489,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.513751,
+    "unitLng": 95.343125,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Lombok",
@@ -10627,7 +10751,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 25
       }
-    ]
+    ],
+    "unitLat": -8.599166,
+    "unitLng": 116.075364,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Tello",
@@ -10886,11 +11013,14 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.146695,
+    "unitLng": 119.47191,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagsel2",
-    "mapX": 148,
+    "mapX": 149,
     "mapY": 186,
     "spkluX": 148,
     "spkluY": 185,
@@ -11145,7 +11275,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.853123,
+    "unitLng": 102.305626,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3B Mataram",
@@ -11404,7 +11537,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 25
       }
-    ]
+    ],
+    "unitLat": -8.597623,
+    "unitLng": 116.07712,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Demak",
@@ -11922,12 +12058,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.954016,
+    "unitLng": 100.401674,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagut 2",
-    "mapX": 47,
-    "mapY": 32,
+    "mapX": 68,
+    "mapY": 47,
     "spkluX": 47,
     "spkluY": 32,
     "category": "< 5 KM",
@@ -12181,12 +12320,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 4.604995,
+    "unitLng": 96.760052,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagsel1",
-    "mapX": 167,
-    "mapY": 185,
+    "mapX": 185,
+    "mapY": 171,
     "spkluX": 167,
     "spkluY": 185,
     "category": "< 5 KM",
@@ -12440,7 +12582,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.951286,
+    "unitLng": 104.78448,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Papua",
@@ -12699,12 +12844,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.602483,
+    "unitLng": 140.650812,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagtim3",
-    "mapX": 371,
-    "mapY": 114,
+    "mapX": 364,
+    "mapY": 131,
     "spkluX": 370,
     "spkluY": 114,
     "category": "< 5 KM",
@@ -12958,7 +13106,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.503462,
+    "unitLng": 117.115704,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Malut",
@@ -13217,7 +13368,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.78221,
+    "unitLng": 127.386399,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Tjg Karang",
@@ -13476,7 +13630,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -5.44022,
+    "unitLng": 105.254087,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Probolinggo",
@@ -13735,7 +13892,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.765119,
+    "unitLng": 113.213543,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Manado",
@@ -13994,7 +14154,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.456548,
+    "unitLng": 124.851145,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Cilegon",
@@ -14253,7 +14416,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.995514,
+    "unitLng": 106.030512,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Nusra3",
@@ -14771,7 +14937,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.781613,
+    "unitLng": 127.386216,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagtim1",
@@ -15030,7 +15199,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.244649,
+    "unitLng": 116.874453,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ternate",
@@ -15289,7 +15461,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.78221,
+    "unitLng": 127.386399,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W Iv",
@@ -15548,7 +15723,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.990853,
+    "unitLng": 107.627887,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Belawan",
@@ -16066,7 +16244,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.262642,
+    "unitLng": 116.841109,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Jawa Timur",
@@ -16325,7 +16506,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -7.348781,
+    "unitLng": 112.70745,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Palu",
@@ -16584,7 +16768,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -0.876635,
+    "unitLng": 119.887851,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Bengkulu",
@@ -16843,7 +17030,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.787712,
+    "unitLng": 102.268767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Maluku",
@@ -17102,7 +17292,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.642569,
+    "unitLng": 128.240829,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3B Kalbar",
@@ -17361,12 +17554,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.057153,
+    "unitLng": 109.331029,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Kalselteng",
-    "mapX": 317,
-    "mapY": 159,
+    "mapX": 331,
+    "mapY": 180,
     "spkluX": 317,
     "spkluY": 159,
     "category": "< 5 KM",
@@ -17620,7 +17816,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -3.464799,
+    "unitLng": 114.850389,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagbar2",
@@ -17879,7 +18078,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.064556,
+    "unitLng": 111.509306,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Khatulistiwa",
@@ -18397,12 +18599,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.840986,
+    "unitLng": 117.400197,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbb4",
-    "mapX": 214,
-    "mapY": 226,
+    "mapX": 336,
+    "mapY": 264,
     "spkluX": 214,
     "spkluY": 226,
     "category": "< 5 KM",
@@ -18656,7 +18861,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.583019,
+    "unitLng": 115.180618,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Bakaru",
@@ -18915,7 +19123,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -3.999157,
+    "unitLng": 119.634969,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Makassar",
@@ -19174,7 +19385,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.223996,
+    "unitLng": 119.493666,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagteng3",
@@ -20469,7 +20683,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.688075,
+    "unitLng": 128.187867,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Flores",
@@ -20728,7 +20945,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.606631,
+    "unitLng": 120.476056,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Purwokerto",
@@ -20987,7 +21207,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.42226,
+    "unitLng": 109.24143,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Pulogadung",
@@ -21246,7 +21469,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -6.183455,
+    "unitLng": 106.91773,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagbar1",
@@ -21505,12 +21731,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -0.05772,
+    "unitLng": 109.355722,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbb2",
     "mapX": 214,
-    "mapY": 228,
+    "mapY": 227,
     "spkluX": 214,
     "spkluY": 227,
     "category": "< 5 KM",
@@ -21764,7 +21993,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -6.346934,
+    "unitLng": 106.785081,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Lahat",
@@ -22023,12 +22255,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.781154,
+    "unitLng": 103.561538,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kupang",
     "mapX": 459,
-    "mapY": 290,
+    "mapY": 291,
     "spkluX": 459,
     "spkluY": 290,
     "category": "< 5 KM",
@@ -22282,7 +22517,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -10.211261,
+    "unitLng": 123.611535,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Bekasi",
@@ -22800,7 +23038,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.53152,
+    "unitLng": 95.30698,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmleb",
@@ -23059,7 +23300,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.303167,
+    "unitLng": 106.904529,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W Ii",
@@ -23318,7 +23562,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.209714,
+    "unitLng": 106.905004,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bkt Barisan",
@@ -23577,7 +23824,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 3.19285,
+    "unitLng": 98.50197,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmk V",
@@ -23836,7 +24086,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.14667,
+    "unitLng": 119.450432,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Palembang",
@@ -24095,7 +24348,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -2.968259,
+    "unitLng": 104.759714,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sultra",
@@ -24354,7 +24610,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.996168,
+    "unitLng": 122.499331,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Riau",
@@ -24613,7 +24872,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 0.532415,
+    "unitLng": 101.456732,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Riau",
@@ -24872,7 +25134,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 0.532415,
+    "unitLng": 101.456732,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Riau",
@@ -25131,12 +25396,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 0.532415,
+    "unitLng": 101.456732,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Singkawang",
-    "mapX": 270,
-    "mapY": 121,
+    "mapX": 244,
+    "mapY": 109,
     "spkluX": 269,
     "spkluY": 121,
     "category": "< 5 KM",
@@ -25390,7 +25658,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 0.835564,
+    "unitLng": 108.873738,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Kendari",
@@ -25649,7 +25920,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.995613,
+    "unitLng": 122.49964,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Bdr Lmpung",
@@ -25908,7 +26182,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.366265,
+    "unitLng": 105.220413,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Watampone",
@@ -26167,7 +26444,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -4.554971,
+    "unitLng": 120.331956,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kendari",
@@ -26426,7 +26706,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.996168,
+    "unitLng": 122.499331,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Gresik",
@@ -26685,12 +26968,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.191498,
+    "unitLng": 112.64511,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagbar3",
-    "mapX": 260,
-    "mapY": 153,
+    "mapX": 318,
+    "mapY": 160,
     "spkluX": 260,
     "spkluY": 153,
     "category": "< 5 KM",
@@ -26944,7 +27230,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.23683,
+    "unitLng": 113.936612,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W Iii",
@@ -27203,7 +27492,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -6.91647,
+    "unitLng": 107.640142,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Bogor",
@@ -27462,12 +27754,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.590858,
+    "unitLng": 106.797053,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Kalbagtim2",
     "mapX": 370,
-    "mapY": 87,
+    "mapY": 88,
     "spkluX": 370,
     "spkluY": 87,
     "category": "< 5 KM",
@@ -27721,7 +28016,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.140279,
+    "unitLng": 117.493698,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Jateng&Diy",
@@ -27980,7 +28278,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.989553,
+    "unitLng": 110.367469,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Bali",
@@ -28239,12 +28540,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.659765,
+    "unitLng": 115.215151,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Salatiga",
-    "mapX": 272,
-    "mapY": 247,
+    "mapX": 268,
+    "mapY": 243,
     "spkluX": 272,
     "spkluY": 247,
     "category": "< 5 KM",
@@ -28498,7 +28802,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.31155,
+    "unitLng": 110.49089,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sumbagut 3",
@@ -28757,7 +29064,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.570528,
+    "unitLng": 98.6486,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbtb2",
@@ -29016,12 +29326,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 720
       }
-    ]
+    ],
+    "unitLat": -7.319305,
+    "unitLng": 112.731765,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbt 3",
-    "mapX": 240,
-    "mapY": 234,
+    "mapX": 267,
+    "mapY": 238,
     "spkluX": 240,
     "spkluY": 234,
     "category": "< 5 KM",
@@ -29275,7 +29588,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -7.007957,
+    "unitLng": 110.407583,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbt 2",
@@ -29534,7 +29850,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -6.735726,
+    "unitLng": 108.539845,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Rntau Prpt",
@@ -29793,7 +30112,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.1103,
+    "unitLng": 99.82448,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmk Ii",
@@ -30052,7 +30374,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 720
       }
-    ]
+    ],
+    "unitLat": -7.319843,
+    "unitLng": 112.730698,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W I",
@@ -30311,7 +30636,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.897529,
+    "unitLng": 106.032949,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Palembang",
@@ -30570,7 +30898,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -2.947567,
+    "unitLng": 104.767333,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Cirebon",
@@ -30829,7 +31160,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.735814,
+    "unitLng": 108.540604,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Nusra1",
@@ -31088,12 +31422,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 25
       }
-    ]
+    ],
+    "unitLat": -8.596582,
+    "unitLng": 116.108174,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbb1",
-    "mapX": 213,
-    "mapY": 225,
+    "mapX": 214,
+    "mapY": 223,
     "spkluX": 213,
     "spkluY": 225,
     "category": "< 5 KM",
@@ -31347,7 +31684,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.111862,
+    "unitLng": 106.788719,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Padang",
@@ -31606,12 +31946,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.657146,
+    "unitLng": 100.282977,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Banten",
     "mapX": 212,
-    "mapY": 225,
+    "mapY": 224,
     "spkluX": 212,
     "spkluY": 225,
     "category": "< 5 KM",
@@ -31865,7 +32208,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.171824,
+    "unitLng": 106.631827,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Durikosambi",
@@ -32383,7 +32729,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.263063,
+    "unitLng": 106.866882,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Bandung",
@@ -32642,12 +32991,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.95086,
+    "unitLng": 107.613651,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sulteng",
-    "mapX": 405,
-    "mapY": 138,
+    "mapX": 433,
+    "mapY": 139,
     "spkluX": 405,
     "spkluY": 138,
     "category": "< 5 KM",
@@ -32901,7 +33253,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -0.964037,
+    "unitLng": 121.823006,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Papua Brt",
@@ -33160,7 +33515,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.87777,
+    "unitLng": 131.259625,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbtb1",
@@ -33678,7 +34036,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -6.905319,
+    "unitLng": 107.623422,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sby Utara",
@@ -33937,7 +34298,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.253379,
+    "unitLng": 112.737028,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Palopo",
@@ -34196,7 +34560,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -3.008063,
+    "unitLng": 120.203913,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Sulutenggo",
@@ -34455,7 +34822,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.46223,
+    "unitLng": 124.83363,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Makassar",
@@ -34714,7 +35084,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.131919,
+    "unitLng": 119.410779,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Sumbagut",
@@ -34973,7 +35346,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.61538,
+    "unitLng": 98.67058,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Sumbagteng",
@@ -35232,7 +35608,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.65613,
+    "unitLng": 100.282987,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Jawa Barat",
@@ -35491,7 +35870,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.950083,
+    "unitLng": 107.612467,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Karawang",
@@ -35750,12 +36132,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.372771,
+    "unitLng": 107.37761,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbb3",
-    "mapX": 215,
-    "mapY": 226,
+    "mapX": 214,
+    "mapY": 227,
     "spkluX": 215,
     "spkluY": 226,
     "category": "< 5 KM",
@@ -36009,7 +36394,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.343848,
+    "unitLng": 106.788347,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Mahakam",
@@ -36268,12 +36656,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.503463,
+    "unitLng": 117.11569,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Gorontalo",
-    "mapX": 451,
-    "mapY": 113,
+    "mapX": 450,
+    "mapY": 114,
     "spkluX": 451,
     "spkluY": 113,
     "category": "< 5 KM",
@@ -36527,7 +36918,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.550708,
+    "unitLng": 123.024976,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Bukitinggi",
@@ -37045,7 +37439,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.300492,
+    "unitLng": 106.818622,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmk Iv",
@@ -37304,7 +37701,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.574082,
+    "unitLng": 98.65646,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmk Iii",
@@ -37563,7 +37963,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -2.981875,
+    "unitLng": 104.72449,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upmk I",
@@ -37822,7 +38225,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.261525,
+    "unitLng": 106.869592,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Semarang",
@@ -38081,7 +38487,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -7.03226,
+    "unitLng": 110.45711,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Bogor",
@@ -38340,7 +38749,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.65652,
+    "unitLng": 106.876098,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Banjarbaru",
@@ -38599,7 +39011,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.445367,
+    "unitLng": 114.813601,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Upac",
@@ -38858,7 +39273,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.300492,
+    "unitLng": 106.818622,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W Vi",
@@ -39117,7 +39535,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.288477,
+    "unitLng": 112.74913,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2W V",
@@ -39376,7 +39797,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.986825,
+    "unitLng": 110.364858,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sulut",
@@ -39635,7 +40059,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.4626,
+    "unitLng": 124.8327,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Riau",
@@ -39894,7 +40321,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": 0.5365,
+    "unitLng": 101.450377,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Kalteng",
@@ -40153,7 +40583,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -2.207594,
+    "unitLng": 113.92335,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Kalsel",
@@ -40412,7 +40845,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.438612,
+    "unitLng": 114.826345,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Jatim",
@@ -40671,7 +41107,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.265551,
+    "unitLng": 112.743632,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Jambi",
@@ -40930,7 +41369,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -1.607896,
+    "unitLng": 103.592201,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Bengkulu",
@@ -41189,7 +41631,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.792022,
+    "unitLng": 102.249326,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Babel",
@@ -41448,7 +41893,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.158277,
+    "unitLng": 106.129817,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Sumut",
@@ -41707,7 +42155,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": 3.61585,
+    "unitLng": 98.67282,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Sumut",
@@ -41966,7 +42417,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": 3.61585,
+    "unitLng": 98.67282,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D S2Jb",
@@ -42225,7 +42679,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -3.009888,
+    "unitLng": 104.776663,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Lampung",
@@ -42484,7 +42941,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.365669,
+    "unitLng": 105.226909,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Kalbar",
@@ -42743,7 +43203,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -0.03159,
+    "unitLng": 109.338346,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Jawa Timur",
@@ -43002,7 +43465,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.265551,
+    "unitLng": 112.743632,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Aceh",
@@ -43261,7 +43727,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.558198,
+    "unitLng": 95.316116,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Makassar",
@@ -43520,12 +43989,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.166012,
+    "unitLng": 119.447684,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Kalimantan",
-    "mapX": 331,
-    "mapY": 180,
+    "mapX": 361,
+    "mapY": 304,
     "spkluX": 331,
     "spkluY": 180,
     "category": "< 5 KM",
@@ -43779,12 +44251,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.49229,
+    "unitLng": 116.87767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Kalimantan",
-    "mapX": 331,
-    "mapY": 180,
+    "mapX": 361,
+    "mapY": 304,
     "spkluX": 331,
     "spkluY": 180,
     "category": "< 5 KM",
@@ -44038,12 +44513,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.49229,
+    "unitLng": 116.87767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Kalimantan",
-    "mapX": 331,
-    "mapY": 180,
+    "mapX": 361,
+    "mapY": 304,
     "spkluX": 331,
     "spkluY": 180,
     "category": "< 5 KM",
@@ -44297,12 +44775,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.49229,
+    "unitLng": 116.87767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Kalimantan",
-    "mapX": 331,
-    "mapY": 180,
+    "mapX": 361,
+    "mapY": 304,
     "spkluX": 331,
     "spkluY": 180,
     "category": "< 5 KM",
@@ -44556,12 +45037,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.49229,
+    "unitLng": 116.87767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Kalimantan",
-    "mapX": 331,
-    "mapY": 180,
+    "mapX": 361,
+    "mapY": 304,
     "spkluX": 331,
     "spkluY": 180,
     "category": "< 5 KM",
@@ -44815,7 +45299,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -11.49229,
+    "unitLng": 116.87767,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Bali",
@@ -45074,7 +45561,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -8.582867,
+    "unitLng": 115.180817,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Medan",
@@ -45333,7 +45823,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.586164,
+    "unitLng": 98.67571,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Makassar",
@@ -45592,7 +46085,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.13252,
+    "unitLng": 119.418657,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Kalselteng",
@@ -45851,7 +46347,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.464895,
+    "unitLng": 114.849943,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Jambi",
@@ -46110,7 +46609,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.589007,
+    "unitLng": 103.623132,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Bali",
@@ -46369,12 +46871,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -8.582664,
+    "unitLng": 115.180778,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sulut",
-    "mapX": 398,
-    "mapY": 208,
+    "mapX": 447,
+    "mapY": 109,
     "spkluX": 398,
     "spkluY": 208,
     "category": "< 5 KM",
@@ -46628,7 +47133,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": 0.850196,
+    "unitLng": 122.796547,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Sulsel",
@@ -46887,7 +47395,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.165451,
+    "unitLng": 119.447081,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbtb4",
@@ -47146,7 +47657,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -8.583019,
+    "unitLng": 115.180618,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbtb3",
@@ -47405,7 +47919,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.919103,
+    "unitLng": 112.654598,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPP Jbt 4",
@@ -47664,7 +48181,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.26237,
+    "unitLng": 106.869222,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK Maluku",
@@ -47923,7 +48443,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.663672,
+    "unitLng": 128.204193,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Pekanbaru",
@@ -48182,7 +48705,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": 0.53722,
+    "unitLng": 101.45091,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Kapuas",
@@ -48441,7 +48967,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.074481,
+    "unitLng": 109.379761,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Yogyakarta",
@@ -48700,7 +49229,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -7.810376,
+    "unitLng": 110.402973,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Wamena",
@@ -48959,7 +49491,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -4.098115,
+    "unitLng": 138.934363,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Subulusalam",
@@ -49218,7 +49753,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.630797,
+    "unitLng": 98.019218,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sofifi",
@@ -49477,7 +50015,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.730524,
+    "unitLng": 127.572366,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sanggau",
@@ -49736,7 +50277,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": 0.121024,
+    "unitLng": 110.592617,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ponorogo",
@@ -49995,7 +50539,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.844902,
+    "unitLng": 111.476602,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Plangkraya",
@@ -50254,7 +50801,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -2.207594,
+    "unitLng": 113.92335,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Meulaboh",
@@ -50513,7 +51063,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 4.152685,
+    "unitLng": 96.129639,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Medan",
@@ -50772,7 +51325,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.58622,
+    "unitLng": 98.67614,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Malang",
@@ -51031,7 +51587,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.974563,
+    "unitLng": 112.630086,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Langsa",
@@ -51290,7 +51849,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 4.471142,
+    "unitLng": 97.968002,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kudus",
@@ -51549,7 +52111,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.825626,
+    "unitLng": 110.833432,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kotabaru",
@@ -51808,7 +52373,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -3.253258,
+    "unitLng": 116.212352,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kota Bumi",
@@ -52067,7 +52635,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -4.839296,
+    "unitLng": 104.879699,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Jambi",
@@ -52326,7 +52897,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 30
       }
-    ]
+    ],
+    "unitLat": -1.607689,
+    "unitLng": 103.591821,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Gnung Putri",
@@ -52585,7 +53159,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.406998,
+    "unitLng": 106.972047,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bukittinggi",
@@ -52844,7 +53421,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -0.307664,
+    "unitLng": 100.370969,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Berau",
@@ -53103,7 +53683,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.153878,
+    "unitLng": 117.501711,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Banjarmasin",
@@ -53362,7 +53945,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.321488,
+    "unitLng": 114.591859,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bali Timur",
@@ -53621,7 +54207,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -8.543478,
+    "unitLng": 115.393355,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bali Slatan",
@@ -53880,7 +54469,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.663146,
+    "unitLng": 115.217122,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Tuntungan",
@@ -54139,7 +54731,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 3.494838,
+    "unitLng": 98.594093,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Suralaya",
@@ -54398,7 +54993,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.897333,
+    "unitLng": 106.029778,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Updl Jakarta",
@@ -54657,7 +55255,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -6.193886,
+    "unitLng": 106.796795,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sumut",
@@ -54916,7 +55517,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 100
       }
-    ]
+    ],
+    "unitLat": 3.61544,
+    "unitLng": 98.67266,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sumsel",
@@ -55175,7 +55779,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -2.97954,
+    "unitLng": 104.748321,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sulteng",
@@ -55434,7 +56041,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -0.901833,
+    "unitLng": 119.878915,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sulsel",
@@ -55693,7 +56303,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.166425,
+    "unitLng": 119.448154,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Sulbar",
@@ -55952,7 +56565,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.676725,
+    "unitLng": 118.894966,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Ntb",
@@ -56211,7 +56827,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 25
       }
-    ]
+    ],
+    "unitLat": -8.577346,
+    "unitLng": 116.081671,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Lampung",
@@ -56470,7 +57089,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -5.364952,
+    "unitLng": 105.22739,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Kep Riau",
@@ -56729,7 +57351,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.926865,
+    "unitLng": 104.446655,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Kaltim",
@@ -56988,7 +57613,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.500804,
+    "unitLng": 117.137493,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Jateng&Diy",
@@ -57247,7 +57875,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -7.030424,
+    "unitLng": 110.417318,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Jabar",
@@ -57506,7 +58137,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.920748,
+    "unitLng": 107.608415,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Gorontalo",
@@ -57765,7 +58399,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.553382,
+    "unitLng": 123.053913,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2K Aceh",
@@ -58024,7 +58661,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.562285,
+    "unitLng": 95.334877,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Sumbar",
@@ -58283,7 +58923,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -0.916759,
+    "unitLng": 100.360331,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Jawa Barat",
@@ -58542,7 +59185,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.91979,
+    "unitLng": 107.60922,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2D Jakarta",
@@ -58801,7 +59447,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.180398,
+    "unitLng": 106.833198,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "Up2B Jkt&Banten",
@@ -59060,7 +59709,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.261515,
+    "unitLng": 106.869384,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Surabaya",
@@ -59319,7 +59971,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 11
       }
-    ]
+    ],
+    "unitLat": -7.318466,
+    "unitLng": 112.727675,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Malang",
@@ -59578,7 +60233,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.918782,
+    "unitLng": 112.654028,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPT Madiun",
@@ -59837,7 +60495,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.624303,
+    "unitLng": 111.532875,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPK P2B",
@@ -60096,7 +60757,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.542498,
+    "unitLng": 140.702621,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Tarakan",
@@ -60355,7 +61019,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": 3.303592,
+    "unitLng": 117.595037,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Minahasa",
@@ -60614,7 +61281,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.312484,
+    "unitLng": 124.915693,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Kepri",
@@ -60873,7 +61543,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.926865,
+    "unitLng": 104.446655,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UPDK Jambi",
@@ -61132,7 +61805,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.588491,
+    "unitLng": 103.622845,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tual",
@@ -61391,7 +62067,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.65078,
+    "unitLng": 132.737813,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Toli-Toli",
@@ -61650,7 +62329,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 1.05017,
+    "unitLng": 120.8168,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tobelo",
@@ -61909,7 +62591,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 1.71351,
+    "unitLng": 128.007904,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tjg Karang",
@@ -62168,7 +62853,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.423765,
+    "unitLng": 105.258114,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tj Priok",
@@ -62427,7 +63115,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.121206,
+    "unitLng": 106.892785,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tj Pinang",
@@ -62686,7 +63377,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.926865,
+    "unitLng": 104.446655,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Timika",
@@ -62945,7 +63639,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -4.553987,
+    "unitLng": 136.894264,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Teluk Naga",
@@ -63204,7 +63901,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.111736,
+    "unitLng": 106.570827,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tegal",
@@ -63463,12 +64163,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.856822,
+    "unitLng": 109.138714,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Tasikmalaya",
     "mapX": 235,
-    "mapY": 244,
+    "mapY": 243,
     "spkluX": 235,
     "spkluY": 244,
     "category": "Satu Lokasi",
@@ -63722,7 +64425,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.31589,
+    "unitLng": 108.23085,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Surakarta",
@@ -63981,7 +64687,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.562461,
+    "unitLng": 110.798079,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sumedang",
@@ -64240,7 +64949,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.837569,
+    "unitLng": 107.916586,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sumbawa",
@@ -64499,7 +65211,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -8.49938,
+    "unitLng": 117.426782,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sumba",
@@ -64758,7 +65473,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -9.648382,
+    "unitLng": 120.261638,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sukoharjo",
@@ -65017,7 +65735,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.604658,
+    "unitLng": 110.812159,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sukabumi",
@@ -65276,7 +65997,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.913383,
+    "unitLng": 106.932578,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sorong",
@@ -65535,7 +66259,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.879146,
+    "unitLng": 131.261905,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Solok",
@@ -65794,7 +66521,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.799862,
+    "unitLng": 100.652766,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Situbondo",
@@ -66053,7 +66783,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -7.712643,
+    "unitLng": 113.997156,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Singkawang",
@@ -66312,7 +67045,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.911619,
+    "unitLng": 108.980104,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sigli",
@@ -66571,7 +67307,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.379945,
+    "unitLng": 95.955498,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sidoarjo",
@@ -66830,7 +67569,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -7.450079,
+    "unitLng": 112.718571,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sibolga",
@@ -67089,7 +67831,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 1.7442,
+    "unitLng": 98.77956,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Serpong",
@@ -67348,7 +68093,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.290862,
+    "unitLng": 106.664402,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Semarang",
@@ -67607,7 +68355,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.977064,
+    "unitLng": 110.416218,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sby Sel",
@@ -67866,7 +68617,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.289089,
+    "unitLng": 112.750319,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Sby Barat",
@@ -68125,7 +68879,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.354346,
+    "unitLng": 112.69495,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Samarinda",
@@ -68384,7 +69141,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -0.500804,
+    "unitLng": 117.137484,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Salatiga",
@@ -68643,7 +69403,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.323819,
+    "unitLng": 110.50246,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Rengat",
@@ -68902,7 +69665,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.391585,
+    "unitLng": 102.436822,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Purwokerto",
@@ -69161,7 +69927,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.425209,
+    "unitLng": 109.231294,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Purwakarta",
@@ -69420,7 +70189,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.554607,
+    "unitLng": 107.445773,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ptg Siantr",
@@ -69679,7 +70451,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 2.95753,
+    "unitLng": 99.05835,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pontianak",
@@ -69938,7 +70713,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.040129,
+    "unitLng": 109.335882,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pondok Kopi",
@@ -70197,7 +70975,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.243045,
+    "unitLng": 106.920552,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pondok Gede",
@@ -70456,7 +71237,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.28316,
+    "unitLng": 106.93042,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pinrang",
@@ -70715,7 +71499,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -3.803163,
+    "unitLng": 119.649281,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pekanbaru",
@@ -70974,7 +71761,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": 0.536395,
+    "unitLng": 101.450818,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pekalongan",
@@ -71233,7 +72023,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.884644,
+    "unitLng": 109.671647,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pdngsdmpan",
@@ -71492,7 +72285,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 1.4039,
+    "unitLng": 99.27909,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Payakumbuh",
@@ -71751,7 +72547,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -0.237088,
+    "unitLng": 100.643774,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pasuruan",
@@ -72010,7 +72809,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -7.652539,
+    "unitLng": 112.900125,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pare-Pare",
@@ -72269,7 +73071,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -4.010255,
+    "unitLng": 119.623489,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Pamekasan",
@@ -72528,7 +73333,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.16153,
+    "unitLng": 113.492318,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Palu",
@@ -72787,7 +73595,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -0.901833,
+    "unitLng": 119.878915,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Palembang",
@@ -73046,7 +73857,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -2.97954,
+    "unitLng": 104.748321,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Padang",
@@ -73305,7 +74119,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -0.907049,
+    "unitLng": 100.350803,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Nias",
@@ -73564,7 +74381,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": 1.28977,
+    "unitLng": 97.61624,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Nabire",
@@ -73823,7 +74643,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.378942,
+    "unitLng": 135.460713,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Muara Bungo",
@@ -74082,7 +74905,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -1.486441,
+    "unitLng": 102.118495,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Mojokerto",
@@ -74341,7 +75167,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -7.494235,
+    "unitLng": 112.424787,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Mksr Utara",
@@ -74600,7 +75429,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.132075,
+    "unitLng": 119.419041,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Mksr Sltn",
@@ -74859,7 +75691,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -5.164616,
+    "unitLng": 119.445282,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Metro",
@@ -75118,7 +75953,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.129879,
+    "unitLng": 105.307187,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Merauke",
@@ -75377,7 +76215,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -8.482556,
+    "unitLng": 140.389556,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Menteng",
@@ -75636,7 +76477,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.180265,
+    "unitLng": 106.833249,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Medan Utara",
@@ -75895,7 +76739,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 100
       }
-    ]
+    ],
+    "unitLat": 3.61514,
+    "unitLng": 98.67195,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Mataram",
@@ -76154,7 +77001,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 25
       }
-    ]
+    ],
+    "unitLat": -8.576353,
+    "unitLng": 116.081224,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Masohi",
@@ -76413,7 +77263,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 40
       }
-    ]
+    ],
+    "unitLat": -3.306707,
+    "unitLng": 128.946544,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Marunda",
@@ -76672,7 +77525,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -6.14721,
+    "unitLng": 106.88884,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Manokwari",
@@ -76931,7 +77787,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -0.86526,
+    "unitLng": 134.07395,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Manado",
@@ -77190,7 +78049,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 1.471895,
+    "unitLng": 124.835062,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Mamuju",
@@ -77449,7 +78311,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.67702,
+    "unitLng": 118.895015,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Majalaya",
@@ -77708,7 +78573,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -7.006079,
+    "unitLng": 107.625766,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Magelang",
@@ -77967,7 +78835,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.476028,
+    "unitLng": 110.219028,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Madiun",
@@ -78226,7 +79097,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.634461,
+    "unitLng": 111.532407,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Lt Agung",
@@ -78485,7 +79359,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 180
       }
-    ]
+    ],
+    "unitLat": -6.254066,
+    "unitLng": 106.835375,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Lhokseumawe",
@@ -78744,7 +79621,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": 5.169332,
+    "unitLng": 97.134598,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kramatjati",
@@ -79003,7 +79883,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 120
       }
-    ]
+    ],
+    "unitLat": -6.283411,
+    "unitLng": 106.871704,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kotamobagu",
@@ -79262,7 +80145,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": 0.732931,
+    "unitLng": 124.321559,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Klaten",
@@ -79521,7 +80407,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.689327,
+    "unitLng": 110.622636,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kl Kapuas",
@@ -79780,7 +80669,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -3.006977,
+    "unitLng": 114.386238,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ketapang",
@@ -80039,7 +80931,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.843837,
+    "unitLng": 109.975073,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kediri",
@@ -80298,7 +81193,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 47
       }
-    ]
+    ],
+    "unitLat": -7.813519,
+    "unitLng": 112.01415,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kebon Jeruk",
@@ -80557,7 +81455,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.234591,
+    "unitLng": 106.73845,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Karawang",
@@ -80816,12 +81717,15 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.305635,
+    "unitLng": 107.292469,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Kaltara",
-    "mapX": 371,
-    "mapY": 68,
+    "mapX": 368,
+    "mapY": 76,
     "spkluX": 371,
     "spkluY": 68,
     "category": "Satu Lokasi",
@@ -81075,7 +81979,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": 2.839373,
+    "unitLng": 117.388504,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Jember",
@@ -81334,7 +82241,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -8.178935,
+    "unitLng": 113.677636,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Jayapura",
@@ -81593,11 +82503,14 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.608305,
+    "unitLng": 140.673578,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Jatinegara",
-    "mapX": 215,
+    "mapX": 216,
     "mapY": 225,
     "spkluX": 215,
     "spkluY": 225,
@@ -81852,7 +82765,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.209269,
+    "unitLng": 106.905523,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Indramayu",
@@ -82370,7 +83286,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -7.162831,
+    "unitLng": 112.632459,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Gorontalo",
@@ -82629,7 +83548,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.553382,
+    "unitLng": 123.053913,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Garut",
@@ -82888,7 +83810,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -7.194766,
+    "unitLng": 107.885978,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Flores Tmr",
@@ -83147,12 +84072,15 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -8.626146,
+    "unitLng": 122.213851,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Flores Brt",
-    "mapX": 405,
-    "mapY": 263,
+    "mapX": 431,
+    "mapY": 269,
     "spkluX": 405,
     "spkluY": 263,
     "category": "Satu Lokasi",
@@ -83406,7 +84334,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -8.845176,
+    "unitLng": 121.663012,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Dumai",
@@ -83665,7 +84596,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 1.669766,
+    "unitLng": 101.447384,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Depok",
@@ -83924,7 +84858,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.418279,
+    "unitLng": 106.826694,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cpk Putih",
@@ -84183,7 +85120,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.181491,
+    "unitLng": 106.87497,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cirebon",
@@ -84442,7 +85382,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.711375,
+    "unitLng": 108.540257,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ciracas",
@@ -84701,7 +85644,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 50
       }
-    ]
+    ],
+    "unitLat": -6.326105,
+    "unitLng": 106.876149,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ciputat",
@@ -84960,7 +85906,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.34203,
+    "unitLng": 106.74914,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cimahi",
@@ -85219,7 +86168,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.870905,
+    "unitLng": 107.536526,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cilacap",
@@ -85478,7 +86430,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.722971,
+    "unitLng": 109.01134,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cikupa",
@@ -85737,7 +86692,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7.4
       }
-    ]
+    ],
+    "unitLat": -6.224015,
+    "unitLng": 106.503515,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cikokol",
@@ -85996,7 +86954,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.184435,
+    "unitLng": 106.64255,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cikarang",
@@ -86255,7 +87216,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.365093,
+    "unitLng": 107.177923,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cianjur",
@@ -86514,7 +87478,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.813636,
+    "unitLng": 107.137271,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Cengkareng",
@@ -86773,7 +87740,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 60
       }
-    ]
+    ],
+    "unitLat": -6.168382,
+    "unitLng": 106.726148,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bulungan",
@@ -87032,7 +88002,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.239523,
+    "unitLng": 106.797956,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bulukumba",
@@ -87291,7 +88264,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.547835,
+    "unitLng": 120.189965,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bontang",
@@ -87550,7 +88526,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 0.136391,
+    "unitLng": 117.481997,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bojonegoro",
@@ -87809,7 +88788,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC/DC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -7.153097,
+    "unitLng": 111.891135,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bogor",
@@ -88068,7 +89050,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": null
       }
-    ]
+    ],
+    "unitLat": -6.572061,
+    "unitLng": 106.809007,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bintaro",
@@ -88327,7 +89312,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.274324,
+    "unitLng": 106.722882,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Binjai",
@@ -88586,7 +89574,10 @@ window.evGeoPriorityUnitsData = [
         "type": "DC",
         "powerKw": 100
       }
-    ]
+    ],
+    "unitLat": 3.61451,
+    "unitLng": 98.49574,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bima",
@@ -88845,7 +89836,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.459052,
+    "unitLng": 118.741123,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Biak",
@@ -89104,7 +90098,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -1.188571,
+    "unitLng": 136.092594,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bengkulu",
@@ -89363,7 +90360,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.791627,
+    "unitLng": 102.249725,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Belitung",
@@ -89622,7 +90622,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.742393,
+    "unitLng": 107.661722,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bekasi",
@@ -89881,7 +90884,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.252486,
+    "unitLng": 107.010436,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bau-Bau",
@@ -90140,7 +91146,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -5.457048,
+    "unitLng": 122.609497,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Barabai",
@@ -90399,7 +91408,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -2.577062,
+    "unitLng": 115.389212,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Banyuwangi",
@@ -90658,7 +91670,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.210168,
+    "unitLng": 114.378047,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Banten Utr",
@@ -90917,7 +91932,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -6.115758,
+    "unitLng": 106.153102,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Banten Slt",
@@ -91176,7 +92194,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.35496,
+    "unitLng": 106.24913,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bangka",
@@ -91435,7 +92456,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 7
       }
-    ]
+    ],
+    "unitLat": -2.100008,
+    "unitLng": 106.111752,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bandung",
@@ -91694,7 +92718,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.949054,
+    "unitLng": 107.611455,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bandengan",
@@ -91953,7 +92980,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -6.136187,
+    "unitLng": 106.797121,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Banda Aceh",
@@ -92212,7 +93242,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": 5.557273,
+    "unitLng": 95.315809,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Balikpapan",
@@ -92471,7 +93504,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -1.276455,
+    "unitLng": 116.833857,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Bali Utara",
@@ -92730,7 +93766,10 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -8.117865,
+    "unitLng": 115.085337,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   },
   {
     "unit": "UP3 Ambon",
@@ -92989,6 +94028,9 @@ window.evGeoPriorityUnitsData = [
         "type": "AC",
         "powerKw": 22
       }
-    ]
+    ],
+    "unitLat": -3.663919,
+    "unitLng": 128.203944,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   }
 ];

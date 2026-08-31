@@ -5009,6 +5009,11 @@ function evPointToLatLng(x, y) {
 }
 
 function evUnitLatLng(item) {
+  const lat = numberFromImport(item?.unitLat, NaN);
+  const lng = numberFromImport(item?.unitLng, NaN);
+  if (Number.isFinite(lat) && Number.isFinite(lng)) {
+    return [lat, lng];
+  }
   return evPointToLatLng(item.mapX, item.mapY);
 }
 
