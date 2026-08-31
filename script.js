@@ -366,7 +366,9 @@ function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
     performanceData,
     performanceOfficialScore,
     performancePeriodData,
+    performanceDataPeriodKey,
     performanceScoreByPeriod,
+    performanceOfficialScoreKeys: [...performanceOfficialScoreKeys],
     performanceStatusByPeriod,
     policyPrepData,
     businessExcellenceData,
@@ -460,7 +462,10 @@ let performanceData = [
 ];
 let performanceOfficialScore = NaN;
 let performancePeriodData = {};
+let performanceDataPeriodKey = "2026-06";
 let performanceScoreByPeriod = {};
+let performanceOfficialScoreKeys = new Set(Object.keys(performanceScoreOverrides));
+let computedPerformanceScoreByPeriod = {};
 let performanceStatusByPeriod = {};
 
 let policyPrepData = [
@@ -716,8 +721,37 @@ function rowStrategyPeriodKey(row) {
 function officialPerformanceScoreForPeriod(key = strategyPeriodKey()) {
   const overrideScore = performanceScoreOverrides[key];
   if (Number.isFinite(overrideScore)) return overrideScore;
+  if (!performanceOfficialScoreKeys.has(key)) return NaN;
   const periodScore = numberFromImport(performanceScoreByPeriod?.[key], NaN);
   return Number.isFinite(periodScore) ? periodScore : NaN;
+}
+
+function completePerformanceScoreRows(rows = []) {
+  const indicatorRows = rows.filter((row) => String(row?.no || "").trim());
+  if (indicatorRows.length < MIN_PERFORMANCE_MAIN_INDICATORS) return [];
+  const rowsWithScore = indicatorRows.filter((row) => Number.isFinite(numberFromImport(row?.score, NaN)));
+  return rowsWithScore.length >= MIN_PERFORMANCE_MAIN_INDICATORS ? rowsWithScore : [];
+}
+
+function hasTrustedPerformanceMeasurement(key = strategyPeriodKey(), rows) {
+  const periodRows = rows || performanceRowsForPeriodKey(key);
+  return Number.isFinite(officialPerformanceScoreForPeriod(key)) ||
+    completePerformanceScoreRows(periodRows).length >= MIN_PERFORMANCE_MAIN_INDICATORS;
+}
+
+function emptyPerformanceStatusSummary() {
+  return {
+    total: MIN_PERFORMANCE_MAIN_INDICATORS,
+    green: 0,
+    amber: 0,
+    red: MIN_PERFORMANCE_MAIN_INDICATORS,
+    gray: 0
+  };
+}
+
+function performanceRowsForPeriodKey(key = strategyPeriodKey()) {
+  if (Object.keys(performancePeriodData || {}).length) return performancePeriodData[key] || [];
+  return key === performanceDataPeriodKey ? performanceData : [];
 }
 
 function validPerformancePeriodKeys() {
@@ -726,11 +760,7 @@ function validPerformancePeriodKeys() {
   const dataKeys = Object.entries(performancePeriodData || {})
     .filter(([key, rows]) => {
       if (!/^\d{4}-\d{2}$/.test(key) || !Array.isArray(rows)) return false;
-      return rows.some((row) => (
-        Number.isFinite(numberFromImport(row?.score, NaN)) ||
-        Number.isFinite(numberFromImport(row?.achievement, NaN)) ||
-        Number.isFinite(numberFromImport(row?.realization, NaN))
-      ));
+      return completePerformanceScoreRows(rows).length >= MIN_PERFORMANCE_MAIN_INDICATORS;
     })
     .map(([key]) => key);
 
@@ -740,6 +770,9 @@ function validPerformancePeriodKeys() {
 function applyLatestPerformancePeriod() {
   const latestKey = validPerformancePeriodKeys().at(-1);
   if (!latestKey) return false;
+  if (!Object.keys(performancePeriodData || {}).length) {
+    performanceDataPeriodKey = latestKey;
+  }
   selectedStrategyPeriod = {
     year: Number(latestKey.slice(0, 4)),
     month: Number(latestKey.slice(5, 7)) - 1
@@ -750,9 +783,17 @@ function applyLatestPerformancePeriod() {
 function applySelectedPerformancePeriod() {
   const activeKey = strategyPeriodKey();
   const availableKeys = Object.keys(performancePeriodData || {}).sort();
-  if (!availableKeys.length) return false;
-  const selectedRows = performancePeriodData[activeKey] || performancePeriodData[availableKeys.at(-1)];
-  if (!selectedRows?.length) return false;
+  if (!availableKeys.length) {
+    if (activeKey === performanceDataPeriodKey) return true;
+    performanceOfficialScore = NaN;
+    return false;
+  }
+  const selectedRows = performancePeriodData[activeKey];
+  if (!selectedRows?.length) {
+    performanceData = [];
+    performanceOfficialScore = NaN;
+    return false;
+  }
   performanceData = selectedRows;
   const selectedScore = officialPerformanceScoreForPeriod(activeKey);
   if (Number.isFinite(selectedScore)) {
@@ -790,24 +831,28 @@ function renderPerformanceRows() {
   const target = document.getElementById("performanceRows");
   if (!target) return;
   const score = calculatePerformanceScore();
+  const rowsForDisplay = performanceRowsForPeriodKey();
+  const rowsHtml = rowsForDisplay.length
+    ? rowsForDisplay
+        .map((row) => `
+          <tr class="${row.no ? "performance-main-row" : "performance-sub-row"}">
+            <td>${row.no || ""}</td>
+            <td>${row.no ? `<strong>${row.no}. ${row.indicator || ""}</strong>` : row.indicator || ""}</td>
+            <td>${row.unit || ""}</td>
+            <td>${smartLabel(row.weight, "plain")}</td>
+            <td>${smartLabel(row.target)}</td>
+            <td>${smartLabel(row.targetPeriod)}</td>
+            <td>${smartLabel(row.realization)}</td>
+            <td>${row.achievement === "" || row.achievement === undefined ? "" : smartLabel(row.achievement, "percent")}</td>
+            <td>${smartLabel(row.score, "plain")}</td>
+            <td><span class="status-dot ${performanceDotClass(row.status)}"></span></td>
+          </tr>
+        `)
+        .join("")
+    : `<tr><td colspan="10" class="empty-table-note">Data kinerja untuk periode ini belum tersedia.</td></tr>`;
   target.innerHTML = `
     <tr class="performance-group-row"><td colspan="10"></td></tr>
-    ${performanceData
-      .map((row) => `
-        <tr class="${row.no ? "performance-main-row" : "performance-sub-row"}">
-          <td>${row.no || ""}</td>
-          <td>${row.no ? `<strong>${row.no}. ${row.indicator || ""}</strong>` : row.indicator || ""}</td>
-          <td>${row.unit || ""}</td>
-          <td>${smartLabel(row.weight, "plain")}</td>
-          <td>${smartLabel(row.target)}</td>
-          <td>${smartLabel(row.targetPeriod)}</td>
-          <td>${smartLabel(row.realization)}</td>
-          <td>${row.achievement === "" || row.achievement === undefined ? "" : smartLabel(row.achievement, "percent")}</td>
-          <td>${smartLabel(row.score, "plain")}</td>
-          <td><span class="status-dot ${performanceDotClass(row.status)}"></span></td>
-        </tr>
-      `)
-      .join("")}
+    ${rowsHtml}
     <tr class="performance-total-row">
       <td></td>
       <td><strong>Total</strong></td>
@@ -2037,14 +2082,15 @@ function summarizePerformanceRows(rows = []) {
 }
 
 function calculatePerformanceScoreFromRows(rows = []) {
-  const indicatorRows = rows.filter((row) => String(row?.no || "").trim());
+  const indicatorRows = completePerformanceScoreRows(rows);
   const scores = indicatorRows
     .map((row) => numberFromImport(row?.score, NaN))
     .filter((score) => Number.isFinite(score));
-  return scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : NaN;
+  return scores.length ? scores.reduce((sum, score) => sum + score, 0) : NaN;
 }
 
 function refreshPerformanceMetricsByPeriodFromRows() {
+  computedPerformanceScoreByPeriod = {};
   const grouped = Object.keys(performancePeriodData || {}).length
     ? performancePeriodData
     : { [strategyPeriodKey()]: performanceData };
@@ -2056,12 +2102,17 @@ function refreshPerformanceMetricsByPeriodFromRows() {
     const score = calculatePerformanceScoreFromRows(rows);
     const officialScore = officialPerformanceScoreForPeriod(key);
     if (Number.isFinite(score) && !Number.isFinite(officialScore)) {
-      performanceScoreByPeriod[key] = score;
+      computedPerformanceScoreByPeriod[key] = score;
     }
   });
 }
 
 function getPerformanceStatusSummary() {
+  const activeKey = strategyPeriodKey();
+  const periodRows = performanceRowsForPeriodKey(activeKey);
+  if (!hasTrustedPerformanceMeasurement(activeKey, periodRows)) {
+    return emptyPerformanceStatusSummary();
+  }
   const periodSummary = performanceStatusByPeriod?.[strategyPeriodKey()];
   if (periodSummary && typeof periodSummary === "object") {
     const summary = {
@@ -2916,9 +2967,14 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
-  const periodScore = officialPerformanceScoreForPeriod(strategyPeriodKey());
+  const activeKey = strategyPeriodKey();
+  const activeRows = performanceRowsForPeriodKey(activeKey);
+  const periodScore = officialPerformanceScoreForPeriod(activeKey);
   if (Number.isFinite(periodScore)) return periodScore;
-  const rkmScore = calculatePerformanceScoreFromRows(performanceData);
+  if (!hasTrustedPerformanceMeasurement(activeKey, activeRows)) return 0;
+  const computedPeriodScore = numberFromImport(computedPerformanceScoreByPeriod?.[activeKey], NaN);
+  if (Number.isFinite(computedPeriodScore)) return computedPeriodScore;
+  const rkmScore = calculatePerformanceScoreFromRows(activeRows);
   if (Number.isFinite(rkmScore)) return rkmScore;
   if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
     return numberFromImport(performanceOfficialScore, 0);
@@ -3195,6 +3251,7 @@ function importPerformanceSheet(workbook) {
 
   performancePeriodData = Object.keys(grouped).length ? grouped : {};
   performanceData = activeRows;
+  if (!Object.keys(performancePeriodData || {}).length) performanceDataPeriodKey = strategyPeriodKey();
   refreshPerformanceMetricsByPeriodFromRows();
   return importedRows.length;
 }
@@ -3203,6 +3260,7 @@ function importStrategySummarySheet(workbook) {
   const rows = sheetRows(workbook, "09_Ringkasan");
   if (!rows.length) return 0;
   let imported = 0;
+  performanceOfficialScoreKeys = new Set(Object.keys(performanceScoreOverrides));
   performanceStatusByPeriod = {};
   rows.forEach((row) => {
     const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
@@ -3212,7 +3270,10 @@ function importStrategySummarySheet(workbook) {
     const numericValue = numberFromImport(value, NaN);
     if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "" && Number.isFinite(numericValue)) {
       const key = rowStrategyPeriodKey(row);
-      if (key) performanceScoreByPeriod[key] = numericValue;
+      if (key) {
+        performanceScoreByPeriod[key] = numericValue;
+        performanceOfficialScoreKeys.add(key);
+      }
       if (!key || key === strategyPeriodKey()) {
         performanceOfficialScore = numericValue;
       }
@@ -3526,8 +3587,14 @@ function applyStrategyDataSource(source) {
     performancePeriodData = source.performancePeriodData;
     applySelectedPerformancePeriod();
   }
+  if (source.performanceDataPeriodKey && /^\d{4}-\d{2}$/.test(String(source.performanceDataPeriodKey))) {
+    performanceDataPeriodKey = String(source.performanceDataPeriodKey);
+  }
   if (source.performanceScoreByPeriod && typeof source.performanceScoreByPeriod === "object") {
     performanceScoreByPeriod = source.performanceScoreByPeriod;
+    performanceOfficialScoreKeys = Array.isArray(source.performanceOfficialScoreKeys)
+      ? new Set([...Object.keys(performanceScoreOverrides), ...source.performanceOfficialScoreKeys])
+      : new Set(Object.keys(performanceScoreOverrides));
     applySelectedPerformancePeriod();
   }
   if (source.performanceStatusByPeriod && typeof source.performanceStatusByPeriod === "object") {
