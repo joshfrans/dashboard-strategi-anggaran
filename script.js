@@ -834,6 +834,25 @@ function renderPerformanceRows() {
   `;
 }
 
+function refreshOpenPerformanceDetail() {
+  const overlay = document.getElementById("detailOverlay");
+  const eyebrow = document.getElementById("detailEyebrow");
+  const subtitle = document.getElementById("detailSubtitle");
+  const body = document.getElementById("detailBody");
+  if (!overlay || overlay.hidden || !body) return;
+  if (!String(eyebrow?.textContent || "").toLowerCase().includes("monitoring kinerja")) return;
+  applySelectedPerformancePeriod();
+  renderPerformanceRows();
+  updatePerformanceStatusPanel();
+  updateStrategyPeriodLabels();
+  if (subtitle) {
+    subtitle.textContent = `Menampilkan detail NKO ${strategyPeriodUntilLabel()} berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.`;
+    subtitle.hidden = false;
+  }
+  body.innerHTML = renderDetailPerformance();
+  if (window.lucide) window.lucide.createIcons();
+}
+
 function renderPolicyPrepRows() {
   const target = document.getElementById("policyPrepRows");
   if (!target) return;
@@ -4286,7 +4305,7 @@ function setupPeriodPicker() {
   const monthGrid = document.getElementById("monthGrid");
   const prevYear = document.getElementById("prevYear");
   const nextYear = document.getElementById("nextYear");
-  const performanceTrigger = document.querySelector(".performance-period-chip");
+  let activePeriodAnchor = trigger;
   let selectedMonth = selectedStrategyPeriod.month;
   let selectedYear = selectedStrategyPeriod.year;
 
@@ -4304,8 +4323,8 @@ function setupPeriodPicker() {
       .join("");
   }
 
-  function positionPicker() {
-    const rect = trigger.getBoundingClientRect();
+  function positionPicker(anchor = activePeriodAnchor || trigger) {
+    const rect = anchor.getBoundingClientRect();
     const pickerWidth = Math.min(242, window.innerWidth - 24);
     const left = Math.min(Math.max(12, rect.left), window.innerWidth - pickerWidth - 12);
     const arrowLeft = Math.min(Math.max(24, rect.left + rect.width / 2 - left - 6), pickerWidth - 24);
@@ -4316,8 +4335,12 @@ function setupPeriodPicker() {
     picker.style.setProperty("--period-picker-arrow-left", `${arrowLeft}px`);
   }
 
-  function openPicker() {
-    positionPicker();
+  function openPicker(anchor = trigger) {
+    activePeriodAnchor = anchor;
+    selectedMonth = selectedStrategyPeriod.month;
+    selectedYear = selectedStrategyPeriod.year;
+    renderMonths();
+    positionPicker(anchor);
     picker.hidden = false;
     trigger.setAttribute("aria-expanded", "true");
   }
@@ -4327,13 +4350,24 @@ function setupPeriodPicker() {
     trigger.setAttribute("aria-expanded", "false");
   }
 
-  trigger.addEventListener("click", (event) => {
-    event.stopPropagation();
-    if (picker.hidden) {
-      openPicker();
+  function togglePicker(anchor) {
+    if (picker.hidden || activePeriodAnchor !== anchor) {
+      openPicker(anchor);
     } else {
       closePicker();
     }
+  }
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    togglePicker(trigger);
+  });
+
+  document.addEventListener("click", (event) => {
+    const periodChip = event.target.closest(".performance-period-chip");
+    if (!periodChip || picker.contains(event.target)) return;
+    event.stopPropagation();
+    togglePicker(periodChip);
   });
 
   prevYear?.addEventListener("click", () => {
@@ -4353,15 +4387,12 @@ function setupPeriodPicker() {
     renderMonths();
     closePicker();
     applyStrategyPeriod(selectedMonth, selectedYear);
-  });
-
-  performanceTrigger?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    trigger.click();
+    refreshOpenPerformanceDetail();
   });
 
   document.addEventListener("click", (event) => {
-    if (!picker.hidden && !picker.contains(event.target) && !trigger.contains(event.target)) {
+    const clickedAnchor = event.target.closest("#periodTrigger, .performance-period-chip");
+    if (!picker.hidden && !picker.contains(event.target) && !clickedAnchor) {
       closePicker();
     }
   });
