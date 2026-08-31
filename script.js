@@ -577,20 +577,24 @@ function performanceDotClass(status) {
   return "done-dot";
 }
 
-function performanceStatusBucket(row) {
+function performanceIndicatorNko(row) {
   const achievement = numberFromImport(row?.achievement, NaN);
-  if (Number.isFinite(achievement)) {
-    const achievementRate = achievement > 2 ? achievement / 100 : achievement;
-    if (achievementRate >= 1) return "green";
-    if (achievementRate >= 0.95) return "amber";
-    return "red";
-  }
+  if (Number.isFinite(achievement)) return achievement <= 2 ? achievement * 100 : achievement;
+
   const score = numberFromImport(row?.score, NaN);
   const weight = numberFromImport(row?.weight, NaN);
   if (Number.isFinite(score) && Number.isFinite(weight) && weight > 0) {
-    const achievementRate = score / weight;
-    if (achievementRate >= 1) return "green";
-    if (achievementRate >= 0.95) return "amber";
+    return score / weight * 100;
+  }
+
+  return NaN;
+}
+
+function performanceStatusBucket(row) {
+  const nko = performanceIndicatorNko(row);
+  if (Number.isFinite(nko)) {
+    if (nko >= 100) return "green";
+    if (nko >= 95) return "amber";
     return "red";
   }
   const normalized = String(row?.status || "").toLowerCase();
@@ -606,7 +610,7 @@ function normalizePerformanceStatusValue(value) {
   if (normalized.includes("hampir") || normalized.includes("kuning")) return "Hampir Tercapai";
   if (normalized.includes("perlu") || normalized.includes("merah") || normalized.includes("tidak")) return "Perlu Peningkatan";
   if (normalized === "tercapai" || normalized.includes("hijau")) return "Tercapai";
-  if (normalized.includes("belum")) return "Belum Diukur";
+  if (normalized.includes("belum")) return "Belum dilakukan pengukuran";
   return "";
 }
 
@@ -630,15 +634,13 @@ function calculatedScoreFromValues(weight, achievement, score) {
 }
 
 function derivePerformanceStatus(rawStatus, achievement, score, weight) {
-  const normalizedStatus = normalizePerformanceStatusValue(rawStatus);
-  if (normalizedStatus && normalizedStatus !== "Tercapai") return normalizedStatus;
-  const bucket = performanceStatusBucket({ achievement, score, weight, status: normalizedStatus || rawStatus });
+  const bucket = performanceStatusBucket({ achievement, score, weight, status: rawStatus });
   return {
     green: "Tercapai",
     amber: "Hampir Tercapai",
     red: "Perlu Peningkatan",
-    gray: "Belum Diukur"
-  }[bucket] || "Belum Diukur";
+    gray: normalizePerformanceStatusValue(rawStatus) || "Belum dilakukan pengukuran"
+  }[bucket] || "Belum dilakukan pengukuran";
 }
 
 function performanceScoreStatus(score) {
@@ -2773,8 +2775,8 @@ function updatePerformanceStatusPanel() {
   grid.innerHTML = `
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
-    <div class="status-red"><strong>${attentionCount}</strong><span>Tidak Tercapai</span></div>
-    <div class="status-gray"><strong>${summary.gray}</strong><span>Belum Diukur</span></div>
+    <div class="status-red"><strong>${attentionCount}</strong><span>Perlu Peningkatan</span></div>
+    <div class="status-gray"><strong>${summary.gray}</strong><span>Belum dilakukan pengukuran</span></div>
   `;
 }
 
