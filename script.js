@@ -2776,7 +2776,6 @@ function updatePerformanceStatusPanel() {
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
     <div class="status-red"><strong>${attentionCount}</strong><span>Perlu Peningkatan</span></div>
-    <div class="status-gray"><strong>${summary.gray}</strong><span>Belum dilakukan pengukuran</span></div>
   `;
 }
 
