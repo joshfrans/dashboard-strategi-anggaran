@@ -723,19 +723,18 @@ function officialPerformanceScoreForPeriod(key = strategyPeriodKey()) {
 function validPerformancePeriodKeys() {
   const scoreKeys = Object.keys(performanceScoreByPeriod || {})
     .filter((key) => /^\d{4}-\d{2}$/.test(key) && Number.isFinite(officialPerformanceScoreForPeriod(key)));
-  if (scoreKeys.length) return [...new Set(scoreKeys)].sort();
-
-  return Object.entries(performancePeriodData || {})
+  const dataKeys = Object.entries(performancePeriodData || {})
     .filter(([key, rows]) => {
       if (!/^\d{4}-\d{2}$/.test(key) || !Array.isArray(rows)) return false;
       return rows.some((row) => (
         Number.isFinite(numberFromImport(row?.score, NaN)) ||
-        Number.isFinite(numberFromImport(row?.realization, NaN)) ||
-        String(row?.status || "").trim()
+        Number.isFinite(numberFromImport(row?.achievement, NaN)) ||
+        Number.isFinite(numberFromImport(row?.realization, NaN))
       ));
     })
-    .map(([key]) => key)
-    .sort();
+    .map(([key]) => key);
+
+  return [...new Set([...scoreKeys, ...dataKeys])].sort();
 }
 
 function applyLatestPerformancePeriod() {
@@ -5386,6 +5385,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderExecutiveOverview();
   if (!loadLocalEvDataSource()) renderEvInfrastructure();
   await loadStrategyDataSource();
+  applyLatestPerformancePeriod();
   renderStrategyDashboard();
   setupInfoPopover("entityTrigger", "entityPopover");
   setupInfoPopover("policyTypeTrigger", "policyTypePopover");
