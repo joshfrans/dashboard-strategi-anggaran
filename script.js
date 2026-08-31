@@ -433,6 +433,10 @@ const policyStatusLabel = {
 
 const MIN_PERFORMANCE_MAIN_INDICATORS = 10;
 const performanceOfficialWeight = 100;
+const performanceScoreOverrides = {
+  "2026-06": 106.84,
+  "2026-07": 103.94
+};
 
 let performanceData = [
   { no: 1, indicator: "Efisiensi Biaya", unit: "", weight: 20, target: "", targetPeriod: "", realization: "", achievement: "", score: 22, status: "Tercapai" },
@@ -714,6 +718,10 @@ function applySelectedPerformancePeriod() {
   const selectedRows = performancePeriodData[activeKey] || performancePeriodData[availableKeys.at(-1)];
   if (!selectedRows?.length) return false;
   performanceData = selectedRows;
+  if (Number.isFinite(performanceScoreOverrides[activeKey])) {
+    performanceOfficialScore = performanceScoreOverrides[activeKey];
+    return true;
+  }
   const selectedScore = performanceScoreByPeriod?.[activeKey];
   if (selectedScore !== undefined && selectedScore !== "") {
     performanceOfficialScore = numberFromImport(selectedScore, NaN);
@@ -2853,6 +2861,8 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
+  const overrideScore = performanceScoreOverrides[strategyPeriodKey()];
+  if (Number.isFinite(overrideScore)) return overrideScore;
   const rkmScore = calculatePerformanceScoreFromRows(performanceData);
   if (Number.isFinite(rkmScore)) return rkmScore;
   const periodScore = performanceScoreByPeriod?.[strategyPeriodKey()];
