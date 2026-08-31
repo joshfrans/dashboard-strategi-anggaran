@@ -718,6 +718,34 @@ function officialPerformanceScoreForPeriod(key = strategyPeriodKey()) {
   return Number.isFinite(periodScore) ? periodScore : NaN;
 }
 
+function validPerformancePeriodKeys() {
+  const scoreKeys = Object.keys(performanceScoreByPeriod || {})
+    .filter((key) => /^\d{4}-\d{2}$/.test(key) && Number.isFinite(officialPerformanceScoreForPeriod(key)));
+  if (scoreKeys.length) return [...new Set(scoreKeys)].sort();
+
+  return Object.entries(performancePeriodData || {})
+    .filter(([key, rows]) => {
+      if (!/^\d{4}-\d{2}$/.test(key) || !Array.isArray(rows)) return false;
+      return rows.some((row) => (
+        Number.isFinite(numberFromImport(row?.score, NaN)) ||
+        Number.isFinite(numberFromImport(row?.realization, NaN)) ||
+        String(row?.status || "").trim()
+      ));
+    })
+    .map(([key]) => key)
+    .sort();
+}
+
+function applyLatestPerformancePeriod() {
+  const latestKey = validPerformancePeriodKeys().at(-1);
+  if (!latestKey) return false;
+  selectedStrategyPeriod = {
+    year: Number(latestKey.slice(0, 4)),
+    month: Number(latestKey.slice(5, 7)) - 1
+  };
+  return applySelectedPerformancePeriod();
+}
+
 function applySelectedPerformancePeriod() {
   const activeKey = strategyPeriodKey();
   const availableKeys = Object.keys(performancePeriodData || {}).sort();
@@ -2751,6 +2779,10 @@ function setupDetailModal() {
       } else if (type === "performance") {
         eyebrow.textContent = "Monitoring Kinerja";
         title.textContent = "Detail Monitoring Kinerja Divisi Umum dan Aset Properti";
+        applySelectedPerformancePeriod();
+        renderPerformanceRows();
+        updatePerformanceStatusPanel();
+        updateStrategyPeriodLabels();
         subtitle.textContent = `Menampilkan detail NKO ${strategyPeriodUntilLabel()} berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.`;
         body.innerHTML = renderDetailPerformance();
       } else if (type === "business") {
@@ -3414,6 +3446,7 @@ function applyStrategyWorkbook(workbook) {
     aoKantorPusat: importAoOfficeSheet(workbook)
   };
   refreshPerformanceMetricsByPeriodFromRows();
+  applyLatestPerformancePeriod();
   const hasData = Object.values(imported).some((count) => Number(count) > 0);
   return { imported, hasData };
 }
@@ -3495,6 +3528,7 @@ function applyStrategyDataSource(source) {
   if (source.aoKorporat && typeof source.aoKorporat === "object") Object.assign(aoCorporateData, normalizeAoSource(source.aoKorporat, aoCorporateData));
   if (source.aoOfficeData && typeof source.aoOfficeData === "object") aoOfficeData = { ...aoOfficeData, ...normalizeAoSource(source.aoOfficeData, aoOfficeData) };
   if (source.aoKantorPusat && typeof source.aoKantorPusat === "object") aoOfficeData = { ...aoOfficeData, ...normalizeAoSource(source.aoKantorPusat, aoOfficeData) };
+  applyLatestPerformancePeriod();
 
   return true;
 }
