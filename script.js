@@ -711,6 +711,13 @@ function rowStrategyPeriodKey(row) {
   return strategyPeriodKey(monthNumber - 1, year);
 }
 
+function officialPerformanceScoreForPeriod(key = strategyPeriodKey()) {
+  const overrideScore = performanceScoreOverrides[key];
+  if (Number.isFinite(overrideScore)) return overrideScore;
+  const periodScore = numberFromImport(performanceScoreByPeriod?.[key], NaN);
+  return Number.isFinite(periodScore) ? periodScore : NaN;
+}
+
 function applySelectedPerformancePeriod() {
   const activeKey = strategyPeriodKey();
   const availableKeys = Object.keys(performancePeriodData || {}).sort();
@@ -718,13 +725,9 @@ function applySelectedPerformancePeriod() {
   const selectedRows = performancePeriodData[activeKey] || performancePeriodData[availableKeys.at(-1)];
   if (!selectedRows?.length) return false;
   performanceData = selectedRows;
-  if (Number.isFinite(performanceScoreOverrides[activeKey])) {
-    performanceOfficialScore = performanceScoreOverrides[activeKey];
-    return true;
-  }
-  const selectedScore = performanceScoreByPeriod?.[activeKey];
-  if (selectedScore !== undefined && selectedScore !== "") {
-    performanceOfficialScore = numberFromImport(selectedScore, NaN);
+  const selectedScore = officialPerformanceScoreForPeriod(activeKey);
+  if (Number.isFinite(selectedScore)) {
+    performanceOfficialScore = selectedScore;
   }
   return true;
 }
@@ -2003,7 +2006,8 @@ function refreshPerformanceMetricsByPeriodFromRows() {
       performanceStatusByPeriod[key] = summary;
     }
     const score = calculatePerformanceScoreFromRows(rows);
-    if (Number.isFinite(score)) {
+    const officialScore = officialPerformanceScoreForPeriod(key);
+    if (Number.isFinite(score) && !Number.isFinite(officialScore)) {
       performanceScoreByPeriod[key] = score;
     }
   });
@@ -2861,14 +2865,10 @@ function numberFromImport(value, fallback = 0) {
 }
 
 function calculatePerformanceScore() {
-  const overrideScore = performanceScoreOverrides[strategyPeriodKey()];
-  if (Number.isFinite(overrideScore)) return overrideScore;
+  const periodScore = officialPerformanceScoreForPeriod(strategyPeriodKey());
+  if (Number.isFinite(periodScore)) return periodScore;
   const rkmScore = calculatePerformanceScoreFromRows(performanceData);
   if (Number.isFinite(rkmScore)) return rkmScore;
-  const periodScore = performanceScoreByPeriod?.[strategyPeriodKey()];
-  if (periodScore !== undefined && periodScore !== "" && Number.isFinite(numberFromImport(periodScore, NaN))) {
-    return numberFromImport(periodScore, 0);
-  }
   if (Number.isFinite(numberFromImport(performanceOfficialScore, NaN))) {
     return numberFromImport(performanceOfficialScore, 0);
   }
