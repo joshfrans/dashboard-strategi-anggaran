@@ -5191,7 +5191,7 @@ function renderEvStaticMap(index = 0) {
       <g class="ev-map-pin ev-map-spklu-pin" transform="translate(${spklu.x.toFixed(1)} ${spklu.y.toFixed(1)})" filter="url(#evMarkerShadow)">
         <path d="M0-20c10 0 17.5 7.1 17.5 16.8C17.5 8.3 0 22 0 22S-17.5 8.3-17.5-3.2C-17.5-12.9-10-20 0-20z" fill="#1467d8" stroke="#ffffff" stroke-width="3" />
         <circle r="6" fill="#ffffff" opacity=".94" />
-        <text y="3.2" text-anchor="middle" fill="#1467d8" font-size="8.5" font-weight="900">S</text>
+        <text y="4.2" text-anchor="middle" fill="#1467d8" font-size="11" font-weight="900">⚡</text>
       </g>
       <g class="ev-map-spklu-tag" transform="translate(${(spklu.x + 18).toFixed(1)} ${(spklu.y - 26).toFixed(1)})">
         <rect width="64" height="22" rx="11" fill="#ffffff" />
@@ -5218,7 +5218,8 @@ function renderEvStaticMap(index = 0) {
         <rect width="190" height="68" rx="11" fill="#ffffff" opacity=".94" />
         <circle cx="16" cy="18" r="5" fill="${tone}" stroke="#ffffff" stroke-width="2" />
         <text x="28" y="22">Unit dipilih</text>
-        <circle cx="16" cy="39" r="6" fill="#1467d8" stroke="#ffffff" stroke-width="2" />
+        <rect x="9" y="32" width="14" height="14" rx="4" fill="#ff8a00" stroke="#ffffff" stroke-width="2" />
+        <text x="16" y="43" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="900">⚡</text>
         <text x="28" y="43">SPKLU terdekat</text>
         <circle cx="16" cy="58" r="4" fill="#f59e0b" stroke="#ffffff" stroke-width="2" />
         <text x="28" y="62">Unit prioritas lain</text>
@@ -5351,9 +5352,9 @@ function initEvGeoMap() {
     const marker = L.marker(evSpkluLatLng(row), {
       icon: L.divIcon({
         className: "ev-spklu-triangle-div-icon",
-        html: '<span class="ev-spklu-triangle-marker"></span>',
-        iconAnchor: [7, 7],
-        iconSize: [14, 14]
+        html: '<span class="ev-spklu-triangle-marker" aria-hidden="true"></span>',
+        iconAnchor: [11, 11],
+        iconSize: [22, 22]
       })
     }).addTo(map);
     marker.bindTooltip(`SPKLU: ${row.nearestSpklu}`, { direction: "top", offset: [0, -6] });
