@@ -4948,7 +4948,7 @@ function renderEvInfrastructure() {
                 <input id="evUnitSearch" type="search" placeholder="Cari unit, SPKLU, atau kategori jarak" autocomplete="off">
               </label>
               <div class="ev-map-legend-strip" aria-label="Keterangan marker maps">
-                <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+                <span><i class="ev-legend-office-icon"></i> Unit Pelaksana</span>
                 <span><i class="ev-legend-ulp-dot"></i> ULP</span>
                 <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
                 <span><i class="ev-legend-selected"></i> Dipilih</span>
@@ -5011,23 +5011,60 @@ function evPointToLatLng(x, y) {
   return [lat, lon];
 }
 
+function evIsPlausibleIndonesiaLatLng(lat, lng) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+  if (Math.abs(lat) < 0.0001 && Math.abs(lng) < 0.0001) return false;
+  const landBands = [
+    { minLat: -6.6, maxLat: 6.2, minLng: 94.0, maxLng: 108.8 },
+    { minLat: -8.9, maxLat: -5.4, minLng: 105.0, maxLng: 116.2 },
+    { minLat: -4.7, maxLat: 4.6, minLng: 108.0, maxLng: 119.6 },
+    { minLat: -6.3, maxLat: 2.6, minLng: 118.0, maxLng: 126.5 },
+    { minLat: -11.0, maxLat: -7.4, minLng: 115.0, maxLng: 126.5 },
+    { minLat: -8.7, maxLat: 2.5, minLng: 124.0, maxLng: 135.8 },
+    { minLat: -9.8, maxLat: 1.3, minLng: 130.0, maxLng: 141.8 },
+    { minLat: 2.0, maxLat: 5.2, minLng: 107.0, maxLng: 109.8 }
+  ];
+  return landBands.some((band) =>
+    lat >= band.minLat && lat <= band.maxLat && lng >= band.minLng && lng <= band.maxLng
+  );
+}
+
+function evLatLngDistanceKm(a, b) {
+  if (!a || !b) return Infinity;
+  const toRad = (value) => (Number(value) * Math.PI) / 180;
+  const earthKm = 6371;
+  const dLat = toRad(b[0] - a[0]);
+  const dLng = toRad(b[1] - a[1]);
+  const lat1 = toRad(a[0]);
+  const lat2 = toRad(b[0]);
+  const hav = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * earthKm * Math.asin(Math.sqrt(hav));
+}
+
 function evUnitLatLng(item) {
   const lat = numberFromImport(item?.unitLat, NaN);
   const lng = numberFromImport(item?.unitLng, NaN);
-  if (Number.isFinite(lat) && Number.isFinite(lng)) {
+  const fallback = evPointToLatLng(item.mapX, item.mapY);
+  if (evIsPlausibleIndonesiaLatLng(lat, lng) && evLatLngDistanceKm([lat, lng], fallback) <= 900) {
     return [lat, lng];
   }
-  return evPointToLatLng(item.mapX, item.mapY);
+  return fallback;
 }
 
 function evSpkluLatLng(item) {
+  const firstSpklu = evSpkluList(item)[0] || {};
+  const lat = numberFromImport(item?.nearestSpkluLat ?? firstSpklu.lat, NaN);
+  const lng = numberFromImport(item?.nearestSpkluLng ?? firstSpklu.lng, NaN);
+  if (evIsPlausibleIndonesiaLatLng(lat, lng)) {
+    return [lat, lng];
+  }
   return evPointToLatLng(item.spkluX, item.spkluY);
 }
 
 function evUlpLatLng(item) {
   const lat = numberFromImport(item?.unitLat, NaN);
   const lng = numberFromImport(item?.unitLng, NaN);
-  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+  return evIsPlausibleIndonesiaLatLng(lat, lng) ? [lat, lng] : null;
 }
 
 function evEscapeHtml(value) {
@@ -5329,7 +5366,7 @@ function initEvGeoMap() {
     const div = L.DomUtil.create("div", "ev-map-leaflet-legend");
     div.innerHTML = `
       <strong>Keterangan Maps</strong>
-      <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+      <span><i class="ev-legend-office-icon"></i> Unit Pelaksana</span>
       <span><i class="ev-legend-ulp-dot"></i> ULP</span>
       <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
       <span><i class="ev-legend-selected"></i> Dipilih</span>
@@ -5374,14 +5411,15 @@ function initEvGeoMap() {
     .filter(Boolean);
 
   const unitMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
-    const marker = L.circleMarker(evUnitLatLng(row), {
-      radius: 6,
-      color: "#ffffff",
-      fillColor: evMapTone(row.category),
-      fillOpacity: 0.95,
-      weight: 2
+    const marker = L.marker(evUnitLatLng(row), {
+      icon: L.divIcon({
+        className: "ev-unit-office-div-icon",
+        html: `<span class="ev-unit-office-marker" style="--unit-tone:${evMapTone(row.category)}" aria-hidden="true"></span>`,
+        iconAnchor: [10, 10],
+        iconSize: [20, 20]
+      })
     }).addTo(map);
-    marker.bindTooltip(row.unit, { direction: "top", offset: [0, -6] });
+    marker.bindTooltip(row.unit, { direction: "top", offset: [0, -8] });
     marker.on("click", () => select(rowIndex, true, true));
     return marker;
   });
@@ -5412,14 +5450,10 @@ function initEvGeoMap() {
     renderEvMapDetail(item);
 
     unitMarkers.forEach((marker, markerIndex) => {
-      const row = evGeoPriorityUnits[markerIndex];
-      marker.setStyle({
-        radius: markerIndex === index ? 9 : 5.5,
-        color: markerIndex === index ? "#06164c" : "#ffffff",
-        fillColor: evMapTone(row.category),
-        fillOpacity: markerIndex === index ? 1 : 0.88,
-        weight: markerIndex === index ? 3 : 2
-      });
+      const element = marker.getElement();
+      if (element) {
+        element.classList.toggle("is-active-unit", markerIndex === index);
+      }
     });
 
     spkluMarkers.forEach((marker, markerIndex) => {
