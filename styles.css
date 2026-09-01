@@ -643,6 +643,14 @@
   box-shadow: 0 0 0 1px #9eb9da;
 }
 
+.ev-legend-ulp-dot {
+  width: 8px;
+  height: 8px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #38bdf8;
+  box-shadow: 0 0 0 1px #8bd8f8;
+}
 .ev-legend-spklu-triangle {
   display: inline-grid;
   place-items: center;
@@ -791,6 +799,17 @@
   max-width: 340px;
 }
 
+.ev-map-popup-compact {
+  min-width: 170px;
+}
+
+.ev-map-popup-compact span {
+  display: block;
+  margin-top: 3px;
+  color: #526280;
+  font-size: 11px;
+  font-weight: 800;
+}
 .ev-map-popup ol {
   max-height: 230px;
   overflow: auto;
@@ -11971,5 +11990,4 @@ td {
     box-shadow: none;
   }
 }
-
 

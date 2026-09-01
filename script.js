@@ -253,6 +253,8 @@ let evGeoPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.
   ? window.evGeoPriorityUnitsData
   : evGeoPriorityUnitsFallback;
 
+let evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
+
 const statusClass = {
   "Selesai": "done",
   "On Progress": "progress",
@@ -4929,7 +4931,7 @@ function renderEvInfrastructure() {
             <p>Klik nama unit atau titik peta untuk melihat daftar SPKLU diurutkan berdasarkan jarak terdekat.</p>
           </div>
           <div class="ev-geo-actions">
-            <span>${formatNumber(evGeoPriorityUnits.length)} unit · ${formatNumber(evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
+            <span>${formatNumber(evGeoPriorityUnits.length)} unit pelaksana · ${formatNumber(evUlpUnits.length)} ULP · ${formatNumber(evGeoDataSummary?.spkluCandidates || 0)} kandidat SPKLU</span>
             <button type="button" id="evImportData" data-ev-import><i data-lucide="upload"></i> Import Data</button>
             <button type="button" id="evExportData" data-ev-export="xlsx"><i data-lucide="download"></i> Export Data</button>
             <input class="sr-only" type="file" id="evDataFile" accept=".xlsx,.xls,.csv,.json" aria-label="Import data source Infrastruktur Kesiapan EV">
@@ -4947,6 +4949,7 @@ function renderEvInfrastructure() {
               </label>
               <div class="ev-map-legend-strip" aria-label="Keterangan marker maps">
                 <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+                <span><i class="ev-legend-ulp-dot"></i> ULP</span>
                 <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
                 <span><i class="ev-legend-selected"></i> Dipilih</span>
               </div>
@@ -5019,6 +5022,21 @@ function evUnitLatLng(item) {
 
 function evSpkluLatLng(item) {
   return evPointToLatLng(item.spkluX, item.spkluY);
+}
+
+function evUlpLatLng(item) {
+  const lat = numberFromImport(item?.unitLat, NaN);
+  const lng = numberFromImport(item?.unitLng, NaN);
+  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+}
+
+function evEscapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function evSpkluList(item) {
@@ -5312,6 +5330,7 @@ function initEvGeoMap() {
     div.innerHTML = `
       <strong>Keterangan Maps</strong>
       <span><i class="ev-legend-unit-dot"></i> Unit Pelaksana</span>
+      <span><i class="ev-legend-ulp-dot"></i> ULP</span>
       <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
       <span><i class="ev-legend-selected"></i> Dipilih</span>
     `;
@@ -5334,6 +5353,25 @@ function initEvGeoMap() {
     evGeoMapState = { select: selectStatic, container: mapEl };
     selectStatic(index);
   });
+
+  const ulpMarkers = evUlpUnits
+    .map((row) => {
+      const latLng = evUlpLatLng(row);
+      if (!latLng) return null;
+      const marker = L.circleMarker(latLng, {
+        radius: 3.5,
+        color: "#ffffff",
+        fillColor: "#38bdf8",
+        fillOpacity: 0.82,
+        weight: 1.2,
+        pane: "markerPane"
+      }).addTo(map);
+      const name = evEscapeHtml(row.unit || "ULP");
+      marker.bindTooltip(`ULP: ${name}`, { direction: "top", offset: [0, -5] });
+      marker.bindPopup(`<div class="ev-map-popup ev-map-popup-compact"><strong>${name}</strong><span>Unit Layanan Pelanggan</span></div>`);
+      return marker;
+    })
+    .filter(Boolean);
 
   const unitMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
     const marker = L.circleMarker(evUnitLatLng(row), {
@@ -5446,7 +5484,7 @@ function initEvGeoMap() {
 
   bindEvUnitList((index) => select(index, true, true));
   bindEvUnitSearch((index) => select(index, true, true));
-  evGeoMapState = { map, select, unitMarkers, container: mapEl };
+  evGeoMapState = { map, select, unitMarkers, ulpMarkers, container: mapEl };
   select(0, false);
   setTimeout(() => map.invalidateSize(), 150);
 }

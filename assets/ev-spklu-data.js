@@ -1,6 +1,6 @@
 // Generated from Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx
-// Unit coordinates refreshed from Data Lokasi Pegawai PLN Daily 26082026.
-// Public asset stores unit-level coordinates only; employee/person-level fields are excluded.
+// Unit and ULP coordinates refreshed from Data Lokasi Pegawai PLN Daily 26082026.
+// Public asset stores organization-level coordinates only; employee/person-level fields are excluded.
 window.evGeoDataSummary = {
   "source": "Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx",
   "units": 359,
@@ -11,7 +11,10 @@ window.evGeoDataSummary = {
   "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026",
   "unitCoordinatesUpdated": 346,
   "unitCoordinatesFallback": 13,
-  "unitCoordinatesUpdatedAt": "2026-08-31"
+  "unitCoordinatesUpdatedAt": "2026-08-31",
+  "ulpUnits": 865,
+  "ulpCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026",
+  "ulpCoordinatesUpdatedAt": "2026-08-31"
 };
 window.evGeoPriorityUnitsData = [
   {
@@ -94031,6 +94034,6063 @@ window.evGeoPriorityUnitsData = [
     ],
     "unitLat": -3.663919,
     "unitLng": 128.203944,
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  }
+];
+window.evUlpUnitsData = [
+  {
+    "unit": "ULP ABEPURA",
+    "unitLat": -2.614943,
+    "unitLng": 140.665308,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ADONARA",
+    "unitLat": -8.382671,
+    "unitLng": 123.16266,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AEK KANOPAN",
+    "unitLat": 2.56496,
+    "unitLng": 99.65188,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AEK KOTABATU",
+    "unitLat": 2.25946,
+    "unitLng": 99.75803,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AEK NABARA",
+    "unitLat": 2.058368,
+    "unitLng": 99.967363,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AGATS",
+    "unitLat": -5.542659,
+    "unitLng": 138.131954,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AHMAD YANI",
+    "unitLat": -3.337643,
+    "unitLng": 114.617769,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AIMAS",
+    "unitLat": -0.997254,
+    "unitLng": 131.345905,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AIR MOLEK",
+    "unitLat": -0.373747,
+    "unitLng": 102.289513,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AIRMADIDI",
+    "unitLat": 1.428061,
+    "unitLng": 124.978955,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AJIBARANG",
+    "unitLat": -7.40177,
+    "unitLng": 109.076573,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ALAS",
+    "unitLat": -8.51365,
+    "unitLng": 116.993489,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMBARAWA",
+    "unitLat": -7.262678,
+    "unitLng": 110.403952,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMBON KOTA",
+    "unitLat": -3.695897,
+    "unitLng": 128.182483,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMBULU",
+    "unitLat": -8.344547,
+    "unitLng": 113.597256,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMBUNTEN",
+    "unitLat": -6.886568,
+    "unitLng": 113.740415,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMPANA",
+    "unitLat": -0.871911,
+    "unitLng": 121.580485,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMPENAN",
+    "unitLat": -8.576353,
+    "unitLng": 116.081224,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMPERA",
+    "unitLat": -3.009888,
+    "unitLng": 104.776663,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMUNTAI",
+    "unitLat": -2.471104,
+    "unitLng": 115.106793,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP AMURANG",
+    "unitLat": 1.182723,
+    "unitLng": 124.578279,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ANAMBAS",
+    "unitLat": 3.216494,
+    "unitLng": 106.215968,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ANYER",
+    "unitLat": -6.055402,
+    "unitLng": 105.913986,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ARGA MAKMUR",
+    "unitLat": -3.437229,
+    "unitLng": 102.198898,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ARSO",
+    "unitLat": -2.904394,
+    "unitLng": 140.753123,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ASEMBAGUS",
+    "unitLat": -7.75008,
+    "unitLng": 114.22667,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ATAMBUA",
+    "unitLat": -9.103051,
+    "unitLng": 124.891922,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BABAT",
+    "unitLat": -7.100273,
+    "unitLng": 112.192734,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BABELAN",
+    "unitLat": -6.184851,
+    "unitLng": 107.038801,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BACAN",
+    "unitLat": -0.641451,
+    "unitLng": 127.490429,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAGAN BATU",
+    "unitLat": 1.696342,
+    "unitLng": 100.405919,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAGAN SIAPI API",
+    "unitLat": 2.157927,
+    "unitLng": 100.810071,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAGUALA",
+    "unitLat": -3.645096,
+    "unitLng": 128.191713,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAJAWA",
+    "unitLat": -8.787919,
+    "unitLng": 120.971471,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALAI KARANGAN",
+    "unitLat": 0.827823,
+    "unitLng": 110.435483,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALAI SELASA",
+    "unitLat": -1.792847,
+    "unitLng": 100.837448,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALAPULANG",
+    "unitLat": -7.048724,
+    "unitLng": 109.110912,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALE ENDAH",
+    "unitLat": -7.006352,
+    "unitLng": 107.625889,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALIGE",
+    "unitLat": 2.33554,
+    "unitLng": 99.06251,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALIKPAPAN SELATAN",
+    "unitLat": -1.276455,
+    "unitLng": 116.833865,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALIKPAPAN UTARA",
+    "unitLat": -1.2083,
+    "unitLng": 116.86745,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BALONG",
+    "unitLat": -7.951949,
+    "unitLng": 111.439151,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDA",
+    "unitLat": -4.527585,
+    "unitLng": 129.903534,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDARJAYA",
+    "unitLat": -4.934137,
+    "unitLng": 105.223721,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDUNG BARAT",
+    "unitLat": -6.908367,
+    "unitLng": 107.578792,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDUNG SELATAN",
+    "unitLat": -6.949054,
+    "unitLng": 107.611455,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDUNG TIMUR",
+    "unitLat": -6.898679,
+    "unitLng": 107.640312,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANDUNG UTARA",
+    "unitLat": -6.878946,
+    "unitLng": 107.596977,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGGAI",
+    "unitLat": -1.589288,
+    "unitLng": 123.501989,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGIL",
+    "unitLat": -7.602822,
+    "unitLng": 112.776585,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGKALAN",
+    "unitLat": -7.026211,
+    "unitLng": 112.750403,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGKINANG",
+    "unitLat": 0.334643,
+    "unitLng": 101.020633,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGKIR",
+    "unitLat": 0.763711,
+    "unitLng": 120.195808,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGKO",
+    "unitLat": -2.06027,
+    "unitLng": 102.276001,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGLI",
+    "unitLat": -8.454599,
+    "unitLng": 115.355117,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANGSRI",
+    "unitLat": -6.529858,
+    "unitLng": 110.747898,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANJAR KOTA",
+    "unitLat": -7.371581,
+    "unitLng": 108.535758,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANJARAN",
+    "unitLat": -7.035512,
+    "unitLng": 107.593248,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANJARBARU",
+    "unitLat": -3.435441,
+    "unitLng": 114.925061,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANJARNEGARA",
+    "unitLat": -7.398158,
+    "unitLng": 109.693148,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANTAENG",
+    "unitLat": -5.544995,
+    "unitLng": 119.947271,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANTAR GEBANG",
+    "unitLat": -6.266009,
+    "unitLng": 107.008538,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANTUL",
+    "unitLat": -7.892848,
+    "unitLng": 110.336271,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANYUMAS",
+    "unitLat": -7.520948,
+    "unitLng": 109.293482,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BANYUWANGI KOTA",
+    "unitLat": -8.210168,
+    "unitLng": 114.378047,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BARRU",
+    "unitLat": -4.423031,
+    "unitLng": 119.618002,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BARUS",
+    "unitLat": 2.01191,
+    "unitLng": 98.39877,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BASO",
+    "unitLat": -0.286222,
+    "unitLng": 100.44354,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BATANG",
+    "unitLat": -6.906403,
+    "unitLng": 109.727107,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BATU",
+    "unitLat": -7.86578,
+    "unitLng": 112.509393,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BATU SANGKAR",
+    "unitLat": -0.449531,
+    "unitLng": 100.599637,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BATULICIN",
+    "unitLat": -3.463096,
+    "unitLng": 115.996837,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BATURAJA",
+    "unitLat": -4.125243,
+    "unitLng": 104.168149,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAUBAU KOTA",
+    "unitLat": -5.457048,
+    "unitLng": 122.609497,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BAWEAN",
+    "unitLat": -5.84846,
+    "unitLng": 112.660626,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BEKASI KOTA",
+    "unitLat": -6.239095,
+    "unitLng": 106.993409,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BELAKANG PADANG",
+    "unitLat": 1.1435,
+    "unitLng": 103.888127,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BELANTI",
+    "unitLat": -0.916903,
+    "unitLng": 100.360288,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BELAWAN",
+    "unitLat": 3.75551,
+    "unitLng": 98.67595,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BELOPA",
+    "unitLat": -3.384345,
+    "unitLng": 120.369839,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BENGKALIS",
+    "unitLat": 1.4758,
+    "unitLng": 102.1214,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BENGKAYANG",
+    "unitLat": 0.83142,
+    "unitLng": 109.485446,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BENJENG",
+    "unitLat": -7.263856,
+    "unitLng": 112.49365,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BENUBENUA",
+    "unitLat": -3.50864,
+    "unitLng": 122.104775,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BEO",
+    "unitLat": 4.226552,
+    "unitLng": 126.793322,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BESUKI",
+    "unitLat": -7.73806,
+    "unitLng": 113.690816,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BEUREUNUN",
+    "unitLat": 5.273,
+    "unitLng": 95.986046,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BG SIAPIAPI",
+    "unitLat": 2.465995,
+    "unitLng": 100.346403,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BIAK KOTA",
+    "unitLat": -1.172987,
+    "unitLng": 136.090463,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BIMA KOTA",
+    "unitLat": -8.459052,
+    "unitLng": 118.741123,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINJAI BARAT",
+    "unitLat": 3.60659,
+    "unitLng": 98.47043,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINJAI BRT",
+    "unitLat": 3.60659,
+    "unitLng": 98.47043,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINJAI KOTA",
+    "unitLat": 3.6053,
+    "unitLng": 98.48664,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINJAI TIMUR",
+    "unitLat": 3.60247,
+    "unitLng": 98.54,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINJAI TMUR",
+    "unitLat": 3.60247,
+    "unitLng": 98.54,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINTAN CENTER",
+    "unitLat": 0.916823,
+    "unitLng": 104.506056,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINTUHAN",
+    "unitLat": -4.793453,
+    "unitLng": 103.354031,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINTUNI",
+    "unitLat": -2.125376,
+    "unitLng": 133.54913,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BINUANG",
+    "unitLat": -3.156037,
+    "unitLng": 115.091634,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BIREUEN",
+    "unitLat": 5.204306,
+    "unitLng": 96.718194,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BITUNG",
+    "unitLat": 1.443602,
+    "unitLng": 125.171073,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BL KEJEREN",
+    "unitLat": 4.016825,
+    "unitLng": 97.299461,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLAIKRANGAN",
+    "unitLat": 0.827823,
+    "unitLng": 110.435483,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLAMBANGAN UMPU",
+    "unitLat": -4.725492,
+    "unitLng": 104.551821,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLANG PIDIE",
+    "unitLat": 3.730515,
+    "unitLng": 96.825829,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLANGKEJEREN",
+    "unitLat": 3.997539,
+    "unitLng": 97.337403,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLEGA",
+    "unitLat": -7.121056,
+    "unitLng": 113.068326,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLIMBING",
+    "unitLat": -7.950849,
+    "unitLng": 112.668035,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLITAR",
+    "unitLat": -8.099278,
+    "unitLng": 112.171639,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLK PADANG",
+    "unitLat": 1.1435,
+    "unitLng": 103.888127,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BLORA",
+    "unitLat": -6.971559,
+    "unitLng": 111.421081,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOBONG",
+    "unitLat": -1.944784,
+    "unitLng": 124.3838,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOGOR BARAT",
+    "unitLat": -6.515862,
+    "unitLng": 106.756845,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOGOR KOTA",
+    "unitLat": -6.596162,
+    "unitLng": 106.79013,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOGOR TIMUR",
+    "unitLat": -6.572183,
+    "unitLng": 106.809115,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOJA",
+    "unitLat": -7.10522,
+    "unitLng": 110.28131,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOJONEGORO",
+    "unitLat": -7.151,
+    "unitLng": 111.879054,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOJONG GEDE",
+    "unitLat": -6.477303,
+    "unitLng": 106.803828,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOLMUT",
+    "unitLat": 0.908962,
+    "unitLng": 123.265012,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOMBANA",
+    "unitLat": -4.825903,
+    "unitLng": 121.803207,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BONDOWOSO",
+    "unitLat": -7.917689,
+    "unitLng": 113.829717,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BONTANG KOTA",
+    "unitLat": 0.136391,
+    "unitLng": 117.482011,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BONTANG KT",
+    "unitLat": -0.158177,
+    "unitLng": 117.333264,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOROBUDUR",
+    "unitLat": -7.596487,
+    "unitLng": 110.221667,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BOYOLALI",
+    "unitLat": -7.531511,
+    "unitLng": 110.594033,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BRASTAGI",
+    "unitLat": 3.18796,
+    "unitLng": 98.50814,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BREBES",
+    "unitLat": -6.873467,
+    "unitLng": 109.048925,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BRONDONG",
+    "unitLat": -6.868276,
+    "unitLng": 112.332837,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BTN CENTER",
+    "unitLat": 0.916823,
+    "unitLng": 104.506056,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUKIT KEMUNING",
+    "unitLat": -4.874255,
+    "unitLng": 104.562908,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUKITTINGGI",
+    "unitLat": -0.307664,
+    "unitLng": 100.370969,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BULA",
+    "unitLat": -3.105675,
+    "unitLng": 130.489019,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BULULAWANG",
+    "unitLat": -8.069107,
+    "unitLng": 112.640183,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUMI ABUNG",
+    "unitLat": -4.839296,
+    "unitLng": 104.879699,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUMIAYU",
+    "unitLat": -7.253579,
+    "unitLng": 109.005529,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUNGKU",
+    "unitLat": -2.483339,
+    "unitLng": 121.924945,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP BUNTOK",
+    "unitLat": -1.51343,
+    "unitLng": 114.872057,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CAKRANEGARA",
+    "unitLat": -8.636,
+    "unitLng": 116.146507,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CALANG",
+    "unitLat": 4.635895,
+    "unitLng": 95.582164,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CAMPURDARAT",
+    "unitLat": -8.162841,
+    "unitLng": 111.85658,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CARUBAN",
+    "unitLat": -7.549321,
+    "unitLng": 111.638246,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CEPU",
+    "unitLat": -7.149552,
+    "unitLng": 111.588472,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIAMIS",
+    "unitLat": -7.326087,
+    "unitLng": 108.348389,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIANJUR KOTA",
+    "unitLat": -6.813636,
+    "unitLng": 107.137271,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIBADAK",
+    "unitLat": -6.896425,
+    "unitLng": 106.819284,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIBATU",
+    "unitLat": -7.100269,
+    "unitLng": 107.981847,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIBINONG",
+    "unitLat": -6.47578,
+    "unitLng": 106.863713,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIBITUNG",
+    "unitLat": -6.26646,
+    "unitLng": 107.13076,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CICURUG",
+    "unitLat": -6.799641,
+    "unitLng": 106.775423,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIJAWURA",
+    "unitLat": -6.954305,
+    "unitLng": 107.640448,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIKAJANG",
+    "unitLat": -7.325891,
+    "unitLng": 107.79471,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIKAMPEK",
+    "unitLat": -6.41199,
+    "unitLng": 107.464297,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIKANDE",
+    "unitLat": -6.174972,
+    "unitLng": 106.337748,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIKARANG KOTA",
+    "unitLat": -6.365093,
+    "unitLng": 107.177923,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIKEMBAR",
+    "unitLat": -6.951235,
+    "unitLng": 106.769465,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILACAP KOTA",
+    "unitLat": -7.722971,
+    "unitLng": 109.01134,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILEDUG",
+    "unitLat": -6.907518,
+    "unitLng": 108.749172,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILEGON",
+    "unitLat": -6.0199,
+    "unitLng": 106.058224,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILEUNGSI",
+    "unitLat": -6.406998,
+    "unitLng": 106.972047,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILILIN",
+    "unitLat": -6.947837,
+    "unitLng": 107.467335,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CILIMUS",
+    "unitLat": -6.877541,
+    "unitLng": 108.496189,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIMAHI KOTA",
+    "unitLat": -6.870905,
+    "unitLng": 107.536526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIMAHI SELATAN",
+    "unitLat": -6.898956,
+    "unitLng": 107.554317,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIMANGGIS",
+    "unitLat": -6.375705,
+    "unitLng": 106.863468,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIPANAS",
+    "unitLat": -6.734685,
+    "unitLng": 107.04167,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIPAYUNG",
+    "unitLat": -6.650602,
+    "unitLng": 106.895765,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CIREBON KOTA",
+    "unitLat": -6.721303,
+    "unitLng": 108.57202,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP COMAL",
+    "unitLat": -6.920567,
+    "unitLng": 109.553571,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP CURUP",
+    "unitLat": -3.462518,
+    "unitLng": 102.536698,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DABO SINGKEP",
+    "unitLat": -0.494503,
+    "unitLng": 104.561635,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DABO SNGKEP",
+    "unitLat": -0.494503,
+    "unitLng": 104.561635,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DAHA",
+    "unitLat": -2.598243,
+    "unitLng": 115.107229,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DAMPIT",
+    "unitLat": -8.213923,
+    "unitLng": 112.755779,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DARMO PERMAI",
+    "unitLat": -7.275708,
+    "unitLng": 112.684151,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DARUBA",
+    "unitLat": 2.03708,
+    "unitLng": 128.299849,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DAYA",
+    "unitLat": -5.093327,
+    "unitLng": 119.512115,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DELANGGU",
+    "unitLat": -7.618926,
+    "unitLng": 110.703979,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DELI TUA",
+    "unitLat": 3.48176,
+    "unitLng": 98.68546,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DELITUA",
+    "unitLat": 3.48176,
+    "unitLng": 98.68546,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DEMAK",
+    "unitLat": -6.914118,
+    "unitLng": 110.608426,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DENPASAR",
+    "unitLat": -8.663107,
+    "unitLng": 115.217325,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DEPOK KOTA",
+    "unitLat": -6.39576,
+    "unitLng": 106.836788,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DLK MASIHUL",
+    "unitLat": 3.339485,
+    "unitLng": 99.01548,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DLK SANGGUL",
+    "unitLat": 2.27694,
+    "unitLng": 98.74463,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOBO",
+    "unitLat": -5.762498,
+    "unitLng": 134.232473,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOFA",
+    "unitLat": -1.806124,
+    "unitLng": 125.352661,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOLOK MASIHUL",
+    "unitLat": 3.339485,
+    "unitLng": 99.01548,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOLOK SANGGUL",
+    "unitLat": 2.27695,
+    "unitLng": 98.744637,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOLOPO",
+    "unitLat": -7.747197,
+    "unitLng": 111.528409,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DOMPU",
+    "unitLat": -8.537887,
+    "unitLng": 118.463061,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DONGGALA",
+    "unitLat": -0.671902,
+    "unitLng": 119.746769,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DUKUH KUPANG",
+    "unitLat": -7.288587,
+    "unitLng": 112.714023,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DUMAI KOTA",
+    "unitLat": 1.669766,
+    "unitLng": 101.447384,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP DURI",
+    "unitLat": 1.278479,
+    "unitLng": 101.181948,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ELAT",
+    "unitLat": -5.654465,
+    "unitLng": 132.991784,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP EMBONG WUNGU",
+    "unitLat": -7.281299,
+    "unitLng": 112.740043,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP EMPANG",
+    "unitLat": -8.758593,
+    "unitLng": 117.998323,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ENAROTALI",
+    "unitLat": -3.927739,
+    "unitLng": 136.374209,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ENREKANG",
+    "unitLat": -3.563565,
+    "unitLng": 119.770724,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP FAK-FAK",
+    "unitLat": -2.931015,
+    "unitLng": 132.3059,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP FAKFAK",
+    "unitLat": -2.931015,
+    "unitLng": 132.3059,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GALANG",
+    "unitLat": 3.42052,
+    "unitLng": 98.90664,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GAMBUT",
+    "unitLat": -3.459277,
+    "unitLng": 114.529507,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GANDAPURA",
+    "unitLat": 5.234004,
+    "unitLng": 96.893974,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GARUT KOTA",
+    "unitLat": -7.195136,
+    "unitLng": 107.886638,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GEBANG",
+    "unitLat": 3.9697,
+    "unitLng": 98.3566,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GEDANGAN",
+    "unitLat": -7.373985,
+    "unitLng": 112.727855,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GENTENG",
+    "unitLat": -8.37185,
+    "unitLng": 114.145486,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GENYEM",
+    "unitLat": -2.594199,
+    "unitLng": 140.166337,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GEUDONG",
+    "unitLat": 5.116508,
+    "unitLng": 97.218757,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GIANYAR",
+    "unitLat": -8.543853,
+    "unitLng": 115.322699,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GILIMANUK",
+    "unitLat": -8.173569,
+    "unitLng": 114.438875,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GIRI",
+    "unitLat": -7.154449,
+    "unitLng": 112.65603,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GNG STL KT",
+    "unitLat": 1.28977,
+    "unitLng": 97.61624,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GOMBONG",
+    "unitLat": -7.605748,
+    "unitLng": 109.514031,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GONDANG WETAN",
+    "unitLat": -7.695976,
+    "unitLng": 112.878252,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GONDANGLEGI",
+    "unitLat": -8.176465,
+    "unitLng": 112.636229,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GRATI",
+    "unitLat": -7.676088,
+    "unitLng": 112.945322,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GRINGSING",
+    "unitLat": -6.964784,
+    "unitLng": 110.001221,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GROGOL",
+    "unitLat": -7.74614,
+    "unitLng": 111.967573,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GUNUNG SITOLI",
+    "unitLat": 1.28977,
+    "unitLng": 97.61624,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP GUNUNG TUA",
+    "unitLat": 1.52465,
+    "unitLng": 99.63065,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP HARUKU",
+    "unitLat": -3.518231,
+    "unitLng": 128.48826,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP HASANUDDIN",
+    "unitLat": -4.540387,
+    "unitLng": 120.326697,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP HAURGEULIS",
+    "unitLat": -6.439287,
+    "unitLng": 107.946202,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP HELVETIA",
+    "unitLat": 3.6111,
+    "unitLng": 98.63311,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP HITU",
+    "unitLat": -3.581804,
+    "unitLng": 128.181352,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP IDI",
+    "unitLat": 4.943775,
+    "unitLng": 97.77639,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP IMANDI",
+    "unitLat": 0.597574,
+    "unitLng": 124.080627,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP INDARUNG",
+    "unitLat": -0.971668,
+    "unitLng": 100.396336,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP INDRALAYA",
+    "unitLat": -3.210838,
+    "unitLng": 104.639259,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP INDRAMAYU KOTA",
+    "unitLat": -6.325916,
+    "unitLng": 108.322271,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP INDRAPURA",
+    "unitLat": 3.2873,
+    "unitLng": 99.36678,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP INOBONTO",
+    "unitLat": 0.919695,
+    "unitLng": 124.09494,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JAILOLO",
+    "unitLat": 1.078043,
+    "unitLng": 127.480348,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JANARATA",
+    "unitLat": 4.71994,
+    "unitLng": 96.988564,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JANTHO",
+    "unitLat": 5.301802,
+    "unitLng": 95.598099,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JASINGA",
+    "unitLat": -6.519708,
+    "unitLng": 106.498764,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JATIBARANG",
+    "unitLat": -6.47593,
+    "unitLng": 108.303747,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JATIROGO",
+    "unitLat": -6.883324,
+    "unitLng": 111.65947,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JATISRONO",
+    "unitLat": -7.829596,
+    "unitLng": 111.102366,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JATIWANGI",
+    "unitLat": -6.726806,
+    "unitLng": 108.271833,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JAYAPURA",
+    "unitLat": -2.543303,
+    "unitLng": 140.703925,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JEMBER KOTA",
+    "unitLat": -8.157788,
+    "unitLng": 113.71106,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JENEPONTO",
+    "unitLat": -5.671435,
+    "unitLng": 119.734031,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JEPARA",
+    "unitLat": -6.593828,
+    "unitLng": 110.66619,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JEURAM",
+    "unitLat": 4.12037,
+    "unitLng": 96.291252,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JOHOR",
+    "unitLat": 3.50765,
+    "unitLng": 98.67113,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JOMBANG",
+    "unitLat": -7.544639,
+    "unitLng": 112.237253,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JONGGOL",
+    "unitLat": -6.461951,
+    "unitLng": 107.059213,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP JUWANA",
+    "unitLat": -6.714144,
+    "unitLng": 111.151023,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KABANJAHE",
+    "unitLat": 3.122739,
+    "unitLng": 98.508273,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAIMANA",
+    "unitLat": -3.666416,
+    "unitLng": 133.761987,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAIRATU",
+    "unitLat": -3.373167,
+    "unitLng": 128.378102,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALABAHI",
+    "unitLat": -8.215514,
+    "unitLng": 124.518351,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALASAN",
+    "unitLat": -7.758224,
+    "unitLng": 110.478898,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALEBAJENG",
+    "unitLat": -5.393947,
+    "unitLng": 119.820848,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALIANDA",
+    "unitLat": -5.718045,
+    "unitLng": 105.58835,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALIREJO",
+    "unitLat": -5.224694,
+    "unitLng": 104.966363,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALISAT",
+    "unitLat": -8.130248,
+    "unitLng": 113.814076,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KALUMPANG",
+    "unitLat": -5.521625,
+    "unitLng": 120.358267,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAMAL",
+    "unitLat": -7.14953,
+    "unitLng": 112.714605,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAMONJI",
+    "unitLat": -0.882773,
+    "unitLng": 119.835922,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAMPAR",
+    "unitLat": 0.3538,
+    "unitLng": 101.177692,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KANDANGAN",
+    "unitLat": -2.811863,
+    "unitLng": 115.417043,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARANG",
+    "unitLat": -5.423765,
+    "unitLng": 105.258114,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARANGANYAR",
+    "unitLat": -7.595868,
+    "unitLng": 110.93768,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARANGASEM",
+    "unitLat": -8.451989,
+    "unitLng": 115.616453,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARANGNUNGGAL",
+    "unitLat": -7.631992,
+    "unitLng": 108.132713,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARANGPILANG",
+    "unitLat": -7.334614,
+    "unitLng": 112.704444,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARAWANG KOTA",
+    "unitLat": -6.307688,
+    "unitLng": 107.292723,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAREBOSI",
+    "unitLat": -5.132757,
+    "unitLng": 119.410865,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARIANGO",
+    "unitLat": -3.91127,
+    "unitLng": 119.622989,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KARTASURA",
+    "unitLat": -7.542388,
+    "unitLng": 110.741343,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KASONGAN",
+    "unitLat": -1.983953,
+    "unitLng": 113.757349,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAWANGKOAN",
+    "unitLat": 1.202259,
+    "unitLng": 124.787709,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAYU AGUNG",
+    "unitLat": -3.386358,
+    "unitLng": 104.827384,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KAYU ARO",
+    "unitLat": -0.854931,
+    "unitLng": 100.689187,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEBUMEN",
+    "unitLat": -7.67522,
+    "unitLng": 109.670488,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEDIRI KOTA",
+    "unitLat": -7.813519,
+    "unitLng": 112.01415,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEDUNGWUNI",
+    "unitLat": -6.973499,
+    "unitLng": 109.634767,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEFAMENANU",
+    "unitLat": -9.458032,
+    "unitLng": 124.478167,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KENCONG",
+    "unitLat": -8.291963,
+    "unitLng": 113.392484,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KENDAL",
+    "unitLat": -6.921993,
+    "unitLng": 110.206037,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KENJERAN",
+    "unitLat": -7.221522,
+    "unitLng": 112.775146,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEP KANGEAN",
+    "unitLat": -6.859632,
+    "unitLng": 115.282089,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEPAHIYANG",
+    "unitLat": -3.644381,
+    "unitLng": 102.579607,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEPANJEN",
+    "unitLat": -8.134078,
+    "unitLng": 112.573982,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEPI",
+    "unitLat": -6.528376,
+    "unitLng": 139.31823,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KERSIK TUO",
+    "unitLat": -1.776632,
+    "unitLng": 101.287782,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KERTOSONO",
+    "unitLat": -7.600614,
+    "unitLng": 112.100514,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KETAPANG",
+    "unitLat": -6.895478,
+    "unitLng": 113.281372,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KETAPANG KOTA",
+    "unitLat": -1.843837,
+    "unitLng": 109.975073,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KEUDE BIENG",
+    "unitLat": 5.487894,
+    "unitLng": 95.260818,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KIJANG",
+    "unitLat": 0.848943,
+    "unitLng": 104.608613,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KISARAN",
+    "unitLat": 2.98219,
+    "unitLng": 99.62479,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KL SIMPANG",
+    "unitLat": 4.288992,
+    "unitLng": 98.050919,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KLAKAH",
+    "unitLat": -7.999569,
+    "unitLng": 113.249299,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KLATEN KOTA",
+    "unitLat": -7.710426,
+    "unitLng": 110.595873,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KLUNGKUNG",
+    "unitLat": -8.531067,
+    "unitLng": 115.398294,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOBA",
+    "unitLat": -2.500032,
+    "unitLng": 106.401808,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOBISONTA",
+    "unitLat": -2.990729,
+    "unitLng": 129.923966,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOLAKA",
+    "unitLat": -4.172658,
+    "unitLng": 121.618521,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOLAKA UTARA",
+    "unitLat": -3.51182,
+    "unitLng": 120.884338,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOLAKA UTR",
+    "unitLat": -3.523674,
+    "unitLng": 120.912269,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOLONEDALE",
+    "unitLat": -2.080419,
+    "unitLng": 121.381108,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KONAWE SELATAN",
+    "unitLat": -4.315594,
+    "unitLng": 122.239894,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOPO",
+    "unitLat": -6.93423,
+    "unitLng": 107.571007,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOSAMBI",
+    "unitLat": -6.371502,
+    "unitLng": 107.378762,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA AGUNG",
+    "unitLat": -5.497776,
+    "unitLng": 104.628326,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA BANGUN",
+    "unitLat": 0.476667,
+    "unitLng": 116.221389,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA BARU",
+    "unitLat": -1.611876,
+    "unitLng": 103.616444,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA FAJAR",
+    "unitLat": 3.087186,
+    "unitLng": 97.333427,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA METRO",
+    "unitLat": -5.114884,
+    "unitLng": 105.305878,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTA PINANG",
+    "unitLat": 1.89384,
+    "unitLng": 100.08436,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTABARU KT",
+    "unitLat": -3.253638,
+    "unitLng": 116.212069,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTANOPAN",
+    "unitLat": 0.6551,
+    "unitLng": 99.72392,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTARAYA",
+    "unitLat": 0.546913,
+    "unitLng": 120.725356,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KOTO TUO",
+    "unitLat": -0.307664,
+    "unitLng": 100.370969,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KRAKSAAN",
+    "unitLat": -7.759696,
+    "unitLng": 113.417172,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KRIAN",
+    "unitLat": -7.412857,
+    "unitLng": 112.577468,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KROYA",
+    "unitLat": -7.633057,
+    "unitLng": 109.231427,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KRUENG GEUKUH",
+    "unitLat": 5.240733,
+    "unitLng": 97.023499,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA",
+    "unitLat": 3.52992,
+    "unitLng": 98.40941,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA ENOK",
+    "unitLat": -0.512334,
+    "unitLng": 103.384679,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA KURUN",
+    "unitLat": -10.42498,
+    "unitLng": 113.721655,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA PEMBUANG",
+    "unitLat": -3.389108,
+    "unitLng": 112.544786,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA SIMPANG",
+    "unitLat": 4.288992,
+    "unitLng": 98.050919,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA TNGKL",
+    "unitLat": -0.825358,
+    "unitLng": 103.462526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUALA TUNGKAL",
+    "unitLat": -0.825358,
+    "unitLng": 103.462526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUDUS KOTA",
+    "unitLat": -6.825626,
+    "unitLng": 110.833432,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUNINGAN",
+    "unitLat": -6.977576,
+    "unitLng": 108.484581,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUPANG",
+    "unitLat": -10.158362,
+    "unitLng": 123.612324,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUPRIK",
+    "unitLat": -8.420254,
+    "unitLng": 140.445994,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KURANJI",
+    "unitLat": -0.884793,
+    "unitLng": 100.391738,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KURIK",
+    "unitLat": -8.287179,
+    "unitLng": 140.271347,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUTA",
+    "unitLat": -8.715459,
+    "unitLng": 115.186086,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUTACANE",
+    "unitLat": 3.480333,
+    "unitLng": 97.812281,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KUTOARJO",
+    "unitLat": -7.72236,
+    "unitLng": 109.909627,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP KWANDANG",
+    "unitLat": 0.839938,
+    "unitLng": 122.913549,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LABUAN",
+    "unitLat": -6.375832,
+    "unitLng": 105.826799,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LABUAN BAJO",
+    "unitLat": -8.475726,
+    "unitLng": 119.890523,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LABUHAN",
+    "unitLat": 3.66621,
+    "unitLng": 98.66658,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LABUHAN BILIK",
+    "unitLat": 2.47782,
+    "unitLng": 100.12903,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LABUHAN HAJI",
+    "unitLat": 3.555481,
+    "unitLng": 96.99412,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAIWUI",
+    "unitLat": -1.340607,
+    "unitLng": 127.630466,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAKAWAN",
+    "unitLat": -3.391511,
+    "unitLng": 119.797869,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAMBARO",
+    "unitLat": 5.511626,
+    "unitLng": 95.36483,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAMBUNG MANGKURAT",
+    "unitLat": -3.321661,
+    "unitLng": 114.591533,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAMONGAN",
+    "unitLat": -7.118062,
+    "unitLng": 112.422539,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LANGSA KOTA",
+    "unitLat": 4.470395,
+    "unitLng": 97.96901,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LARANTUKA",
+    "unitLat": -8.30955,
+    "unitLng": 123.018018,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LAWANG",
+    "unitLat": -7.835891,
+    "unitLng": 112.695171,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LBHAN BILIK",
+    "unitLat": 2.47782,
+    "unitLng": 100.12903,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LBK LINGGAU",
+    "unitLat": -3.277407,
+    "unitLng": 102.896061,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LBUHAN HAJI",
+    "unitLat": 3.465468,
+    "unitLng": 97.056408,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LELES",
+    "unitLat": -7.100142,
+    "unitLng": 107.898389,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEMAH ABANG",
+    "unitLat": -6.28331,
+    "unitLng": 107.16833,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEMBANG",
+    "unitLat": -6.818316,
+    "unitLng": 107.622115,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEMBATA",
+    "unitLat": -8.377028,
+    "unitLng": 123.418876,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEMBAYUNG",
+    "unitLat": -3.781156,
+    "unitLng": 103.561678,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEOK",
+    "unitLat": 1.186189,
+    "unitLng": 121.417204,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LEUWILIANG",
+    "unitLat": -6.564413,
+    "unitLng": 106.678035,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LHOKSEUMAWE KOTA",
+    "unitLat": 5.183806,
+    "unitLng": 97.148422,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LHOKSUKON",
+    "unitLat": 5.040903,
+    "unitLng": 97.322578,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIMA PULUH",
+    "unitLat": 3.170912,
+    "unitLng": 99.420451,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIMA PULUH KOTA",
+    "unitLat": -0.181292,
+    "unitLng": 100.655128,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIMBOTO",
+    "unitLat": 0.627316,
+    "unitLng": 122.977709,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LINTAU",
+    "unitLat": -0.506915,
+    "unitLng": 100.778393,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIPAT KAIN",
+    "unitLat": 0.025545,
+    "unitLng": 101.20344,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIRUNG",
+    "unitLat": 3.934063,
+    "unitLng": 126.699547,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LIWA",
+    "unitLat": -5.032017,
+    "unitLng": 104.091213,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LONG IKIS",
+    "unitLat": -1.600101,
+    "unitLng": 116.186223,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUBUK ALUNG",
+    "unitLat": -0.654673,
+    "unitLng": 100.28301,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUBUK BASUNG",
+    "unitLat": -0.315594,
+    "unitLng": 100.033226,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUBUK LINGGAU",
+    "unitLat": -3.29698,
+    "unitLng": 102.88934,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUBUK PAKAM",
+    "unitLat": 3.559474,
+    "unitLng": 98.873349,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUBUK SIKAPING",
+    "unitLat": 0.133325,
+    "unitLng": 100.168114,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP LUMAJANG",
+    "unitLat": -8.106652,
+    "unitLng": 113.231557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MABA",
+    "unitLat": 0.698391,
+    "unitLng": 128.287514,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MADIUN KOTA",
+    "unitLat": -7.635581,
+    "unitLng": 111.532251,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAGELANG KOTA",
+    "unitLat": -7.464725,
+    "unitLng": 110.223986,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAGETAN",
+    "unitLat": -7.655216,
+    "unitLng": 111.3286,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAJALAYA KOTA",
+    "unitLat": -7.051403,
+    "unitLng": 107.760836,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAJALENGKA",
+    "unitLat": -6.830437,
+    "unitLng": 108.206267,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAJENANG",
+    "unitLat": -7.297718,
+    "unitLng": 108.763152,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAJENE",
+    "unitLat": -3.372684,
+    "unitLng": 118.849419,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAKALE",
+    "unitLat": -3.101822,
+    "unitLng": 119.853828,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAKO",
+    "unitLat": -3.356828,
+    "unitLng": 126.979203,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MALANG KOTA",
+    "unitLat": -7.974563,
+    "unitLng": 112.630086,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MALILI",
+    "unitLat": -2.521564,
+    "unitLng": 121.355808,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MALINAU",
+    "unitLat": 3.576683,
+    "unitLng": 116.617112,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MALINGPING",
+    "unitLat": -6.803389,
+    "unitLng": 106.009944,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MALINO",
+    "unitLat": -5.247826,
+    "unitLng": 119.854887,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAMASA",
+    "unitLat": -3.14329,
+    "unitLng": 119.310798,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANADO SELATAN",
+    "unitLat": 1.471895,
+    "unitLng": 124.835062,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANADO UTARA",
+    "unitLat": 1.485769,
+    "unitLng": 124.865097,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANAHAN",
+    "unitLat": -7.553326,
+    "unitLng": 110.805547,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANAKARRA",
+    "unitLat": -2.677069,
+    "unitLng": 118.895501,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANDE",
+    "unitLat": -6.762972,
+    "unitLng": 107.257081,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANGGAR",
+    "unitLat": -2.865431,
+    "unitLng": 108.279079,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANNA",
+    "unitLat": -4.454717,
+    "unitLng": 102.901772,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANOKWARI KOTA",
+    "unitLat": -0.863897,
+    "unitLng": 134.074533,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MANTINGAN",
+    "unitLat": -7.364935,
+    "unitLng": 111.154612,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAOSPATI",
+    "unitLat": -7.606531,
+    "unitLng": 111.451573,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MARABAHAN",
+    "unitLat": -3.060798,
+    "unitLng": 114.617046,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MARIANA",
+    "unitLat": -2.97938,
+    "unitLng": 104.871056,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MARISA",
+    "unitLat": 0.476486,
+    "unitLng": 121.931571,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAROS",
+    "unitLat": -5.006282,
+    "unitLng": 119.57135,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MARTAPURA",
+    "unitLat": -3.41001,
+    "unitLng": 114.845534,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MASAMBA",
+    "unitLat": -2.550573,
+    "unitLng": 120.351761,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MASOHI",
+    "unitLat": -3.30669,
+    "unitLng": 128.946108,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MATANG GLUMPANG DUA",
+    "unitLat": 5.195962,
+    "unitLng": 96.793953,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MATTIROTASI",
+    "unitLat": -4.010255,
+    "unitLng": 119.623489,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MATTOANGING",
+    "unitLat": -5.148507,
+    "unitLng": 119.41599,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MAWASANGKA",
+    "unitLat": -5.265951,
+    "unitLng": 121.799005,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN BARU",
+    "unitLat": 3.574,
+    "unitLng": 98.65698,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN DENAI",
+    "unitLat": -6.368164,
+    "unitLng": 107.160516,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN KOTA",
+    "unitLat": 3.58631,
+    "unitLng": 98.67469,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN SATRIA",
+    "unitLat": -6.198253,
+    "unitLng": 106.974606,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN SELATAN",
+    "unitLat": 3.55283,
+    "unitLng": 98.69355,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEDAN TIMUR",
+    "unitLat": 3.61009,
+    "unitLng": 98.70153,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MELAK",
+    "unitLat": -0.235865,
+    "unitLng": 115.814503,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MELONGUANE",
+    "unitLat": 3.99791,
+    "unitLng": 126.67963,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEMPAWAH",
+    "unitLat": 0.363703,
+    "unitLng": 108.961599,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MENGANTI",
+    "unitLat": -7.301489,
+    "unitLng": 112.564877,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MENGGALA",
+    "unitLat": -4.281676,
+    "unitLng": 105.224345,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MENGWI",
+    "unitLat": -8.583237,
+    "unitLng": 115.18088,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MENTAWAI",
+    "unitLat": -2.038489,
+    "unitLng": 99.578192,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MENTOK",
+    "unitLat": -2.059973,
+    "unitLng": 105.166634,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MERDUATI KOTA",
+    "unitLat": 5.556658,
+    "unitLng": 95.315812,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MESUJI",
+    "unitLat": -3.977985,
+    "unitLng": 105.345308,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEULABOH KOTA",
+    "unitLat": 4.146402,
+    "unitLng": 96.126465,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MEUREUDU",
+    "unitLat": 5.239153,
+    "unitLng": 96.22778,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MLBOH KOTA",
+    "unitLat": 4.146402,
+    "unitLng": 96.126465,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MNKWRI KOTA",
+    "unitLat": -0.863822,
+    "unitLng": 134.05338,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOA",
+    "unitLat": -8.155256,
+    "unitLng": 127.794815,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MODAYAG",
+    "unitLat": 0.711286,
+    "unitLng": 124.382026,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOJOAGUNG",
+    "unitLat": -7.568257,
+    "unitLng": 112.357502,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOJOKERTO",
+    "unitLat": -7.463743,
+    "unitLng": 112.43497,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOJOSARI",
+    "unitLat": -7.50867,
+    "unitLng": 112.560224,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOLIBAGU",
+    "unitLat": 0.378916,
+    "unitLng": 123.986668,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOTOLING",
+    "unitLat": 1.038658,
+    "unitLng": 124.474011,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MOUTONG",
+    "unitLat": 0.465087,
+    "unitLng": 121.226131,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MRA BULIAN",
+    "unitLat": -1.714135,
+    "unitLng": 103.263421,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MRAUKE KOTA",
+    "unitLat": -8.48857,
+    "unitLng": 140.399177,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA AMAN",
+    "unitLat": -3.124364,
+    "unitLng": 102.207888,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA BELITI",
+    "unitLat": -3.245533,
+    "unitLng": 103.010802,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA BLITI",
+    "unitLat": -3.245533,
+    "unitLng": 103.010802,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA BULIAN",
+    "unitLat": -1.714135,
+    "unitLng": 103.263421,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA DUA",
+    "unitLat": -4.544077,
+    "unitLng": 104.071314,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA ENIM",
+    "unitLat": -3.667799,
+    "unitLng": 103.772671,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA LABUH",
+    "unitLat": -1.474031,
+    "unitLng": 101.039665,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA SABAK",
+    "unitLat": -1.233083,
+    "unitLng": 103.803493,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA SABAK SIE K3L DAN KAM",
+    "unitLat": -1.218837,
+    "unitLng": 103.79324,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA SABAK SIE TE",
+    "unitLat": -1.218837,
+    "unitLng": 103.79324,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA SABAK SIE YAN GAN DAN ADM",
+    "unitLat": -1.218837,
+    "unitLng": 103.79324,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA TEBO",
+    "unitLat": -1.490115,
+    "unitLng": 102.440055,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUARA TEWEH",
+    "unitLat": -0.962826,
+    "unitLng": 114.893829,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUKO MUKO",
+    "unitLat": -2.891787,
+    "unitLng": 101.432318,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUNCAR",
+    "unitLat": -8.43563,
+    "unitLng": 114.323545,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MURATARA",
+    "unitLat": -2.688966,
+    "unitLng": 102.898678,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP MUSTIKA JAYA",
+    "unitLat": -6.320253,
+    "unitLng": 107.033509,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NABIRE KOTA",
+    "unitLat": -3.362247,
+    "unitLng": 135.501347,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NAMLEA",
+    "unitLat": -3.261848,
+    "unitLng": 127.097017,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NAMROLE",
+    "unitLat": -3.846009,
+    "unitLng": 126.747024,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NANGA BULIK",
+    "unitLat": -2.178573,
+    "unitLng": 111.461395,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NANGA PINOH",
+    "unitLat": -0.336087,
+    "unitLng": 111.741373,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NATAL",
+    "unitLat": 0.68912,
+    "unitLng": 99.362174,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NATAR",
+    "unitLat": -5.309445,
+    "unitLng": 105.194262,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NATUNA",
+    "unitLat": 3.941667,
+    "unitLng": 108.387526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NEGARA",
+    "unitLat": -8.36029,
+    "unitLng": 114.625075,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGABANG",
+    "unitLat": 0.384653,
+    "unitLng": 109.954821,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGADILUWIH",
+    "unitLat": -7.879905,
+    "unitLng": 111.998891,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGAGEL",
+    "unitLat": -7.288721,
+    "unitLng": 112.749845,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGANJUK",
+    "unitLat": -7.604492,
+    "unitLng": 111.897175,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGANTANG",
+    "unitLat": -7.856199,
+    "unitLng": 112.369638,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGORO",
+    "unitLat": -7.687967,
+    "unitLng": 112.271854,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NGUNUT",
+    "unitLat": -8.096508,
+    "unitLng": 111.996014,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NIAS BARAT",
+    "unitLat": 1.047379,
+    "unitLng": 97.493843,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NUNUKAN",
+    "unitLat": 4.135524,
+    "unitLng": 117.644286,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NUSA INDAH",
+    "unitLat": -3.822864,
+    "unitLng": 102.298911,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP NUSANIWE",
+    "unitLat": -3.705196,
+    "unitLng": 128.163905,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP OESAO",
+    "unitLat": -10.12564,
+    "unitLng": 123.812219,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PACET",
+    "unitLat": -7.657371,
+    "unitLng": 112.536934,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PACITAN",
+    "unitLat": -8.195423,
+    "unitLng": 111.096723,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PADALARANG",
+    "unitLat": -6.838744,
+    "unitLng": 107.487583,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PADANG PANJANG",
+    "unitLat": -0.462983,
+    "unitLng": 100.390151,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PADANGAN",
+    "unitLat": -7.1664,
+    "unitLng": 111.610542,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAGADEN",
+    "unitLat": -6.46104,
+    "unitLng": 107.810759,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAGAR ALAM",
+    "unitLat": -4.03594,
+    "unitLng": 103.2587,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAINAN",
+    "unitLat": -1.348148,
+    "unitLng": 100.582693,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAJALESANG",
+    "unitLat": -4.330657,
+    "unitLng": 120.005724,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAKUAN BOGOR",
+    "unitLat": -6.596113,
+    "unitLng": 106.789868,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PALANGKA RAYA BARAT",
+    "unitLat": -2.204497,
+    "unitLng": 113.874463,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PALANGKA RAYA TIMUR",
+    "unitLat": -2.208341,
+    "unitLng": 113.921922,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PALOPO KOTA",
+    "unitLat": -2.996036,
+    "unitLng": 120.188825,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PALU KOTA",
+    "unitLat": -0.900227,
+    "unitLng": 119.872185,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PALUR",
+    "unitLat": -7.557656,
+    "unitLng": 110.878529,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAMANUKAN",
+    "unitLat": -6.298481,
+    "unitLng": 107.820759,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAMEKASAN",
+    "unitLat": -7.157576,
+    "unitLng": 113.485374,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAMEUNGPEUK",
+    "unitLat": -7.646526,
+    "unitLng": 107.708268,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANAKKUKANG",
+    "unitLat": -5.164978,
+    "unitLng": 119.446615,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANAM",
+    "unitLat": 0.463998,
+    "unitLng": 101.381523,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANARUKAN",
+    "unitLat": -7.712643,
+    "unitLng": 113.997156,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANCUR BATU",
+    "unitLat": 3.47947,
+    "unitLng": 98.5923,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANDAAN",
+    "unitLat": -7.650003,
+    "unitLng": 112.688183,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANDEGLANG",
+    "unitLat": -6.299953,
+    "unitLng": 106.110114,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGANDARAN",
+    "unitLat": -7.684077,
+    "unitLng": 108.657817,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKAL PINANG",
+    "unitLat": -2.100008,
+    "unitLng": 106.111752,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKALAN BALAI",
+    "unitLat": -2.896683,
+    "unitLng": 104.402724,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKALAN BRANDAN",
+    "unitLat": 4.0188,
+    "unitLng": 98.2874,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKALAN BUN",
+    "unitLat": -2.678978,
+    "unitLng": 111.632787,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKALAN KERINCI",
+    "unitLat": 0.391515,
+    "unitLng": 101.848526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKALAN SUSU",
+    "unitLat": 4.10784,
+    "unitLng": 98.226,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGKEP",
+    "unitLat": -4.835938,
+    "unitLng": 119.546932,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGSID",
+    "unitLat": -3.926231,
+    "unitLng": 119.801256,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGURUAN",
+    "unitLat": 3.614677,
+    "unitLng": 125.495323,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANGURURAN",
+    "unitLat": 2.607801,
+    "unitLng": 98.636818,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANIKI",
+    "unitLat": 1.512996,
+    "unitLng": 124.91978,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANRITA LOPI",
+    "unitLat": -5.554377,
+    "unitLng": 120.195039,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANTON LABU",
+    "unitLat": 5.115884,
+    "unitLng": 97.457947,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PANYABUNGAN",
+    "unitLat": 0.86675,
+    "unitLng": 99.56418,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARAKAN",
+    "unitLat": -7.282128,
+    "unitLng": 110.113613,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARAPAT",
+    "unitLat": 2.667371,
+    "unitLng": 98.943044,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARE",
+    "unitLat": -7.766837,
+    "unitLng": 112.191603,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARIA",
+    "unitLat": -4.0205,
+    "unitLng": 120.161363,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARIAMAN",
+    "unitLat": -0.625741,
+    "unitLng": 100.119525,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARIGI",
+    "unitLat": -0.81618,
+    "unitLng": 120.173547,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PARINGIN",
+    "unitLat": -2.340773,
+    "unitLng": 115.460252,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PASANGKAYU",
+    "unitLat": -2.063371,
+    "unitLng": 119.293349,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PASAR WAJO",
+    "unitLat": -5.496543,
+    "unitLng": 122.843432,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PASIR PENGARAIAN",
+    "unitLat": 0.862706,
+    "unitLng": 100.296927,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PASIR PNGRN",
+    "unitLat": 0.862706,
+    "unitLng": 100.296927,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PASURUAN KOTA",
+    "unitLat": -7.642934,
+    "unitLng": 112.908522,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PATANGKAI",
+    "unitLat": -4.696239,
+    "unitLng": 119.99999,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PATI",
+    "unitLat": -6.755202,
+    "unitLng": 111.022019,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PAYAKUMBUH",
+    "unitLat": -0.237289,
+    "unitLng": 100.643838,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEDAN",
+    "unitLat": -7.692377,
+    "unitLng": 110.702909,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEKALONGAN KOTA",
+    "unitLat": -6.884644,
+    "unitLng": 109.671647,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEKANBARU KOTA BARAT",
+    "unitLat": 0.477997,
+    "unitLng": 101.424355,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEKANBARU KOTA TIMUR",
+    "unitLat": 0.532415,
+    "unitLng": 101.456732,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEKKABATA",
+    "unitLat": -3.665505,
+    "unitLng": 119.534716,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PELABUHAN RATU",
+    "unitLat": -6.986972,
+    "unitLng": 106.555688,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PELAIHARI",
+    "unitLat": -3.599059,
+    "unitLng": 114.704588,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEMALANG",
+    "unitLat": -6.891927,
+    "unitLng": 109.388161,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEMANGKAT",
+    "unitLat": 1.175568,
+    "unitLng": 108.973992,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEMATANG RAYA",
+    "unitLat": 2.85763,
+    "unitLng": 98.91177,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PENDOPO",
+    "unitLat": -3.285661,
+    "unitLng": 103.835364,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PENYABUNGAN",
+    "unitLat": 0.86675,
+    "unitLng": 99.56418,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PERAK",
+    "unitLat": -7.224991,
+    "unitLng": 112.724659,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PERAWANG",
+    "unitLat": 0.668641,
+    "unitLng": 101.588795,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PERBAUNGAN",
+    "unitLat": 3.56994,
+    "unitLng": 98.95412,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PERDAGANGAN",
+    "unitLat": 3.16244,
+    "unitLng": 99.32979,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PETTA",
+    "unitLat": 3.614677,
+    "unitLng": 125.495323,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PETUNG",
+    "unitLat": -0.910021,
+    "unitLng": 116.784409,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PEUREULAK",
+    "unitLat": 4.811258,
+    "unitLng": 97.894091,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PGKLN BRNDN",
+    "unitLat": 4.0188,
+    "unitLng": 98.2874,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PIRU",
+    "unitLat": -3.077117,
+    "unitLng": 128.205042,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PKL KERINCI",
+    "unitLat": 0.391515,
+    "unitLng": 101.848526,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PLERED",
+    "unitLat": -6.638031,
+    "unitLng": 107.406761,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PLNG PISAU",
+    "unitLat": -2.753589,
+    "unitLng": 114.256772,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PLOSO",
+    "unitLat": -7.256764,
+    "unitLng": 112.772112,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PNGKLN SUSU",
+    "unitLat": 4.10784,
+    "unitLng": 98.226,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP POLEWALI",
+    "unitLat": -3.432787,
+    "unitLng": 119.346917,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PONOROGO",
+    "unitLat": -7.86861,
+    "unitLng": 111.472361,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PONTIANAK KOTA",
+    "unitLat": -0.040129,
+    "unitLng": 109.335882,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PORONG",
+    "unitLat": -7.493596,
+    "unitLng": 112.670745,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PORSEA",
+    "unitLat": 2.44559,
+    "unitLng": 99.15605,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP POSO",
+    "unitLat": -1.384516,
+    "unitLng": 120.75947,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRABUMULIH",
+    "unitLat": -3.416798,
+    "unitLng": 104.257621,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRAFI",
+    "unitLat": -0.87659,
+    "unitLng": 133.832621,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRAYA",
+    "unitLat": -8.708112,
+    "unitLng": 116.272137,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRENDUAN",
+    "unitLat": -7.111139,
+    "unitLng": 113.668853,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIGEN",
+    "unitLat": -7.696391,
+    "unitLng": 112.631015,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA BEKASI",
+    "unitLat": -6.252641,
+    "unitLng": 107.010437,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA CIBABAT",
+    "unitLat": -6.875493,
+    "unitLng": 107.544961,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA KARAWANG",
+    "unitLat": -6.305661,
+    "unitLng": 107.292169,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA KRAKATAU",
+    "unitLat": -6.115842,
+    "unitLng": 106.152999,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA MAJALAYA",
+    "unitLat": -7.006632,
+    "unitLng": 107.625976,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRIMA PRIANGAN",
+    "unitLat": -6.949054,
+    "unitLng": 107.611455,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRINGGABAYA",
+    "unitLat": -8.562627,
+    "unitLng": 116.628221,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PRINGSEWU",
+    "unitLat": -5.350517,
+    "unitLng": 104.968552,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PROBOLINGGO",
+    "unitLat": -7.750102,
+    "unitLng": 113.21737,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PULANG PISAU",
+    "unitLat": -2.753589,
+    "unitLng": 114.256772,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PULUNG",
+    "unitLat": -4.597029,
+    "unitLng": 105.107465,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURBALINGGA",
+    "unitLat": -7.389756,
+    "unitLng": 109.365307,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURUK CAHU",
+    "unitLat": -0.598856,
+    "unitLng": 114.732428,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURWAKARTA KOTA",
+    "unitLat": -6.554607,
+    "unitLng": 107.445773,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURWODADI",
+    "unitLat": -7.083355,
+    "unitLng": 110.915893,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURWOKERTO KOTA",
+    "unitLat": -7.432061,
+    "unitLng": 109.257832,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PURWOREJO",
+    "unitLat": -7.713182,
+    "unitLng": 110.011799,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP PUTUSSIBAU",
+    "unitLat": 0.885134,
+    "unitLng": 112.926466,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RAHA",
+    "unitLat": -4.701519,
+    "unitLng": 122.84473,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RAJAPOLAH",
+    "unitLat": -7.227126,
+    "unitLng": 108.190013,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RAMBIPUJI",
+    "unitLat": -8.207426,
+    "unitLng": 113.608851,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANCAEKEK",
+    "unitLat": -6.958961,
+    "unitLng": 107.764697,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANDUDONGKAL",
+    "unitLat": -7.0998,
+    "unitLng": 109.31257,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANGKASBITUNG",
+    "unitLat": -6.355535,
+    "unitLng": 106.249011,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANSIKI",
+    "unitLat": -1.498522,
+    "unitLng": 134.155015,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANTAU",
+    "unitLat": -2.927356,
+    "unitLng": 115.167012,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANTAU KOTA",
+    "unitLat": 2.10605,
+    "unitLng": 99.82488,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RANTEPAO",
+    "unitLat": -2.97273,
+    "unitLng": 119.89792,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RAPPANG",
+    "unitLat": -3.843505,
+    "unitLng": 119.817261,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RASAU JAYA",
+    "unitLat": -0.242504,
+    "unitLng": 109.375757,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RATAHAN",
+    "unitLat": 1.03824,
+    "unitLng": 124.795984,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP REMBANG",
+    "unitLat": -6.729083,
+    "unitLng": 111.351819,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RENGASDENGKLOK",
+    "unitLat": -6.164541,
+    "unitLng": 107.297915,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RENGAT KOTA",
+    "unitLat": -0.374139,
+    "unitLng": 102.547315,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RIMBO BUJANG",
+    "unitLat": -1.31811,
+    "unitLng": 102.10062,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RIMO",
+    "unitLat": 2.396663,
+    "unitLng": 97.965808,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RIVAI",
+    "unitLat": -2.98247,
+    "unitLng": 104.725065,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RMB BUJANG",
+    "unitLat": -1.317958,
+    "unitLng": 102.100703,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ROTE NDAO",
+    "unitLat": -10.73428,
+    "unitLng": 123.046118,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RUMBAI",
+    "unitLat": 0.560673,
+    "unitLng": 101.444896,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RUMBIA",
+    "unitLat": -4.751955,
+    "unitLng": 105.539617,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RUNGKUT",
+    "unitLat": -7.336045,
+    "unitLng": 112.75026,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP RUTENG",
+    "unitLat": -8.609348,
+    "unitLng": 120.467664,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SABANG",
+    "unitLat": 5.874,
+    "unitLng": 95.327789,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAKETA",
+    "unitLat": -0.359764,
+    "unitLng": 127.850421,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SALATIGA",
+    "unitLat": -7.323819,
+    "unitLng": 110.50246,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMALANGA",
+    "unitLat": 5.194856,
+    "unitLng": 96.36698,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMARINDA ILIR",
+    "unitLat": -0.453601,
+    "unitLng": 117.160298,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMARINDA KOTA",
+    "unitLat": -0.500805,
+    "unitLng": 117.137476,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMARINDA SEBERANG",
+    "unitLat": -0.508069,
+    "unitLng": 117.140263,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMARINDA ULU",
+    "unitLat": -0.502575,
+    "unitLng": 117.114589,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMAWA REA",
+    "unitLat": -8.499386,
+    "unitLng": 117.426614,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMBAS",
+    "unitLat": 1.362414,
+    "unitLng": 109.300102,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMBOJA",
+    "unitLat": -10.132403,
+    "unitLng": 117.086608,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMPANG",
+    "unitLat": -7.20087,
+    "unitLng": 113.25112,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAMPIT",
+    "unitLat": -2.537007,
+    "unitLng": 112.945217,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SANANA",
+    "unitLat": -2.068374,
+    "unitLng": 125.970646,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SANDAI",
+    "unitLat": -1.238432,
+    "unitLng": 110.534541,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SANGATTA",
+    "unitLat": 0.756173,
+    "unitLng": 117.560873,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SANGGAU KOTA",
+    "unitLat": 0.121024,
+    "unitLng": 110.592617,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SANUR",
+    "unitLat": -8.663064,
+    "unitLng": 115.216937,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAPARUA",
+    "unitLat": -3.571746,
+    "unitLng": 128.643311,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAPE",
+    "unitLat": -8.570294,
+    "unitLng": 118.981884,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SARMI",
+    "unitLat": -1.853618,
+    "unitLng": 138.751348,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAROLANGUN",
+    "unitLat": -2.488095,
+    "unitLng": 102.277863,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SATUI",
+    "unitLat": -3.781699,
+    "unitLng": 115.393738,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAUMLAKI",
+    "unitLat": -7.913219,
+    "unitLng": 131.301406,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAWAH LUNTO",
+    "unitLat": -0.647242,
+    "unitLng": 100.746706,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SAWANGAN",
+    "unitLat": -6.412189,
+    "unitLng": 106.734428,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SBLSALAM KT",
+    "unitLat": 2.637986,
+    "unitLng": 98.009821,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEBERANG KOTA",
+    "unitLat": -1.45158,
+    "unitLng": 103.518601,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEDAYU",
+    "unitLat": -7.813154,
+    "unitLng": 110.267753,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEI DURI",
+    "unitLat": 0.562941,
+    "unitLng": 108.931264,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEI RAMPAH",
+    "unitLat": 3.49032,
+    "unitLng": 99.12801,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEI RUMBAI",
+    "unitLat": -11.2492,
+    "unitLng": 101.720933,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEKADAU",
+    "unitLat": 0.021218,
+    "unitLng": 110.889588,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEKAYU",
+    "unitLat": -2.887432,
+    "unitLng": 103.837186,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEKURA",
+    "unitLat": 1.468765,
+    "unitLng": 109.222038,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SELAT PANJANG",
+    "unitLat": 1.011098,
+    "unitLng": 102.714557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SELAYAR",
+    "unitLat": -7.062609,
+    "unitLng": 120.61882,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SELONG",
+    "unitLat": -8.647915,
+    "unitLng": 116.532536,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEMARANG BARAT",
+    "unitLat": -6.989131,
+    "unitLng": 110.367213,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEMARANG SELATAN",
+    "unitLat": -7.050148,
+    "unitLng": 110.418931,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEMARANG TENGAH",
+    "unitLat": -6.977064,
+    "unitLng": 110.416218,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SEMARANG TIMUR",
+    "unitLat": -6.993329,
+    "unitLng": 110.440663,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SENGKANG",
+    "unitLat": -4.136265,
+    "unitLng": 120.032434,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SENTANI",
+    "unitLat": -2.567409,
+    "unitLng": 140.511058,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SERANG",
+    "unitLat": -6.115842,
+    "unitLng": 106.152999,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SERIRIT",
+    "unitLat": -8.192729,
+    "unitLng": 114.941062,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SERUI",
+    "unitLat": -1.884706,
+    "unitLng": 136.242844,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIAK SRI ID",
+    "unitLat": 0.800171,
+    "unitLng": 102.043557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIAK SRI INDRAPURA",
+    "unitLat": 0.800171,
+    "unitLng": 102.043557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIANTAN",
+    "unitLat": -0.002399,
+    "unitLng": 109.325629,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIANTAR KOTA",
+    "unitLat": 2.957577,
+    "unitLng": 99.058871,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIAU",
+    "unitLat": 2.744865,
+    "unitLng": 125.361827,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIBOLGA KOTA",
+    "unitLat": 1.7442,
+    "unitLng": 98.77956,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIBORONG-BORONG",
+    "unitLat": 2.21651,
+    "unitLng": 98.97612,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIBRNG BRNG",
+    "unitLat": 2.21651,
+    "unitLng": 98.97612,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIBUHUAN",
+    "unitLat": 1.04863,
+    "unitLng": 99.73824,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SICINCIN",
+    "unitLat": -0.581705,
+    "unitLng": 100.280111,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDAMANIK",
+    "unitLat": 2.85763,
+    "unitLng": 98.91177,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDAREJA",
+    "unitLat": -7.484404,
+    "unitLng": 108.78499,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDAYU",
+    "unitLat": -6.998552,
+    "unitLng": 112.564507,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDIKALANG",
+    "unitLat": 2.75339,
+    "unitLng": 98.31142,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDIMPUAN KOTA",
+    "unitLat": 1.394553,
+    "unitLng": 99.251958,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDOARJO KOTA",
+    "unitLat": -7.450593,
+    "unitLng": 112.718826,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIDOMULYO",
+    "unitLat": -5.594299,
+    "unitLng": 105.516229,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIGLI KOTA",
+    "unitLat": 5.379539,
+    "unitLng": 95.951302,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIJUNJUNG",
+    "unitLat": -0.680302,
+    "unitLng": 100.964767,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SILUNGKANG",
+    "unitLat": -0.712997,
+    "unitLng": 100.787557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIMP EMPAT",
+    "unitLat": -0.061475,
+    "unitLng": 99.913776,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIMPANG EMPAT",
+    "unitLat": 0.076995,
+    "unitLng": 99.821796,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIMPANG KAWAT",
+    "unitLat": 2.6928,
+    "unitLng": 99.609,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINABANG",
+    "unitLat": 2.483286,
+    "unitLng": 96.374167,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGAPARNA",
+    "unitLat": -7.346014,
+    "unitLng": 108.109575,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGARAJA",
+    "unitLat": -8.114155,
+    "unitLng": 115.091971,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGKARAK",
+    "unitLat": -0.718774,
+    "unitLng": 100.598863,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGKAWANG KOTA",
+    "unitLat": 0.911557,
+    "unitLng": 108.980268,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGKIL",
+    "unitLat": 2.276845,
+    "unitLng": 97.808673,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINGOSARI",
+    "unitLat": -7.88957,
+    "unitLng": 112.666562,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINJAI",
+    "unitLat": -5.116984,
+    "unitLng": 120.262384,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SINTANG",
+    "unitLat": 0.075465,
+    "unitLng": 111.497581,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SIPIROK",
+    "unitLat": 1.60311,
+    "unitLng": 99.27357,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SITIUNG",
+    "unitLat": -10.18056,
+    "unitLng": 101.600076,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SLAWI",
+    "unitLat": -6.98028,
+    "unitLng": 109.13982,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SLEMAN",
+    "unitLat": -7.715852,
+    "unitLng": 110.355656,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SLT PANJANG",
+    "unitLat": 1.011098,
+    "unitLng": 102.714557,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SMPANG TIGA",
+    "unitLat": 0.424703,
+    "unitLng": 101.43664,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SOA SIU",
+    "unitLat": 0.669053,
+    "unitLng": 127.45003,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SOE",
+    "unitLat": -9.865012,
+    "unitLng": 124.288308,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SOFIFI",
+    "unitLat": 0.747097,
+    "unitLng": 127.577757,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SOLOK",
+    "unitLat": -0.78824,
+    "unitLng": 100.65458,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SOREANG",
+    "unitLat": -7.028634,
+    "unitLng": 107.52396,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SORONG KOTA",
+    "unitLat": -0.879146,
+    "unitLng": 131.261905,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SRAGEN",
+    "unitLat": -7.432054,
+    "unitLng": 111.027263,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SRENGAT",
+    "unitLat": -8.065503,
+    "unitLng": 112.075903,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SRIBHAWONO",
+    "unitLat": -5.285321,
+    "unitLng": 105.756569,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP STABAT",
+    "unitLat": 3.74235,
+    "unitLng": 98.44354,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUBANG",
+    "unitLat": -6.562936,
+    "unitLng": 107.768206,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUBULUSSALAM KOTA",
+    "unitLat": 2.637986,
+    "unitLng": 98.009821,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKABUMI KOTA",
+    "unitLat": -6.920576,
+    "unitLng": 106.932112,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKADANA",
+    "unitLat": -4.978111,
+    "unitLng": 105.322635,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKAMARA",
+    "unitLat": -2.71679,
+    "unitLng": 111.164613,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKANAGARA",
+    "unitLat": -7.098248,
+    "unitLng": 107.132494,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKARAJA",
+    "unitLat": -6.917482,
+    "unitLng": 106.965145,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKARAMI",
+    "unitLat": -2.926661,
+    "unitLng": 104.71241,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKOHARJO",
+    "unitLat": -7.672612,
+    "unitLng": 110.837647,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUKOREJO",
+    "unitLat": -7.739165,
+    "unitLng": 112.727027,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBA BARAT",
+    "unitLat": -9.63463,
+    "unitLng": 119.41448,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBA JAYA",
+    "unitLat": -9.42653,
+    "unitLng": 119.23598,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBA TIMUR",
+    "unitLat": -9.64638,
+    "unitLng": 120.25945,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBER",
+    "unitLat": -6.758959,
+    "unitLng": 108.480398,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBER REJO",
+    "unitLat": -7.170679,
+    "unitLng": 112.025992,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBERLAWANG",
+    "unitLat": -7.334818,
+    "unitLng": 110.853266,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMBERPUCUNG",
+    "unitLat": -8.160123,
+    "unitLng": 112.45548,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMEDANG KOTA",
+    "unitLat": -6.856933,
+    "unitLng": 107.920926,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUMENEP",
+    "unitLat": -7.013485,
+    "unitLng": 113.869392,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI JAWI",
+    "unitLat": -0.013122,
+    "unitLng": 109.315089,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI KAKAP",
+    "unitLat": -0.055839,
+    "unitLng": 109.193404,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI KKAP",
+    "unitLat": -0.055839,
+    "unitLng": 109.193404,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI LILIN",
+    "unitLat": -2.598873,
+    "unitLng": 104.113632,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI PENUH",
+    "unitLat": -2.063799,
+    "unitLng": 101.395819,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAI RUMBAI",
+    "unitLat": -1.214274,
+    "unitLng": 101.736301,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGAILIAT",
+    "unitLat": -1.897405,
+    "unitLng": 106.106491,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGGAL",
+    "unitLat": 3.56794,
+    "unitLng": 98.61379,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUNGGUMINASA",
+    "unitLat": -5.198492,
+    "unitLng": 119.449629,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SURAKARTA KOTA",
+    "unitLat": -7.567758,
+    "unitLng": 110.829584,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUTAMI",
+    "unitLat": -5.420435,
+    "unitLng": 105.417541,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP SUTOJAYAN",
+    "unitLat": -8.160902,
+    "unitLng": 112.217456,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TABANAN",
+    "unitLat": -8.53946,
+    "unitLng": 115.127558,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TABING",
+    "unitLat": -0.840371,
+    "unitLng": 100.33005,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAGULANDANG",
+    "unitLat": 2.343741,
+    "unitLng": 125.385514,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAIS",
+    "unitLat": -4.074585,
+    "unitLng": 102.581431,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAKALAR",
+    "unitLat": -5.428216,
+    "unitLng": 119.434775,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAKENGON",
+    "unitLat": 4.633076,
+    "unitLng": 96.842842,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TALANG PADANG",
+    "unitLat": -5.355072,
+    "unitLng": 104.795651,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TALIWANG",
+    "unitLat": -8.744289,
+    "unitLng": 116.838425,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TALUK KUANTAN",
+    "unitLat": -0.531596,
+    "unitLng": 101.570555,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAMAKO",
+    "unitLat": 3.458152,
+    "unitLng": 125.510662,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAMAN",
+    "unitLat": -7.355618,
+    "unitLng": 112.691161,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAMBU",
+    "unitLat": -0.040872,
+    "unitLng": 119.884353,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAMIANG LAYANG",
+    "unitLat": -2.115459,
+    "unitLng": 115.164807,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAMIANG LYG",
+    "unitLat": -2.115459,
+    "unitLng": 115.164807,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANAH GROGOT",
+    "unitLat": -1.911594,
+    "unitLng": 116.192748,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANAH JAWA",
+    "unitLat": 2.87309,
+    "unitLng": 99.1818,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANAH MERAH",
+    "unitLat": -6.100099,
+    "unitLng": 140.297126,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANDES",
+    "unitLat": -7.236496,
+    "unitLng": 112.684607,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANETE",
+    "unitLat": -5.331066,
+    "unitLng": 120.135882,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANGGEUNG",
+    "unitLat": -7.267585,
+    "unitLng": 107.12008,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANGGUL",
+    "unitLat": -8.15671,
+    "unitLng": 113.439952,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG",
+    "unitLat": -2.168295,
+    "unitLng": 115.38372,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG BALAI",
+    "unitLat": 2.95871,
+    "unitLng": 99.80019,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG BALAI KARIMUN",
+    "unitLat": 1.007911,
+    "unitLng": 103.427756,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG BATU",
+    "unitLat": 0.67276,
+    "unitLng": 103.463183,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG MORAWA",
+    "unitLat": 3.526115,
+    "unitLng": 98.794782,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG PANDAN",
+    "unitLat": -2.742428,
+    "unitLng": 107.636697,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG PINANG KOTA",
+    "unitLat": 0.912226,
+    "unitLng": 104.455364,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG PURA",
+    "unitLat": 3.8983,
+    "unitLng": 98.42421,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG REDEB",
+    "unitLat": 2.153878,
+    "unitLng": 117.501701,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG SARI",
+    "unitLat": -6.896438,
+    "unitLng": 107.807785,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG SELOR",
+    "unitLat": 2.839373,
+    "unitLng": 117.388504,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG TIRAM",
+    "unitLat": 3.2218,
+    "unitLng": 99.58092,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANJUNG UBAN",
+    "unitLat": 1.06964,
+    "unitLng": 104.231871,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TANRU TEDDONG",
+    "unitLat": -3.894738,
+    "unitLng": 120.000736,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAPAK TUAN",
+    "unitLat": 3.261524,
+    "unitLng": 97.180779,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TARAKAN",
+    "unitLat": 3.303592,
+    "unitLng": 117.595037,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TARUTUNG",
+    "unitLat": 2.03039,
+    "unitLng": 98.96149,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TASIKMALAYA KOTA",
+    "unitLat": -7.327427,
+    "unitLng": 108.222602,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TAWAELI",
+    "unitLat": -0.731846,
+    "unitLng": 119.863631,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEBING TINGGI",
+    "unitLat": 3.33493,
+    "unitLng": 99.16331,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEGAL KOTA",
+    "unitLat": -6.855243,
+    "unitLng": 109.138935,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEGAL TIMUR",
+    "unitLat": -6.860083,
+    "unitLng": 109.158078,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEGALREJO",
+    "unitLat": -7.46002,
+    "unitLng": 110.27014,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEGOWANU",
+    "unitLat": -7.050103,
+    "unitLng": 110.603201,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEJAKULA",
+    "unitLat": -8.131499,
+    "unitLng": 115.353289,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELAGA",
+    "unitLat": 0.57726,
+    "unitLng": 123.04772,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELANAI PURA",
+    "unitLat": -1.616692,
+    "unitLng": 103.589812,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELLU BOCCOE",
+    "unitLat": -4.809842,
+    "unitLng": 120.342564,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELUK BETUNG",
+    "unitLat": -5.443026,
+    "unitLng": 105.254758,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELUK DALAM",
+    "unitLat": 0.56345,
+    "unitLng": 97.82033,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TELUK SEGARA",
+    "unitLat": -3.791397,
+    "unitLng": 102.249813,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEMANGGUNG",
+    "unitLat": -7.318274,
+    "unitLng": 110.183468,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEMBILAHAN",
+    "unitLat": -0.320017,
+    "unitLng": 103.1531,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEMINABUAN",
+    "unitLat": -1.44543,
+    "unitLng": 132.018822,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEMPEH",
+    "unitLat": -8.210746,
+    "unitLng": 113.170281,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TENGGARONG",
+    "unitLat": -0.422651,
+    "unitLng": 116.992213,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TENTENA",
+    "unitLat": -1.754728,
+    "unitLng": 120.649271,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TERNATE SELATAN",
+    "unitLat": 0.78221,
+    "unitLng": 127.386399,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TEUNOM",
+    "unitLat": 4.444659,
+    "unitLng": 95.813114,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TIGA BINANGA",
+    "unitLat": 3.074838,
+    "unitLng": 98.24585,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TIGABINANGA",
+    "unitLat": 3.074838,
+    "unitLng": 98.24585,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TIMIKA JAYA",
+    "unitLat": -4.517572,
+    "unitLng": 136.85199,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TIMIKA KOTA",
+    "unitLat": -4.566457,
+    "unitLng": 136.880127,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ BALAI K",
+    "unitLat": 1.007911,
+    "unitLng": 103.427756,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ BATU",
+    "unitLat": 0.76035,
+    "unitLng": 103.708618,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ PANDAN",
+    "unitLat": -3.125848,
+    "unitLng": 107.655621,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ PNANG KT",
+    "unitLat": 0.912226,
+    "unitLng": 104.455364,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ REDEB",
+    "unitLat": 2.153878,
+    "unitLng": 117.501701,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ SELOR",
+    "unitLat": 3.28298,
+    "unitLng": 117.5042,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TJ UBAN",
+    "unitLat": 1.06964,
+    "unitLng": 104.231871,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TLK KUANTAN",
+    "unitLat": -0.531596,
+    "unitLng": 101.570555,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TMBANG TITI",
+    "unitLat": -1.828849,
+    "unitLng": 110.610806,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TNJNG BALAI",
+    "unitLat": 2.95871,
+    "unitLng": 99.80019,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TNJUNG PURA",
+    "unitLat": 3.8983,
+    "unitLng": 98.42421,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TOBELO",
+    "unitLat": 1.710888,
+    "unitLng": 128.011705,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TOBOALI",
+    "unitLat": -2.943901,
+    "unitLng": 106.907435,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TOILI",
+    "unitLat": -1.473862,
+    "unitLng": 122.327642,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TOMOHON",
+    "unitLat": 1.335658,
+    "unitLng": 124.836965,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TOMONI",
+    "unitLat": -2.50115,
+    "unitLng": 120.80266,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TONDANO",
+    "unitLat": 1.301469,
+    "unitLng": 124.913176,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TRENGGALEK",
+    "unitLat": -8.049146,
+    "unitLng": 111.717242,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TUAL KOTA",
+    "unitLat": -5.65078,
+    "unitLng": 132.737813,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TUBAN",
+    "unitLat": -6.902823,
+    "unitLng": 112.061957,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TUGU MULYO",
+    "unitLat": -3.911373,
+    "unitLng": 104.920886,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TULEHU",
+    "unitLat": -3.592874,
+    "unitLng": 128.339064,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TULUNG",
+    "unitLat": -7.600706,
+    "unitLng": 110.618507,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TULUNGAGUNG",
+    "unitLat": -8.055511,
+    "unitLng": 111.900116,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TUMBANG TITI",
+    "unitLat": -1.828849,
+    "unitLng": 110.610806,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP TUMPANG",
+    "unitLat": -8.019161,
+    "unitLng": 112.763544,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP UJUNG BATU",
+    "unitLat": 0.840163,
+    "unitLng": 100.659952,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP UJUNG BERUNG",
+    "unitLat": -6.913585,
+    "unitLng": 107.694713,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP ULOE",
+    "unitLat": -4.293884,
+    "unitLng": 120.243798,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP UNAAHA",
+    "unitLat": -4.048762,
+    "unitLng": 121.890058,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP UNGARAN",
+    "unitLat": -7.125723,
+    "unitLng": 110.405948,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WAISAI",
+    "unitLat": -0.412089,
+    "unitLng": 130.824242,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WAMENA KOTA",
+    "unitLat": -4.098115,
+    "unitLng": 138.934363,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WANGI-WANGI",
+    "unitLat": -5.723923,
+    "unitLng": 123.904461,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WANGON",
+    "unitLat": -7.511333,
+    "unitLng": 109.04091,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WAROPEN",
+    "unitLat": -2.219588,
+    "unitLng": 136.399399,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WARU",
+    "unitLat": -6.90067,
+    "unitLng": 113.48528,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WARUJAYENG",
+    "unitLat": -7.625728,
+    "unitLng": 112.022098,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WASIOR",
+    "unitLat": -2.729005,
+    "unitLng": 134.509165,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WATAN SOPPENG",
+    "unitLat": -4.336227,
+    "unitLng": 119.888142,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WATANG SAWITTO",
+    "unitLat": -3.790499,
+    "unitLng": 119.653887,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WATES",
+    "unitLat": -7.866043,
+    "unitLng": 110.150738,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WAY HALIM",
+    "unitLat": -5.365712,
+    "unitLng": 105.219244,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WEDA",
+    "unitLat": 0.326484,
+    "unitLng": 127.866004,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WELERI",
+    "unitLat": -6.971802,
+    "unitLng": 110.071194,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WIRADESA",
+    "unitLat": -6.927601,
+    "unitLng": 109.607358,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WIROSARI",
+    "unitLat": -7.078329,
+    "unitLng": 111.089248,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WLINGI",
+    "unitLat": -8.084811,
+    "unitLng": 112.312065,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WOHA",
+    "unitLat": -8.560001,
+    "unitLng": 118.696893,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WONOGIRI",
+    "unitLat": -7.819606,
+    "unitLng": 110.921324,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WONOMULYO",
+    "unitLat": -3.397923,
+    "unitLng": 119.217571,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WONOSARI",
+    "unitLat": -7.875984,
+    "unitLng": 113.911859,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WONOSOBO",
+    "unitLat": -7.368982,
+    "unitLng": 109.899883,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP WUA-WUA",
+    "unitLat": -4.022826,
+    "unitLng": 122.502825,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP YALIMO",
+    "unitLat": -3.771465,
+    "unitLng": 139.383578,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP YOGYAKARTA KOTA",
+    "unitLat": -7.810376,
+    "unitLng": 110.402973,
+    "type": "ULP",
+    "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "ULP YOMDORI",
+    "unitLat": -0.729808,
+    "unitLng": 135.733576,
+    "type": "ULP",
     "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
   }
 ];
