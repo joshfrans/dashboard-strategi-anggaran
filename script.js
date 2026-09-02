@@ -274,8 +274,16 @@ const statusDotClass = {
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260828-rkm-period-status";
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260828-rkm-period-status";
-const STRATEGY_GOOGLE_SHEET_ID = "14NchUhs2ov2Wn-nLAV6DlDtuZLszP1Fg";
+const STRATEGY_GOOGLE_SHEET_ID = "1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
+const STRATEGY_SOURCE_SHEETS = [
+  "01_Ratifikasi",
+  "02_Change_Request",
+  "03_Kinerja",
+  "04_Penyusunan_Kebijakan",
+  "05_Business_Excellence",
+  "09_Ringkasan"
+];
 const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
@@ -2984,6 +2992,12 @@ function calculatePerformanceScore() {
   return 0;
 }
 
+
+function strategyWorkbookSheetAudit(workbook) {
+  const detected = workbook?.SheetNames || [];
+  const missing = STRATEGY_SOURCE_SHEETS.filter((sheetName) => !findSheetName(workbook, sheetName));
+  return { detected, missing };
+}
 function sheetRows(workbook, sheetName) {
   const resolvedName = findSheetName(workbook, sheetName);
   const sheet = workbook.Sheets[resolvedName];
@@ -3657,10 +3671,17 @@ async function loadGoogleStrategyDataSource() {
     }
     const buffer = await response.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
+    const sheetAudit = strategyWorkbookSheetAudit(workbook);
     const { imported, hasData } = applyStrategyWorkbook(workbook);
     if (!hasData) {
-      strategyGoogleSourceError = "format sheet tidak cocok";
+      strategyGoogleSourceError = sheetAudit.missing.length
+        ? `sheet tidak cocok: ${sheetAudit.missing.join(", ")}`
+        : "format sheet tidak cocok";
+      console.info("Sheet Google terdeteksi:", sheetAudit.detected);
       return false;
+    }
+    if (sheetAudit.missing.length) {
+      console.info(`Sheet opsional/pendukung belum terbaca: ${sheetAudit.missing.join(", ")}`);
     }
     strategyGoogleImported = imported || {};
     const lastModified = response.headers.get("last-modified");
@@ -5583,4 +5604,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.lucide.createIcons();
   }
 });
+
 
