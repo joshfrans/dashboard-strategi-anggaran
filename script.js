@@ -274,7 +274,7 @@ const statusDotClass = {
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260828-rkm-period-status";
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260828-rkm-period-status";
-const STRATEGY_GOOGLE_SHEET_ID = "1Oc8F9vuchOHRDQ6o2I9udtDdziU9rcAuf5jE08MTsuw";
+const STRATEGY_GOOGLE_SHEET_ID = "1FkOCQMX9y9whwd0B1byzcJk4gEn7EJ08hzH3fPQPtqI";
 const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
 const STRATEGY_SOURCE_SHEETS = [
   "01_Ratifikasi",
@@ -5604,6 +5604,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.lucide.createIcons();
   }
 });
+
 
 
 
