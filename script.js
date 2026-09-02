@@ -274,8 +274,11 @@ const statusDotClass = {
 const DEFAULT_DATABASE_UPDATED_AT = "15 Juli 2026 10:30 WIB";
 const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v20260828-rkm-period-status";
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260828-rkm-period-status";
-const STRATEGY_GOOGLE_SHEET_ID = "1FkOCQMX9y9whwd0B1byzcJk4gEn7EJ08hzH3fPQPtqI";
-const STRATEGY_GOOGLE_XLSX_URL = `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`;
+const STRATEGY_GOOGLE_SHEET_ID = "15T2dQA_96m71Z2D9k-YZh0ehkZsxZMS5";
+const STRATEGY_GOOGLE_XLSX_URLS = [
+  `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`,
+  `https://drive.google.com/uc?export=download&id=${STRATEGY_GOOGLE_SHEET_ID}`
+];
 const STRATEGY_SOURCE_SHEETS = [
   "01_Ratifikasi",
   "02_Change_Request",
@@ -3654,19 +3657,29 @@ async function loadGoogleStrategyDataSource() {
     strategyGoogleSourceError = "";
     strategyGoogleImported = {};
     if (!(await ensureXlsxLibrary())) return false;
-    const response = await fetch(`${STRATEGY_GOOGLE_XLSX_URL}&_=${Date.now()}`, {
-      cache: "no-store",
-      credentials: "omit"
-    });
-    if (!response.ok) {
-      strategyGoogleSourceError = `Google ${response.status}`;
-      console.info(`Google data source tidak dapat dimuat: HTTP ${response.status}`);
-      return false;
+    let response = null;
+    let sourceError = "";
+    for (const sourceUrl of STRATEGY_GOOGLE_XLSX_URLS) {
+      const separator = sourceUrl.includes("?") ? "&" : "?";
+      try {
+        const candidate = await fetch(`${sourceUrl}${separator}_=${Date.now()}`, {
+          cache: "no-store",
+          credentials: "omit"
+        });
+        const candidateType = candidate.headers.get("content-type") || "";
+        if (candidate.ok && !candidateType.includes("text/html")) {
+          response = candidate;
+          break;
+        }
+        sourceError = candidateType.includes("text/html") ? "Google butuh akses" : `Google ${candidate.status}`;
+        console.info(`Google data source tidak dapat dimuat dari endpoint kandidat: ${sourceError}`);
+      } catch (fetchError) {
+        sourceError = "Google tidak terbaca";
+        console.info("Endpoint Google data source gagal dicoba:", fetchError);
+      }
     }
-    const contentType = response.headers.get("content-type") || "";
-    if (contentType.includes("text/html")) {
-      strategyGoogleSourceError = "Google butuh akses";
-      console.info("Google data source mengembalikan halaman HTML. Pastikan file dapat diakses oleh siapa pun yang memiliki link.");
+    if (!response) {
+      strategyGoogleSourceError = sourceError || "Google tidak terbaca";
       return false;
     }
     const buffer = await response.arrayBuffer();
@@ -5604,8 +5617,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.lucide.createIcons();
   }
 });
-
-
-
-
-
