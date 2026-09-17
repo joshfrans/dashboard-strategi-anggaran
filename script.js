@@ -1,4 +1,4 @@
-window.DASHBOARD_RELEASE_VERSION = "20260918-1";
+window.DASHBOARD_RELEASE_VERSION = "20260918-2";
 
 function sanitizeDashboardHtml(markup) {
   const value = String(markup ?? "");
@@ -1591,7 +1591,7 @@ function loadXlsxLibrary() {
 
   xlsxLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./assets/xlsx-0.18.5.full.min.js?v=20260918-1";
+    script.src = "./assets/xlsx-0.18.5.full.min.js?v=20260918-2";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {

@@ -9,7 +9,11 @@ const failures = [];
 for (const [relativePath, expected] of Object.entries(manifest)) {
   try {
     const contents = await readFile(new URL(relativePath, rootUrl));
-    const actual = createHash("sha256").update(contents).digest("hex");
+    // Git may check text assets out with CRLF on Windows and LF in CI.
+    // Normalize line endings so the integrity value describes file contents,
+    // not the operating system used to run the scan.
+    const normalizedContents = Buffer.from(contents.toString("utf8").replace(/\r\n/g, "\n"));
+    const actual = createHash("sha256").update(normalizedContents).digest("hex");
     if (actual !== expected) failures.push(`${relativePath}: checksum berubah`);
   } catch (error) {
     failures.push(`${relativePath}: ${error.code || error.message}`);
