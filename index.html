@@ -18,11 +18,16 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <script>
-      window.DASHBOARD_RELEASE_VERSION = "20260826-2";
+      window.DASHBOARD_RELEASE_VERSION = "20260917-3";
     </script>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="./styles.css?v=20260902-3" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260917-3" />
   </head>
   <body>
     <div class="app-shell">
@@ -320,8 +325,8 @@
                 <div class="exec2-panel-head"><h3>Strategi & Evaluasi GA</h3><span>NKO 106,84 - tercapai</span></div>
                 <h4>Ratifikasi Kebijakan Sub Holding & Anak Perusahaan</h4>
                 <div class="exec2-policy-kpis"><div><strong>140</strong><span>Total Status Kebijakan</span></div><div><strong>87</strong><span>Selesai</span></div><div><strong>37</strong><span>On Progress</span></div><div><strong>16</strong><span>Tidak Ratifikasi</span></div></div>
-                <div class="exec2-cr-progress"><span>Progress Change Request</span><b><i style="width:62.56%"></i></b><strong id="overallProgress">62,56%</strong><small><span id="doneCr">2</span> CR selesai - <span id="progressCr">6</span> on progress - <span id="notStartedCr">1</span> belum mulai</small></div>
-                <div class="exec2-policy-list"><p><span>Draft Kebijakan Layanan GA #1</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #2</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #3</span><b><i style="width:10%"></i></b><strong>10%</strong></p><p class="exec2-nko-line"><span>NKO Strategi & Evaluasi</span><b><i style="width:100%"></i></b><strong id="summaryNko">106,84</strong></p></div>
+                <div class="exec2-cr-progress"><span>Progress Change Request</span><b><i style="width:62.56%"></i></b><strong id="overallProgress">62,56%</strong><small><span data-bind="doneCr">2</span> CR selesai - <span data-bind="progressCr">6</span> on progress - <span data-bind="notStartedCr">1</span> belum mulai</small></div>
+                <div class="exec2-policy-list"><p><span>Draft Kebijakan Layanan GA #1</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #2</span><b><i style="width:81%"></i></b><strong>81%</strong></p><p><span>Draft Kebijakan Layanan GA #3</span><b><i style="width:10%"></i></b><strong>10%</strong></p><p class="exec2-nko-line"><span>NKO Strategi & Evaluasi</span><b><i style="width:100%"></i></b><strong data-bind="summaryNko">106,84</strong></p></div>
                 <div class="exec2-business-excellence">
                   <div>
                     <span>PLN Business Excellence</span>
@@ -1216,8 +1221,8 @@
             <article class="settings-card">
               <div><i data-lucide="shield-check"></i></div>
               <span>Security</span>
-              <h3>Weekly Security Scan</h3>
-              <p>Scan otomatis setiap Minggu pukul 09:00 WIB melalui GitHub Actions.</p>
+              <h3>Daily Security Scan</h3>
+              <p>Scan otomatis setiap hari pukul 03:00 WIB melalui GitHub Actions.</p>
               <a href="https://github.com/joshfrans/dashboard-strategi-anggaran/actions/workflows/security-weekly.yml" target="_blank" rel="noreferrer">Lihat Workflow</a>
             </article>
           </div>
@@ -1229,7 +1234,7 @@
             </article>
             <article>
               <strong>Security Schedule</strong>
-              <span>Minggu, 09:00 WIB</span>
+              <span>Setiap hari, 03:00 WIB</span>
             </article>
             <article>
               <strong>Supported Import</strong>
@@ -1265,9 +1270,9 @@
               <span>Total Change Request</span>
             </div>
             <div class="mini-legend">
-              <span><b class="dot green-dot"></b><span id="doneCr">2</span> Selesai</span>
-              <span><b class="dot amber-dot"></b><span id="progressCr">6</span> On Progress</span>
-              <span><b class="dot gray-dot"></b><span id="notStartedCr">1</span> Belum Mulai</span>
+              <span><b class="dot green-dot"></b><span data-bind="doneCr">2</span> Selesai</span>
+              <span><b class="dot amber-dot"></b><span data-bind="progressCr">6</span> On Progress</span>
+              <span><b class="dot gray-dot"></b><span data-bind="notStartedCr">1</span> Belum Mulai</span>
             </div>
           </article>
 
@@ -1684,9 +1689,9 @@
               </table>
             </div>
             <div class="cr-summary-row">
-              <div><strong id="summaryTotal">9</strong><span>Total CR</span></div>
+              <div><strong data-bind="summaryTotal">9</strong><span>Total CR</span></div>
               <div><strong class="green-text" id="summaryDone">2</strong><span>Selesai</span></div>
-              <div><strong class="amber-text" id="summaryProgress">6</strong><span>On Progress</span></div>
+              <div><strong class="amber-text" data-bind="summaryProgress">6</strong><span>On Progress</span></div>
               <div><strong class="gray-text" id="summaryNotStarted">1</strong><span>Belum Mulai</span></div>
               <p>
                 * Progress disesuaikan dari sheet utama pada workbook List Monitoring CR TRANSFORMASI GA.
@@ -1765,9 +1770,9 @@
             <div><span class="ring green-ring"><strong id="summaryPolicyDone">87</strong></span><small>Selesai Ratifikasi</small></div>
             <div><span class="ring amber-ring"><strong id="summaryPolicyFollowUp">16</strong></span><small>Tidak Ratifikasi</small></div>
             <div><span class="ring green-ring percent-ring progress-cr-ring"><strong>62,56%</strong></span><small>Progress CR</small></div>
-            <div><span class="ring purple-ring"><strong id="summaryTotal">9</strong></span><small>Total CR</small></div>
-            <div><span class="ring amber-ring"><strong id="summaryProgress">6</strong></span><small>CR On Progress</small></div>
-            <div><span class="ring green-ring value-ring"><strong id="summaryNko">106,84</strong></span><small>NKO Tercapai</small></div>
+            <div><span class="ring purple-ring"><strong data-bind="summaryTotal">9</strong></span><small>Total CR</small></div>
+            <div><span class="ring amber-ring"><strong data-bind="summaryProgress">6</strong></span><small>CR On Progress</small></div>
+            <div><span class="ring green-ring value-ring"><strong data-bind="summaryNko">106,84</strong></span><small>NKO Tercapai</small></div>
             <div><span class="ring purple-ring"><strong id="summaryPolicyPrepProgress">3</strong></span><small>Kebijakan On Progress</small></div>
             <div><span class="ring green-ring percent-ring wide-percent-ring"><strong id="summaryBusinessExcellence">100,18%</strong></span><small>Business Excellence</small></div>
           </div>
@@ -1801,8 +1806,12 @@
     </div>
 
     <script src="./assets/lucide.min.js?v=20260804-1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin="anonymous"
+    ></script>
     <script src="./assets/ev-spklu-data.js?v=20260826-13"></script>
-    <script src="./script.js?v=20260902-3"></script>
+    <script src="./script.js?v=20260917-3"></script>
   </body>
 </html>

@@ -1049,7 +1049,7 @@ function renderAoCorporate() {
 }
 
 function setText(id, value) {
-  document.querySelectorAll(`[id="${id}"]`).forEach((element) => {
+  document.querySelectorAll(`[id="${id}"], [data-bind="${id}"]`).forEach((element) => {
     element.textContent = value;
   });
 }
@@ -1335,7 +1335,7 @@ function updateDashboardMetrics() {
   };
 
   Object.entries(values).forEach(([id, value]) => {
-    document.querySelectorAll(`[id="${id}"]`).forEach((element) => {
+    document.querySelectorAll(`[id="${id}"], [data-bind="${id}"]`).forEach((element) => {
       element.textContent = value;
     });
   });
@@ -5391,9 +5391,34 @@ function initEvGeoMap() {
   }).setView([-2.6, 118.2], 5);
 
   const tileLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap",
-    maxZoom: 18
-  }).addTo(map);
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  });
+
+  let tileErrorCount = 0;
+  let tileFallbackActivated = false;
+  const activateStaticFallback = () => {
+    if (tileFallbackActivated || !mapEl.isConnected) return;
+    tileFallbackActivated = true;
+    const activeIndex = Number(document.querySelector("[data-ev-unit].is-active")?.dataset.evUnit || 0);
+    map.remove();
+    const selectStatic = (nextIndex) => {
+      const item = evGeoPriorityUnits[nextIndex] || evGeoPriorityUnits[0];
+      setActiveButton(nextIndex);
+      renderEvMapDetail(item);
+      mapEl.innerHTML = renderEvStaticMap(nextIndex);
+    };
+    bindEvUnitList(selectStatic);
+    bindEvUnitSearch(selectStatic);
+    evGeoMapState = { select: selectStatic, container: mapEl };
+    selectStatic(activeIndex);
+  };
+
+  tileLayer.on("tileerror", () => {
+    tileErrorCount += 1;
+    if (tileErrorCount >= 4) activateStaticFallback();
+  });
+  tileLayer.addTo(map);
 
   const mapLegend = L.control({ position: "topright" });
   mapLegend.onAdd = () => {
@@ -5408,22 +5433,6 @@ function initEvGeoMap() {
     return div;
   };
   mapLegend.addTo(map);
-
-  tileLayer.once("tileerror", () => {
-    const activeIndex = document.querySelector("[data-ev-unit].is-active")?.dataset.evUnit || 0;
-    map.remove();
-    const index = Number(activeIndex);
-    const selectStatic = (nextIndex) => {
-      const item = evGeoPriorityUnits[nextIndex] || evGeoPriorityUnits[0];
-      setActiveButton(nextIndex);
-      renderEvMapDetail(item);
-      mapEl.innerHTML = renderEvStaticMap(nextIndex);
-    };
-    bindEvUnitList(selectStatic);
-    bindEvUnitSearch(selectStatic);
-    evGeoMapState = { select: selectStatic, container: mapEl };
-    selectStatic(index);
-  });
 
   const ulpMarkers = evUlpUnits
     .map((row) => {

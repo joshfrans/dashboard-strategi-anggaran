@@ -2,3 +2,5 @@
 10021	IGNORE	(X-Content-Type-Options Header Missing - GitHub Pages static hosting does not support custom response headers)
 10038	IGNORE	(Content Security Policy Header Not Set - dashboard uses meta CSP because GitHub Pages static hosting does not support custom response headers)
 10055	IGNORE	(CSP Scanner - dashboard uses meta CSP because GitHub Pages static hosting does not support custom response headers)
+10098	IGNORE	(Cross-Domain Misconfiguration - GitHub Pages sets Access-Control-Allow-Origin for static public assets)
+90003	IGNORE	(Sub Resource Integrity Attribute Missing - Google Fonts CSS is generated dynamically and hosted by Google)
