@@ -17,6 +17,7 @@ node_modules/
 
 # Keep approved public templates explicit.
 !assets/template-data-source-*.xlsx
+!assets/data-source-strategi-evaluasi-online.xlsx
 
 # Local screenshots and temporary exports
 codex-clipboard-*

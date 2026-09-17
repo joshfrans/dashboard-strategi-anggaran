@@ -3,6 +3,8 @@ name: Daily Security Scan
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "assets/data-source-strategi-evaluasi-online.xlsx"
   pull_request:
     branches: [main]
   schedule:

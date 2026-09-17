@@ -12,13 +12,13 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; frame-src 'self' https://emje-maker.github.io; connect-src 'self' https://docs.google.com https://drive.google.com https://*.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+      content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; frame-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <script>
-      window.DASHBOARD_RELEASE_VERSION = "20260917-3";
+      window.DASHBOARD_RELEASE_VERSION = "20260917-4";
     </script>
     <link rel="icon" href="data:," />
     <link
@@ -101,7 +101,7 @@
               Aplikasi untuk mendukung percepatan pencapaian target perusahaan.
             </p>
             <p class="source-status-line" hidden>
-              Sumber data: <strong>Google Sheets (online)</strong> · sinkron <span>memuat data...</span>
+              Sumber data: <strong>Google Sheets (sinkron otomatis)</strong> · sinkron <span>memuat data...</span>
             </p>
           </div>
 
@@ -138,7 +138,7 @@
             <div class="date-card source-date-card">
               <i data-lucide="calendar"></i>
               <div>
-                <small id="strategySourceStatus">Sumber data: Google Sheets (online)</small>
+                <small id="strategySourceStatus">Sumber data: Google Sheets (sinkron otomatis)</small>
                 <span>Data per <strong data-last-updated>15 Juli 2026 10:30 WIB</strong></span>
               </div>
             </div>
@@ -840,7 +840,7 @@
           </div>
           <iframe
             class="ao-full-frame"
-            src="https://emje-maker.github.io/dashboard-admumum/"
+            src="./assets/ao-korporat.html?v=20260917-1"
             title="Dashboard AO Korporat - Biaya Administrasi Umum"
             loading="lazy"
           ></iframe>
@@ -1812,6 +1812,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="./assets/ev-spklu-data.js?v=20260826-13"></script>
-    <script src="./script.js?v=20260917-3"></script>
+    <script src="./script.js?v=20260917-4"></script>
   </body>
 </html>

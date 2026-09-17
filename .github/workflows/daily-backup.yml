@@ -13,7 +13,7 @@ permissions:
 env:
   DASHBOARD_NAME: dashboard-strategi-evaluasi
   GDRIVE_FOLDER_ID: 1qTohLBmsuVdBO0UNKwgm4tq2uzMamQ5k
-  STRATEGY_SHEET_ID: 1ZuKo8aD2LJszyQa3_371rigeVJZM4Iw0
+  STRATEGY_SHEET_ID: 15T2dQA_96m71Z2D9k-YZh0ehkZsxZMS5
   HAS_GDRIVE_SECRET: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON != '' }}
 
 jobs:

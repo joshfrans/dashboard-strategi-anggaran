@@ -276,8 +276,7 @@ const STRATEGY_LOCAL_SOURCE_KEY = "dashboardStrategyEvaluationDataSource:v202608
 const STRATEGY_LOCAL_SOURCE_MODE_KEY = "dashboardStrategyEvaluationDataSourceMode:v20260828-rkm-period-status";
 const STRATEGY_GOOGLE_SHEET_ID = "15T2dQA_96m71Z2D9k-YZh0ehkZsxZMS5";
 const STRATEGY_GOOGLE_XLSX_URLS = [
-  `https://docs.google.com/spreadsheets/d/${STRATEGY_GOOGLE_SHEET_ID}/export?format=xlsx`,
-  `https://drive.google.com/uc?export=download&id=${STRATEGY_GOOGLE_SHEET_ID}`
+  "./assets/data-source-strategi-evaluasi-online.xlsx"
 ];
 const STRATEGY_SOURCE_SHEETS = [
   "01_Ratifikasi",
@@ -287,7 +286,7 @@ const STRATEGY_SOURCE_SHEETS = [
   "05_Business_Excellence",
   "09_Ringkasan"
 ];
-const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
+const STRATEGY_REALTIME_REFRESH_MS = 5 * 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
 const STRATEGY_MONTHS_FULL = [
@@ -358,7 +357,7 @@ function markDatabaseUploadedNow() {
   return label;
 }
 
-function setStrategySourceStatus(sourceLabel = "Google Sheets (online)", syncedAt = new Date(), detail = "") {
+function setStrategySourceStatus(sourceLabel = "Google Sheets (sinkron otomatis)", syncedAt = new Date(), detail = "") {
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
   const status = `Sumber data: ${sourceLabel}${detail ? ` - ${detail}` : ""} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
@@ -3671,11 +3670,11 @@ async function loadGoogleStrategyDataSource() {
           response = candidate;
           break;
         }
-        sourceError = candidateType.includes("text/html") ? "Google butuh akses" : `Google ${candidate.status}`;
-        console.info(`Google data source tidak dapat dimuat dari endpoint kandidat: ${sourceError}`);
+        sourceError = candidateType.includes("text/html") ? "snapshot belum tersedia" : `snapshot ${candidate.status}`;
+        console.info(`Snapshot data source tidak dapat dimuat: ${sourceError}`);
       } catch (fetchError) {
-        sourceError = "Google tidak terbaca";
-        console.info("Endpoint Google data source gagal dicoba:", fetchError);
+        sourceError = "snapshot tidak terbaca";
+        console.info("Snapshot data source gagal dimuat:", fetchError);
       }
     }
     if (!response) {
@@ -3698,15 +3697,16 @@ async function loadGoogleStrategyDataSource() {
     }
     strategyGoogleImported = imported || {};
     const lastModified = response.headers.get("last-modified");
-    const sourceTime = new Date();
+    const parsedLastModified = lastModified ? new Date(lastModified) : null;
+    const sourceTime = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
-    setStrategySourceStatus("Google Sheets (online)", sourceTime);
+    setStrategySourceStatus("Google Sheets (sinkron otomatis)", sourceTime);
     saveLocalStrategyDataSource("google-cache");
     return true;
   } catch (error) {
     strategyGoogleImported = {};
-    strategyGoogleSourceError = "Google tidak terbaca";
-    console.info("Google data source Strategi & Evaluasi tidak dimuat:", error);
+    strategyGoogleSourceError = "snapshot tidak terbaca";
+    console.info("Snapshot data source Strategi & Evaluasi tidak dimuat:", error);
     return false;
   }
 }
@@ -3736,7 +3736,7 @@ async function loadStrategyDataSource() {
     if (googleLoaded) {
       saveLocalStrategyDataSource("google-cache");
       setStrategySourceStatus(
-        googleHasRatification ? "Google Sheets (online)" : "Google Sheets + Excel Ratifikasi",
+        googleHasRatification ? "Google Sheets (sinkron otomatis)" : "Google Sheets + Excel Ratifikasi",
         new Date()
       );
     } else if (ratificationLoaded) {
@@ -3785,7 +3785,7 @@ async function refreshOnlineDashboardData(options = {}) {
       return false;
     }
     renderStrategyDashboard();
-    setStrategySourceStatus("Google Sheets (online)", new Date(), "auto refresh aktif");
+    setStrategySourceStatus("Google Sheets (sinkron otomatis)", new Date(), "snapshot diperiksa berkala");
     if (!silent) {
       showImportToast(
         "Sinkronisasi online berhasil",
@@ -4384,7 +4384,7 @@ async function importDataFile(file) {
   }
   message.push(`Data per ${uploadedAt}.`);
   if (saved) message.push("Data tersimpan untuk browser ini.");
-  message.push("Untuk realtime semua pengguna, update sumber resmi di Google Sheets.");
+  message.push("Untuk memperbarui semua pengguna, update sumber resmi di Google Sheets; snapshot web disinkronkan otomatis.");
   showImportToast("Import data Strategi & Evaluasi berhasil", message.join(" "));
 }
 

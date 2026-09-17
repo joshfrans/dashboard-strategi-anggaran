@@ -1,0 +1,54 @@
+name: Sync Strategy Google Sheet
+
+on:
+  schedule:
+    # Refresh the browser-readable snapshot every 30 minutes.
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-strategy-google-sheet
+  cancel-in-progress: true
+
+env:
+  STRATEGY_SHEET_ID: 15T2dQA_96m71Z2D9k-YZh0ehkZsxZMS5
+  SNAPSHOT_PATH: assets/data-source-strategi-evaluasi-online.xlsx
+
+jobs:
+  sync-strategy-source:
+    name: Sync browser data snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download and validate Google Sheet snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          TEMP_FILE="${RUNNER_TEMP}/strategy-source.xlsx"
+          curl -L --fail --retry 3 --retry-delay 5 \
+            "https://docs.google.com/spreadsheets/d/${STRATEGY_SHEET_ID}/export?format=xlsx" \
+            -o "${TEMP_FILE}"
+          test -s "${TEMP_FILE}"
+          test "$(head -c 2 "${TEMP_FILE}")" = "PK"
+          mv "${TEMP_FILE}" "${SNAPSHOT_PATH}"
+
+      - name: Publish snapshot when data changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- "${SNAPSHOT_PATH}"; then
+            echo "Google Sheet snapshot is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "${SNAPSHOT_PATH}"
+          git commit -m "Sync Strategy & Evaluation data snapshot"
+          git push origin HEAD:main
