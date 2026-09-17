@@ -23,6 +23,7 @@ File yang boleh dipublish:
 
 - `.gitignore` mencegah file kerja mentah seperti Excel, PowerPoint, PDF, CSV, dan dokumen internal ikut masuk commit.
 - `tools/data-leak-scan.mjs` memindai file publik untuk pola token, credential, email PLN, SharePoint internal, private key, dan URL IP internal.
+- Library browser Leaflet, SheetJS, dan DOMPurify disimpan lokal dengan versi terkunci; `tools/vendor-integrity-scan.mjs` memverifikasi checksum sebelum deployment.
 - GitHub Actions menjalankan scan saat push, pull request, manual run, dan setiap Minggu pukul 09:00 WIB.
 - `robots.txt` dan meta `noindex` mencegah indexing mesin pencari.
 - Content Security Policy membatasi sumber script, style, image, frame, dan koneksi.

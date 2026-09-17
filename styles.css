@@ -446,9 +446,12 @@
 
 .ev-data-source-copy h2 {
   margin: 0;
+  padding: 0;
+  background: transparent;
   color: #06164c;
   font-size: 13px;
   font-weight: 950;
+  text-align: left;
   text-transform: uppercase;
 }
 
@@ -682,6 +685,11 @@
   border-radius: 6px;
   background: var(--unit-tone, #1683ff);
   box-shadow: 0 5px 13px rgba(6, 22, 76, 0.28);
+}
+
+.ev-unit-office-div-icon.is-approximate .ev-unit-office-marker {
+  outline: 3px dashed #7c3aed;
+  outline-offset: 2px;
 }
 
 .ev-unit-office-marker::before {
@@ -1207,6 +1215,18 @@
   color: #06164c;
   font-size: 18px;
   line-height: 1.1;
+}
+
+.ev-coordinate-warning {
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid #c4b5fd;
+  border-radius: 8px;
+  background: #f5f3ff;
+  color: #5b21b6;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .ev-distance-box {

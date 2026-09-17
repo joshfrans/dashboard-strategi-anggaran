@@ -3,31 +3,26 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard Change Request Aplikasi</title>
+    <title>Dashboard Strategi & Evaluasi PLN</title>
     <meta
       name="description"
-      content="Dashboard Timeline Pekerjaan dan Change Request Aplikasi untuk monitoring manajerial."
+      content="Dashboard Strategi & Evaluasi, investasi, anggaran operasional, dan kesiapan EV untuk monitoring manajerial."
     />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; frame-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; frame-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; worker-src 'self' blob:; upgrade-insecure-requests"
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <script>
-      window.DASHBOARD_RELEASE_VERSION = "20260917-4";
-    </script>
     <link rel="icon" href="data:," />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin="anonymous"
+      href="./assets/leaflet-1.9.4.min.css?v=20260918-1"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260917-3" />
+    <link rel="stylesheet" href="./styles.css?v=20260918-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -139,7 +134,7 @@
               <i data-lucide="calendar"></i>
               <div>
                 <small id="strategySourceStatus">Sumber data: Google Sheets (sinkron otomatis)</small>
-                <span>Data per <strong data-last-updated>15 Juli 2026 10:30 WIB</strong></span>
+                <span>Sinkron teknis <strong data-last-updated>15 Juli 2026 10:30 WIB</strong></span>
               </div>
             </div>
 
@@ -187,7 +182,7 @@
 
           <div class="exec2-subline">
             <strong>Realisasi Biaya s.d. Juni 2026</strong>
-            <span>Data per <b data-last-updated>15 Juli 2026 10:30 WIB</b> - Ilustrasi dashboard manajemen</span>
+            <span>Sinkron teknis <b data-last-updated>15 Juli 2026 10:30 WIB</b> - periode bisnis mengikuti masing-masing sumber</span>
           </div>
 
           <div class="exec2-cost-grid">
@@ -546,7 +541,7 @@
             <article class="info-card">
               <div class="info-title"><i data-lucide="lightbulb"></i><h2>Insight Dashboard</h2></div>
               <ul>
-                <li>Strategi & Evaluasi terkendali: 87 status ratifikasi selesai, 37 on progress, 16 tidak ratifikasi, CR aplikasi 62,56%, dan NKO 106,84 tercapai.</li>
+                <li>Strategi & Evaluasi masih memerlukan tindak lanjut atas status on progress; status Tidak Ratifikasi harus divalidasi sebagai pengecualian atau pekerjaan terbuka.</li>
                 <li>Investasi perlu percepatan: realisasi AKI baru 30,43% dengan sisa 942,28 M yang perlu dimonitor.</li>
                 <li>Administrasi Umum menunjukkan realisasi 3.533.761 jt, serapan RKAP 40%, dan proyeksi 2026 sebesar 7.946.234 jt.</li>
               </ul>
@@ -571,12 +566,12 @@
             </article>
 
             <article class="info-card next-card">
-              <div class="info-title"><i data-lucide="calendar-check"></i><h2>Next Action (7 Hari Kedepan)</h2></div>
+              <div class="info-title"><i data-lucide="calendar-check"></i><h2>Backlog Tindakan — Perbarui Target</h2></div>
               <div class="next-list">
-                <div><span>Validasi evidence ratifikasi dan status CR prioritas</span><b>18 Jul</b></div>
-                <div><span>Review gap AKI, BAPP, dan rekomposisi investasi</span><b>20 Jul</b></div>
-                <div><span>Review AO biaya utama dan proyeksi akhir tahun</span><b>22 Jul</b></div>
-                <div><span>Kompilasi keputusan manajemen untuk dashboard update</span><b>24 Jul</b></div>
+                <div><span>Validasi evidence ratifikasi dan status CR prioritas</span><b>Target ulang</b></div>
+                <div><span>Validasi penyebab gap AKI dan bukti BAPP/pipeline</span><b>Target ulang</b></div>
+                <div><span>Review AO biaya utama dan proyeksi akhir tahun</span><b>Target ulang</b></div>
+                <div><span>Kompilasi keputusan manajemen untuk dashboard update</span><b>Target ulang</b></div>
               </div>
             </article>
           </section>
@@ -759,7 +754,7 @@
                 <p>Hal yang perlu dikunci agar target penyerapan terkendali.</p>
               </div>
               <ul class="investment-action-list">
-                <li><strong>Evaluasi Juli & rencana Agustus</strong><span>Realisasi Juli perlu dievaluasi di awal Agustus berdasarkan kesiapan BAPP.</span></li>
+                <li><strong>Evaluasi periode terbaru</strong><span>Perbarui periode realisasi dan validasi keterkaitan BAPP sebelum menetapkan aksi berikutnya.</span></li>
                 <li><strong>Rekomposisi AKI</strong><span>Tambahan AKI dilakukan berbasis BAPP dan rekomposisi dari pagu AKI yang terbit.</span></li>
                 <li><strong>Tambahan kebutuhan AI</strong><span>Indikasi kebutuhan: DIV TEN 100 M, DIV RSL 80 M, DIV MEB 80 M.</span></li>
               </ul>
@@ -956,7 +951,7 @@
           <div class="rapim-cover">
             <div class="rapim-brand-row">
               <strong>LAPORAN MANAJEMEN</strong>
-              <span>Data per <b data-last-updated>15 Juli 2026 10:30 WIB</b></span>
+              <span>Sinkron teknis <b data-last-updated>15 Juli 2026 10:30 WIB</b></span>
             </div>
             <div class="rapim-cover-copy">
               <span>Bidang Strategi & Anggaran Umum</span>
@@ -1121,7 +1116,7 @@
             <div class="alert-date">
               <small>Status alert</small>
               <strong>Auto generated</strong>
-              <em>Data per <b data-last-updated>15 Juli 2026 10:30 WIB</b></em>
+              <em>Sinkron teknis <b data-last-updated>15 Juli 2026 10:30 WIB</b></em>
             </div>
           </div>
 
@@ -1806,12 +1801,9 @@
     </div>
 
     <script src="./assets/lucide.min.js?v=20260804-1"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin="anonymous"
-    ></script>
+    <script src="./assets/leaflet-1.9.4.min.js?v=20260918-1"></script>
+    <script src="./assets/dompurify-3.2.6.min.js?v=20260918-1"></script>
     <script src="./assets/ev-spklu-data.js?v=20260826-13"></script>
-    <script src="./script.js?v=20260917-4"></script>
+    <script src="./script.js?v=20260918-1"></script>
   </body>
 </html>

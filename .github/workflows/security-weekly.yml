@@ -28,6 +28,9 @@ jobs:
       - name: Scan public files for data leaks
         run: node tools/data-leak-scan.mjs
 
+      - name: Verify pinned browser libraries
+        run: node tools/vendor-integrity-scan.mjs
+
       - name: Scan repository for secrets
         uses: gitleaks/gitleaks-action@v2
         env:

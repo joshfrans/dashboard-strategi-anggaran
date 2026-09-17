@@ -1,3 +1,24 @@
+window.DASHBOARD_RELEASE_VERSION = "20260918-1";
+
+function sanitizeDashboardHtml(markup) {
+  const value = String(markup ?? "");
+  if (window.DOMPurify) {
+    return window.DOMPurify.sanitize(value, {
+      USE_PROFILES: { html: true, svg: true, svgFilters: true },
+      ALLOW_DATA_ATTR: true,
+      ALLOW_ARIA_ATTR: true
+    });
+  }
+  return value
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/\son\w+\s*=\s*(["']).*?\1/gi, "")
+    .replace(/\s(href|src)\s*=\s*(["'])\s*javascript:[\s\S]*?\2/gi, "");
+}
+
+function setSafeHtml(target, markup) {
+  if (target) target.innerHTML = sanitizeDashboardHtml(markup);
+}
+
 let policyData = [
   {
     entity: "PLN IP",
@@ -249,11 +270,40 @@ let evGeoDataSummary = window.evGeoDataSummary || {
   over5: 20
 };
 
-let evGeoPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
+function evUnitIdentity(unit) {
+  return [
+    String(unit?.unit || "").trim().toLowerCase(),
+    numberFromImport(unit?.distance, 0),
+    String(unit?.nearestSpklu || "").trim().toLowerCase(),
+    numberFromImport(unit?.unitLat ?? unit?.mapY, 0),
+    numberFromImport(unit?.unitLng ?? unit?.mapX, 0)
+  ].join("|");
+}
+
+function dedupeEvUnits(units = []) {
+  const seen = new Set();
+  return units.filter((unit) => {
+    const key = evUnitIdentity(unit);
+    if (!unit?.unit || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+const evRawPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
   ? window.evGeoPriorityUnitsData
   : evGeoPriorityUnitsFallback;
+let evGeoPriorityUnits = dedupeEvUnits(evRawPriorityUnits);
 
 let evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
+
+if (evGeoPriorityUnits.length !== evRawPriorityUnits.length) {
+  const originalEvUpdate = evInfrastructureData.sourceUpdated;
+  const removed = evRawPriorityUnits.length - evGeoPriorityUnits.length;
+  evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV"} · ${removed} duplikat identik dihapus`);
+  evInfrastructureData.sourceUpdated = originalEvUpdate;
+  evGeoDataSummary.duplicateRowsRemoved = removed;
+}
 
 const statusClass = {
   "Selesai": "done",
@@ -447,10 +497,7 @@ const policyStatusLabel = {
 
 const MIN_PERFORMANCE_MAIN_INDICATORS = 10;
 const performanceOfficialWeight = 100;
-const performanceScoreOverrides = {
-  "2026-06": 106.84,
-  "2026-07": 103.94
-};
+const performanceScoreOverrides = {};
 
 let performanceData = [
   { no: 1, indicator: "Efisiensi Biaya", unit: "", weight: 20, target: "", targetPeriod: "", realization: "", achievement: "", score: 22, status: "Tercapai" },
@@ -513,7 +560,8 @@ function policyMetrics() {
     drafting: flat.filter((status) => status === "drafting").length,
     reviewFix: flat.filter((status) => status === "review-fix").length,
     noRatification: flat.filter((status) => status === "no-ratification").length,
-    followUp: flat.filter((status) => status !== "done").length
+    followUp: onProgress,
+    exceptions: flat.filter((status) => status === "no-ratification").length
   };
 }
 
@@ -537,7 +585,7 @@ function renderPolicyRows() {
     "review-fix": "On Progress"
   };
 
-  target.innerHTML = policyData
+  setSafeHtml(target, policyData
     .map((row, index) => {
       const statuses = row.statuses
         .map((status, statusIndex) => `
@@ -557,23 +605,23 @@ function renderPolicyRows() {
         </tr>
       `;
     })
-    .join("");
+    .join(""));
 }
 
 function renderPolicyEntities() {
   const target = document.getElementById("policyEntities");
   if (!target) return;
-  target.innerHTML = policyEntities
+  setSafeHtml(target, policyEntities
     .map((entity, index) => `<span><b>${index + 1}</b>${entity}</span>`)
-    .join("");
+    .join(""));
 }
 
 function renderPolicyTypes() {
   const target = document.getElementById("policyTypes");
   if (!target) return;
-  target.innerHTML = policyTypes
+  setSafeHtml(target, policyTypes
     .map((policy, index) => `<span title="${policy}"><b>${index + 1}</b>${policy}</span>`)
-    .join("");
+    .join(""));
 }
 
 function smartLabel(value, type = "text") {
@@ -584,6 +632,14 @@ function smartLabel(value, type = "text") {
     return numberLabel(Math.round(value * 100) / 100);
   }
   return String(value);
+}
+
+function achievementPercentLabel(value) {
+  if (value === null || value === undefined || value === "") return "";
+  const parsed = numberFromImport(value, NaN);
+  if (!Number.isFinite(parsed)) return String(value);
+  const percent = Math.abs(parsed) <= 2 ? parsed * 100 : parsed;
+  return percentLabel(percent);
 }
 
 function performanceDotClass(status) {
@@ -756,8 +812,8 @@ function emptyPerformanceStatusSummary() {
     total: MIN_PERFORMANCE_MAIN_INDICATORS,
     green: 0,
     amber: 0,
-    red: MIN_PERFORMANCE_MAIN_INDICATORS,
-    gray: 0
+    red: 0,
+    gray: MIN_PERFORMANCE_MAIN_INDICATORS
   };
 }
 
@@ -855,14 +911,14 @@ function renderPerformanceRows() {
             <td>${smartLabel(row.target)}</td>
             <td>${smartLabel(row.targetPeriod)}</td>
             <td>${smartLabel(row.realization)}</td>
-            <td>${row.achievement === "" || row.achievement === undefined ? "" : smartLabel(row.achievement, "percent")}</td>
+            <td>${achievementPercentLabel(row.achievement)}</td>
             <td>${smartLabel(row.score, "plain")}</td>
             <td><span class="status-dot ${performanceDotClass(row.status)}"></span></td>
           </tr>
         `)
         .join("")
     : `<tr><td colspan="10" class="empty-table-note">Data kinerja untuk periode ini belum tersedia.</td></tr>`;
-  target.innerHTML = `
+  setSafeHtml(target, `
     <tr class="performance-group-row"><td colspan="10"></td></tr>
     ${rowsHtml}
     <tr class="performance-total-row">
@@ -889,7 +945,7 @@ function renderPerformanceRows() {
       <td>${smartLabel(score, "plain")}</td>
       <td><span class="status-dot done-dot"></span></td>
     </tr>
-  `;
+  `);
 }
 
 function refreshOpenPerformanceDetail() {
@@ -907,14 +963,14 @@ function refreshOpenPerformanceDetail() {
     subtitle.textContent = `Menampilkan detail NKO ${strategyPeriodUntilLabel()} berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.`;
     subtitle.hidden = false;
   }
-  body.innerHTML = renderDetailPerformance();
+  setSafeHtml(body, renderDetailPerformance());
   if (window.lucide) window.lucide.createIcons();
 }
 
 function renderPolicyPrepRows() {
   const target = document.getElementById("policyPrepRows");
   if (!target) return;
-  target.innerHTML = policyPrepData
+  setSafeHtml(target, policyPrepData
     .map((row, index) => `
       <tr>
         <td>${row.no || `${index + 1}.`}</td>
@@ -925,7 +981,7 @@ function renderPolicyPrepRows() {
         <td>${row.target || ""}</td>
       </tr>
     `)
-    .join("");
+    .join(""));
 }
 
 function renderBusinessExcellence() {
@@ -934,14 +990,14 @@ function renderBusinessExcellence() {
     if (!target) return;
     const targetLabel = smartLabel(row.target, "plain");
     const realizationLabel = smartLabel(row.realization, "plain");
-    target.innerHTML = `
+    setSafeHtml(target, `
       <div>
         <strong>${row.semester || `Semester ${index + 1}`}</strong>
         <span>${row.activity || ""}</span>
       </div>
       <b>Target<br /><em>${targetLabel}</em></b>
       <b class="${String(row.realization || "").toLowerCase().includes("belum") ? "amber-box" : "green-box"}">Realisasi<br /><em>${realizationLabel}</em></b>
-    `;
+    `);
   });
 }
 
@@ -994,7 +1050,7 @@ function setupInfoPopover(triggerId, popoverId) {
 
 function renderCrRows(rows = crData) {
   const target = document.getElementById("crRows");
-  target.innerHTML = rows
+  setSafeHtml(target, rows
     .map((row, index) => {
       const barClass = row.progress >= 100 ? "" : row.progress >= 50 ? "warn" : "risk";
       return `
@@ -1013,7 +1069,7 @@ function renderCrRows(rows = crData) {
         </tr>
       `;
     })
-    .join("");
+    .join(""));
 }
 
 function renderAoCorporate() {
@@ -1022,7 +1078,7 @@ function renderAoCorporate() {
   const topCosts = Array.isArray(aoCorporateData.topCosts) ? aoCorporateData.topCosts : [];
   const topUnits = Array.isArray(aoCorporateData.topUnits) ? aoCorporateData.topUnits : [];
   if (topRows) {
-    topRows.innerHTML = topCosts
+    setSafeHtml(topRows, topCosts
       .map((row) => `
         <tr>
           <td><strong>${row.name}</strong></td>
@@ -1031,11 +1087,11 @@ function renderAoCorporate() {
           <td>${row.rkap}%</td>
         </tr>
       `)
-      .join("");
+      .join(""));
   }
   if (unitRows) {
     const total = numberFromImport(aoCorporateData.total, 0);
-    unitRows.innerHTML = topUnits
+    setSafeHtml(unitRows, topUnits
       .map((row) => `
         <tr>
           <td><strong>${row.unit}</strong></td>
@@ -1043,7 +1099,7 @@ function renderAoCorporate() {
           <td>${total ? Math.round(numberFromImport(row.value) / total * 100) : 0}%</td>
         </tr>
       `)
-      .join("");
+      .join(""));
   }
 }
 
@@ -1079,15 +1135,15 @@ function updateAnalyticsDashboard() {
     : 0;
   const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
+  const performanceMeasured = hasTrustedPerformanceMeasurement(strategyPeriodKey(), performanceRowsForPeriodKey());
+  const performanceState = performanceMeasured ? performanceScoreStatus(performanceScore) : { tone: "neutral", label: "Belum Diukur" };
   const policyDoneRate = policy.total ? (policy.done / policy.total) * 100 : 0;
   const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
   const akiGap = investmentData.akiGapChip || `${smartLabel(100 - akiProgress, "plain")}% belum terserap`;
   const aoAbsorption = Number(aoCorporateData.absorption || 0);
   const aoProjection = `Proyeksi setahun ${numberLabel(aoCorporateData.projection || 0)} jt`;
   const aoOfficeAbsorption = Number(aoOfficeData.absorption || 0);
-  const priorityCr = [...crData]
-    .filter((row) => row.status !== "Selesai")
-    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))[0];
+  const priorityCr = prioritizedOpenCr(crData)[0];
   const topAoCost = aoCorporateData.topCosts
     .slice()
     .sort((a, b) => b.value - a.value)[0];
@@ -1106,27 +1162,27 @@ function updateAnalyticsDashboard() {
 
   const investmentGrid = document.getElementById("analyticsInvestmentGrid");
   if (investmentGrid) {
-    investmentGrid.innerHTML = [
+    setSafeHtml(investmentGrid, [
       ["Total Anggaran Investasi", investmentData.totalInvestment, investmentData.totalInvestmentNote],
       ["Realisasi AI", investmentData.aiRealization, investmentData.aiRealizationNote],
       ["Total AKI", investmentData.akiTotal, investmentData.akiTotalNote],
       ["Realisasi AKI", investmentData.akiRealization, investmentData.akiRealizationNote]
     ]
       .map(([label, value, note]) => `<div><span>${label}</span><strong>${value || "-"}</strong><small>${note || "-"}</small></div>`)
-      .join("");
+      .join(""));
   }
 
   const investmentSignal = document.getElementById("analyticsInvestmentSignal");
   if (investmentSignal) {
-    investmentSignal.innerHTML = `
+    setSafeHtml(investmentSignal, `
       <b>Prioritas Investasi</b>
       <span>${investmentData.akiInsight || `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)} dengan ${akiGap.toLowerCase()}. Fokus pada BAPP, rekomposisi, dan validasi realisasi bulan berjalan.`}</span>
-    `;
+    `);
   }
 
   const executiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (executiveMessage) {
-    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan Strategi & Evaluasi, Investasi, AO Korporat, dan AO Kantor Pusat. Ratifikasi kebijakan mencatat ${policy.total} status: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR, NKO ${smartLabel(performanceScore, "plain")} berstatus tercapai. Pada Investasi, total anggaran ${investmentData.totalInvestment || "-"}, realisasi AI ${investmentData.aiRealization || "-"}, total AKI ${investmentData.akiTotal || "-"}, dan AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}. AO Korporat mencatat serapan RKAP ${percentLabel(aoAbsorption)}, sementara AO Kantor Pusat ${aoOfficeData.selectedUnit || "unit prioritas"} berada pada serapan ${percentLabel(aoOfficeAbsorption)}. Fokus keputusan berada pada ${policy.onProgress} status on progress, ${policy.noRatification} tidak ratifikasi, ${crOpen} CR on progress, gap investasi, dan pengendalian biaya AO lintas korporat serta kantor pusat.`;
+    executiveMessage.textContent = `Laporan manajemen mengkonsolidasikan data dengan periode berbeda: Strategi ${strategyPeriodFullLabel()}, AO Korporat ${aoCorporateData.period}, AO Kantor Pusat ${aoOfficeData.period}, dan Investasi ${investmentData.reportDate}. Ratifikasi mencatat ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} Tidak Ratifikasi yang perlu validasi status pengecualiannya. Change Request berada pada progress ${percentLabel(crProgress)} dari ${crTotal} CR. NKO ${performanceMeasured ? `${smartLabel(performanceScore, "plain")} (${performanceState.label})` : "belum diukur untuk periode terpilih"}. Rekomendasi lintas domain harus dibaca dengan konteks periode masing-masing.`;
   }
 
   const mainMessage = document.getElementById("analyticsMainMessage");
@@ -1136,33 +1192,33 @@ function updateAnalyticsDashboard() {
 
   const decisionList = document.getElementById("analyticsDecisionList");
   if (decisionList) {
-    decisionList.innerHTML = [
+    setSafeHtml(decisionList, [
       ["Strategi & Evaluasi", `${policy.followUp} status ratifikasi belum hijau; perlu komitmen evidence, PIC, dan target penyelesaian SH/AP.`],
-      ["Change Request", priorityCr ? `${priorityCr.app} menjadi prioritas karena status ${priorityCr.status} dengan progress ${percentLabel(Number(priorityCr.progress || 0))}.` : "Seluruh Change Request telah selesai; fokus pada monitoring pasca implementasi."],
-      ["Investasi", `AI terealisasi ${investmentData.aiRealization || "-"} (${investmentData.aiRealizationPct || "progress belum tersedia"}), AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, dan ${akiGap} perlu BAPP, rekomposisi, serta review realisasi bulan berjalan.`],
+      ["Change Request", priorityCr ? `${priorityCr.app} menjadi prioritas karena ${overdueDays(priorityCr.target) ? `terlambat ${overdueDays(priorityCr.target)} hari` : `target ${priorityCr.target || "belum tersedia"}`} dan progress ${percentLabel(Number(priorityCr.progress || 0))}.` : "Seluruh Change Request telah selesai; fokus pada monitoring pasca implementasi."],
+      ["Investasi", `AI terealisasi ${investmentData.aiRealization || "-"} (${investmentData.aiRealizationPct || "progress belum tersedia"}), AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}, dan ${akiGap}. Validasi penyebab serta bukti BAPP/pipeline sebelum menetapkan rekomposisi.`],
       ["AO Korporat", `${topAoCost?.name || "Unsur biaya utama"} menjadi kontributor biaya dominan dengan serapan RKAP ${percentLabel(aoAbsorption)}; perlu pengendalian agar proyeksi akhir tahun tetap terkendali.`],
       ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} mencatat serapan RKAP ${percentLabel(aoOfficeAbsorption)} dan YoY ${percentLabel(Number(aoOfficeData.yoy || 0))}; perlu monitoring unit/divisi prioritas.`]
     ]
       .map(([title, text]) => `<li><b>${title}</b><span>${text}</span></li>`)
-      .join("");
+      .join(""));
   }
 
   const bars = document.getElementById("analyticsBars");
   if (bars) {
-    bars.innerHTML = [
+    setSafeHtml(bars, [
       makeAnalyticsBar("Ratifikasi selesai", policyDoneRate, policyDoneRate >= 75 ? "green" : "amber"),
       makeAnalyticsBar("Progress CR", crProgress, crProgress >= 80 ? "green" : "amber"),
-      makeAnalyticsBar("NKO tercapai", Math.min(performanceScore, 120), "green").replace(`<strong>${percentLabel(Math.min(performanceScore, 120))}</strong>`, `<strong>${smartLabel(performanceScore, "plain")}</strong>`),
+      makeAnalyticsBar(performanceMeasured ? "NKO terukur" : "NKO belum diukur", performanceMeasured ? Math.min(performanceScore, 120) : 0, performanceMeasured ? "green" : "neutral").replace(`<strong>${percentLabel(performanceMeasured ? Math.min(performanceScore, 120) : 0)}</strong>`, `<strong>${performanceMeasured ? smartLabel(performanceScore, "plain") : "-"}</strong>`),
       makeAnalyticsBar("Realisasi AI", investmentPercentValue(investmentData.aiRealizationPct), investmentPercentValue(investmentData.aiRealizationPct) >= 70 ? "green" : "amber"),
       makeAnalyticsBar("Serapan AKI", akiProgress, akiProgress >= 70 ? "green" : "amber"),
       makeAnalyticsBar("Serapan RKAP AO Korporat", aoAbsorption, aoAbsorption >= 75 ? "green" : "amber"),
       makeAnalyticsBar(`Serapan RKAP AO ${aoOfficeData.selectedUnit || "KPST"}`, aoOfficeAbsorption, aoOfficeAbsorption >= 75 ? "green" : "amber")
-    ].join("");
+    ].join(""));
   }
 
   const actionRows = document.getElementById("analyticsActionRows");
   if (actionRows) {
-    actionRows.innerHTML = [
+    setSafeHtml(actionRows, [
       ["Strategi & Evaluasi", `${policy.done} selesai dari ${policy.total} status kebijakan`, policy.followUp ? "Perlu Monitoring" : "Baik", `${policy.followUp} status perlu follow-up evidence dan target penyelesaian.`],
       ["Change Request", `${percentLabel(crProgress)} dari ${crTotal} CR`, crOpen || crNotStarted ? "Perlu Percepatan" : "Baik", priorityCr ? `${priorityCr.app} menjadi prioritas delivery mingguan.` : "Monitoring pasca implementasi CR."],
       ["Investasi", `AI ${investmentData.aiRealization || "-"}; AKI ${investmentData.akiRealizationPct || percentLabel(akiProgress)}`, akiProgress < 70 ? "Perlu Perhatian" : "Baik", `${akiGap} perlu BAPP, rekomposisi, dan validasi realisasi.`],
@@ -1170,7 +1226,7 @@ function updateAnalyticsDashboard() {
       ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} serapan ${percentLabel(aoOfficeAbsorption)}`, aoOfficeAbsorption > 90 ? "Perlu Kontrol" : "Monitor", `Pantau unit/divisi dengan realisasi dan YoY tertinggi.`]
     ]
       .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`)
-      .join("");
+      .join(""));
   }
 
   updateAlertCenter();
@@ -1181,9 +1237,7 @@ function updateAlertCenter() {
   const crTotal = crData.length;
   const crOpen = crData.filter((row) => row.status === "On Progress").length;
   const crNotStarted = crData.filter((row) => row.status === "Belum Mulai").length;
-  const priorityCr = [...crData]
-    .filter((row) => row.status !== "Selesai")
-    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))[0];
+  const priorityCr = prioritizedOpenCr(crData)[0];
   const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
   const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
   const akiGap = investmentData.akiGapChip || `${smartLabel(100 - akiProgress, "plain")}% belum terserap`;
@@ -1201,12 +1255,12 @@ function updateAlertCenter() {
     },
     priorityCr && {
       area: "Change Request",
-      text: `${priorityCr.app} perlu tindak lanjut karena progress ${percentLabel(Number(priorityCr.progress || 0))} dengan status ${priorityCr.status}.`,
-      level: Number(priorityCr.progress || 0) < 30 ? "High" : "Medium"
+      text: `${priorityCr.app} perlu tindak lanjut: progress ${percentLabel(Number(priorityCr.progress || 0))}, ${overdueDays(priorityCr.target) ? `terlambat ${overdueDays(priorityCr.target)} hari` : `target ${priorityCr.target || "belum tersedia"}`}.`,
+      level: overdueDays(priorityCr.target) > 0 || Number(priorityCr.progress || 0) < 30 ? "High" : "Medium"
     },
     akiProgress < 70 && {
       area: "Investasi",
-      text: `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap} perlu BAPP dan rekomposisi.`,
+      text: `AKI terserap ${investmentData.akiRealizationPct || percentLabel(akiProgress)}; ${akiGap}. Validasi penyebab, BAPP, dan pipeline sebelum rekomposisi.`,
       level: "High"
     },
     aiProgress < 10 && {
@@ -1229,7 +1283,7 @@ function updateAlertCenter() {
   const critical = alerts.filter((alert) => alert.level === "Critical").length;
   const high = alerts.filter((alert) => alert.level === "High").length;
   const medium = alerts.filter((alert) => alert.level === "Medium").length;
-  const ok = Math.max(0, 4 - critical - high - medium);
+  const ok = Math.max(0, 5 - new Set(alerts.map((alert) => alert.area)).size);
 
   setText("alertCriticalCount", critical);
   setText("alertHighCount", high);
@@ -1238,28 +1292,28 @@ function updateAlertCenter() {
 
   const alertRows = document.getElementById("alertRows");
   if (alertRows) {
-    alertRows.innerHTML = alerts.length
+    setSafeHtml(alertRows, alerts.length
       ? alerts
           .map((alert) => `<div><b>${alert.area}</b><span>${alert.text}</span><em>${alert.level}</em></div>`)
           .join("")
-      : `<div><b>Dashboard</b><span>Belum ada alert prioritas dari data aktif.</span><em>On Track</em></div>`;
+      : `<div><b>Dashboard</b><span>Belum ada alert prioritas dari data aktif.</span><em>On Track</em></div>`);
   }
 
   const riskRows = document.getElementById("alertRiskRows");
   if (riskRows) {
-    riskRows.innerHTML = [
+    setSafeHtml(riskRows, [
       policy.followUp ? `Evidence ratifikasi belum lengkap pada ${policy.followUp} status.` : "Ratifikasi kebijakan terkendali.",
       crOpen || crNotStarted ? `${crOpen + crNotStarted} CR belum selesai sepenuhnya.` : "Change Request seluruhnya selesai.",
       akiProgress < 70 ? "Gap investasi masih perlu BAPP, rekomposisi, dan review realisasi." : "Serapan investasi berada di jalur aman.",
       topAoCost ? `${topAoCost.name} menjadi kontributor biaya AO utama.` : "Biaya AO belum memiliki kontributor utama."
     ]
       .map((text) => `<li>${text}</li>`)
-      .join("");
+      .join(""));
   }
 
   const actionRows = document.getElementById("alertActionRows");
   if (actionRows) {
-    actionRows.innerHTML = [
+    setSafeHtml(actionRows, [
       ["Strategi & Evaluasi", policy.followUp ? "Kunci evidence dan target SH/AP" : "Monitor status hijau", "PIC SH/AP", policy.followUp ? "High" : "Monitor"],
       ["Change Request", priorityCr ? `Lock owner dan target ${priorityCr.app}` : "Monitoring pasca implementasi", "Working Team", priorityCr ? "High" : "Monitor"],
       ["Investasi", `Review AI ${investmentData.aiRealization || "-"} dan gap AKI`, "Tim Investasi", akiProgress < 70 ? "High" : "Medium"],
@@ -1267,7 +1321,7 @@ function updateAlertCenter() {
       ["AO Kantor Pusat", `Pantau ${aoOfficeData.selectedUnit || "unit prioritas"} dan serapan RKAP`, "Tim AO KP", "Medium"]
     ]
       .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`)
-      .join("");
+      .join(""));
   }
 }
 
@@ -1286,6 +1340,8 @@ function updateDashboardMetrics() {
   const prepNotStarted = policyPrepData.filter((row) => row.status === "Belum Mulai").length;
   const performanceScore = calculatePerformanceScore();
   const performanceSummary = getPerformanceStatusSummary();
+  const performanceMeasured = hasTrustedPerformanceMeasurement(strategyPeriodKey(), performanceRowsForPeriodKey());
+  const performanceDisplay = performanceMeasured ? smartLabel(performanceScore, "plain") : "-";
   const performanceAttention = performanceAttentionCount(performanceSummary);
   const performancePendingText = performanceSummary.gray
     ? `, ${performanceAttention} tidak tercapai, dan ${performanceSummary.gray} belum diukur`
@@ -1306,9 +1362,9 @@ function updateDashboardMetrics() {
     policyPrepDone: prepDone,
     policyPrepProgress: prepProgress,
     policyPrepNotStarted: prepNotStarted,
-    performanceScore: smartLabel(performanceScore, "plain"),
+    performanceScore: performanceDisplay,
     performanceIndicatorCount: performanceSummary.total,
-    summaryNko: smartLabel(performanceScore, "plain"),
+    summaryNko: performanceDisplay,
     summaryPolicyPrepProgress: prepProgress,
     summaryBusinessExcellence: smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain"),
     totalCr: total,
@@ -1329,7 +1385,7 @@ function updateDashboardMetrics() {
     analyticsCrTotal: total,
     analyticsCrOpen: onProgress,
     analyticsCrNotStarted: notStarted,
-    analyticsNko: smartLabel(performanceScore, "plain"),
+    analyticsNko: performanceDisplay,
     analyticsKpiGreen: performanceSummary.green
   };
 
@@ -1351,7 +1407,7 @@ function updateDashboardMetrics() {
 
   const summaryText = document.getElementById("executiveSummaryText");
   if (summaryText) {
-    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. Monitoring kinerja ${strategyPeriodUntilLabel()} mencatat NKO ${smartLabel(performanceScore, "plain")} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai${performancePendingText}. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
+    summaryText.textContent = `Strategi & Evaluasi menunjukkan ${policy.total} status kebijakan dari ${values.summaryPolicyEntities} entitas SH/AP dan ${values.summaryPolicyTypes} jenis kebijakan, terdiri dari ${values.summaryPolicyDone} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} Tidak Ratifikasi yang perlu validasi status pengecualiannya. Monitoring kinerja ${strategyPeriodUntilLabel()} ${performanceMeasured ? `mencatat NKO ${performanceDisplay} dengan ${performanceSummary.green} indikator tercapai, ${performanceSummary.amber} hampir tercapai${performancePendingText}` : "belum memiliki pengukuran NKO lengkap"}. Pada transformasi aplikasi terdapat ${total} Change Request dengan progress keseluruhan ${progressLabel}, terdiri dari ${done} selesai, ${onProgress} on progress, dan ${notStarted} belum mulai. Penyusunan kebijakan layanan GA memonitor ${prepTotal} kebijakan, serta implementasi PLN Business Excellence menunjukkan realisasi ${smartLabel(businessScore, businessScore <= 1 ? "percent" : "plain")} pada semester utama.`;
   }
 
   document.querySelectorAll('[id="analyticsCrProgress"]').forEach((element) => {
@@ -1360,7 +1416,7 @@ function updateDashboardMetrics() {
 
   const analyticsExecutiveMessage = document.getElementById("analyticsExecutiveMessage");
   if (analyticsExecutiveMessage) {
-    analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.total} status ratifikasi: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} tidak ratifikasi. NKO ${smartLabel(performanceScore, "plain")} berada pada status tercapai, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen perlu diarahkan pada status ratifikasi yang masih berjalan, ${onProgress} CR on progress, ${notStarted} CR belum mulai, gap AKI, serta pengendalian biaya Administrasi Umum agar target akhir tahun tetap terkendali.`;
+    analyticsExecutiveMessage.textContent = `Dashboard menunjukkan ${policy.total} status ratifikasi: ${policy.done} selesai, ${policy.onProgress} on progress, dan ${policy.noRatification} Tidak Ratifikasi yang perlu validasi status pengecualiannya. ${performanceMeasured ? `NKO ${performanceDisplay} berstatus ${performanceScoreStatus(performanceScore).label}` : "NKO periode terpilih belum diukur lengkap"}, dan Change Request aplikasi berada pada progress ${progressLabel}. Perhatian manajemen diarahkan pada status ratifikasi yang masih berjalan, CR melewati target, validasi penyebab gap AKI, serta pengendalian biaya sesuai periode sumber masing-masing.`;
   }
 
   renderExecutiveOverview();
@@ -1535,7 +1591,7 @@ function loadXlsxLibrary() {
 
   xlsxLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    script.src = "./assets/xlsx-0.18.5.full.min.js?v=20260918-1";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {
@@ -1554,7 +1610,7 @@ async function ensureXlsxLibrary() {
     return true;
   } catch (error) {
     console.info(error);
-    alert("Library Excel belum dapat dimuat. Gunakan export CSV/JSON, atau pastikan koneksi internet mengizinkan akses CDN Excel.");
+    alert("Library Excel lokal belum dapat dimuat. Muat ulang dashboard, lalu coba kembali atau gunakan export CSV/JSON.");
     return false;
   }
 }
@@ -2208,6 +2264,32 @@ function overviewSpark(color = "blue") {
   return `<span class="overview-spark ${color}"><i></i><i></i><i></i><i></i><i></i><i></i></span>`;
 }
 
+function parseDashboardTargetDate(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2})\s+([A-Za-z]+)\s+(20\d{2})$/i);
+  if (!match) return null;
+  const months = { jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, may: 4, jun: 5, jul: 6, agu: 7, aug: 7, sep: 8, okt: 9, oct: 9, nov: 10, des: 11, dec: 11 };
+  const month = months[match[2].slice(0, 3).toLowerCase()];
+  if (month === undefined) return null;
+  return new Date(Date.UTC(Number(match[3]), month, Number(match[1])));
+}
+
+function overdueDays(value, reference = new Date()) {
+  const target = parseDashboardTargetDate(value);
+  if (!target) return 0;
+  const todayUtc = Date.UTC(reference.getUTCFullYear(), reference.getUTCMonth(), reference.getUTCDate());
+  return Math.max(0, Math.floor((todayUtc - target.getTime()) / 86400000));
+}
+
+function crPriorityScore(row, reference = new Date()) {
+  return overdueDays(row?.target, reference) * 10 + Math.max(0, 100 - Number(row?.progress || 0));
+}
+
+function prioritizedOpenCr(rows = crData, reference = new Date()) {
+  return [...rows]
+    .filter((row) => row.status !== "Selesai")
+    .sort((a, b) => crPriorityScore(b, reference) - crPriorityScore(a, reference));
+}
+
 function renderExecutiveOverview() {
   const target = document.getElementById("executiveDashboardView");
   if (!target) return;
@@ -2250,7 +2332,7 @@ function renderExecutiveOverview() {
   ];
 
   target.classList.add("overview-executive");
-  target.innerHTML = `
+  setSafeHtml(target, `
     <header class="overview-topbar">
       <div class="overview-brand">
         <span class="overview-logo"><i data-lucide="zap"></i></span>
@@ -2398,7 +2480,7 @@ function renderExecutiveOverview() {
         <p><b class="risk-dot"></b><span>Kritis</span><small>Butuh keputusan/tindak lanjut segera</small></p>
       </article>
     </section>
-  `;
+  `);
 
   if (window.lucide) window.lucide.createIcons();
 }
@@ -2471,7 +2553,7 @@ function renderExecutiveOverview() {
   `;
 
   target.classList.add("overview-executive", "overview-reference");
-  target.innerHTML = `
+  setSafeHtml(target, `
     <header class="overview-topbar">
       <div class="overview-brand">
         <span class="overview-logo"><i data-lucide="zap"></i></span>
@@ -2600,7 +2682,7 @@ function renderExecutiveOverview() {
         </article>
       </div>
     </section>
-  `;
+  `);
 
   if (window.lucide) window.lucide.createIcons();
 }
@@ -2681,7 +2763,7 @@ function renderExecutiveOverview() {
 
   target.classList.remove("overview-reference");
   target.classList.add("overview-executive", "overview-management");
-  target.innerHTML = `
+  setSafeHtml(target, `
     <header class="overview-topbar ovm-topbar">
       <div class="overview-brand">
         <span class="overview-logo"><i data-lucide="zap"></i></span>
@@ -2797,7 +2879,7 @@ function renderExecutiveOverview() {
         </div>
       </article>
     </section>
-  `;
+  `);
 
   if (window.lucide) window.lucide.createIcons();
 }
@@ -2816,29 +2898,31 @@ function updatePerformanceStatusPanel() {
   const summary = getPerformanceStatusSummary();
   const attentionCount = performanceAttentionCount(summary);
   const score = calculatePerformanceScore();
-  const scoreStatus = performanceScoreStatus(score);
-  if (scoreElement) scoreElement.textContent = smartLabel(score, "plain");
+  const measured = hasTrustedPerformanceMeasurement(strategyPeriodKey(), performanceRowsForPeriodKey());
+  const scoreStatus = measured ? performanceScoreStatus(score) : { tone: "neutral", label: "Belum Diukur" };
+  if (scoreElement) scoreElement.textContent = measured ? smartLabel(score, "plain") : "-";
   if (mainStatus) mainStatus.textContent = scoreStatus.label;
   if (scoreCard) scoreCard.dataset.tone = scoreStatus.tone;
   [scoreCard, scoreRing, scoreElement, mainStatus].forEach((element) => {
     if (!element) return;
-    element.classList.remove("status-tone-green", "status-tone-amber", "status-tone-red");
+    element.classList.remove("status-tone-green", "status-tone-amber", "status-tone-red", "status-tone-neutral");
     element.classList.add(`status-tone-${scoreStatus.tone}`);
   });
   if (indicatorCard) {
-    indicatorCard.innerHTML = `<strong>${summary.total}</strong><span>Indikator</span>`;
+    setSafeHtml(indicatorCard, `<strong>${summary.total}</strong><span>Indikator</span>`);
   }
   if (metaIndicator) metaIndicator.textContent = `${summary.total} Indikator`;
   if (message) {
-    message.textContent = "";
-    message.hidden = true;
+    message.textContent = measured ? "" : "Periode ini belum memiliki pengukuran NKO lengkap; status tercapai tidak diberikan.";
+    message.hidden = measured;
   }
 
-  grid.innerHTML = `
+  setSafeHtml(grid, `
     <div class="status-green"><strong>${summary.green}</strong><span>Tercapai</span></div>
     <div class="status-amber"><strong>${summary.amber}</strong><span>Hampir Tercapai</span></div>
     <div class="status-red"><strong>${attentionCount}</strong><span>Perlu Peningkatan</span></div>
-  `;
+    <div class="status-gray"><strong>${summary.gray}</strong><span>Belum Diukur</span></div>
+  `);
 }
 
 function setupDetailModal() {
@@ -2857,7 +2941,7 @@ function setupDetailModal() {
         eyebrow.textContent = "Kebijakan & Ratifikasi";
         title.textContent = "Detail Monitoring Ratifikasi Kebijakan";
         subtitle.textContent = "";
-        body.innerHTML = renderDetailPolicy();
+        setSafeHtml(body, renderDetailPolicy());
       } else if (type === "performance") {
         eyebrow.textContent = "Monitoring Kinerja";
         title.textContent = "Detail Monitoring Kinerja Divisi Umum dan Aset Properti";
@@ -2866,17 +2950,17 @@ function setupDetailModal() {
         updatePerformanceStatusPanel();
         updateStrategyPeriodLabels();
         subtitle.textContent = `Menampilkan detail NKO ${strategyPeriodUntilLabel()} berdasarkan laporan pencapaian KPI Divisi Umum dan Aset Properti.`;
-        body.innerHTML = renderDetailPerformance();
+        setSafeHtml(body, renderDetailPerformance());
       } else if (type === "business") {
         eyebrow.textContent = "Business Excellence";
         title.textContent = "Detail Implementasi PLN Business Excellence";
         subtitle.textContent = "Menampilkan target, realisasi, status capaian, dan tindak lanjut implementasi Business Excellence.";
-        body.innerHTML = renderDetailBusiness();
+        setSafeHtml(body, renderDetailBusiness());
       } else {
         eyebrow.textContent = "Change Request Aplikasi";
         title.textContent = "Detail Monitoring Change Request";
         subtitle.textContent = "Membantu BoD melihat prioritas aplikasi, risiko delivery, dan action working level.";
-        body.innerHTML = renderDetailCr();
+        setSafeHtml(body, renderDetailCr());
       }
       subtitle.hidden = !subtitle.textContent.trim();
       overlay.hidden = false;
@@ -2967,6 +3051,7 @@ function numberFromImport(value, fallback = 0) {
   const text = String(value ?? "").trim();
   if (!text) return fallback;
   const numericText = text.replace(/[^0-9,.-]+/g, "");
+  if (!numericText || !/[0-9]/.test(numericText)) return fallback;
   const dotCount = (numericText.match(/\./g) || []).length;
   const normalized = numericText.includes(",")
     ? numericText.replace(/\./g, "").replace(",", ".")
@@ -3284,7 +3369,8 @@ function importStrategySummarySheet(workbook) {
     const indicator = String(rowValue(row, "Indikator", "Parameter", "Metric") || "").toLowerCase();
     const formulaOrValue = rowValue(row, "Rumus/Nilai", "Nilai", "Value");
     const validationValue = rowValue(row, "Nilai Validasi", "Validasi", "Calculated Value");
-    const value = String(formulaOrValue ?? "").trim().startsWith("=") ? validationValue : formulaOrValue;
+    const validatedNumericValue = numberFromImport(validationValue, NaN);
+    const value = Number.isFinite(validatedNumericValue) ? validationValue : formulaOrValue;
     const numericValue = numberFromImport(value, NaN);
     if ((indicator.includes("nko") || indicator.includes("nilai kinerja")) && value !== "" && Number.isFinite(numericValue)) {
       const key = rowStrategyPeriodKey(row);
@@ -4129,7 +4215,7 @@ async function exportEvData(format = "xlsx") {
 }
 
 function applyEvImportedUnits(units, source = "File import") {
-  const cleanUnits = units
+  const cleanUnits = dedupeEvUnits(units
     .map((unit) => ({
       ...unit,
       distance: numberFromImport(unit.distance, 0),
@@ -4137,7 +4223,7 @@ function applyEvImportedUnits(units, source = "File import") {
       normalKm: numberFromImport(unit.normalKm, 0),
       powerKw: numberFromImport(unit.powerKw, 0)
     }))
-    .filter((unit) => unit.unit && unit.nearestSpklu);
+    .filter((unit) => unit.unit && unit.nearestSpklu));
   if (!cleanUnits.length) return 0;
   evGeoPriorityUnits = cleanUnits.sort((a, b) => b.distance - a.distance);
   evBuildSummaryFromUnits(evGeoPriorityUnits, source);
@@ -4249,7 +4335,8 @@ function loadLocalEvDataSource() {
     if (!stored?.units?.length) return false;
     evGeoDataSummary = stored.summary || evGeoDataSummary;
     evInfrastructureData = stored.data || evInfrastructureData;
-    evGeoPriorityUnits = stored.units;
+    evGeoPriorityUnits = dedupeEvUnits(stored.units);
+    evBuildSummaryFromUnits(evGeoPriorityUnits, `${stored.summary?.source || "Data EV lokal"} · deduplikasi otomatis`);
     renderEvInfrastructure();
     return true;
   } catch (error) {
@@ -4576,7 +4663,7 @@ function renderExecutiveOverview() {
   const performanceSummary = getPerformanceStatusSummary();
   const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
   const policyProgress = policy.total ? policy.done / policy.total * 100 : 0;
-  const policyOpen = Math.max(0, policy.onProgress + policy.noRatification);
+  const policyOpen = Math.max(0, policy.onProgress);
   const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
   const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
   const corporateTotal = overviewNumber(aoCorporateData.total, 0);
@@ -4586,9 +4673,15 @@ function renderExecutiveOverview() {
   const officeTotal = overviewNumber(aoOfficeData.realization, 0);
   const officeRkap = overviewNumber(aoOfficeData.rkap, 0);
   const officeAbsorption = Number(aoOfficeData.absorption || (officeRkap ? officeTotal / officeRkap * 100 : 0));
-  const beScore = businessExcellenceData.length
-    ? businessExcellenceData.reduce((sum, row) => sum + overviewNumber(row.realization, 0), 0) / businessExcellenceData.length
-    : 0;
+  const measuredBusinessExcellence = businessExcellenceData
+    .map((row) => numberFromImport(row.realization, NaN))
+    .filter((value) => Number.isFinite(value));
+  const beScore = measuredBusinessExcellence.length
+    ? measuredBusinessExcellence.reduce((sum, value) => sum + (Math.abs(value) <= 2 ? value * 100 : value), 0) / measuredBusinessExcellence.length
+    : NaN;
+  const beCoverage = `${measuredBusinessExcellence.length}/${businessExcellenceData.length || 0} semester diukur`;
+  const performanceMeasured = hasTrustedPerformanceMeasurement(strategyPeriodKey(), performanceRowsForPeriodKey());
+  const performanceHealth = performanceMeasured ? performanceScoreStatus(nko) : { tone: "neutral", label: "Belum Diukur" };
   const policyTopRows = policyData.slice(0, 2).map((row) => {
     const done = row.statuses.filter((status) => status === "done").length;
     const onProgress = row.statuses.filter((status) => status !== "done" && status !== "no-ratification").length;
@@ -4598,10 +4691,10 @@ function renderExecutiveOverview() {
       status: `${done} selesai · ${onProgress} proses · ${noRatification} tidak ratifikasi`
     };
   });
-  const crPriorityRows = [...crData]
-    .filter((row) => row.status !== "Selesai")
-    .sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0))
-    .slice(0, 2);
+  const crPriorityRows = prioritizedOpenCr(crData).slice(0, 2).map((row) => {
+    const overdue = overdueDays(row.target);
+    return { ...row, status: overdue ? `${row.status} · terlambat ${overdue} hari` : `${row.status} · target ${row.target || "belum tersedia"}` };
+  });
   const corporateTopCosts = (aoCorporateData.topCosts || []).slice(0, 3);
   const officeTopCosts = (aoOfficeData.topCosts || []).slice(0, 3);
 
@@ -4650,13 +4743,13 @@ function renderExecutiveOverview() {
   const crRows = crPriorityRows.length ? crPriorityRows : [{ app: "Tidak ada CR prioritas", status: "Terkendali" }];
   const chartRows = [
     ["AI", trillion(investmentData.totalInvestment), trillion(investmentData.aiRealization), 0],
-    ["AKI", trillion(investmentData.akiTotal), trillion(investmentData.akiRealization), trillion(investmentData.akiTotal) * 0.88],
+    ["AKI", trillion(investmentData.akiTotal), trillion(investmentData.akiRealization), 0],
     ["AO", trillion(corporateRkap), trillion(corporateTotal), trillion(corporateProjection)]
   ];
   const chartMax = Math.max(...chartRows.flatMap((row) => row.slice(1).map((item) => Number(item) || 0)), 1);
 
   target.className = "executive-dashboard-view overview-executive overview-redesign";
-  target.innerHTML = `
+  setSafeHtml(target, `
     <header class="ovx-shellbar">
       <div class="ovx-brand">
         <span><i data-lucide="zap"></i></span>
@@ -4677,23 +4770,23 @@ function renderExecutiveOverview() {
         <h1>Strategi, Anggaran, Investasi, dan Kinerja dalam satu kendali</h1>
         <p>Ringkasan lintas Strategi & Evaluasi, AO Korporat, AO Kantor Pusat, dan Investasi agar manajemen dapat melihat posisi, risiko, dan keputusan yang perlu diprioritaskan.</p>
         <div class="ovx-hero-tags">
-          <span><i data-lucide="database"></i> Data per ${reportDate}</span>
-          <span><i data-lucide="shield-check"></i> Data source aktif</span>
-          <span><i data-lucide="activity"></i> Siap untuk review manajemen</span>
+          <span><i data-lucide="refresh-cw"></i> Sinkron teknis ${reportDate}</span>
+          <span><i data-lucide="calendar-range"></i> Strategi ${strategyPeriodFullLabel()} · AO ${aoCorporateData.period}/${aoOfficeData.period}</span>
+          <span><i data-lucide="info"></i> Periode lintas domain berbeda; bandingkan dengan konteks</span>
         </div>
       </div>
       <aside class="ovx-decision">
         <small>Prioritas keputusan</small>
         <strong>${policyOpen + onProgressCr + notStartedCr}</strong>
         <span>item perlu perhatian lintas kebijakan dan aplikasi</span>
-        <p>Fokus utama: selesaikan status kebijakan terbuka, dorong CR prioritas, dan tutup gap investasi/anggaran.</p>
+        <p>Fokus utama: tuntaskan status on progress, prioritaskan CR yang melewati target, dan validasi penyebab gap investasi sebelum menetapkan aksi.</p>
       </aside>
     </section>
 
     <section class="ovx-kpi-grid">
       ${kpiCard({ icon: "clipboard-check", title: "Ratifikasi Kebijakan", value: `${policy.done}/${policy.total}`, label: `${policyOpen} perlu tindak lanjut`, tone: scoreTone(policyProgress, 70, 50), meta: `${overviewDecimal(policyProgress, 1)}% selesai` })}
       ${kpiCard({ icon: "code-2", title: "Change Request", value: `${overviewDecimal(crProgress, 2)}%`, label: `${doneCr} selesai · ${onProgressCr} on progress · ${notStartedCr} belum mulai`, tone: scoreTone(crProgress, 80, 50), meta: `${totalCr} CR` })}
-      ${kpiCard({ icon: "gauge", title: "NKO Strategi & Evaluasi", value: smartLabel(nko, "plain"), label: `${performanceSummary.green} indikator hijau`, tone: scoreTone(nko, 100, 95), meta: "Target >= 100" })}
+      ${kpiCard({ icon: "gauge", title: "NKO Strategi & Evaluasi", value: performanceMeasured ? smartLabel(nko, "plain") : "Belum diukur", label: performanceMeasured ? `${performanceSummary.green} hijau · ${performanceSummary.gray} belum diukur` : "Pengukuran periode belum lengkap", tone: performanceMeasured ? scoreTone(nko, 100, 95) : "neutral", meta: performanceMeasured ? "Target >= 100" : "Tidak dinilai sebagai tercapai" })}
       ${kpiCard({ icon: "building-2", title: "Serapan AO Korporat", value: pct(corporateAbsorption), label: `${money(corporateTotal)} dari RKAP ${money(corporateRkap)}`, tone: scoreTone(corporateAbsorption, 80, 50), meta: `YoY ${safe(aoCorporateData.yoy, "monitor")}` })}
       ${kpiCard({ icon: "chart-no-axes-column-increasing", title: "Serapan AKI", value: safe(investmentData.akiRealizationPct), label: `${safe(investmentData.akiRealization)} dari ${safe(investmentData.akiTotal)}`, tone: scoreTone(akiProgress, 70, 40), meta: `Gap ${safe(investmentData.akiGapChip)}` })}
     </section>
@@ -4702,17 +4795,17 @@ function renderExecutiveOverview() {
       <article class="ovx-panel ovx-strategy">
         <div class="ovx-panel-head">
           <div><span>Strategi & Evaluasi</span><h3>Kontrol Kebijakan, CR, NKO, dan Business Excellence</h3></div>
-          <b class="ovx-status good">Terkendali</b>
+          <b class="ovx-status ${policyOpen || onProgressCr || notStartedCr ? "watch" : performanceHealth.tone}">${policyOpen || onProgressCr || notStartedCr ? "Perlu Tindak Lanjut" : performanceHealth.label}</b>
         </div>
         <div class="ovx-pill-row">
           ${metricPill("Kebijakan", policy.total, "blue")}
           ${metricPill("Selesai", policy.done, "green")}
           ${metricPill("On Progress", policy.onProgress, "amber")}
-          ${metricPill("Tidak Ratifikasi", policy.noRatification, "red")}
+          ${metricPill("Tidak Ratifikasi (perlu validasi pengecualian)", policy.noRatification, "neutral")}
         </div>
         ${progressRow("Progress Change Request", `${overviewDecimal(crProgress, 2)}%`, crProgress, "blue")}
-        ${progressRow("NKO Strategi & Evaluasi", smartLabel(nko, "plain"), Math.min(nko, 100), "green")}
-        ${progressRow("PLN Business Excellence", `${overviewDecimal(beScore, 2)}%`, Math.min(beScore, 100), "teal")}
+        ${progressRow("NKO Strategi & Evaluasi", performanceMeasured ? smartLabel(nko, "plain") : "Belum diukur", performanceMeasured ? Math.min(nko, 100) : 0, performanceMeasured ? "green" : "neutral")}
+        ${progressRow("PLN Business Excellence", Number.isFinite(beScore) ? `${overviewDecimal(beScore, 2)}% · ${beCoverage}` : "Belum diukur", Number.isFinite(beScore) ? Math.min(beScore, 100) : 0, Number.isFinite(beScore) ? "teal" : "neutral")}
         <div class="ovx-mini-table">
           <h4>Fokus detail</h4>
           <table><tbody>${tableRows(policyTopRows, "Tidak ada status kritikal.")}${tableRows(crRows, "Tidak ada CR prioritas.")}</tbody></table>
@@ -4765,7 +4858,7 @@ function renderExecutiveOverview() {
 
       <article class="ovx-panel ovx-chart-panel">
         <div class="ovx-panel-head">
-          <div><span>Perbandingan</span><h3>RKAP, Realisasi & Forecast</h3></div>
+          <div><span>Perbandingan</span><h3>RKAP, Realisasi & Proyeksi Tersedia</h3></div>
           <b class="ovx-status neutral">Rp Triliun</b>
         </div>
         <div class="ovx-chart">
@@ -4780,7 +4873,7 @@ function renderExecutiveOverview() {
             </div>
           `).join("")}
         </div>
-        <div class="ovx-chart-legend"><span><i class="blue"></i>RKAP</span><span><i class="green"></i>Realisasi</span><span><i class="orange"></i>Forecast</span></div>
+        <div class="ovx-chart-legend"><span><i class="blue"></i>RKAP</span><span><i class="green"></i>Realisasi</span><span><i class="orange"></i>Proyeksi sumber (AO saja)</span></div>
       </article>
 
       <article class="ovx-panel ovx-action-panel">
@@ -4789,14 +4882,14 @@ function renderExecutiveOverview() {
           <b class="ovx-status watch">Prioritas</b>
         </div>
         <ol class="ovx-action-list">
-          <li><b>1</b><span>Validasi ${policyOpen} status kebijakan yang belum selesai/tidak ratifikasi dengan PIC SH/AP.</span></li>
-          <li><b>2</b><span>Kunci resource dan target untuk ${onProgressCr} CR berjalan serta ${notStartedCr} CR belum mulai.</span></li>
+          <li><b>1</b><span>Tuntaskan ${policyOpen} status on progress; validasi alasan, approver, dan masa berlaku untuk ${policy.noRatification} status Tidak Ratifikasi.</span></li>
+          <li><b>2</b><span>Dahulukan CR yang melewati target: ${crPriorityRows[0]?.app || "tidak ada"}${crPriorityRows[0] ? ` (${crPriorityRows[0].status})` : ""}.</span></li>
           <li><b>3</b><span>Monitor AO Korporat ${pct(corporateAbsorption)} dan AO Kantor Pusat ${pct(officeAbsorption)} agar tetap terkendali.</span></li>
-          <li><b>4</b><span>Tutup gap AKI ${safe(investmentData.akiGapChip)} melalui BAPP, rekomposisi, dan konfirmasi pipeline.</span></li>
+          <li><b>4</b><span>Validasi apakah BAPP, rekomposisi, atau pipeline benar menjadi penyebab gap AKI ${safe(investmentData.akiGapChip)} sebelum menetapkan intervensi.</span></li>
         </ol>
       </article>
     </main>
-  `;
+  `);
 
   if (window.lucide) window.lucide.createIcons();
 }
@@ -4876,7 +4969,7 @@ function renderEvInfrastructure() {
     </li>
   `).join("");
 
-  container.innerHTML = `
+  setSafeHtml(container, `
     <div class="ev-shell">
       <header class="ev-hero">
         <div class="ev-brand">
@@ -5009,7 +5102,7 @@ function renderEvInfrastructure() {
         <div class="ev-sustainability"><i data-lucide="sprout"></i><strong>Mendorong masa depan<br>energi bersih dan berkelanjutan<br>bersama PLN</strong><i data-lucide="car-front"></i></div>
       </footer>
     </div>
-  `;
+  `);
 
   if (window.lucide) window.lucide.createIcons();
   setupEvDataControls();
@@ -5079,10 +5172,16 @@ function evUnitLatLng(item) {
   const lat = numberFromImport(item?.unitLat, NaN);
   const lng = numberFromImport(item?.unitLng, NaN);
   const fallback = evPointToLatLng(item.mapX, item.mapY);
-  if (evIsPlausibleIndonesiaLatLng(lat, lng) && evLatLngDistanceKm([lat, lng], fallback) <= 900) {
+  if (evIsPlausibleIndonesiaLatLng(lat, lng)) {
     return [lat, lng];
   }
   return fallback;
+}
+
+function evUnitCoordinateIsApproximate(item) {
+  const lat = numberFromImport(item?.unitLat, NaN);
+  const lng = numberFromImport(item?.unitLng, NaN);
+  return !evIsPlausibleIndonesiaLatLng(lat, lng);
 }
 
 function evSpkluLatLng(item) {
@@ -5184,9 +5283,10 @@ function renderEvMapDetail(item) {
     </li>
   `).join("");
 
-  detail.innerHTML = `
+  setSafeHtml(detail, `
     <div class="ev-detail-badge" style="--marker-color:${evMapTone(item.category)}">${item.category}</div>
     <h3>${item.unit}</h3>
+    ${evUnitCoordinateIsApproximate(item) ? '<p class="ev-coordinate-warning">Lokasi marker unit bersifat perkiraan; jarak SPKLU tetap mengikuti data sumber.</p>' : ""}
     <div class="ev-distance-box">
       <small>Jarak SPKLU terdekat</small>
       <strong>${evFormatKm(item.distance)}</strong>
@@ -5202,7 +5302,7 @@ function renderEvMapDetail(item) {
       <h4>SPKLU di unit ini berdasarkan jarak</h4>
       <ol>${spkluRows}</ol>
     </div>
-  `;
+  `);
 }
 
 function renderEvStaticMap(index = 0) {
@@ -5369,7 +5469,7 @@ function initEvGeoMap() {
       const item = evGeoPriorityUnits[index] || evGeoPriorityUnits[0];
       setActiveButton(index);
       renderEvMapDetail(item);
-      mapEl.innerHTML = renderEvStaticMap(index);
+      setSafeHtml(mapEl, renderEvStaticMap(index));
     }
 
     bindEvUnitList(selectStatic);
@@ -5383,7 +5483,7 @@ function initEvGeoMap() {
     evGeoMapState.map.remove();
   }
 
-  mapEl.innerHTML = "";
+  mapEl.replaceChildren();
   const map = L.map(mapEl, {
     attributionControl: true,
     scrollWheelZoom: false,
@@ -5406,7 +5506,7 @@ function initEvGeoMap() {
       const item = evGeoPriorityUnits[nextIndex] || evGeoPriorityUnits[0];
       setActiveButton(nextIndex);
       renderEvMapDetail(item);
-      mapEl.innerHTML = renderEvStaticMap(nextIndex);
+      setSafeHtml(mapEl, renderEvStaticMap(nextIndex));
     };
     bindEvUnitList(selectStatic);
     bindEvUnitSearch(selectStatic);
@@ -5423,13 +5523,13 @@ function initEvGeoMap() {
   const mapLegend = L.control({ position: "topright" });
   mapLegend.onAdd = () => {
     const div = L.DomUtil.create("div", "ev-map-leaflet-legend");
-    div.innerHTML = `
+    setSafeHtml(div, `
       <strong>Keterangan Maps</strong>
       <span><i class="ev-legend-office-icon"></i> Unit Pelaksana</span>
       <span><i class="ev-legend-ulp-dot"></i> ULP</span>
       <span><i class="ev-legend-spklu-triangle"></i> SPKLU Terdekat</span>
       <span><i class="ev-legend-selected"></i> Dipilih</span>
-    `;
+    `);
     return div;
   };
   mapLegend.addTo(map);
@@ -5456,13 +5556,13 @@ function initEvGeoMap() {
   const unitMarkers = evGeoPriorityUnits.map((row, rowIndex) => {
     const marker = L.marker(evUnitLatLng(row), {
       icon: L.divIcon({
-        className: "ev-unit-office-div-icon",
+        className: `ev-unit-office-div-icon${evUnitCoordinateIsApproximate(row) ? " is-approximate" : ""}`,
         html: `<span class="ev-unit-office-marker" style="--unit-tone:${evMapTone(row.category)}" aria-hidden="true"></span>`,
         iconAnchor: [10, 10],
         iconSize: [20, 20]
       })
     }).addTo(map);
-    marker.bindTooltip(row.unit, { direction: "top", offset: [0, -8] });
+    marker.bindTooltip(`${evEscapeHtml(row.unit)}${evUnitCoordinateIsApproximate(row) ? " · lokasi perkiraan" : ""}`, { direction: "top", offset: [0, -8] });
     marker.on("click", () => select(rowIndex, true, true));
     return marker;
   });
