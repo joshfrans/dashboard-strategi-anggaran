@@ -97,5 +97,19 @@ async function inspect(viewport) {
 
 const desktop = await inspect({ width: 1600, height: 900 });
 const mobile = await inspect({ width: 390, height: 844 });
-console.log(JSON.stringify({ url, desktop, mobile }, null, 2));
+const fallbackContext = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+const fallbackPage = await fallbackContext.newPage();
+await fallbackPage.route("**/script.js*", (route) => route.abort());
+await fallbackPage.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 });
+await fallbackPage.waitForTimeout(500);
+const safeFallback = await fallbackPage.evaluate(() => {
+  const section = document.querySelector("#executiveDashboardView");
+  const children = [...(section?.children || [])];
+  return {
+    loadingMessage: getComputedStyle(section, "::before").content.replace(/^['\"]|['\"]$/g, ""),
+    hiddenLegacyChildren: children.length > 0 && children.every((child) => getComputedStyle(child).display === "none")
+  };
+});
+await fallbackContext.close();
+console.log(JSON.stringify({ url, desktop, mobile, safeFallback }, null, 2));
 await browser.close();

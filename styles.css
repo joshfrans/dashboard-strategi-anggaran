@@ -12144,3 +12144,21 @@ td {
     box-shadow: none;
   }
 }
+#executiveDashboardView.exec2 > * {
+  display: none !important;
+}
+
+#executiveDashboardView.exec2::before {
+  content: "Memuat dan memvalidasi data dashboard...";
+  display: grid;
+  min-height: 320px;
+  place-items: center;
+  padding: 32px;
+  border: 1px solid #dbe4f0;
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #52627a;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
