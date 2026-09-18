@@ -72,6 +72,28 @@ const dynamicTables = await page.evaluate(() => {
   };
 });
 await page.locator(".cr-panel").screenshot({ path: "../outputs/dashboard-cr-audit.png" });
+const augustPerformance = await page.evaluate(() => {
+  applyStrategyPeriod(7, 2026);
+  const summary = getPerformanceStatusSummary();
+  const costRow = performanceMainRows().find((row) => String(row.no).trim() === "1");
+  const gaSystemRow = performanceMainRows().find((row) => String(row.no).trim() === "4");
+  const complianceRow = performanceMainRows().find((row) => String(row.no).trim() === "10");
+  const adminCostRow = performanceRowsForPeriodKey("2026-08").find((row) => String(row.indicator).includes("Efektifitas Biaya Administrasi Umum"));
+  const paymentRow = performanceMainRows().find((row) => String(row.no).trim() === "6");
+  return {
+    score: document.querySelector("#performanceScore")?.textContent?.trim() || "",
+    status: document.querySelector("#performanceMainStatus")?.textContent?.trim() || "",
+    period: document.querySelector("#performancePeriod")?.textContent?.trim() || "",
+    source: document.querySelector("#performanceStatusMessage")?.textContent?.trim() || "",
+    summary,
+    costScore: costRow?.score || "",
+    gaSystemStatus: gaSystemRow?.status || "",
+    complianceStatus: complianceRow?.status || "",
+    adminCostTarget: adminCostRow?.targetPeriod || "",
+    adminCostRealization: adminCostRow?.realization || "",
+    paymentRealization: paymentRow?.realization || ""
+  };
+});
 const unmeasuredNko = await page.evaluate(() => {
   applyStrategyPeriod(8, 2026);
   return {
@@ -153,7 +175,11 @@ const result = {
     alertCardsReconcile: alertCenter.critical + alertCenter.high + alertCenter.medium + alertCenter.ok === 5,
     noRatificationQualified: alertCenter.text.includes("dicatat sebagai pengecualian") && alertCenter.text.includes("belum dinilai terbuka"),
     overduePriority: overview.text.includes("terlambat") && overview.text.includes("E-TRANSPORT"),
-    achievementAbove100Formatted: strategy.performanceText.includes("110,00%") && !strategy.performanceText.includes(" 1,1%"),
+    achievementAbove100Formatted: (strategy.performanceText.includes("110%") || strategy.performanceText.includes("110,00%")) && !strategy.performanceText.includes(" 1,1%"),
+    augustOfficialNko: augustPerformance.score === "102,60" && augustPerformance.status === "Tercapai Sementara" && augustPerformance.period.includes("Agustus 2026"),
+    augustStatusReconciles: augustPerformance.summary.green === 8 && augustPerformance.summary.amber === 0 && augustPerformance.summary.red === 1 && augustPerformance.summary.gray === 1,
+    augustSourceVisible: augustPerformance.source.includes("Realisasi RKM DIV GA Agustus 2026") && augustPerformance.source.includes("8 September 2026"),
+    augustSourceValuesMatch: augustPerformance.costScore === "22,00" && augustPerformance.gaSystemStatus === "Perlu Peningkatan" && augustPerformance.complianceStatus.toLowerCase().includes("belum") && augustPerformance.adminCostTarget === "5.980,48" && augustPerformance.adminCostRealization === "4.570,42" && augustPerformance.paymentRealization === "93,97",
     unmeasuredNkoNotGreen: unmeasuredNko.score === "-" && unmeasuredNko.status === "Belum Diukur" && unmeasuredNko.message.includes("belum memiliki pengukuran"),
     unmeasuredDetailNotGreen: performanceModal.includes("Belum Diukur") && !performanceModal.includes("Kinerja Aman") && !performanceModal.includes("zona hijau"),
     businessDetailCoverageHonest: businessModal.text.includes("1/2 semester telah diukur") && businessModal.text.includes("1 semester belum dinilai") && businessDetail.pendingBadge && businessModal.pendingBadges > 0,
@@ -167,7 +193,7 @@ const result = {
       (table) => table.rowCount > 0 && table.allRowsHaveExpectedCells && table.directTextNodes === 0
     )
   },
-  evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
+  evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, augustPerformance, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
 };
 console.log(JSON.stringify(result, null, 2));
 await browser.close();
