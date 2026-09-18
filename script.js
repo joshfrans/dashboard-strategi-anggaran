@@ -1,4 +1,4 @@
-window.DASHBOARD_RELEASE_VERSION = "20260918-2";
+window.DASHBOARD_RELEASE_VERSION = "20260918-3";
 
 function sanitizeDashboardHtml(markup) {
   const value = String(markup ?? "");
@@ -16,7 +16,26 @@ function sanitizeDashboardHtml(markup) {
 }
 
 function setSafeHtml(target, markup) {
-  if (target) target.innerHTML = sanitizeDashboardHtml(markup);
+  if (!target) return;
+
+  const tableContext = {
+    TBODY: { prefix: "<table><tbody>", suffix: "</tbody></table>", selector: "tbody" },
+    THEAD: { prefix: "<table><thead>", suffix: "</thead></table>", selector: "thead" },
+    TFOOT: { prefix: "<table><tfoot>", suffix: "</tfoot></table>", selector: "tfoot" },
+    TR: { prefix: "<table><tbody><tr>", suffix: "</tr></tbody></table>", selector: "tr" }
+  }[target.tagName];
+
+  if (tableContext) {
+    const template = document.createElement("template");
+    template.innerHTML = sanitizeDashboardHtml(
+      `${tableContext.prefix}${String(markup ?? "")}${tableContext.suffix}`
+    );
+    const sanitizedContext = template.content.querySelector(tableContext.selector);
+    target.replaceChildren(...Array.from(sanitizedContext?.childNodes || []));
+    return;
+  }
+
+  target.innerHTML = sanitizeDashboardHtml(markup);
 }
 
 let policyData = [
@@ -1591,7 +1610,7 @@ function loadXlsxLibrary() {
 
   xlsxLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./assets/xlsx-0.18.5.full.min.js?v=20260918-2";
+    script.src = "./assets/xlsx-0.18.5.full.min.js?v=20260918-3";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {

@@ -28,6 +28,28 @@ const strategy = await page.evaluate(() => ({
   performanceText: document.querySelector("#performanceRows")?.textContent?.replace(/\s+/g, " ").trim() || "",
   statusText: document.querySelector("#performanceStatusGrid")?.textContent?.replace(/\s+/g, " ").trim() || ""
 }));
+const dynamicTables = await page.evaluate(() => {
+  const inspectBody = (selector, expectedCells) => {
+    const body = document.querySelector(selector);
+    const rows = Array.from(body?.children || []);
+    return {
+      childTags: rows.map((row) => row.tagName),
+      rowCount: rows.length,
+      allRowsHaveExpectedCells: rows.every(
+        (row) => row.tagName === "TR" && row.children.length === expectedCells
+      ),
+      directTextNodes: Array.from(body?.childNodes || []).filter(
+        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+      ).length
+    };
+  };
+  return {
+    changeRequests: inspectBody("#crRows", 6),
+    policyPreparation: inspectBody("#policyPrepRows", 6),
+    alertActions: inspectBody("#alertActionRows", 4)
+  };
+});
+await page.locator(".cr-panel").screenshot({ path: "../outputs/dashboard-cr-audit.png" });
 const unmeasuredNko = await page.evaluate(() => {
   applyStrategyPeriod(8, 2026);
   return {
@@ -76,9 +98,12 @@ const result = {
     unmeasuredNkoNotGreen: unmeasuredNko.score === "-" && unmeasuredNko.status === "Belum Diukur" && unmeasuredNko.message.includes("belum memiliki pengukuran"),
     evDeduplicated: ev.header.includes("352") && ev.geoSummary.startsWith("352 unit pelaksana"),
     approximateMarkersFlagged: ev.approximateMarkers >= 13,
-    importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0
+    importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0,
+    dynamicTableStructure: Object.values(dynamicTables).every(
+      (table) => table.rowCount > 0 && table.allRowsHaveExpectedCells && table.directTextNodes === 0
+    )
   },
-  evidence: { overview: overview.text.slice(0, 1600), strategy, unmeasuredNko, ev, xss, errors }
+  evidence: { overview: overview.text.slice(0, 1600), strategy, dynamicTables, unmeasuredNko, ev, xss, errors }
 };
 console.log(JSON.stringify(result, null, 2));
 await browser.close();
