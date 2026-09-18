@@ -41,10 +41,29 @@ async function inspect(viewport) {
     const nav = await item.getAttribute("data-nav");
     await item.click();
     await page.waitForTimeout(nav === "ev-infra" ? 1_200 : 180);
-    navResults.push({
-      nav,
-      visible: await page.locator("main.dashboard > :not([hidden])").count()
-    });
+    navResults.push(await page.evaluate((activeNav) => {
+      const isVisible = (node) => {
+        const style = getComputedStyle(node);
+        const rect = node.getBoundingClientRect();
+        return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+      };
+      const visibleSections = [...document.querySelectorAll("main.dashboard > section")]
+        .filter(isVisible)
+        .map((node) => node.id || node.className.split(/\s+/)[0]);
+      const malformedTableBodies = [...document.querySelectorAll("tbody")]
+        .filter((body) => isVisible(body))
+        .filter((body) => [...body.children].some((row) => row.tagName !== "TR") ||
+          [...body.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()))
+        .map((body) => body.id || body.closest("table")?.className || "anonymous-table");
+      return {
+        nav: activeNav,
+        activeNav: document.querySelector(".nav-item.is-active")?.dataset.nav || "",
+        title: document.querySelector(".title-block h1")?.textContent?.trim() || "",
+        visibleSections,
+        horizontalOverflow: document.documentElement.scrollWidth > innerWidth + 1,
+        malformedTableBodies
+      };
+    }, nav));
   }
 
   await page.locator('[data-nav="ev-infra"]').click();

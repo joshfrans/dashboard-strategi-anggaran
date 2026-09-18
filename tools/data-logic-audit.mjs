@@ -22,6 +22,28 @@ const overview = await page.evaluate(() => ({
 }));
 await page.screenshot({ path: "../outputs/dashboard-overview-audit.png", fullPage: false });
 
+await page.locator('[data-nav="ao"]').click();
+await page.waitForTimeout(250);
+const aoOfficeView = await page.evaluate(() => ({
+  text: document.querySelector("#aoCorporateView")?.textContent?.replace(/\s+/g, " ").trim() || "",
+  iframeSrc: document.querySelector("#aoCorporateView iframe")?.getAttribute("src") || ""
+}));
+await page.locator('[data-nav="ao-office"]').click();
+await page.waitForTimeout(250);
+const aoCorporateView = await page.evaluate(() => ({
+  text: document.querySelector("#aoOfficeView")?.textContent?.replace(/\s+/g, " ").trim() || "",
+  iframeCount: document.querySelectorAll("#aoOfficeView iframe").length
+}));
+await page.locator('[data-nav="alerts"]').click();
+await page.waitForTimeout(250);
+const alertCenter = await page.evaluate(() => ({
+  critical: Number(document.querySelector("#alertCriticalCount")?.textContent || 0),
+  high: Number(document.querySelector("#alertHighCount")?.textContent || 0),
+  medium: Number(document.querySelector("#alertMediumCount")?.textContent || 0),
+  ok: Number(document.querySelector("#alertOkCount")?.textContent || 0),
+  text: document.querySelector("#alertView")?.textContent?.replace(/\s+/g, " ").trim() || ""
+}));
+
 await page.locator('[data-nav="strategy"]').click();
 await page.waitForTimeout(250);
 const strategy = await page.evaluate(() => ({
@@ -55,7 +77,39 @@ const unmeasuredNko = await page.evaluate(() => {
   return {
     score: document.querySelector("#performanceScore")?.textContent?.trim() || "",
     status: document.querySelector("#performanceMainStatus")?.textContent?.trim() || "",
-    message: document.querySelector("#performanceStatusMessage")?.textContent?.trim() || ""
+    message: document.querySelector("#performanceStatusMessage")?.textContent?.trim() || "",
+    detailText: renderDetailPerformance().replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
+  };
+});
+const businessDetail = await page.evaluate(() => {
+  const html = renderDetailBusiness();
+  return {
+    text: html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+    pendingBadge: html.includes('class="badge not-started"')
+  };
+});
+await page.locator('[data-detail="performance"]').click();
+await page.waitForTimeout(150);
+const performanceModal = await page.locator("#detailOverlay").textContent();
+await page.locator("#detailOverlay").screenshot({ path: "../outputs/dashboard-performance-unmeasured-audit.png" });
+await page.locator("#detailClose").click();
+await page.locator('[data-detail="business"]').click();
+await page.waitForTimeout(150);
+const businessModal = {
+  text: (await page.locator("#detailOverlay").textContent())?.replace(/\s+/g, " ").trim() || "",
+  pendingBadges: await page.locator("#detailOverlay .badge.not-started").count()
+};
+await page.locator("#detailOverlay").screenshot({ path: "../outputs/dashboard-business-detail-audit.png" });
+await page.locator("#detailClose").click();
+const junePerformance = await page.evaluate(() => {
+  applyStrategyPeriod(5, 2026);
+  const summary = getPerformanceStatusSummary();
+  const policyRow = performanceMainRows().find((row) => String(row.no).trim() === "5");
+  return {
+    summary,
+    policyStatus: policyRow?.status || "",
+    policyAchievement: policyRow?.achievement ?? "",
+    panelStatus: document.querySelector("#performanceMainStatus")?.textContent?.trim() || ""
   };
 });
 
@@ -64,7 +118,8 @@ await page.waitForTimeout(700);
 const ev = await page.evaluate(() => ({
   header: document.querySelector(".ev-title strong")?.textContent?.trim() || "",
   geoSummary: document.querySelector(".ev-geo-actions span")?.textContent?.replace(/\s+/g, " ").trim() || "",
-  approximateMarkers: document.querySelectorAll(".ev-unit-office-div-icon.is-approximate").length
+  approximateMarkers: document.querySelectorAll(".ev-unit-office-div-icon.is-approximate").length,
+  recommendations: document.querySelector(".ev-recommendations")?.textContent?.replace(/\s+/g, " ").trim() || document.querySelector("#evInfraView")?.textContent?.replace(/\s+/g, " ").trim() || ""
 }));
 await page.screenshot({ path: "../outputs/dashboard-ev-map-audit.png", fullPage: false });
 
@@ -93,17 +148,26 @@ const result = {
     businessExcellenceMeasuredOnly: overview.text.includes("100,18% · 1/2 semester diukur"),
     noInventedAkiForecast: overview.text.includes("Proyeksi sumber (AO saja)") && !overview.text.includes("Forecast"),
     mixedPeriodDisclosure: overview.text.includes("Periode lintas domain berbeda"),
+    staleRecommendationsSuppressed: overview.text.includes("Data usang harus diperbarui") && overview.text.includes("Usang"),
+    aoScopesDistinct: aoOfficeView.iframeSrc.includes("ao-kantor-pusat") && aoCorporateView.iframeCount === 0 && aoCorporateView.text.includes("2.931.185") && !aoCorporateView.text.includes("64 Divisi"),
+    alertCardsReconcile: alertCenter.critical + alertCenter.high + alertCenter.medium + alertCenter.ok === 5,
+    noRatificationQualified: alertCenter.text.includes("dicatat sebagai pengecualian") && alertCenter.text.includes("belum dinilai terbuka"),
     overduePriority: overview.text.includes("terlambat") && overview.text.includes("E-TRANSPORT"),
     achievementAbove100Formatted: strategy.performanceText.includes("110,00%") && !strategy.performanceText.includes(" 1,1%"),
     unmeasuredNkoNotGreen: unmeasuredNko.score === "-" && unmeasuredNko.status === "Belum Diukur" && unmeasuredNko.message.includes("belum memiliki pengukuran"),
+    unmeasuredDetailNotGreen: performanceModal.includes("Belum Diukur") && !performanceModal.includes("Kinerja Aman") && !performanceModal.includes("zona hijau"),
+    businessDetailCoverageHonest: businessModal.text.includes("1/2 semester telah diukur") && businessModal.text.includes("1 semester belum dinilai") && businessDetail.pendingBadge && businessModal.pendingBadges > 0,
+    juneDateSerialNotScored: junePerformance.summary.green === 6 && junePerformance.summary.amber === 1 && junePerformance.summary.gray === 3 && junePerformance.policyStatus.toLowerCase().includes("belum") && junePerformance.policyAchievement === "",
+    partialNkoQualified: junePerformance.panelStatus === "Tercapai Sementara",
     evDeduplicated: ev.header.includes("352") && ev.geoSummary.startsWith("352 unit pelaksana"),
     approximateMarkersFlagged: ev.approximateMarkers >= 13,
+    evRecommendationGated: ev.recommendations.includes("PILOT / VALIDASI") && !ev.recommendations.includes("GO Program EV"),
     importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0,
     dynamicTableStructure: Object.values(dynamicTables).every(
       (table) => table.rowCount > 0 && table.allRowsHaveExpectedCells && table.directTextNodes === 0
     )
   },
-  evidence: { overview: overview.text.slice(0, 1600), strategy, dynamicTables, unmeasuredNko, ev, xss, errors }
+  evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
 };
 console.log(JSON.stringify(result, null, 2));
 await browser.close();
