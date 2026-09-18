@@ -8,7 +8,7 @@ on:
 
 permissions:
   contents: read
-  actions: write
+  actions: read
 
 env:
   DASHBOARD_NAME: dashboard-strategi-evaluasi
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Prepare backup metadata
         id: meta
@@ -62,7 +62,7 @@ jobs:
           ls -lh "${{ steps.meta.outputs.zip_name }}"
 
       - name: Store backup as GitHub artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.meta.outputs.zip_name }}
           path: ${{ steps.meta.outputs.zip_name }}
