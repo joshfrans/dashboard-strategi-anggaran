@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  # contents: write dibutuhkan untuk membuat Release arsip backup.
+  # Workflow ini tidak pernah push ke branch mana pun.
+  contents: write
   actions: read
 
 env:
@@ -33,6 +35,8 @@ jobs:
           echo "stamp=${STAMP}" >> "$GITHUB_OUTPUT"
           echo "zip_name=${DASHBOARD_NAME}-backup-${STAMP}.zip" >> "$GITHUB_OUTPUT"
           echo "backup_time=$(TZ=Asia/Jakarta date +'%d %B %Y %H:%M:%S WIB')" >> "$GITHUB_OUTPUT"
+          echo "month_tag=backup-$(TZ=Asia/Jakarta date +'%Y%m')" >> "$GITHUB_OUTPUT"
+          echo "month_label=$(TZ=Asia/Jakarta date +'%B %Y')" >> "$GITHUB_OUTPUT"
 
       - name: Capture online data sources
         shell: bash
@@ -67,6 +71,58 @@ jobs:
           name: ${{ steps.meta.outputs.zip_name }}
           path: ${{ steps.meta.outputs.zip_name }}
           retention-days: 90
+
+      # GitHub Artifact hangus setelah 90 hari. Release tidak punya masa
+      # kedaluwarsa, jadi dipakai sebagai arsip jangka panjang:
+      #   backup-latest  -> selalu ditimpa ZIP paling baru
+      #   backup-YYYYMM  -> dibuat sekali per bulan sebagai arsip permanen
+      - name: Publish rolling latest backup release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          NOTES="Backup otomatis terbaru.
+
+          Waktu backup: ${{ steps.meta.outputs.backup_time }}
+          Commit: ${{ github.sha }}
+
+          Release ini ditimpa setiap kali backup harian berjalan.
+          Untuk arsip yang tidak berubah, lihat release backup-YYYYMM."
+          if gh release view backup-latest >/dev/null 2>&1; then
+            gh release edit backup-latest --notes "${NOTES}"
+            # Hapus aset lama agar hanya ZIP terbaru yang tersimpan.
+            gh release view backup-latest --json assets \
+              --jq '.assets[].name' | while read -r asset; do
+                [ -n "${asset}" ] && gh release delete-asset backup-latest "${asset}" --yes
+              done
+          else
+            gh release create backup-latest \
+              --title "Backup terbaru" \
+              --notes "${NOTES}" \
+              --latest
+          fi
+          gh release upload backup-latest "${{ steps.meta.outputs.zip_name }}" --clobber
+
+      - name: Publish monthly archive release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.meta.outputs.month_tag }}"
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Arsip bulanan ${TAG} sudah ada; tidak ada yang perlu dibuat."
+            exit 0
+          fi
+          gh release create "${TAG}" \
+            --title "Arsip backup ${{ steps.meta.outputs.month_label }}" \
+            --notes "Arsip backup bulanan yang tidak ditimpa.
+
+          Waktu backup: ${{ steps.meta.outputs.backup_time }}
+          Commit: ${{ github.sha }}" \
+            --latest=false
+          gh release upload "${TAG}" "${{ steps.meta.outputs.zip_name }}" --clobber
 
       - name: Upload backup to Google Drive
         if: ${{ env.HAS_GDRIVE_SECRET == 'true' }}
