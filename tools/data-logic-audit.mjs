@@ -72,10 +72,17 @@ const dynamicTables = await page.evaluate(() => {
   };
 });
 const realtimeSource = await page.evaluate(() => {
-  const row = crData.find((item) => item.app === "ESPPD Reengineering");
+  const row = crData.find((item) => item.app === "ESPPD");
+  const totalProgress = crData.reduce((sum, item) => sum + (Number(item.progress) || 0), 0);
+  const overallProgress = crData.length ? totalProgress / crData.length : 0;
+  const renderedRow = [...document.querySelectorAll("#crRows tr")]
+    .find((candidate) => candidate.textContent?.includes("CR utama E-SPPD"));
   return {
     progress: row?.progress,
-    summary: document.querySelector("#crSummaryText")?.textContent?.replace(/\s+/g, " ").trim() || ""
+    expectedOverall: `${overallProgress.toFixed(2).replace(".", ",")}%`,
+    importedCount: Number(strategyGoogleImported.changeRequest || 0),
+    renderedRow: renderedRow?.textContent?.replace(/\s+/g, " ").trim() || "",
+    sourceStatus: document.querySelector("#strategySourceStatus")?.textContent?.replace(/\s+/g, " ").trim() || ""
   };
 });
 await page.locator(".cr-panel").screenshot({ path: "../outputs/dashboard-cr-audit.png" });
@@ -199,7 +206,10 @@ const result = {
     dynamicTableStructure: Object.values(dynamicTables).every(
       (table) => table.rowCount > 0 && table.allRowsHaveExpectedCells && table.directTextNodes === 0
     ),
-    realtimeSourceReflected: realtimeSource.progress === 73 && overview.text.includes("82,89%")
+    realtimeSourceReflected: realtimeSource.importedCount > 0 &&
+      realtimeSource.renderedRow.includes(`${realtimeSource.progress}%`) &&
+      overview.text.includes(realtimeSource.expectedOverall) &&
+      realtimeSource.sourceStatus.includes("Google Sheets")
   },
   evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, realtimeSource, augustPerformance, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
 };

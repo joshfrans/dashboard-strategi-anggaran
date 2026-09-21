@@ -3,8 +3,8 @@ name: Sync Strategy Google Sheet
 on:
   schedule:
     # GitHub Pages is static, so refresh at the shortest interval supported by
-    # GitHub Actions. Starting off the round hour reduces schedule congestion.
-    - cron: "2-57/5 * * * *"
+    # GitHub Actions. Use GitHub's documented start/step form and avoid minute 0.
+    - cron: "2/5 * * * *"
   workflow_dispatch:
 
 permissions:
