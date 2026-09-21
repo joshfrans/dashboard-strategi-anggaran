@@ -71,6 +71,13 @@ const dynamicTables = await page.evaluate(() => {
     alertActions: inspectBody("#alertActionRows", 4)
   };
 });
+const realtimeSource = await page.evaluate(() => {
+  const row = crData.find((item) => item.app === "ESPPD Reengineering");
+  return {
+    progress: row?.progress,
+    summary: document.querySelector("#crSummaryText")?.textContent?.replace(/\s+/g, " ").trim() || ""
+  };
+});
 await page.locator(".cr-panel").screenshot({ path: "../outputs/dashboard-cr-audit.png" });
 const augustPerformance = await page.evaluate(() => {
   applyStrategyPeriod(7, 2026);
@@ -191,9 +198,10 @@ const result = {
     importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0,
     dynamicTableStructure: Object.values(dynamicTables).every(
       (table) => table.rowCount > 0 && table.allRowsHaveExpectedCells && table.directTextNodes === 0
-    )
+    ),
+    realtimeSourceReflected: realtimeSource.progress === 73 && overview.text.includes("82,89%")
   },
-  evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, augustPerformance, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
+  evidence: { overview: overview.text.slice(0, 2200), aoOfficeView, aoCorporateView, alertCenter, strategy, dynamicTables, realtimeSource, augustPerformance, unmeasuredNko, junePerformance, performanceModal: performanceModal.replace(/\s+/g, " ").trim(), businessDetail, businessModal, ev, xss, errors }
 };
 console.log(JSON.stringify(result, null, 2));
 await browser.close();

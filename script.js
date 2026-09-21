@@ -1,4 +1,4 @@
-window.DASHBOARD_RELEASE_VERSION = "20260918-6";
+window.DASHBOARD_RELEASE_VERSION = "20260921-1";
 
 function sanitizeDashboardHtml(markup) {
   const value = String(markup ?? "");
@@ -355,7 +355,9 @@ const STRATEGY_SOURCE_SHEETS = [
   "05_Business_Excellence",
   "09_Ringkasan"
 ];
-const STRATEGY_REALTIME_REFRESH_MS = 5 * 60 * 1000;
+// GitHub Actions refreshes the public snapshot about every five minutes.
+// Poll once a minute so an open dashboard picks up a new snapshot promptly.
+const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
 const STRATEGY_MONTHS_FULL = [
@@ -580,6 +582,7 @@ let performancePeriodData = {};
 let performanceDataPeriodKey = "2026-06";
 let performanceScoreByPeriod = {};
 let performanceOfficialScoreKeys = new Set(Object.keys(performanceScoreOverrides));
+let performanceImportedScoreKeys = new Set();
 let computedPerformanceScoreByPeriod = {};
 let performanceStatusByPeriod = {};
 
@@ -708,6 +711,9 @@ function performanceSourceDescription(key = strategyPeriodKey()) {
 
 function applyAuthoritativePerformancePeriods() {
   Object.entries(performanceAuthoritativePeriods).forEach(([key, source]) => {
+    // Prefer an official period score supplied by the live workbook. The
+    // embedded report remains a safe fallback while the workbook is blank.
+    if (performanceImportedScoreKeys.has(key)) return;
     performancePeriodData[key] = source.rows.map((row) => ({ ...row }));
     performanceScoreByPeriod[key] = source.score;
     performanceOfficialScoreKeys.add(key);
@@ -894,6 +900,10 @@ function rowStrategyPeriodKey(row) {
 }
 
 function officialPerformanceScoreForPeriod(key = strategyPeriodKey()) {
+  if (performanceImportedScoreKeys.has(key)) {
+    const importedScore = numberFromImport(performanceScoreByPeriod?.[key], NaN);
+    if (Number.isFinite(importedScore)) return importedScore;
+  }
   const overrideScore = performanceScoreOverrides[key];
   if (Number.isFinite(overrideScore)) return overrideScore;
   if (!performanceOfficialScoreKeys.has(key)) return NaN;
@@ -3584,6 +3594,7 @@ function importPerformanceSheet(workbook) {
 
 function importStrategySummarySheet(workbook) {
   const rows = sheetRows(workbook, "09_Ringkasan");
+  performanceImportedScoreKeys = new Set();
   if (!rows.length) return 0;
   let imported = 0;
   performanceOfficialScoreKeys = new Set(Object.keys(performanceScoreOverrides));
@@ -3600,6 +3611,7 @@ function importStrategySummarySheet(workbook) {
       if (key) {
         performanceScoreByPeriod[key] = numericValue;
         performanceOfficialScoreKeys.add(key);
+        performanceImportedScoreKeys.add(key);
       }
       if (!key || key === strategyPeriodKey()) {
         performanceOfficialScore = numericValue;

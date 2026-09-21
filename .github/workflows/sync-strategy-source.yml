@@ -2,8 +2,9 @@ name: Sync Strategy Google Sheet
 
 on:
   schedule:
-    # Refresh the browser-readable snapshot every 30 minutes.
-    - cron: "*/30 * * * *"
+    # GitHub Pages is static, so refresh at the shortest interval supported by
+    # GitHub Actions. Starting off the round hour reduces schedule congestion.
+    - cron: "2-57/5 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -21,6 +22,7 @@ jobs:
   sync-strategy-source:
     name: Sync browser data snapshot
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v5
@@ -33,10 +35,36 @@ jobs:
           set -euo pipefail
           TEMP_FILE="${RUNNER_TEMP}/strategy-source.xlsx"
           curl -L --fail --retry 3 --retry-delay 5 \
-            "https://docs.google.com/spreadsheets/d/${STRATEGY_SHEET_ID}/export?format=xlsx" \
+            -H "Cache-Control: no-cache" \
+            -H "Pragma: no-cache" \
+            "https://docs.google.com/spreadsheets/d/${STRATEGY_SHEET_ID}/export?format=xlsx&cacheBust=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
             -o "${TEMP_FILE}"
           test -s "${TEMP_FILE}"
           test "$(head -c 2 "${TEMP_FILE}")" = "PK"
+          python - "${TEMP_FILE}" <<'PY'
+          import sys
+          import xml.etree.ElementTree as ET
+          import zipfile
+
+          required = {
+              "01_Ratifikasi",
+              "02_Change_Request",
+              "03_Kinerja",
+              "04_Penyusunan_Kebijakan",
+              "05_Business_Excellence",
+              "09_Ringkasan",
+          }
+          with zipfile.ZipFile(sys.argv[1]) as workbook:
+              root = ET.fromstring(workbook.read("xl/workbook.xml"))
+          namespace = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+          detected = {sheet.attrib["name"] for sheet in root.findall("x:sheets/x:sheet", namespace)}
+          missing = sorted(required - detected)
+          if missing:
+              raise SystemExit(f"Missing required worksheets: {', '.join(missing)}")
+          print("Validated worksheets:", ", ".join(sorted(detected)))
+          PY
+
+          git pull --rebase origin main
           mv "${TEMP_FILE}" "${SNAPSHOT_PATH}"
 
       - name: Publish snapshot when data changed
