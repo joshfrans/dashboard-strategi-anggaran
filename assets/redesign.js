@@ -84,6 +84,7 @@
   const header = (eyebrow, title, sub, actions) => `
     <header class="rd-header"><div><span class="rd-eyebrow">${esc(eyebrow)}</span><h1>${esc(title)}</h1>${sub ? `<p>${esc(sub)}</p>` : ""}</div><div class="rd-actions">${actions}</div></header>`;
 
+  const ui = { entities: false, types: false, prep: false };
   const C = { acc: "#1f4fa3", ctx: "#9db4e0", line: "#d5dae3", amber: "#b7791f", serious: "#a8380b", critical: "#a61b1b", grey: "#8a94a8" };
 
   /* ---------------- containers ---------------- */
@@ -213,7 +214,7 @@
     const axis = [0, 50, 100].map((v) => `<span style="left:${(v / MAX * 100).toFixed(2)}%">${v}%</span>`).join("");
     const nkoCard = `<section class="rd-card">
       ${cardHead(`Monitoring kinerja · NKO per indikator`, `Batang = capaian, garis tegak = target 100%; skala sama 0–120% (capping 110%). ${sourceDesc || (measured ? "" : "Periode ini belum memiliki pengukuran NKO lengkap.")}`,
-        `<button type="button" class="rd-link" data-detail="performance">Lihat semua →</button>`)}
+        `${btn(`Periode: ${periodLabel || "—"}`, { icon: "cal", small: true, attrs: proxy("#periodTrigger") + ' data-rd-scrolltop="1"' })}<button type="button" class="rd-link" data-detail="performance">Lihat semua →</button>`)}
       <div class="rd-scroll-x"><div class="rd-nko" role="table" aria-label="NKO per indikator ${esc(periodLabel)}">
         <div class="rd-nko-row head" role="row"><span>Indikator</span><span class="r">Bobot</span><span class="rd-axis">${axis}</span><span class="r">Capaian</span><span class="r">Nilai</span><span>Status</span></div>
         ${nkoRows || `<div class="rd-nko-row"><span style="grid-column:1/-1;color:var(--rd-ink-2)">Data indikator periode ini belum tersedia.</span></div>`}
@@ -237,10 +238,13 @@
 
     const prepBody = prepSorted.map(({ r, s }) => `<tr><td><b>${esc(r.scope)}</b><span class="sub">${esc(r.area)} · target ${esc(r.target)}</span></td>
       <td><div class="rd-cellbar">${bar(r.progress, "", null, "h6")}<b>${esc(fmtPct(r.progress))}</b></div></td><td>${chip(s.tone, s.label)}</td></tr>`).join("");
+    const prepFull = prepRows.map((r, i) => `<tr><td class="rd-num">${esc(r.no ?? i + 1)}</td><td>${esc(r.area)}</td><td><b>${esc(r.scope)}</b></td><td class="r">${esc(fmtPct(r.progress))}</td><td>${esc(r.status)}</td><td style="white-space:nowrap">${esc(r.target)}</td><td>${chip(statusFromDate(r).tone, statusFromDate(r).label)}</td></tr>`).join("");
     const prepCard = `<section class="rd-card">
-      ${cardHead("Penyusunan kebijakan layanan GA", `${prepOpen} juknis on progress${prepLate ? `; ${prepLate} melewati target` : ""}.`)}
-      <div class="rd-table-wrap"><table class="rd-table"><colgroup><col style="width:46%"><col style="width:26%"><col style="width:28%"></colgroup>
-      <thead><tr><th>Lingkup</th><th>Progres</th><th>Status</th></tr></thead><tbody>${prepBody || `<tr><td colspan="3">Belum ada data.</td></tr>`}</tbody></table></div>
+      ${cardHead("Penyusunan kebijakan layanan GA", `${prepOpen} juknis on progress${prepLate ? `; ${prepLate} melewati target` : ""}.`, `<button type="button" class="rd-link" data-rd-toggle="prep" aria-expanded="${ui.prep}">${ui.prep ? "Ringkas ↑" : "Lihat semua →"}</button>`)}
+      ${ui.prep
+        ? `<div class="rd-table-wrap"><table class="rd-table"><thead><tr><th>No</th><th>Bidang</th><th>Lingkup</th><th class="r">Progres</th><th>Status sumber</th><th>Target</th><th>Keterangan</th></tr></thead><tbody>${prepFull || `<tr><td colspan="7">Belum ada data.</td></tr>`}</tbody></table></div>`
+        : `<div class="rd-table-wrap"><table class="rd-table"><colgroup><col style="width:46%"><col style="width:26%"><col style="width:28%"></colgroup>
+      <thead><tr><th>Lingkup</th><th>Progres</th><th>Status</th></tr></thead><tbody>${prepBody || `<tr><td colspan="3">Belum ada data.</td></tr>`}</tbody></table></div>`}
     </section>`;
 
     const beBody = beRows.map((b) => {
@@ -284,6 +288,13 @@
     ].filter(Boolean).join(" ");
     const heatCard = `<section class="rd-card">
       ${cardHead(`Rekap progres ratifikasi kebijakan · ${policyRows.length} entitas SH/AP × ${n} kebijakan`, heatNote, `<button type="button" class="rd-link" data-detail="policy">Lihat semua →</button>`)}
+      <div class="rd-actions">
+        <button type="button" class="rd-btn small${ui.entities ? " primary" : ""}" data-rd-toggle="entities" aria-expanded="${ui.entities}">${ico("building")}${esc(fmt(policyRows.length))} entitas SH/AP</button>
+        <button type="button" class="rd-btn small${ui.types ? " primary" : ""}" data-rd-toggle="types" aria-expanded="${ui.types}">${ico("file")}${esc(fmt(n))} jenis kebijakan</button>
+        <span class="rd-kpi-sub">Klik untuk melihat daftar lengkap</span>
+      </div>
+      ${ui.entities ? `<div class="rd-listpanel"><div class="rd-listpanel-head"><b>Entitas SH/AP</b><span>${esc(fmt(policyRows.length))} entitas dalam monitoring ratifikasi</span></div><ol class="rd-cols">${policyRows.map((r) => { const st = r.statuses || []; const d = st.filter((x) => x === "done").length; const x = st.filter((v) => v === "no-ratification").length; return `<li><b>${esc(r.entity)}</b><span>${d} selesai · ${st.length - d - x} on progress · ${x} tidak ratifikasi</span></li>`; }).join("")}</ol></div>` : ""}
+      ${ui.types ? `<div class="rd-listpanel"><div class="rd-listpanel-head"><b>Jenis kebijakan</b><span>${esc(fmt(n))} kebijakan yang dimonitor</span></div><ol class="rd-cols">${columns.map((c, i) => `<li><b>${esc(c)}</b><span>${esc(info[i].group)} · ${colDone[i]}/${policyRows.length} entitas selesai</span></li>`).join("")}</ol></div>` : ""}
       <div class="rd-legend"><span><i style="background:${C.acc}"></i>Selesai · ${fmt(metrics.done)}</span><span><i style="background:${C.ctx}"></i>On progress · ${fmt(metrics.onProgress)}</span><span><i class="exc"></i>Tidak ratifikasi · ${fmt(metrics.noRatification)}</span></div>
       <div class="rd-scroll-x"><div class="rd-heat" style="grid-template-columns:${gridCols}">${heat}</div></div>
     </section>`;
@@ -302,7 +313,7 @@
 
     const strip = `<div class="rd-strip">${freshness ? freshChip(freshness, "Sinkron data") : ""}${sourceStatus ? chip("neutral", sourceStatus.replace(/^Sumber data:\s*/i, "Sumber: "), false) : ""}${lastUpdated ? `<span class="rd-note">Sinkron teknis ${esc(lastUpdated)}</span>` : ""}${sourceDesc ? `<span class="rd-note">· ${esc(sourceDesc)}</span>` : ""}</div>`;
 
-    return [strip, kpis, nkoCard, crCard, `<div class="rd-grid c2">${prepCard}${beCard}</div>`, heatCard, sumCard].join("");
+    return [strip, kpis, nkoCard, crCard, (ui.prep ? `${prepCard}${beCard}` : `<div class="rd-grid c2">${prepCard}${beCard}</div>`), heatCard, sumCard].join("");
   }
 
   /* ================= INVESTASI ================= */
@@ -603,10 +614,18 @@
 
   // Tombol di tampilan baru meneruskan klik ke kontrol lama (import/export).
   document.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-rd-toggle]");
+    if (toggle && toggle.closest(".rd-view")) {
+      const key = toggle.getAttribute("data-rd-toggle");
+      if (key in ui) { ui[key] = !ui[key]; renderActive(); }
+      return;
+    }
+    const scrollTop = event.target.closest("[data-rd-scrolltop]");
+    if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
     const trigger = event.target.closest("[data-rd-proxy]");
     if (!trigger) return;
     const target = document.querySelector(trigger.getAttribute("data-rd-proxy"));
-    if (target) { event.preventDefault(); target.click(); }
+    if (target) { event.preventDefault(); setTimeout(() => target.click(), 0); }
   });
 
   // Rerender saat data/tampilan lama berubah (import, sinkron Google Sheets, pilih periode).

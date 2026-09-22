@@ -277,6 +277,15 @@ body.rd-enabled .dashboard.ev-infra-mode .ev-infra-view { min-height: 0; }
 .rd-legend > span { display: inline-flex; gap: 8px; align-items: center; white-space: nowrap; }
 .rd-legend i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
 
+/* Daftar entitas / jenis kebijakan */
+.rd-listpanel { border: 1px solid var(--rd-hair); border-radius: 10px; background: #fafbfd; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.rd-listpanel-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.rd-listpanel-head span { font-size: 13px; color: var(--rd-ink-2); }
+.rd-cols { margin: 0; padding-left: 22px; columns: 2; column-gap: 32px; }
+.rd-cols li { break-inside: avoid; padding: 5px 0; font-size: 14px; }
+.rd-cols li span { display: block; font-size: 13px; color: var(--rd-ink-2); }
+@media (max-width: 900px) { .rd-cols { columns: 1; } }
+
 /* Summary metrics (dark) */
 .rd-sum-metrics { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 10px; }
 .rd-sum-metrics div { padding: 12px 14px; border-radius: 10px; background: rgba(255, 255, 255, .06); display: flex; flex-direction: column; gap: 4px; }
