@@ -223,7 +223,7 @@ body.rd-enabled .dashboard.ev-infra-mode .ev-infra-view { min-height: 0; }
 .rd-tone-legend .t { display: inline-flex; align-items: center; gap: 6px; }
 .rd-tone-legend .t i { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, var(--h), var(--h3)); }
 [data-tone="gov"]      { --h3: #6366f1; --h: #4338ca; --h2: #a5b4fc; --t1: #eef0ff; --t2: #e0e4ff; }
-[data-tone="tech"]     { --h3: #06a3c4; --h: #0e7490; --h2: #67e8f9; --t1: #e8f8fb; --t2: #d3f1f7; }
+[data-tone="tech"], [data-tone="charge"] { --h3: #06a3c4; --h: #0e7490; --h2: #67e8f9; --t1: #e8f8fb; --t2: #d3f1f7; }
 [data-tone="doc"]      { --h3: #8b5cf6; --h: #6d28d9; --h2: #c4b5fd; --t1: #f4efff; --t2: #e9e0fe; }
 [data-tone="perf"]     { --h3: #3b73d9; --h: #1f4fa3; --h2: #9db4e0; --t1: #edf2fb; --t2: #dde7f7; }
 [data-tone="excel"]    { --h3: #c026d3; --h: #a21caf; --h2: #f0abfc; --t1: #fcefff; --t2: #f7defb; }
@@ -442,9 +442,11 @@ body.rd-enabled .ao-embed-header a { border: 1px solid var(--rd-line); border-ra
 }
 
 /* v5 — Opsi D: ikon duotone dalam squircle + label kategori berwarna */
-.rd-kpi-top { align-items: flex-start; }
-.rd-kpi-lab { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.rd-kpi-lab > span { font-size: 13px; font-weight: 600; color: var(--rd-ink-2); }
+/* Label kategori memakai lebar penuh kartu (tidak terpotong ikon); ikon di baris judul */
+.rd-kpi-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 6px; align-items: start; }
+.rd-kpi-top > .rd-kpi-cat { grid-column: 1 / -1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-kpi-top > .rd-kpi-name { grid-column: 1; font-size: 13px; font-weight: 600; color: var(--rd-ink-2); align-self: center; }
+.rd-kpi-top > .rd-kpi-ico { grid-column: 2; }
 .rd-kpi-cat { font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--h, #1f4fa3); line-height: 1.2; }
 .rd-kpi .rd-kpi-ico { width: 46px; height: 46px; border-radius: 14px; color: var(--h, #1f4fa3); background: linear-gradient(160deg, #ffffff 0%, var(--t1, #edf2fb) 100%);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--h, #1f4fa3) 15%, transparent), 0 1px 2px color-mix(in srgb, var(--h, #1f4fa3) 8%, transparent), 0 8px 18px -10px color-mix(in srgb, var(--h, #1f4fa3) 40%, transparent); }

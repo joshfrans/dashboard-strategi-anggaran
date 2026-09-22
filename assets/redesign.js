@@ -75,12 +75,12 @@
      Hijau/kuning/oranye/merah tetap khusus untuk status (chip), kecuali
      kartu yang memang menyatakan risiko (serious/critical). */
   const ICON_TONE = {
-    gov: "Tata kelola & kepatuhan", tech: "Digital & energi", doc: "Perencanaan & dokumen", perf: "Kinerja & target",
+    gov: "Tata kelola & kepatuhan", tech: "Transformasi sistem informasi", charge: "Akses charging EV", doc: "Perencanaan & dokumen", perf: "Kinerja & target",
     excel: "Keunggulan & capaian mutu", fin: "Anggaran & pagu", flow: "Realisasi & arus kas", geo: "Lokasi & jangkauan",
     serious: "Risiko perlu dukungan", critical: "Risiko kritis"
   };
   const TONE_SHORT = {
-    gov: "Tata kelola", tech: "Digital & energi", doc: "Perencanaan", perf: "Kinerja", excel: "Keunggulan",
+    gov: "Tata kelola", tech: "Transformasi SI", charge: "Akses charging", doc: "Perencanaan", perf: "Kinerja", excel: "Keunggulan",
     fin: "Anggaran", flow: "Realisasi", geo: "Lokasi", serious: "Risiko", critical: "Risiko kritis"
   };
   /* Lapisan isi (transparan) untuk ikon duotone kartu KPI. */
@@ -115,7 +115,7 @@
   const bar = (pct, color = "", tick = null, cls = "") => `<div class="rd-bar ${cls}"><i style="width:${clamp(pct).toFixed(2)}%;${color ? `background:${color}` : ""}"></i>${tick === null ? "" : `<span class="rd-tick" style="left:calc(${clamp(tick)}% - 1px)"></span>`}</div>`;
   const kpi = ({ label, value, unit = "", sub = "", foot = "", barPct = null, barColor = "", icon = "", tone = "perf" }) => `
     <div class="rd-kpi" data-tone="${tone}">
-      <div class="rd-kpi-top"><div class="rd-kpi-lab">${icon ? `<em class="rd-kpi-cat">${esc(TONE_SHORT[tone] || "")}</em>` : ""}<span>${esc(label)}</span></div>${icon ? `<span class="rd-kpi-ico" title="${esc(ICON_TONE[tone] || "")}">${duo(icon)}</span>` : ""}</div>
+      <div class="rd-kpi-top">${icon ? `<em class="rd-kpi-cat">${esc(TONE_SHORT[tone] || "")}</em>` : ""}<span class="rd-kpi-name">${esc(label)}</span>${icon ? `<span class="rd-kpi-ico" title="${esc(ICON_TONE[tone] || "")}">${duo(icon)}</span>` : ""}</div>
       <div class="rd-kpi-val">${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ""}</div>
       ${barPct === null ? "" : bar(barPct, barColor, null, "h6")}
       ${sub ? `<div class="rd-kpi-sub">${esc(sub)}</div>` : ""}
@@ -558,7 +558,7 @@
     const kpis = `<div class="rd-grid k5">
       ${kpi({ label: "Total unit pelaksana", value: fmt(total), unit: "UP", sub: `${fmt(far)} UP dengan SPKLU > 5 km`, icon: "building", tone: "gov" })}
       ${kpi({ label: "Satu lokasi", value: fmt(k("Satu Lokasi").units), unit: "UP", sub: `${pct(k("Satu Lokasi").units)} · SPKLU di lokasi kantor UP`, icon: "pin", tone: "geo" })}
-      ${kpi({ label: "< 5 km", value: fmt(k("< 5 KM").units), unit: "UP", sub: `${pct(k("< 5 KM").units)} · dalam radius 5 km`, icon: "plug", tone: "tech" })}
+      ${kpi({ label: "< 5 km", value: fmt(k("< 5 KM").units), unit: "UP", sub: `${pct(k("< 5 KM").units)} · dalam radius 5 km`, icon: "plug", tone: "charge" })}
       ${kpi({ label: "50 – <100 km", value: fmt(k("50 - < 100 KM").units), unit: "UP", sub: `${pct(k("50 - < 100 KM").units)} · butuh dukungan charging`, foot: k("50 - < 100 KM").units ? chip("serious", "Dukungan khusus") : "", icon: "route", tone: "serious" })}
       ${kpi({ label: "≥ 200 km", value: fmt(k(">= 200 KM").units), unit: "UP", sub: `${pct(k(">= 200 KM").units)}${k(">= 200 KM").units && farthest ? ` · ${farthest.unitsList?.join(", ")}` : ""}`, foot: k(">= 200 KM").units ? chip("critical", "Solusi khusus") : "", icon: "bolt", tone: "critical" })}
     </div>`;
