@@ -1,3 +1,6 @@
+/* Keterbacaan: ukuran font minimum 11px. Sebelumnya 125 deklarasi berada
+   di 7,5–10,5px sehingga 65% teks di halaman Strategi (halaman pembuka)
+   lebih kecil dari 11px — tidak terbaca di layar rapat atau proyektor. */
 :root {
   --navy: #061a50;
   --navy-2: #041239;
@@ -171,7 +174,7 @@
 .ev-access-card small {
   display: block;
   color: #4b5e82;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -201,7 +204,7 @@
   clear: both;
   margin: 1px 0 0;
   color: #243960;
-  font-size: 9.5px;
+  font-size: 11px;
   line-height: 1.15;
   font-weight: 700;
 }
@@ -228,7 +231,7 @@
   margin: 6px 12px 4px;
   color: #4f5f80;
   text-align: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -246,7 +249,7 @@
 .ev-funnel-head {
   padding: 5px 8px;
   color: #26365d;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-align: center;
   text-transform: uppercase;
@@ -374,7 +377,7 @@
   margin: 0;
   padding-left: 17px;
   color: #06164c;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.2;
   font-weight: 800;
 }
@@ -384,7 +387,7 @@
   place-items: center;
   border-left: 1px solid #dde6f4;
   color: #5e6b83;
-  font-size: 9px;
+  font-size: 11px;
   text-align: center;
 }
 
@@ -404,7 +407,7 @@
   border-radius: 8px;
   background: #fff1f1;
   color: #d71920;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -545,7 +548,7 @@
   padding: 0 10px;
   background: rgba(255, 255, 255, 0.13);
   color: #ffffff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
@@ -625,7 +628,7 @@
   gap: 6px;
   align-items: center;
   color: #44536f;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -748,7 +751,7 @@
   background: linear-gradient(135deg, #ffcf55 0%, #ff8a00 100%);
   box-shadow: 0 1px 4px rgba(245, 158, 11, 0.22);
   color: #ffffff;
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 1000;
   line-height: 1;
 }
@@ -819,7 +822,7 @@
 .ev-unit-button small {
   grid-column: 1 / -1;
   color: #60708d;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 900;
   white-space: nowrap;
 }
@@ -856,14 +859,14 @@
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 8px 20px rgba(6, 22, 76, 0.15);
   color: #44536f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   line-height: 1;
 }
 
 .ev-map-leaflet-legend strong {
   color: #06164c;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
@@ -912,7 +915,7 @@
 
 .ev-map-popup span {
   color: #5d6b86;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -945,7 +948,7 @@
   border-radius: 999px;
   background: #eaf2ff;
   color: #0b61d8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -963,14 +966,14 @@
 .ev-spklu-ranking li small {
   display: block;
   color: #5d6b86;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 900;
 }
 
 .ev-map-popup li strong,
 .ev-spklu-ranking li strong {
   color: #d71920;
-  font-size: 10.5px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -1045,7 +1048,7 @@
   background: #ffffff;
   box-shadow: 0 6px 16px rgba(6, 22, 76, 0.18);
   color: #0b61d8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   line-height: 1;
 }
@@ -1068,7 +1071,7 @@
   background: #ffffff;
   box-shadow: 0 6px 16px rgba(6, 22, 76, 0.16);
   color: #0b61d8;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
   letter-spacing: 0;
@@ -1080,7 +1083,7 @@
   background: #ffffff;
   box-shadow: 0 6px 16px rgba(6, 22, 76, 0.14);
   color: #0b61d8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -1131,7 +1134,7 @@
 .ev-map-legend text,
 .ev-map-spklu-tag text {
   fill: #51617e;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -1261,7 +1264,7 @@
 
 .ev-map-detail dt {
   color: #5d6b86;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -1308,7 +1311,7 @@
   background: var(--marker-color, #0b9daa);
   box-shadow: 0 4px 12px rgba(6, 22, 76, 0.35);
   color: #ffffff;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -1368,7 +1371,7 @@
 .ev-access-card p {
   margin: 0;
   color: #4c5d83;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.15;
   font-weight: 700;
 }
@@ -1457,7 +1460,7 @@
   gap: 7px;
   align-items: center;
   color: #4b5e82;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.28;
   font-weight: 700;
 }
@@ -1496,7 +1499,7 @@
 
 .ev-footnotes .ev-sustainability strong {
   color: #15813c;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.08;
   text-align: center;
   text-transform: uppercase;
@@ -2100,7 +2103,7 @@
   border-radius: 8px;
   color: #075f32;
   background: #dff5e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -2310,7 +2313,7 @@
 .overview-rate-stack span {
   max-width: 42px;
   color: #87909a;
-  font-size: 8px;
+  font-size: 11px;
   text-align: center;
 }
 
@@ -2331,7 +2334,7 @@
 .overview-soft-kpi small {
   display: block;
   color: #6b7280;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .overview-soft-kpi em {
@@ -2383,7 +2386,7 @@
 
 .overview-subrow small {
   color: #6b7280;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .overview-over-target {
@@ -2606,7 +2609,7 @@
 
 .overview-domain-metrics span {
   color: #64748b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -2818,7 +2821,7 @@
 .ov-ref-control span,
 .ov-ref-invest-row span {
   color: #7b8392;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: .2px;
   text-transform: uppercase;
@@ -2873,7 +2876,7 @@
 .ov-ref-rings span {
   max-width: 42px;
   color: #7b8392;
-  font-size: 8px;
+  font-size: 11px;
   text-align: center;
 }
 
@@ -2894,7 +2897,7 @@
 .ov-ref-control small {
   display: block;
   color: #687386;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .ov-ref-mini small b,
@@ -2915,7 +2918,7 @@
 
 .ov-ref-mini i,
 .ov-ref-control i {
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
 }
@@ -2992,7 +2995,7 @@
   border-radius: 999px;
   color: #ef4444;
   background: #ffe4e4;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
 }
@@ -3041,7 +3044,7 @@
 
 .ov-ref-invest-row small {
   color: #687386;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .ov-ref-invest-row b {
@@ -3093,7 +3096,7 @@
 
 .ov-ref-policy-summary span {
   color: #7b8392;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -4038,6 +4041,9 @@
 
 .ovx-kpi em {
   grid-column: 1 / -1;
+  /* Kartu dalam satu baris sama tinggi; tanpa align-self pil meta ikut
+     meregang mengisi sisa tinggi kartu dan tampak seperti blok. */
+  align-self: end;
   display: inline-flex;
   width: fit-content;
   padding: 4px 8px;
@@ -4345,8 +4351,17 @@
 .ovx-chart-bars b {
   position: relative;
   width: 32px;
-  min-height: 10px;
   border-radius: 8px 8px 0 0;
+}
+
+/* Nilai belum tersedia: tanpa batang, hanya label di garis dasar. */
+.ovx-chart-bars b.is-empty {
+  background: transparent;
+}
+
+.ovx-chart-bars b.is-empty span {
+  color: #5e6982;
+  font-weight: 700;
 }
 
 .ovx-chart-bars b.blue {
@@ -4446,8 +4461,10 @@
 }
 
 @media (max-width: 1500px) {
+  /* Lima KPI tetap satu baris. Grid 3 kolom menyisakan lubang di baris
+     kedua (3 + 2) pada layar 1280–1500, ukuran laptop paling umum. */
   .ovx-kpi-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .ovx-panel,
@@ -4731,7 +4748,7 @@ p {
 .filters span,
 .period-trigger small,
 .date-card span {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -4883,7 +4900,7 @@ p {
 .date-card small,
 .date-card span {
   color: var(--navy);
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1;
 }
 
@@ -4978,7 +4995,7 @@ p {
 .export-options small {
   grid-area: note;
   color: #6a7690;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -5509,7 +5526,7 @@ p {
 
 .analytics-menu-map span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -5689,7 +5706,7 @@ p {
 
 .analytics-investment-grid span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -5980,7 +5997,7 @@ p {
 
 .rapim-headline-stats span {
   color: #64728a;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
   text-transform: uppercase;
@@ -6104,10 +6121,36 @@ p {
 }
 
 .rapim-analysis-table td:nth-child(3) {
-  width: 150px;
-  color: #0a7f39;
+  width: 170px;
   font-weight: 900;
 }
+
+/* Chip status: warna mengikuti arti status dan selalu disertai ikon.
+   Semua pasangan teks/latar lolos WCAG AA (>= 5,6:1). */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.status-chip svg,
+.status-chip i {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.status-chip.good { color: #0a6e33; background: #e8f6ee; }
+.status-chip.watch { color: #7a4f00; background: #fff4dc; }
+.status-chip.serious { color: #a8380b; background: #fdece4; }
+.status-chip.critical { color: #a61b1b; background: #fde8e8; }
+.status-chip.neutral { color: #44506a; background: #eef1f6; }
 
 .rapim-bottom-grid {
   display: grid;
@@ -6392,7 +6435,7 @@ p {
 .exec-kpi > div > span {
   display: block;
   color: var(--navy);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -6546,7 +6589,7 @@ p {
 
 .exec-budget-metrics span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -6657,7 +6700,7 @@ p {
 .exec-action-list span {
   grid-column: 2;
   color: #53627f;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 
 .exec-risk-list em {
@@ -6667,7 +6710,7 @@ p {
   border-radius: 7px;
   color: #bd6c00;
   background: #fff1d3;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
   text-transform: uppercase;
@@ -6738,7 +6781,7 @@ p {
   grid-template-columns: 112px minmax(0, 1fr) 52px;
   gap: 7px;
   align-items: center;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -6802,7 +6845,7 @@ p {
 .exec-ranking table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 
 .exec-cr-table th,
@@ -6815,7 +6858,7 @@ p {
 
 .exec-cr-table th {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
@@ -6866,7 +6909,7 @@ p {
   grid-template-columns: 14px 1fr;
   gap: 8px;
   align-items: center;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -7053,7 +7096,7 @@ p {
 
 .exec2-cost-head h3 {
   color: #0a2b8f;
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -7176,7 +7219,7 @@ p {
 .exec2-cost-body small,
 .exec2-cost-body span {
   color: #3d4d6b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -7233,7 +7276,7 @@ p {
   max-width: none;
   transform: translateX(-50%);
   color: #53627f;
-  font-size: 7.5px;
+  font-size: 11px;
   font-weight: 900;
   line-height: 1;
   white-space: nowrap;
@@ -7253,7 +7296,7 @@ p {
   border-radius: 6px;
   background: #f1f6ff;
   color: #3d4d6b;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
   border: 1px solid rgba(18, 102, 241, 0.06);
 }
@@ -7277,7 +7320,7 @@ p {
 .exec2-cost-meta b {
   display: block;
   color: #061a50;
-  font-size: 10px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -7298,7 +7341,7 @@ p {
   gap: 5px;
   margin-top: 1px;
   color: #0f8d47;
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 900;
   text-align: center;
 }
@@ -7422,7 +7465,7 @@ p {
 .exec2-location-bars small {
   grid-column: 1 / -1;
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -7488,7 +7531,7 @@ p {
 
 .exec2-forecast-panel .exec2-panel-head h3 small {
   color: #3d4d6b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -7593,7 +7636,7 @@ p {
   border-radius: 8px;
   color: #0a2b8f;
   background: #eef5ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 850;
 }
 
@@ -7607,7 +7650,7 @@ p {
   border: 2px solid #1266f1;
   border-radius: 50%;
   color: #1266f1;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 950;
   line-height: 1;
 }
@@ -7754,7 +7797,7 @@ p {
 
 .exec2-policy-kpis span {
   color: #0a2b8f;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -7818,7 +7861,7 @@ p {
 .exec2-business-excellence > div small {
   grid-column: 1 / -1;
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -7834,20 +7877,20 @@ p {
 
 .exec2-business-excellence p b {
   color: #0a2b8f;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
 .exec2-business-excellence p span {
   color: #061a50;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
 .exec2-business-excellence p em {
   grid-column: 2;
   color: #078a43;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
 }
@@ -7889,7 +7932,7 @@ p {
 .exec2-legend small {
   grid-column: 2;
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -8251,7 +8294,7 @@ p {
   align-items: center;
   gap: 8px;
   color: var(--navy);
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.25;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -8290,7 +8333,7 @@ p {
 
 .overview-nko-card span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -8386,7 +8429,7 @@ p {
 }
 
 .overview-performance-metrics span {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
@@ -8429,7 +8472,7 @@ p {
 
 .overview-category-label span {
   color: #53627f;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -8454,7 +8497,7 @@ p {
   display: grid;
   gap: 6px;
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -8495,7 +8538,7 @@ p {
 
 .overview-ao-metrics span {
   color: #53627f;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -8506,7 +8549,7 @@ p {
 }
 
 .overview-ao-metrics small {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .overview-ao-detail {
@@ -8525,7 +8568,7 @@ p {
   padding: 9px 10px;
   color: var(--navy);
   background: #d8eefb;
-  font-size: 10px;
+  font-size: 11px;
   text-align: right;
 }
 
@@ -8568,7 +8611,7 @@ p {
 
 .overview-ao-bars small {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .investment-view {
@@ -8802,6 +8845,34 @@ p {
   background: var(--amber);
 }
 
+/* Kartu total: batang menunjukkan komposisi Kantor Pusat | Sarpras Unit,
+   bukan progres. Versi lama menggambar total sebagai isian hijau 100%,
+   yang terbaca "tercapai" padahal total terhadap dirinya selalu 100%. */
+.investment-bar.split {
+  display: flex;
+  gap: 2px;
+  background: transparent;
+}
+
+.investment-bar.split i {
+  flex: none;
+  min-width: 2px;
+  border-radius: 0;
+  background: #1f5fd1;
+}
+
+.investment-bar.split i + i {
+  background: #9db8ea;
+}
+
+.investment-bar.split i:first-child {
+  border-radius: 999px 0 0 999px;
+}
+
+.investment-bar.split i:last-child {
+  border-radius: 0 999px 999px 0;
+}
+
 .investment-grid {
   grid-template-columns: 1fr 1fr;
 }
@@ -8934,7 +9005,7 @@ p {
 
 .aki-gauge-ring span {
   color: #53627f;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -8942,7 +9013,7 @@ p {
 .aki-gauge p {
   margin: 0;
   color: #465572;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.45;
 }
 
@@ -8958,7 +9029,7 @@ p {
   border-radius: 999px;
   color: var(--green);
   background: #e9f8ef;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1;
 }
 
@@ -8989,7 +9060,7 @@ p {
 .aki-bars span,
 .ai-funnel span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -9024,7 +9095,7 @@ p {
 
 .aki-bars strong small {
   color: #53627f;
-  font-size: 8px;
+  font-size: 11px;
   line-height: 1.2;
 }
 
@@ -9042,13 +9113,13 @@ p {
 
 .aki-insight strong {
   color: var(--green);
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
 .aki-insight span {
   color: #35445f;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.4;
 }
 
@@ -9256,7 +9327,7 @@ p {
 
 .ao-embed-header span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -9346,7 +9417,7 @@ p {
 .ao-finance-head span,
 .ao-finance-grid span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -9406,7 +9477,7 @@ p {
   border-radius: 999px;
   background: #fff0f0;
   color: #c62828;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
 }
@@ -9420,7 +9491,7 @@ p {
 .ao-finance-metric p {
   margin: 0;
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -9604,15 +9675,42 @@ p {
   font-weight: 900;
 }
 
+/* Komposisi organisasi memakai satu skala dengan garis nol (--zero):
+   nilai positif tumbuh ke kanan, eliminasi (negatif) tumbuh ke kiri.
+   Sebelumnya eliminasi −615.335 jt digambar sebagai batang positif
+   ke kanan, searah dengan Holding & SHAP. Warna netral karena ini
+   identitas kontribusi, bukan status baik/buruk. */
 .ao-org-list b {
+  position: relative;
   grid-column: 1 / -1;
   height: 9px;
-  border-radius: 999px;
-  background: var(--green);
+  background: transparent;
 }
 
-.ao-org-list b.negative {
-  background: var(--amber);
+.ao-org-list b::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: var(--zero, 0%);
+  width: 1px;
+  background: #9aa6bd;
+}
+
+.ao-org-list b em {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--zero, 0%);
+  width: var(--len, 0%);
+  border-radius: 0 4px 4px 0;
+  background: #1f5fd1;
+}
+
+.ao-org-list b.negative em {
+  left: calc(var(--zero, 0%) - var(--len, 0%));
+  border-radius: 4px 0 0 4px;
+  background: #7b8196;
 }
 
 .ao-signal-list {
@@ -9647,8 +9745,11 @@ p {
   overflow-x: auto;
 }
 
+/* Tiga kolom muat di panel 489px; min-width 520px memotong kolom Share di
+   layar 1280–1440. Pembungkus tetap overflow-x:auto untuk layar sempit. */
 .ao-table {
-  min-width: 520px;
+  width: 100%;
+  min-width: 0;
 }
 
 .ao-table td,
@@ -9898,7 +9999,7 @@ p {
   border: 0;
   color: #fff;
   background: transparent;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   cursor: pointer;
 }
@@ -9963,7 +10064,7 @@ p {
 }
 
 .business-semester span {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   line-height: 1.35;
 }
@@ -9973,16 +10074,20 @@ p {
   place-items: center;
   padding: 7px;
   text-align: center;
-  background: #07aee6;
+  /* Target bukan status: netral. Sebelumnya cyan #07aee6, 2,56:1. */
+  background: #33466e;
   font-size: 12px;
 }
 
 .business-semester b.green-box {
-  background: #35d354;
+  /* Hijau status versi AA: teks putih 5,43:1 (sebelumnya #35d354, 1,98:1). */
+  background: #0b7a3e;
 }
 
 .business-semester b.amber-box {
-  background: #f5a400;
+  /* "Belum dinilai" = belum ada status, jadi netral, bukan kuning peringatan
+     (sebelumnya #f5a400 dengan teks putih, 2,06:1). */
+  background: #5b6478;
 }
 
 .business-semester em {
@@ -10004,7 +10109,7 @@ p {
   width: 100%;
   min-width: 0;
   table-layout: fixed;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .policy-prep-table th:nth-child(1),
@@ -10053,7 +10158,7 @@ p {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 th {
@@ -10121,13 +10226,13 @@ td {
 
 .policy-overview span {
   color: var(--navy);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
 .policy-overview small {
   color: #61718c;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -10175,7 +10280,7 @@ td {
 }
 
 .policy-combo-metric span {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .entity-trigger,
@@ -10242,7 +10347,7 @@ td {
 
 .entity-popover-head span {
   color: #61718c;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .entity-list {
@@ -10289,7 +10394,7 @@ td {
   border-radius: 50%;
   background: #e7f6ed;
   color: var(--green);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .policy-table th,
@@ -10319,7 +10424,7 @@ td {
 .performance-report-head span {
   display: block;
   color: #3f4752;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .performance-period-chip {
@@ -10342,7 +10447,7 @@ td {
 
 .performance-period-chip span {
   color: #666d78;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -10353,7 +10458,7 @@ td {
   justify-content: space-between;
   gap: 8px;
   color: var(--navy);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -10557,7 +10662,7 @@ td {
 .performance-score-card span,
 .performance-score-card small {
   color: #53627f;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -10589,7 +10694,7 @@ td {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.78);
   color: #00843d;
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1;
   white-space: nowrap;
 }
@@ -10633,7 +10738,7 @@ td {
 }
 
 .performance-status-grid .status-green {
-  background: #00b050;
+  background: #0b7a3e; /* teks putih 5,43:1; sebelumnya #00b050, 2,87:1 */
 }
 
 .performance-status-grid .status-green strong,
@@ -10651,7 +10756,7 @@ td {
 }
 
 .performance-status-grid .status-red {
-  background: #ff0000;
+  background: #c62828; /* teks putih 5,62:1; sebelumnya #ff0000, 4,00:1 */
 }
 
 .performance-status-grid .status-red strong,
@@ -10666,7 +10771,7 @@ td {
 
 .performance-status-grid .status-gray strong,
 .performance-status-grid .status-gray span {
-  color: #73809c;
+  color: #4a5670; /* 6,54:1 di #eef2f8; sebelumnya #73809c, 3,53:1 */
 }
 
 .performance-status-grid strong {
@@ -10676,7 +10781,7 @@ td {
 }
 
 .performance-status-grid span {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: none;
 }
@@ -10701,14 +10806,14 @@ td {
 .performance-driver-list span {
   grid-column: 1 / -1;
   color: #53627f;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .performance-driver-list strong {
   color: var(--navy);
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.35;
 }
 
@@ -10717,7 +10822,7 @@ td {
   border-radius: 999px;
   background: #e7f6ed;
   color: var(--green);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .performance-exec-bottom {
@@ -10737,14 +10842,14 @@ td {
 
 .performance-management-note strong {
   color: var(--navy);
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
 .performance-management-note p {
   margin: 0;
   color: #35445f;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.4;
 }
 
@@ -10771,7 +10876,7 @@ td {
 
 .performance-action-list span {
   color: var(--navy);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -10781,7 +10886,7 @@ td {
   border-radius: 999px;
   background: #e7f6ed;
   color: var(--green);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .performance-exec-signal {
@@ -10806,7 +10911,7 @@ td {
   display: block;
   margin-bottom: 5px;
   color: #53627f;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -10820,7 +10925,7 @@ td {
 .performance-exec-signal p {
   margin: 5px 0 0;
   color: #35445f;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.35;
 }
 
@@ -10853,11 +10958,11 @@ td {
   border-radius: 999px;
   background: #e7f6ed;
   color: var(--green);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .signal-drivers strong {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .signal-action {
@@ -10872,7 +10977,7 @@ td {
 
 .performance-table {
   min-width: 1040px;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .performance-table th,
@@ -10932,7 +11037,7 @@ td {
   min-width: 132px;
   padding: 6px 10px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -10992,15 +11097,18 @@ td {
 }
 
 .legend-dot.green {
-  background: #00b050;
+  background: #0b7a3e;
 }
 
 .legend-dot.amber {
-  background: #ffc000;
+  background: #fff200;
+  /* Kuning cerah di atas putih < 3:1; cincin gelap menjaga titik tetap
+     terlihat dan warnanya sama dengan blok "Hampir Tercapai". */
+  box-shadow: inset 0 0 0 1.5px #8a7500;
 }
 
 .legend-dot.red {
-  background: #ff0000;
+  background: #c62828;
 }
 
 .legend-dot.gray {
@@ -11035,7 +11143,7 @@ td {
 }
 
 .week-row th {
-  font-size: 8px;
+  font-size: 11px;
 }
 
 .status-label {
@@ -11067,7 +11175,7 @@ td {
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: var(--navy);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   line-height: 1.15;
   white-space: normal;
@@ -11112,9 +11220,13 @@ td {
   font-weight: 700;
 }
 
+/* Kolom Change Request boleh membungkus teks. Dengan min-width 250px tabel
+   butuh 653px di panel 607px (layar 1440), sehingga kolom "Target Selesai"
+   — tenggat, informasi terpenting untuk keputusan — tersembunyi di balik
+   scroll horizontal tanpa tanda. */
 .cr-table th:nth-child(3),
 .cr-table td:nth-child(3) {
-  min-width: 250px;
+  min-width: 140px;
 }
 
 .cr-table th {
@@ -11165,17 +11277,17 @@ td {
   min-width: 72px;
   padding: 6px 8px;
   border-radius: 7px;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
 }
 
 .badge.done {
-  color: var(--green);
+  color: #0a6e33; /* 5,76:1; sebelumnya 4,43:1 */
   background: #e7f7ef;
 }
 
 .badge.progress {
-  color: #b06700;
+  color: #7a4f00; /* 6,34:1; sebelumnya 3,90:1 */
   background: #fff0d6;
 }
 
@@ -11202,11 +11314,11 @@ td {
 }
 
 .cr-summary-row span {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .cr-summary-row p {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--muted);
   justify-self: end;
 }
@@ -11413,7 +11525,7 @@ td {
 }
 
 .summary-metrics .percent-ring strong {
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0;
 }
 
@@ -11429,11 +11541,11 @@ td {
 }
 
 .summary-metrics .wide-percent-ring strong {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .summary-metrics small {
-  font-size: 8.5px;
+  font-size: 11px;
   line-height: 1.25;
   text-align: center;
 }
@@ -11602,7 +11714,7 @@ td {
 
 .detail-metric span {
   color: #53627f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -12161,4 +12273,16 @@ td {
   font-size: 14px;
   font-weight: 700;
   text-align: center;
+}
+
+/* Nilai terikat data di kartu komposisi memakai <em> sebagai pembungkus;
+   jangan dimiringkan karena ini angka, bukan penekanan. */
+.investment-comparison em {
+  font-style: normal;
+}
+
+/* Sumber Strategi melewati ambang kesegaran: teks peringatan (AA, 7,1:1). */
+#strategySourceStatus.is-stale {
+  color: #7a4f00;
+  font-weight: 800;
 }

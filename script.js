@@ -185,7 +185,23 @@ let investmentData = {
   akiSarprasNote: "70,94 M dari 178,66 M",
   akiGapPct: "69,57%",
   akiGapNote: "Perlu BAPP & rekomposisi",
-  akiInsight: "Serapan AKI tercatat 30,43% per 16 Juli 2026. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap. Perlakukan gap 942,28 M sebagai backlog verifikasi sampai sumber, BAPP, dan pipeline diperbarui."
+  akiInsight: "Serapan AKI tercatat 30,43% per 16 Juli 2026. Kantor Pusat menjadi porsi terbesar, sedangkan Sarpras Unit relatif lebih cepat menyerap. Perlakukan gap 942,28 M sebagai backlog verifikasi sampai sumber, BAPP, dan pipeline diperbarui.",
+  // Nilai berikut sebelumnya ditulis langsung di index.html sehingga tidak
+  // ikut berubah saat data investasi di-import. Default = nilai lama, jadi
+  // template lama yang belum memuat kode ini tetap aman.
+  aiOfficeTotal: "10.636,92 M",
+  aiSarprasTotal: "255,31 M",
+  akiOfficeTotal: "1.175,85 M",
+  akiSarprasTotal: "178,66 M",
+  aiAdditionalNeed: "Indikasi kebutuhan: DIV TEN 100 M, DIV RSL 80 M, DIV MEB 80 M.",
+  aiCarryoverPrk: "42",
+  aiCarryoverTotal: "2.912,71 M",
+  aiCarryoverUsed: "1.208,99 M",
+  aiCarryoverUnused: "1.703,71 M",
+  sarprasSkaiIssued: "270,70 M",
+  sarprasAkiIssued: "98,87 M",
+  sarprasAiMurni: "Belum Terbit",
+  sarprasPrkProgress: "9 selesai / 8 berjalan"
 };
 
 const investmentFieldLabels = {
@@ -210,7 +226,20 @@ const investmentFieldLabels = {
   akiSarprasNote: "Catatan AKI Sarpras Unit",
   akiGapPct: "Persentase Gap AKI",
   akiGapNote: "Catatan Gap AKI",
-  akiInsight: "Insight AKI"
+  akiInsight: "Insight AKI",
+  aiOfficeTotal: "AI Terbit Kantor Pusat",
+  aiSarprasTotal: "AI Terbit Sarpras Unit",
+  akiOfficeTotal: "AKI Terbit Kantor Pusat",
+  akiSarprasTotal: "AKI Terbit Sarpras Unit",
+  aiAdditionalNeed: "Indikasi Tambahan Kebutuhan AI",
+  aiCarryoverPrk: "Jumlah PRK AI Luncuran KP",
+  aiCarryoverTotal: "Total AI Luncuran KP",
+  aiCarryoverUsed: "AI Luncuran KP Digunakan 2026",
+  aiCarryoverUnused: "AI Luncuran KP Belum Digunakan",
+  sarprasSkaiIssued: "SKAI Terbit Sarpras",
+  sarprasAkiIssued: "AKI Terbit Sarpras",
+  sarprasAiMurni: "Status AI Murni 2026 Sarpras",
+  sarprasPrkProgress: "Progress PRK Sarpras"
 };
 
 let evInfrastructureData = {
@@ -309,19 +338,71 @@ function dedupeEvUnits(units = []) {
   });
 }
 
-const evRawPriorityUnits = Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length
-  ? window.evGeoPriorityUnitsData
-  : evGeoPriorityUnitsFallback;
-let evGeoPriorityUnits = dedupeEvUnits(evRawPriorityUnits);
+let evGeoPriorityUnits = dedupeEvUnits(evGeoPriorityUnitsFallback);
 
-let evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
+let evUlpUnits = [];
 
-if (evGeoPriorityUnits.length !== evRawPriorityUnits.length) {
-  const originalEvUpdate = evInfrastructureData.sourceUpdated;
-  const removed = evRawPriorityUnits.length - evGeoPriorityUnits.length;
-  evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV"} · ${removed} duplikat identik dihapus`);
-  evInfrastructureData.sourceUpdated = originalEvUpdate;
-  evGeoDataSummary.duplicateRowsRemoved = removed;
+// Dataset EV lengkap (assets/ev-spklu-data.js, ~2,6 MB) tidak dimuat lewat
+// tag <script> di index.html. Tanpa dataset itu dashboard tetap jalan memakai
+// evGeoPriorityUnitsFallback, lalu dataset penuh disuntikkan saat benar-benar
+// dibutuhkan (tab EV dibuka atau data EV diekspor) dan saat browser idle.
+// evUserSourceActive menandai bahwa user punya data EV sendiri (import atau
+// localStorage) sehingga dataset bawaan tidak boleh menimpanya.
+let evUserSourceActive = false;
+let evDatasetApplied = false;
+let evDatasetPromise = null;
+
+function applyEvDataset() {
+  const raw = Array.isArray(window.evGeoPriorityUnitsData) ? window.evGeoPriorityUnitsData : [];
+  if (!raw.length) return false;
+
+  // Koordinat ULP hanya dipakai marker peta, jadi selalu aman diterapkan.
+  evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
+
+  if (evUserSourceActive) return true;
+
+  if (window.evGeoDataSummary) evGeoDataSummary = window.evGeoDataSummary;
+  evGeoPriorityUnits = dedupeEvUnits(raw);
+
+  if (evGeoPriorityUnits.length !== raw.length) {
+    const originalEvUpdate = evInfrastructureData.sourceUpdated;
+    const removed = raw.length - evGeoPriorityUnits.length;
+    evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV"} · ${removed} duplikat identik dihapus`);
+    evInfrastructureData.sourceUpdated = originalEvUpdate;
+    evGeoDataSummary.duplicateRowsRemoved = removed;
+  }
+  return true;
+}
+
+function loadEvDatasetScript() {
+  if (Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length) {
+    return Promise.resolve(true);
+  }
+  if (evDatasetPromise) return evDatasetPromise;
+
+  evDatasetPromise = new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "./assets/ev-spklu-data.js?v=20260826-13";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => {
+      evDatasetPromise = null;
+      console.info("Dataset EV lengkap gagal dimuat; dashboard memakai data bawaan.");
+      resolve(false);
+    };
+    document.head.appendChild(script);
+  });
+
+  return evDatasetPromise;
+}
+
+async function ensureEvDataset({ rerender = true } = {}) {
+  if (evDatasetApplied) return true;
+  if (!(await loadEvDatasetScript())) return false;
+  if (!applyEvDataset()) return false;
+  evDatasetApplied = true;
+  if (rerender) renderEvInfrastructure();
+  return true;
 }
 
 const statusClass = {
@@ -428,13 +509,34 @@ function markDatabaseUploadedNow() {
   return label;
 }
 
+function strategyDataFreshness() {
+  const dataTime = (document.querySelector("[data-last-updated]")?.textContent || "").trim();
+  return dashboardFreshness(dataTime);
+}
+
 function setStrategySourceStatus(sourceLabel = "Google Sheets (sinkron otomatis)", syncedAt = new Date(), detail = "") {
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
+  // Sumber Strategi kini memakai ambang kesegaran yang sama dengan
+  // Investasi/AO (DASHBOARD_FRESHNESS_SLA_DAYS). Sebelumnya snapshot 3 hari
+  // atau 3 bulan tetap tampil "sinkron otomatis" tanpa peringatan.
+  const freshness = strategyDataFreshness();
+  const staleNote = freshness.known && freshness.stale ? ` · ${freshness.label}` : "";
   const status = `Sumber data: ${sourceLabel}${detail ? ` - ${detail}` : ""} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
-  element.textContent = `Sumber data: ${sourceLabel}${detail ? ` (${detail})` : ""}`;
+  element.textContent = `Sumber data: ${sourceLabel}${detail ? ` (${detail})` : ""}${staleNote}`;
+  element.classList.toggle("is-stale", Boolean(staleNote));
   element.title = status;
   element.closest(".date-card")?.setAttribute("title", status);
+}
+
+function updateStrategySourceCheckedTitle() {
+  const element = document.getElementById("strategySourceStatus");
+  if (!element || !strategySnapshotCheckedAt) return;
+  const checked = strategySnapshotCheckedAt.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  const base = (element.title || "").replace(/ · diperiksa \d{2}[.:]\d{2} WIB$/, "");
+  const title = `${base} · diperiksa ${checked} WIB`;
+  element.title = title;
+  element.closest(".date-card")?.setAttribute("title", title);
 }
 
 function currentStrategyDataSource(generatedAt = new Date().toISOString()) {
@@ -1243,6 +1345,32 @@ function makeAnalyticsBar(label, value, tone = "") {
   `;
 }
 
+// Status tindakan selalu tampil sebagai ikon + label dengan warna status yang
+// sesuai artinya. Sebelumnya CSS mewarnai seluruh kolom status hijau, jadi
+// "Perlu Percepatan" dan "Perlu Pembaruan" terbaca seolah aman.
+const STATUS_CHIP_TONES = {
+  "baik": ["good", "circle-check"],
+  "monitor": ["neutral", "eye"],
+  "perlu monitoring": ["watch", "circle-alert"],
+  "perlu perhatian": ["watch", "circle-alert"],
+  "perlu percepatan": ["serious", "triangle-alert"],
+  "perlu pembaruan": ["serious", "refresh-cw"],
+  "perlu kontrol": ["serious", "triangle-alert"],
+  "kritis": ["critical", "octagon-alert"]
+};
+
+function statusChip(label) {
+  const text = String(label || "-");
+  const [tone, icon] = STATUS_CHIP_TONES[text.trim().toLowerCase()] || ["neutral", "circle"];
+  const chip = document.createElement("span");
+  chip.className = `status-chip ${tone}`;
+  const glyph = document.createElement("i");
+  glyph.setAttribute("data-lucide", icon);
+  glyph.setAttribute("aria-hidden", "true");
+  chip.append(glyph, document.createTextNode(text));
+  return chip.outerHTML;
+}
+
 function updateAnalyticsDashboard() {
   const policy = policyMetrics();
   const crTotal = crData.length;
@@ -1355,8 +1483,9 @@ function updateAnalyticsDashboard() {
       ["AO Korporat", `Serapan RKAP ${percentLabel(aoAbsorption)}`, aoAbsorption > 90 ? "Perlu Kontrol" : "Monitor", `${topAoCost?.name || "Biaya dominan"} menjadi fokus pengendalian proyeksi.`],
       ["AO Kantor Pusat", `${aoOfficeData.selectedUnit || topAoUnit?.unit || "Unit prioritas"} serapan ${percentLabel(aoOfficeAbsorption)}`, aoOfficeAbsorption > 90 ? "Perlu Kontrol" : "Monitor", `Pantau unit/divisi dengan realisasi dan YoY tertinggi.`]
     ]
-      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`)
+      .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${statusChip(row[2])}</td><td>${row[3]}</td></tr>`)
       .join(""));
+    if (window.lucide) window.lucide.createIcons();
   }
 
   updateAlertCenter();
@@ -1653,7 +1782,9 @@ function setupNavigation() {
       dashboard.classList.add("ev-infra-mode");
       title.textContent = "Infrastruktur Kesiapan EV";
       description.textContent = "Monitoring kesiapan infrastruktur SPKLU untuk program kendaraan EV berdasarkan data lokasi SPKLU dan unit pelaksana PLN.";
-      setTimeout(initEvGeoMap, 80);
+      // renderEvInfrastructure() di dalam ensureEvDataset() sudah memanggil
+      // initEvGeoMap lagi, jadi peta digambar ulang setelah dataset penuh siap.
+      ensureEvDataset().then(() => setTimeout(initEvGeoMap, 80));
     } else if (target === "alerts") {
       dashboard.classList.add("alerts-mode");
       title.textContent = "Alert Center";
@@ -1925,7 +2056,28 @@ function investmentExportRows() {
   ]);
 }
 
+// Nilai rupiah dalam juta ("M"); "T" dikonversi ke juta agar dua nilai
+// dengan satuan berbeda tetap bisa dibandingkan.
+function investmentAmountInMillion(value) {
+  const amount = numberFromImport(value, NaN);
+  if (!Number.isFinite(amount)) return NaN;
+  return /\bT\b/i.test(String(value)) ? amount * 1000 : amount;
+}
+
+function investmentSharePct(part, other) {
+  const a = investmentAmountInMillion(part);
+  const b = investmentAmountInMillion(other);
+  if (!Number.isFinite(a) || !Number.isFinite(b) || a + b <= 0) return "";
+  return `${((a / (a + b)) * 100).toLocaleString("id-ID", { maximumFractionDigits: 1 })}%`;
+}
+
 function updateInvestmentDashboard() {
+  // Porsi AI per lokasi dihitung dari nilai terbit, bukan ditulis tangan,
+  // supaya dua batang komposisi selalu memakai ukuran yang sama.
+  investmentData.aiOfficeSharePct = investmentSharePct(investmentData.aiOfficeTotal, investmentData.aiSarprasTotal);
+  investmentData.aiSarprasSharePct = investmentSharePct(investmentData.aiSarprasTotal, investmentData.aiOfficeTotal);
+  investmentData.akiOfficeSharePct = investmentSharePct(investmentData.akiOfficeTotal, investmentData.akiSarprasTotal);
+  investmentData.akiSarprasSharePct = investmentSharePct(investmentData.akiSarprasTotal, investmentData.akiOfficeTotal);
   document.querySelectorAll("[data-investment-text]").forEach((element) => {
     const key = element.dataset.investmentText;
     if (investmentData[key] != null) element.textContent = investmentData[key];
@@ -2388,6 +2540,20 @@ function overviewNumber(value, fallback = 0) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+// Tinggi batang harus sebanding dengan nilainya. Versi lama memakai
+// Math.max(10, ...) sehingga setiap batang minimal 10% tinggi grafik:
+// Realisasi AI 0,34 dari RKAP 10,89 (3%) tampil 3x lebih besar, dan nilai
+// yang belum ada ("-") tetap tergambar sebagai batang. Label nilai berada
+// di atas batang (CSS top: -21px), jadi batang pendek tidak perlu ditinggikan.
+function overviewChartBar(tone, value, max) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0 || !(max > 0)) {
+    return `<b class="${tone} is-empty" style="height:0"><span>n/a</span></b>`;
+  }
+  const height = (amount / max) * 100;
+  return `<b class="${tone}" style="height:max(2px, ${height.toFixed(2)}%)"><span>${overviewDecimal(amount, 2)}</span></b>`;
+}
+
 function overviewDecimal(value, digits = 2) {
   return Number(value || 0).toLocaleString("id-ID", {
     minimumFractionDigits: digits,
@@ -2512,601 +2678,6 @@ function prioritizedOpenPolicyPrep(rows = policyPrepData, reference = new Date()
       return bScore - aScore;
     });
 }
-
-function renderExecutiveOverview() {
-  const target = document.getElementById("executiveDashboardView");
-  if (!target) return;
-
-  const policy = policyMetrics();
-  const totalCr = crData.length;
-  const doneCr = crData.filter((row) => row.status === "Selesai").length;
-  const onProgressCr = crData.filter((row) => row.status === "On Progress").length;
-  const notStartedCr = crData.filter((row) => row.status === "Belum Mulai").length;
-  const crProgress = totalCr ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / totalCr : 0;
-  const nko = calculatePerformanceScore();
-  const nkoSummary = getPerformanceStatusSummary();
-  const businessScore = businessExcellenceData[0]?.realization ?? 0;
-  const firstBusiness = businessExcellenceData[0] || {};
-  const secondBusiness = businessExcellenceData[1] || {};
-  const prepRows = overviewPrepRows();
-  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
-  const corporateTotal = overviewNumber(aoCorporateData.total, 3533761);
-  const corporateRkap = overviewNumber(aoCorporateData.rkap, 8856163);
-  const corporateProjection = overviewNumber(aoCorporateData.projection, 7946234);
-  const officeTotal = overviewNumber(aoOfficeData.realization, 1330380);
-  const officeRkap = overviewNumber(aoOfficeData.rkap, 4003550);
-  const officeProjection = Math.round(officeRkap * 0.792);
-  const investmentAi = overviewPlainMoney(investmentData.aiRealization, "344,27 M");
-  const investmentAki = overviewPlainMoney(investmentData.akiRealization, "412,23 M");
-  const investmentAkiPct = overviewPlainMoney(investmentData.akiRealizationPct, "30,43%");
-  const investmentAiPct = overviewPlainMoney(investmentData.aiRealizationPct, "3,16%");
-  const corporateAbsorption = overviewNumber(aoCorporateData.absorption, corporateTotal / corporateRkap * 100);
-  const policyAttention = policy.onProgress + policy.noRatification;
-  const crAttention = onProgressCr + notStartedCr;
-  const akiGapLabel = overviewPlainMoney(investmentData.akiGapChip, "Sisa 942,28 M");
-  const aiRate = overviewNumber(investmentAiPct, 0);
-  const akiRate = overviewNumber(investmentAkiPct, 0);
-  const decisionStatus = aiRate < 10 || akiRate < 50 || policyAttention || crAttention ? "Perlu Keputusan" : "Terkendali";
-  const executiveSignal = [
-    `Investasi perlu perhatian utama karena penyerapan AI ${investmentAiPct} dan AKI ${investmentAkiPct}.`,
-    `Strategi & Evaluasi relatif kuat dengan NKO ${nkoLabel(nko)}, namun ${policyAttention} status ratifikasi masih perlu tindak lanjut.`,
-    `Change Request berada pada progress ${percentLabel(crProgress)} dengan ${crAttention} item belum selesai.`,
-    `AO Korporat terserap ${overviewPercent(corporateAbsorption)} dari RKAP dan perlu monitoring biaya dominan.`
-  ];
-
-  target.classList.add("overview-executive");
-  setSafeHtml(target, `
-    <header class="overview-topbar">
-      <div class="overview-brand">
-        <span class="overview-logo"><i data-lucide="zap"></i></span>
-        <div>
-          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
-          <p>PT PLN (Persero)</p>
-        </div>
-      </div>
-      <div class="overview-controls">
-        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
-        <span><i data-lucide="user"></i> Administrator GA</span>
-        <span class="overview-theme"><b></b><b></b><b></b><b></b></span>
-        <button type="button"><i data-lucide="moon"></i></button>
-        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
-      </div>
-    </header>
-
-    <div class="overview-titlebar">
-      <div class="overview-breadcrumb"><button type="button"><i data-lucide="arrow-left"></i></button><span>Overview</span></div>
-      <div class="overview-title">
-        <span class="overview-target"><i data-lucide="target"></i></span>
-        <div>
-          <h1>Strategi & Anggaran Umum <b>SEBAGIAN TERVERIFIKASI</b></h1>
-          <p>Vice President Strategi dan Anggaran Umum · Strategi & evaluasi GA, anggaran investasi & sarana</p>
-          <small>REALISASI BIAYA S.D. JUNI 2026 · DATA PER ${reportDate}</small>
-        </div>
-      </div>
-      <div class="overview-source-toggle"><b>Data langsung</b><span>Data statis</span></div>
-    </div>
-
-    <section class="overview-command-center" aria-label="Kesimpulan Eksekutif">
-      <article class="overview-executive-signal">
-        <div class="overview-signal-head">
-          <span><i data-lucide="radar"></i></span>
-          <div>
-            <h2>Kesimpulan Eksekutif</h2>
-            <p>Ringkasan lintas Strategi & Evaluasi, AO Kantor Pusat, AO Korporat, dan Investasi.</p>
-          </div>
-          <b class="${decisionStatus === "Terkendali" ? "good" : "warn"}">${decisionStatus}</b>
-        </div>
-        <div class="overview-signal-body">
-          <strong>Fokus manajemen minggu ini: percepatan realisasi investasi, penutupan gap ratifikasi, dan penguncian owner CR prioritas.</strong>
-          <ul>${executiveSignal.map((item) => `<li>${item}</li>`).join("")}</ul>
-        </div>
-      </article>
-
-      <article class="overview-priority-panel">
-        <div class="overview-card-head"><h4>Prioritas Keputusan</h4><span class="overview-chip risk">Executive Attention</span></div>
-        <div class="overview-priority-list">
-          <p><b>1</b><span>Putuskan percepatan BAPP dan rekomposisi AKI</span><strong>${akiGapLabel}</strong></p>
-          <p><b>2</b><span>Lock target penyelesaian ratifikasi non-hijau</span><strong>${policyAttention} status</strong></p>
-          <p><b>3</b><span>Kunci owner dan resource CR aplikasi prioritas</span><strong>${crAttention} item</strong></p>
-        </div>
-      </article>
-    </section>
-
-    <section class="overview-kpi-strip" aria-label="Executive Summary KPI Strategis">
-      ${[
-        ["Penyerapan AI", investmentAiPct, `${investmentAi} dari ${overviewPlainMoney(investmentData.totalInvestment, "10,89 T")}`, "Kritis", "risk", "chart-no-axes-column-increasing", "red"],
-        ["Penyerapan AKI", investmentAkiPct, `${investmentAki} dari ${overviewPlainMoney(investmentData.akiTotal, "1,35 T")}`, "Perlu Percepatan", "warn", "database", "amber"],
-        ["Penyerapan AO", overviewPercent(corporateAbsorption), `${overviewMoneyFromJt(corporateTotal)} dari RKAP ${overviewMoneyFromJt(corporateRkap)}`, "Monitor", "watch", "coins", "green"],
-        ["NKO Strategi & Evaluasi", nkoLabel(nko), `${nkoSummary.green} dari ${nkoSummary.total} indikator hijau`, "On Track", "good", "target", "green"],
-        ["Progress Change Request", percentLabel(crProgress), `${doneCr} selesai · ${onProgressCr} on progress · ${notStartedCr} belum mulai`, crAttention ? "Perlu Percepatan" : "On Track", crAttention ? "warn" : "good", "clipboard-list", "amber"]
-      ].map((item) => `
-        <article class="overview-exec-kpi ${item[4]}">
-          <div class="overview-exec-icon"><i data-lucide="${item[5]}"></i></div>
-          <div>
-            <h3>${item[0]}</h3>
-            <strong>${item[1]}</strong>
-            <p>${item[2]}</p>
-            <span>${item[3]}</span>
-          </div>
-          ${overviewSpark(item[6])}
-        </article>
-      `).join("")}
-    </section>
-
-    <section class="overview-domain-grid" aria-label="Ringkasan lintas menu">
-      <article class="overview-domain-card strategy">
-        <div class="overview-card-head"><h4>Strategi & Evaluasi</h4><span class="overview-chip good">NKO ${nkoLabel(nko)}</span></div>
-        <div class="overview-domain-metrics">
-          <b><strong>${policy.done}</strong><span>Ratifikasi selesai</span></b>
-          <b><strong>${policyAttention}</strong><span>Perlu tindak lanjut</span></b>
-          <b><strong>${percentLabel(crProgress)}</strong><span>Progress CR</span></b>
-        </div>
-        <div class="overview-domain-bar"><span>Change Request</span><b><i style="width:${crProgress}%"></i></b><strong>${doneCr}/${totalCr}</strong></div>
-        <p>Keputusan utama: tutup gap ratifikasi dan kunci resource CR agar roadmap digital GA tidak tertunda.</p>
-      </article>
-
-      <article class="overview-domain-card ao-office">
-        <div class="overview-card-head"><h4>AO Kantor Pusat</h4><span class="overview-chip good">${overviewPercent(officeTotal / officeRkap * 100)}</span></div>
-        <div class="overview-domain-metrics">
-          <b><strong>${overviewMoneyFromJt(officeTotal)}</strong><span>Realisasi AO</span></b>
-          <b><strong>${overviewMoneyFromJt(officeRkap)}</strong><span>RKAP 2026</span></b>
-          <b><strong>${aoOfficeData.yoy || 0}%</strong><span>YoY</span></b>
-        </div>
-        <div class="overview-mini-list">${(aoOfficeData.topCosts || []).slice(0, 3).map((row) => `<span>${row.name}<b>${overviewMoneyFromJt(row.value)}</b></span>`).join("")}</div>
-        <p>Keputusan utama: pantau biaya dominan dan unit dengan serapan tertinggi agar realisasi tetap terkendali.</p>
-      </article>
-
-      <article class="overview-domain-card ao-corporate">
-        <div class="overview-card-head"><h4>AO Korporat</h4><span class="overview-chip warn">${overviewPercent(corporateAbsorption)}</span></div>
-        <div class="overview-domain-metrics">
-          <b><strong>${overviewMoneyFromJt(corporateTotal)}</strong><span>Realisasi AO</span></b>
-          <b><strong>${overviewMoneyFromJt(corporateRkap)}</strong><span>RKAP Korporat</span></b>
-          <b><strong>${overviewMoneyFromJt(corporateProjection)}</strong><span>Proyeksi</span></b>
-        </div>
-        <div class="overview-mini-list">${(aoCorporateData.topCosts || []).slice(0, 3).map((row) => `<span>${row.name}<b>${overviewMoneyFromJt(row.value)}</b></span>`).join("")}</div>
-        <p>Keputusan utama: review kontributor biaya besar dan pastikan forecast akhir tahun tidak melewati pagu.</p>
-      </article>
-
-      <article class="overview-domain-card investment">
-        <div class="overview-card-head"><h4>Investasi</h4><span class="overview-chip risk">Gap AKI</span></div>
-        <div class="overview-domain-metrics">
-          <b><strong>${investmentAi}</strong><span>Realisasi AI</span></b>
-          <b><strong>${investmentAki}</strong><span>Realisasi AKI</span></b>
-          <b><strong>${akiGapLabel}</strong><span>Belum terserap</span></b>
-        </div>
-        <div class="overview-domain-bar amber"><span>Penyerapan AKI</span><b><i style="width:${overviewProgressWidth(investmentAkiPct)}%"></i></b><strong>${investmentAkiPct}</strong></div>
-        <p>Keputusan utama: percepat BAPP, rekomposisi AKI, dan validasi pipeline realisasi bulan berjalan.</p>
-      </article>
-    </section>
-
-    <section class="overview-decision-grid" aria-label="Analitik dan keputusan manajemen">
-      <article class="overview-decision-card">
-        <div class="overview-card-head"><h4>Early Warning Center</h4><span class="overview-chip risk">Top Risiko</span></div>
-        <ul>
-          <li><b>Ratifikasi belum selesai</b><span>${policyAttention} status perlu tindak lanjut agar implementasi kebijakan SH/AP seragam.</span><em>${policy.noRatification ? "Kritis" : "Perlu"}</em></li>
-          <li><b>Change Request aplikasi</b><span>${crAttention} CR masih membutuhkan percepatan owner, target, dan resource delivery.</span><em>Perlu</em></li>
-          <li><b>Gap AKI</b><span>${overviewPlainMoney(investmentData.akiGapChip, "Sisa 942,28 M")} belum terserap, perlu BAPP dan rekomposisi.</span><em>Kritis</em></li>
-        </ul>
-      </article>
-      <article class="overview-decision-card">
-        <div class="overview-card-head"><h4>Executive Action Needed</h4><span class="overview-chip good">Prioritas</span></div>
-        <ol>
-          <li><b>Kunci target ratifikasi</b><span>Validasi evidence dan komitmen penyelesaian untuk status on progress/tidak ratifikasi.</span></li>
-          <li><b>Percepat CR prioritas</b><span>Lock owner ESPPD Manage Service dan Reengineering dalam forum koordinasi mingguan.</span></li>
-          <li><b>Monitor serapan investasi</b><span>Review gap AKI dan percepat realisasi AI/AKI berbasis pipeline bulan berjalan.</span></li>
-        </ol>
-      </article>
-      <article class="overview-decision-card overview-status-card">
-        <div class="overview-card-head"><h4>Keterangan Status</h4></div>
-        <p><b class="good-dot"></b><span>On Track</span><small>Aman atau sesuai target</small></p>
-        <p><b class="warn-dot"></b><span>Perlu Percepatan</span><small>Perlu monitoring dan tindakan</small></p>
-        <p><b class="risk-dot"></b><span>Kritis</span><small>Butuh keputusan/tindak lanjut segera</small></p>
-      </article>
-    </section>
-  `);
-
-  if (window.lucide) window.lucide.createIcons();
-}
-
-function renderExecutiveOverview() {
-  const target = document.getElementById("executiveDashboardView");
-  if (!target) return;
-
-  const policy = policyMetrics();
-  const totalCr = crData.length || 1;
-  const doneCr = crData.filter((row) => row.status === "Selesai").length;
-  const crProgress = crData.length ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / crData.length : 0;
-  const nko = calculatePerformanceScore();
-  const prepRows = overviewPrepRows();
-  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
-
-  const jtToT = (value, fallback = 0) => `${overviewDecimal(overviewNumber(value, fallback) / 1000000, 2)} T`;
-  const pct = (value, fallback = 0) => overviewPercent(overviewNumber(value, fallback));
-  const money = (value) => overviewMoneyFromJt(value || 0);
-  const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
-  const corpTotal = overviewNumber(aoCorporateData.total, 0);
-  const corpRkap = overviewNumber(aoCorporateData.rkap, 0);
-  const corpProjection = overviewNumber(aoCorporateData.projection, 0);
-  const officeTotal = overviewNumber(aoOfficeData.realization, 0);
-  const officeRkap = overviewNumber(aoOfficeData.rkap, 0);
-  const officeProjection = Math.round(officeRkap * 0.945);
-  const corpRate = corpRkap ? corpTotal / corpRkap * 100 : 0;
-  const officeRate = officeRkap ? officeTotal / officeRkap * 100 : 0;
-  const investmentAi = overviewPlainMoney(investmentData.aiRealization, safe(investmentData.aiRealization));
-  const corpCosts = Array.isArray(aoCorporateData.topCosts) ? aoCorporateData.topCosts : [];
-  const officeCosts = Array.isArray(aoOfficeData.topCosts) ? aoOfficeData.topCosts : [];
-  const corpUnits = Array.isArray(aoCorporateData.topUnits) ? aoCorporateData.topUnits : [];
-  const officeUnits = Array.isArray(aoOfficeData.topUnits) ? aoOfficeData.topUnits : [];
-
-  const metricSignals = (row) => {
-    const signals = [];
-    if (row?.rkap != null) signals.push(`▼ ${pct(row.rkap)}`);
-    if (row?.absorption != null) signals.push(`▼ ${pct(row.absorption)}`);
-    if (row?.yoy != null) signals.push(`${Number(row.yoy) > 100 ? "▲" : "▼"} ${pct(row.yoy)}`);
-    return signals.length ? signals : ["-"];
-  };
-
-  const miniMetric = (row, index) => `
-    <div class="ov-ref-mini">
-      <span>${row?.name || `Komponen Biaya ${index + 1}`}</span>
-      <strong>${money(row?.value)}</strong>
-      <small>Target s.d. Juli&nbsp;&nbsp;<b>${safe(row?.target, "-")}</b></small>
-      <small>RKAP 2026&nbsp;&nbsp;<b>${safe(row?.rkap != null ? pct(row.rkap) : null, "-")}</b></small>
-      <small>YoY&nbsp;&nbsp;<b>${safe(row?.yoy != null ? pct(row.yoy) : null, "-")}</b></small>
-      <em>${metricSignals(row).map((item) => `<i class="${item.includes("▲") ? "up" : "down"}">${item}</i>`).join("")}</em>
-    </div>
-  `;
-
-  const controlMetric = (row, index) => `
-    <div class="ov-ref-control">
-      <span>${row?.name || `Pos Kendali ${index + 1}`}</span>
-      <strong>${money(row?.value)}</strong>
-      <small>Target s.d. Juli&nbsp;&nbsp;<b>${safe(row?.target, "-")}</b></small>
-      <small>Serapan RKAP&nbsp;&nbsp;<b>${safe(row?.rkap != null ? pct(row.rkap) : row?.absorption != null ? pct(row.absorption) : null, "-")}</b></small>
-      <small>YoY&nbsp;&nbsp;<b>${safe(row?.yoy != null ? pct(row.yoy) : null, "-")}</b></small>
-      <em>${metricSignals(row).map((item) => `<i class="${item.includes("▲") ? "up" : "down"}">${item}</i>`).join("")}</em>
-    </div>
-  `;
-
-  const overTarget = (title, rows, badge) => `
-    <div class="ov-ref-overbox">
-      <div><b>${title}</b><em>${badge}</em></div>
-      ${rows.length ? rows.map((row) => `<p><span>${row.unit || row.name || "-"}</span><small>${money(row.value)}</small><strong>${safe(row.absorption != null ? pct(row.absorption) : row.yoy != null ? pct(row.yoy) : null, "-")}</strong></p>`).join("") : `<p><span>Belum ada data</span><small>-</small><strong>-</strong></p>`}
-    </div>
-  `;
-
-  target.classList.add("overview-executive", "overview-reference");
-  setSafeHtml(target, `
-    <header class="overview-topbar">
-      <div class="overview-brand">
-        <span class="overview-logo"><i data-lucide="zap"></i></span>
-        <div>
-          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
-          <p>PT PLN (Persero)</p>
-        </div>
-      </div>
-      <div class="overview-controls">
-        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
-        <span><i data-lucide="user"></i> Administrator GA</span>
-        <span class="overview-theme"><b></b><b></b><b></b><b></b></span>
-        <button type="button"><i data-lucide="moon"></i></button>
-        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
-      </div>
-    </header>
-
-    <div class="overview-titlebar compact">
-      <div class="overview-breadcrumb"><button type="button"><i data-lucide="arrow-left"></i></button><span>Overview</span></div>
-      <div class="overview-title">
-        <span class="overview-target"><i data-lucide="target"></i></span>
-        <div>
-          <h1>Strategi & Anggaran Umum <b>SEBAGIAN TERVERIFIKASI</b></h1>
-          <p>Strategi & evaluasi GA, anggaran investasi & sarana · Data per ${reportDate}</p>
-        </div>
-      </div>
-      <div class="overview-source-toggle"><b>Data langsung</b><span>Data statis</span></div>
-    </div>
-
-    <section class="ov-ref-section">
-      <div class="ov-ref-section-title"><h3>Anggaran Operasional Sarana</h3><span>Realisasi biaya s.d Juli 2026</span></div>
-      <div class="ov-ref-two">
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Korporat & SHAP <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-operational">
-            <div class="ov-ref-main">
-              <span>RKAP 2026</span><strong>${jtToT(corpRkap)}</strong>
-              <span>Realisasi AO</span><strong class="green">${jtToT(corpTotal)}</strong>
-              <span>Prognosa 2026</span><strong>${jtToT(corpProjection)}</strong>
-            </div>
-            <div class="ov-ref-rings">
-              <b style="--value:${overviewProgressWidth(corpRate)}"><strong>${pct(corpRate)}</strong><span>THD RKAP</span></b>
-              <b style="--value:${overviewProgressWidth(corpTotal / Math.max(corpProjection, 1) * 100)}"><strong>${pct(corpTotal / Math.max(corpProjection, 1) * 100)}</strong><span>THD Prognosa</span></b>
-            </div>
-            ${[...corpCosts].slice(0, 4).map(miniMetric).join("") || [0, 1, 2, 3].map((_, index) => miniMetric(null, index)).join("")}
-          </div>
-          <div class="ov-ref-subtitle">Pos Kendali Umum</div>
-          <div class="ov-ref-controls-row">
-            ${corpCosts.slice(4, 7).map(controlMetric).join("") || corpCosts.slice(0, 3).map(controlMetric).join("")}
-          </div>
-          <div class="ov-ref-subtitle">Unit Over Target</div>
-          <div class="ov-ref-overgrid">
-            ${overTarget("ADM UMUM", corpUnits.slice(0, 3), `${corpUnits.slice(0, 3).length} UNIT`)}
-            ${overTarget("NAC", corpUnits.slice(3, 6), `${corpUnits.slice(3, 6).length} UNIT`)}
-          </div>
-        </article>
-
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Kantor Pusat <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-operational">
-            <div class="ov-ref-main">
-              <span>RKAP 2026</span><strong>${jtToT(officeRkap)}</strong>
-              <span>Realisasi AO</span><strong class="green">${jtToT(officeTotal)}</strong>
-              <span>Prognosa 2026</span><strong>${jtToT(officeProjection)}</strong>
-            </div>
-            <div class="ov-ref-rings">
-              <b style="--value:${overviewProgressWidth(officeRate)}"><strong>${pct(officeRate)}</strong><span>THD RKAP</span></b>
-              <b style="--value:${overviewProgressWidth(officeTotal / Math.max(officeProjection, 1) * 100)}"><strong>${pct(officeTotal / Math.max(officeProjection, 1) * 100)}</strong><span>THD Prognosa</span></b>
-            </div>
-            ${[...officeCosts].slice(0, 4).map(miniMetric).join("") || [0, 1, 2, 3].map((_, index) => miniMetric(null, index)).join("")}
-          </div>
-          <div class="ov-ref-subtitle">Pos Kendali Umum</div>
-          <div class="ov-ref-controls-row">
-            ${officeCosts.slice(0, 3).map(controlMetric).join("")}
-          </div>
-          <div class="ov-ref-subtitle">Unit Over Target</div>
-          <div class="ov-ref-overgrid">
-            ${overTarget("ADM UMUM", officeUnits.slice(0, 3), `${officeUnits.slice(0, 3).length} UNIT`)}
-            ${overTarget("NAC", officeUnits.slice(3, 6), `${officeUnits.slice(3, 6).length} UNIT`)}
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="ov-ref-section">
-      <div class="ov-ref-section-title"><h3>Anggaran Investasi Sarana</h3><span>AI 2026 ${overviewPlainMoney(investmentData.totalInvestment, safe(investmentData.totalInvestment))} · realisasi ${investmentAi}</span></div>
-      <div class="ov-ref-two compact">
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Kantor Pusat <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-invest-row">
-            <div><span>Realisasi AI</span><em>${safe(investmentData.aiRealizationPct)}</em><strong>${investmentAi}</strong><small>${safe(investmentData.aiRealizationNote)}</small><b><i style="width:${investmentPercentValue(investmentData.aiRealizationPct)}%"></i></b></div>
-            <div><span>Total AKI</span><em>${safe(investmentData.akiRealizationPct)}</em><strong>${safe(investmentData.akiTotal)}</strong><small>${safe(investmentData.akiTotalNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiRealizationPct)}%"></i></b></div>
-            <div><span>Penyerapan AKI</span><em>${safe(investmentData.akiOfficePct)}</em><strong>${safe(investmentData.akiRealization)}</strong><small>${safe(investmentData.akiOfficeNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiOfficePct)}%"></i></b></div>
-          </div>
-        </article>
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Unit <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-invest-row">
-            <div><span>Total Investasi</span><em>${safe(investmentData.aiRealizationPct)}</em><strong>${safe(investmentData.totalInvestment)}</strong><small>${safe(investmentData.totalInvestmentNote)}</small><b><i style="width:${investmentPercentValue(investmentData.aiRealizationPct)}%"></i></b></div>
-            <div><span>AKI Sarpras Unit</span><em>${safe(investmentData.akiSarprasPct)}</em><strong>${safe(investmentData.akiRealization)}</strong><small>${safe(investmentData.akiSarprasNote)}</small><b><i style="width:${investmentPercentValue(investmentData.akiSarprasPct)}%"></i></b></div>
-            <div><span>Gap AKI</span><em>${safe(investmentData.akiGapPct)}</em><strong>${safe(investmentData.akiGapChip)}</strong><small>${safe(investmentData.akiGapNote)}</small><b class="green"><i style="width:${investmentPercentValue(investmentData.akiGapPct)}%"></i></b></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="ov-ref-section">
-      <div class="ov-ref-section-title"><h3>Strategi & Evaluasi GA</h3></div>
-      <div class="ov-ref-two compact">
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Ratifikasi Kebijakan General Affairs <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-policy-summary">
-            <b><strong>${policy.done}</strong><span>Selesai</span></b>
-            <b><strong>${policy.onProgress}</strong><span>On Progress</span></b>
-            <b><strong>${policy.noRatification}</strong><span>Tidak Ratifikasi</span></b>
-          </div>
-          <div class="ov-ref-policy-bars">${overviewPolicyRows(2)}</div>
-        </article>
-        <article class="ov-ref-panel">
-          <div class="ov-ref-head"><h4>Penyusunan Kebijakan Layanan GA <i data-lucide="info"></i></h4><button>Ke Level 3 <i data-lucide="arrow-up-right"></i></button></div>
-          <div class="ov-ref-prep">
-            ${prepRows || `<div class="overview-prep-row"><span>Belum ada data penyusunan kebijakan</span><b><i style="width:0%"></i></b><strong>0%</strong></div>`}
-            <div class="overview-prep-row"><span>NKO Strategi & Evaluasi</span><b><i style="width:100%"></i></b><strong>${nkoLabel(nko)}</strong></div>
-            <div class="overview-prep-row"><span>Progress CR</span><b><i style="width:${crProgress}%"></i></b><strong>${doneCr}/${totalCr}</strong></div>
-          </div>
-        </article>
-      </div>
-    </section>
-  `);
-
-  if (window.lucide) window.lucide.createIcons();
-}
-
-function renderExecutiveOverview() {
-  const target = document.getElementById("executiveDashboardView");
-  if (!target) return;
-
-  const policy = policyMetrics();
-  const totalCr = crData.length || 0;
-  const doneCr = crData.filter((row) => row.status === "Selesai").length;
-  const onProgressCr = crData.filter((row) => row.status === "On Progress").length;
-  const notStartedCr = crData.filter((row) => row.status === "Belum Mulai").length;
-  const crProgress = totalCr ? crData.reduce((sum, row) => sum + Number(row.progress || 0), 0) / totalCr : 0;
-  const nko = calculatePerformanceScore();
-  const performanceSummary = getPerformanceStatusSummary();
-  const reportDate = (document.querySelector("[data-last-updated]")?.textContent || DEFAULT_DATABASE_UPDATED_AT).trim();
-
-  const toNumber = (value, fallback = 0) => overviewNumber(value, fallback);
-  const money = (value) => overviewMoneyFromJt(value || 0);
-  const percent = (value) => overviewPercent(value || 0);
-  const width = (value) => overviewProgressWidth(value || 0);
-  const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
-
-  const corporateTotal = toNumber(aoCorporateData.total, 0);
-  const corporateRkap = toNumber(aoCorporateData.rkap, 0);
-  const corporateProjection = toNumber(aoCorporateData.projection, 0);
-  const corporateAbsorption = Number(aoCorporateData.absorption || (corporateRkap ? corporateTotal / corporateRkap * 100 : 0));
-  const officeTotal = toNumber(aoOfficeData.realization, 0);
-  const officeRkap = toNumber(aoOfficeData.rkap, 0);
-  const officeAbsorption = Number(aoOfficeData.absorption || (officeRkap ? officeTotal / officeRkap * 100 : 0));
-  const aiProgress = investmentPercentValue(investmentData.aiRealizationPct);
-  const akiProgress = investmentPercentValue(investmentData.akiRealizationPct);
-  const topCorporateCost = (aoCorporateData.topCosts || [])[0];
-  const topOfficeCost = (aoOfficeData.topCosts || [])[0];
-  const priorityCr = [...crData].sort((a, b) => Number(a.progress || 0) - Number(b.progress || 0)).find((row) => row.status !== "Selesai");
-  const moneyToTrillion = (value) => {
-    if (typeof value === "number") return value / 1000000;
-    const text = String(value || "").toLowerCase();
-    const numeric = overviewNumber(text, 0);
-    if (text.includes("m")) return numeric / 1000;
-    if (text.includes("t")) return numeric;
-    return numeric > 1000 ? numeric / 1000000 : numeric;
-  };
-
-  const statusBadge = (value, goodAt = 90, warnAt = 60) => {
-    if (Number(value) >= goodAt) return "Aman";
-    if (Number(value) >= warnAt) return "Monitor";
-    return "Perlu Tindak Lanjut";
-  };
-
-  const domainCard = ({ icon, title, status, tone, main, label, supporting, rows, action }) => `
-    <article class="ovm-domain-card ${tone}">
-      <div class="ovm-domain-head">
-        <span><i data-lucide="${icon}"></i></span>
-        <div>
-          <h3>${title}</h3>
-          <b>${status}</b>
-        </div>
-      </div>
-      <div class="ovm-domain-main">
-        <strong>${main}</strong>
-        <small>${label}</small>
-      </div>
-      <p>${supporting}</p>
-      <div class="ovm-domain-rows">
-        ${rows.map((row) => `<div><span>${row[0]}</span><b>${row[1]}</b><em style="width:${width(row[2])}%"></em></div>`).join("")}
-      </div>
-      <div class="ovm-action">${action}</div>
-    </article>
-  `;
-
-  const chartBars = [
-    ["AI", moneyToTrillion(investmentData.totalInvestment), moneyToTrillion(investmentData.aiRealization), 0],
-    ["AKI", moneyToTrillion(investmentData.akiTotal), moneyToTrillion(investmentData.akiRealization), 0],
-    ["AO", moneyToTrillion(corporateRkap), moneyToTrillion(corporateTotal), moneyToTrillion(corporateProjection)]
-  ];
-
-  target.classList.remove("overview-reference");
-  target.classList.add("overview-executive", "overview-management");
-  setSafeHtml(target, `
-    <header class="overview-topbar ovm-topbar">
-      <div class="overview-brand">
-        <span class="overview-logo"><i data-lucide="zap"></i></span>
-        <div>
-          <h2>Executive Dashboard <b>UMUM & ASET PROPERTI</b></h2>
-          <p>PT PLN (Persero)</p>
-        </div>
-      </div>
-      <div class="overview-controls">
-        <span><i data-lucide="calendar-days"></i> Juli 2026</span>
-        <span><i data-lucide="user"></i> Administrator GA</span>
-        <button type="button"><i data-lucide="refresh-cw"></i></button>
-        <button type="button"><i data-lucide="log-out"></i> Keluar</button>
-      </div>
-    </header>
-
-    <section class="ovm-hero">
-      <div>
-        <span class="ovm-eyebrow">Overview Manajemen</span>
-        <h1>Monitoring Strategi, Anggaran, dan Investasi</h1>
-        <p>Ringkasan lintas Strategi & Evaluasi, Anggaran Korporat, Anggaran Kantor Pusat, dan Investasi untuk membantu manajemen melihat status utama, risiko, dan prioritas tindak lanjut.</p>
-      </div>
-      <div class="ovm-freshness">
-        <i data-lucide="database"></i>
-        <span>Data per</span>
-        <strong>${reportDate}</strong>
-      </div>
-    </section>
-
-    <section class="ovm-signal-strip">
-      <article><span>Status Strategi</span><strong>${policy.done}/${policy.total}</strong><small>Kebijakan selesai</small></article>
-      <article><span>Progress CR</span><strong>${overviewDecimal(crProgress, 2)}%</strong><small>${doneCr} selesai · ${onProgressCr} berjalan</small></article>
-      <article><span>NKO</span><strong>${nkoLabel(nko)}</strong><small>${performanceSummary.green} indikator hijau</small></article>
-      <article><span>Serapan AKI</span><strong>${safe(investmentData.akiRealizationPct)}</strong><small>${safe(investmentData.akiGapChip)} belum terserap</small></article>
-      <article><span>Serapan AO</span><strong>${percent(corporateAbsorption)}</strong><small>Korporat & SHAP</small></article>
-    </section>
-
-    <section class="ovm-domain-grid">
-      ${domainCard({
-        icon: "clipboard-check",
-        title: "Strategi & Evaluasi",
-        status: statusBadge(policy.done / Math.max(policy.total, 1) * 100, 70, 50),
-        tone: "strategy",
-        main: `${policy.total}`,
-        label: "Status kebijakan dimonitor",
-        supporting: `${policy.done} selesai, ${policy.onProgress} on progress, ${policy.noRatification} tidak ratifikasi. CR aplikasi berada pada ${overviewDecimal(crProgress, 2)}%.`,
-        rows: [["Ratifikasi selesai", policy.done, policy.done / Math.max(policy.total, 1) * 100], ["CR selesai", `${doneCr}/${totalCr}`, doneCr / Math.max(totalCr, 1) * 100], ["NKO tercapai", nkoLabel(nko), Math.min(nko, 100)]],
-        action: priorityCr ? `Fokus: percepat ${priorityCr.app}` : "Fokus: jaga evidence dan update data."
-      })}
-      ${domainCard({
-        icon: "building-2",
-        title: "Anggaran Korporat",
-        status: statusBadge(corporateAbsorption, 80, 50),
-        tone: "corporate",
-        main: money(corporateTotal),
-        label: `Realisasi dari RKAP ${money(corporateRkap)}`,
-        supporting: `Proyeksi ${money(corporateProjection)}. Kontributor terbesar: ${topCorporateCost?.name || "belum tersedia"}.`,
-        rows: [["Serapan RKAP", percent(corporateAbsorption), corporateAbsorption], ["Proyeksi vs RKAP", percent(corporateRkap ? corporateProjection / corporateRkap * 100 : 0), corporateRkap ? corporateProjection / corporateRkap * 100 : 0], ["Top biaya", topCorporateCost ? money(topCorporateCost.value) : "-", topCorporateCost?.rkap || 0]],
-        action: corporateAbsorption < 50 ? "Fokus: percepat realisasi dan review pos biaya besar." : "Fokus: monitor pos biaya dominan."
-      })}
-      ${domainCard({
-        icon: "landmark",
-        title: "Anggaran Kantor Pusat",
-        status: statusBadge(officeAbsorption, 80, 50),
-        tone: "office",
-        main: money(officeTotal),
-        label: `Serapan ${percent(officeAbsorption)} dari RKAP ${money(officeRkap)}`,
-        supporting: `${aoOfficeData.selectedUnit || "Unit prioritas"} ${aoOfficeData.rank || ""}. Kontributor terbesar: ${topOfficeCost?.name || "belum tersedia"}.`,
-        rows: [["Serapan RKAP", percent(officeAbsorption), officeAbsorption], ["YoY", percent(Number(aoOfficeData.yoy || 0)), Number(aoOfficeData.yoy || 0)], ["Top biaya", topOfficeCost ? money(topOfficeCost.value) : "-", topOfficeCost?.absorption || topOfficeCost?.rkap || 0]],
-        action: officeAbsorption > 90 ? "Fokus: kendalikan unit over target." : "Fokus: pantau unit dan pos biaya prioritas."
-      })}
-      ${domainCard({
-        icon: "chart-no-axes-column-increasing",
-        title: "Investasi",
-        status: akiProgress >= 70 ? "Aman" : "Perlu Percepatan",
-        tone: "investment",
-        main: safe(investmentData.aiRealization),
-        label: `Realisasi AI dari ${safe(investmentData.totalInvestment)}`,
-        supporting: `AKI terserap ${safe(investmentData.akiRealizationPct)}; ${safe(investmentData.akiGapChip)} perlu dimonitor untuk BAPP dan rekomposisi.`,
-        rows: [["Realisasi AI", safe(investmentData.aiRealizationPct), aiProgress], ["Realisasi AKI", safe(investmentData.akiRealizationPct), akiProgress], ["Gap AKI", safe(investmentData.akiGapPct), investmentPercentValue(investmentData.akiGapPct)]],
-        action: akiProgress < 70 ? "Fokus: tutup gap AKI dan validasi BAPP." : "Fokus: jaga pipeline realisasi."
-      })}
-    </section>
-
-    <section class="ovm-lower-grid">
-      <article class="ovm-chart-card">
-        <div class="ovm-card-title"><h3>Perbandingan RKAP, Realisasi & Forecast</h3><span>Rp Triliun</span></div>
-        <div class="ovm-bars">
-          ${chartBars.map((group) => {
-            const max = Math.max(...chartBars.flatMap((row) => row.slice(1).map((item) => Number(item) || 0)), 1);
-            return `
-              <div class="ovm-bar-group">
-                <div class="ovm-bar-set">
-                  <b class="rkap" style="height:${Math.max(8, Number(group[1] || 0) / max * 100)}%"><span>${overviewDecimal(group[1], 2)}</span></b>
-                  <b class="real" style="height:${Math.max(8, Number(group[2] || 0) / max * 100)}%"><span>${overviewDecimal(group[2], 2)}</span></b>
-                  <b class="forecast" style="height:${Math.max(8, Number(group[3] || 0) / max * 100)}%"><span>${group[3] ? overviewDecimal(group[3], 2) : "-"}</span></b>
-                </div>
-                <strong>${group[0]}</strong>
-              </div>
-            `;
-          }).join("")}
-        </div>
-        <div class="ovm-legend"><span><i class="blue"></i>RKAP</span><span><i class="green"></i>Realisasi</span><span><i class="orange"></i>Forecast</span></div>
-      </article>
-
-      <article class="ovm-priority-card">
-        <div class="ovm-card-title"><h3>Prioritas Manajemen</h3><span>Action list</span></div>
-        <div class="ovm-priority-list">
-          <div><b>1</b><span>Tutup ${policy.onProgress + policy.noRatification} status kebijakan yang belum selesai/tidak ratifikasi.</span><em>Strategi</em></div>
-          <div><b>2</b><span>Percepat ${onProgressCr} CR on progress dan kunci target untuk ${notStartedCr} CR belum mulai.</span><em>Aplikasi</em></div>
-          <div><b>3</b><span>Monitor serapan AO Korporat ${percent(corporateAbsorption)} dan AO Kantor Pusat ${percent(officeAbsorption)}.</span><em>Anggaran</em></div>
-          <div><b>4</b><span>Validasi ${safe(investmentData.akiGapChip)} gap AKI melalui BAPP dan rekomposisi.</span><em>Investasi</em></div>
-        </div>
-      </article>
-    </section>
-  `);
-
-  if (window.lucide) window.lucide.createIcons();
-}
-
 function updatePerformanceStatusPanel() {
   const grid = document.getElementById("performanceStatusGrid");
   const message = document.getElementById("performanceStatusMessage");
@@ -3975,6 +3546,42 @@ function renderStrategyDashboard() {
   updateDashboardMetrics();
 }
 
+// Polling real-time: setiap menit dashboard hanya perlu tahu apakah snapshot
+// berubah. Sebelumnya setiap polling mengunduh ulang file 164 KB penuh
+// (cache: "no-store" + penanda waktu) lalu mem-parse ulang seluruh workbook
+// dan me-render ulang, walau datanya sama — ~236 MB/hari per tab terbuka.
+// Sekarang polling memakai HEAD (hanya header, tetap melewati cache CDN
+// lewat penanda waktu) dan unduhan penuh hanya terjadi saat versi berubah.
+let strategySnapshotVersion = null;
+let strategySnapshotCheckedAt = null;
+
+function snapshotVersionFromHeaders(headers) {
+  if (!headers) return null;
+  const etag = headers.get("etag");
+  const lastModified = headers.get("last-modified");
+  const length = headers.get("content-length");
+  if (etag) return `etag:${etag}`;
+  if (lastModified) return `lm:${lastModified}|${length || ""}`;
+  return null;
+}
+
+async function probeStrategySnapshotVersion() {
+  const sourceUrl = STRATEGY_GOOGLE_XLSX_URLS[0];
+  if (!sourceUrl) return null;
+  const separator = sourceUrl.includes("?") ? "&" : "?";
+  try {
+    const response = await fetch(`${sourceUrl}${separator}_=${Date.now()}`, {
+      method: "HEAD",
+      cache: "no-store",
+      credentials: "omit"
+    });
+    if (!response.ok) return null;
+    return snapshotVersionFromHeaders(response.headers);
+  } catch (error) {
+    return null;
+  }
+}
+
 async function loadGoogleStrategyDataSource() {
   try {
     strategyGoogleSourceError = "";
@@ -4020,6 +3627,7 @@ async function loadGoogleStrategyDataSource() {
       console.info(`Sheet opsional/pendukung belum terbaca: ${sheetAudit.missing.join(", ")}`);
     }
     strategyGoogleImported = imported || {};
+    strategySnapshotVersion = snapshotVersionFromHeaders(response.headers);
     const lastModified = response.headers.get("last-modified");
     const parsedLastModified = lastModified ? new Date(lastModified) : null;
     const sourceTime = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : new Date();
@@ -4098,7 +3706,18 @@ async function refreshOnlineDashboardData(options = {}) {
   if (!force && Date.now() < strategyManualImportUntil) return false;
   strategyRealtimeInFlight = true;
   try {
+    if (!force && strategySnapshotVersion) {
+      const latestVersion = await probeStrategySnapshotVersion();
+      strategySnapshotCheckedAt = new Date();
+      // Versi sama = data tidak berubah: tidak perlu unduh, parse, atau render.
+      // Jika probe gagal (null), lanjut ke unduhan penuh seperti sebelumnya.
+      if (latestVersion && latestVersion === strategySnapshotVersion) {
+        updateStrategySourceCheckedTitle();
+        return true;
+      }
+    }
     const googleLoaded = await loadGoogleStrategyDataSource();
+    strategySnapshotCheckedAt = new Date();
     if (!googleLoaded) {
       if (!silent) {
         showImportToast(
@@ -4109,7 +3728,10 @@ async function refreshOnlineDashboardData(options = {}) {
       return false;
     }
     renderStrategyDashboard();
-    setStrategySourceStatus("Google Sheets (sinkron otomatis)", new Date(), "snapshot diperiksa berkala");
+    // Tanpa argumen detail: sebelumnya label menjadi
+    // "Google Sheets (sinkron otomatis) (snapshot diperiksa berkala)".
+    setStrategySourceStatus("Google Sheets (sinkron otomatis)", new Date());
+    updateStrategySourceCheckedTitle();
     if (!silent) {
       showImportToast(
         "Sinkronisasi online berhasil",
@@ -4202,7 +3824,13 @@ function investmentKeyFromLabel(label) {
       key
     ])
   );
-  return investmentData[normalized] != null ? normalized : labelMap[normalized];
+  // Kolom "Kode" di template ekspor berisi key camelCase (mis. akiRealizationPct).
+  // Normalisasi di atas mengecilkan huruf, jadi key harus dicocokkan dengan
+  // bentuk yang sama; sebelumnya import template sendiri memperbarui 0 nilai.
+  const keyMap = Object.fromEntries(
+    Object.keys(investmentFieldLabels).map((key) => [key.toLowerCase(), key])
+  );
+  return keyMap[normalized] || labelMap[normalized];
 }
 
 function applyInvestmentRows(rows) {
@@ -4394,7 +4022,8 @@ function evExportRows() {
   ]);
 }
 
-function downloadEvCsv() {
+async function downloadEvCsv() {
+  await ensureEvDataset();
   const header = ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y"];
   const csv = [header, ...evExportRows()]
     .map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(","))
@@ -4402,7 +4031,8 @@ function downloadEvCsv() {
   downloadBlob(`\ufeff${csv}`, "data-source-kesiapan-infrastruktur-ev.csv", "text/csv;charset=utf-8");
 }
 
-function downloadEvJson() {
+async function downloadEvJson() {
+  await ensureEvDataset();
   downloadBlob(
     JSON.stringify({ generatedAt: new Date().toISOString(), summary: evGeoDataSummary, units: evGeoPriorityUnits }, null, 2),
     "data-source-kesiapan-infrastruktur-ev.json",
@@ -4411,6 +4041,7 @@ function downloadEvJson() {
 }
 
 async function downloadEvExcel() {
+  await ensureEvDataset();
   if (!(await ensureXlsxLibrary())) return;
   const workbook = window.XLSX.utils.book_new();
   const sourceSheet = window.XLSX.utils.aoa_to_sheet([
@@ -4447,8 +4078,8 @@ async function downloadEvExcel() {
 
 async function exportEvData(format = "xlsx") {
   if (format === "xlsx") await downloadEvExcel();
-  if (format === "csv") downloadEvCsv();
-  if (format === "json") downloadEvJson();
+  if (format === "csv") await downloadEvCsv();
+  if (format === "json") await downloadEvJson();
   if (format === "pdf") window.print();
 }
 
@@ -4463,6 +4094,7 @@ function applyEvImportedUnits(units, source = "File import") {
     }))
     .filter((unit) => unit.unit && unit.nearestSpklu));
   if (!cleanUnits.length) return 0;
+  evUserSourceActive = true;
   evGeoPriorityUnits = cleanUnits.sort((a, b) => b.distance - a.distance);
   evBuildSummaryFromUnits(evGeoPriorityUnits, source);
   localStorage.setItem(EV_LOCAL_SOURCE_KEY, JSON.stringify({
@@ -4571,6 +4203,7 @@ function loadLocalEvDataSource() {
   try {
     const stored = JSON.parse(localStorage.getItem(EV_LOCAL_SOURCE_KEY) || "null");
     if (!stored?.units?.length) return false;
+    evUserSourceActive = true;
     evGeoDataSummary = stored.summary || evGeoDataSummary;
     evInfrastructureData = stored.data || evInfrastructureData;
     evGeoPriorityUnits = dedupeEvUnits(stored.units);
@@ -4950,7 +4583,9 @@ function renderExecutiveOverview() {
   const safe = (value, fallback = "-") => value == null || value === "" ? fallback : value;
   const money = (value) => overviewMoneyFromJt(value || 0);
   const pct = (value) => overviewPercent(value || 0);
-  const width = (value) => Math.max(4, Math.min(100, Number(value) || 0));
+  // Lebar meter = nilai sebenarnya. Batas bawah 4% lama membuat 0% tampil
+  // sebagai isian dan nilai kecil tampak hingga beberapa kali lebih besar.
+  const width = (value) => Math.max(0, Math.min(100, Number(value) || 0));
   const trillion = (value) => {
     if (typeof value === "number") return value / 1000000;
     const text = String(value || "").toLowerCase();
@@ -5022,7 +4657,7 @@ function renderExecutiveOverview() {
           <span><i data-lucide="refresh-cw"></i> Sinkron teknis ${reportDate}</span>
           <span><i data-lucide="calendar-range"></i> Strategi ${strategyPeriodFullLabel()} · AO ${aoCorporateData.period}/${aoOfficeData.period}</span>
           <span><i data-lucide="info"></i> Periode lintas domain berbeda; bandingkan dengan konteks</span>
-          <span><i data-lucide="clock-alert"></i> Kesegaran: Investasi ${investmentFreshness.label} · AO Korporat ${aoCorporateFreshness.label} · AO KP ${aoOfficeFreshness.label}</span>
+          <span><i data-lucide="clock-alert"></i> Kesegaran: Strategi ${strategyDataFreshness().label} · Investasi ${investmentFreshness.label} · AO Korporat ${aoCorporateFreshness.label} · AO KP ${aoOfficeFreshness.label}</span>
         </div>
       </div>
       <aside class="ovx-decision">
@@ -5115,9 +4750,9 @@ function renderExecutiveOverview() {
           ${chartRows.map((row) => `
             <div class="ovx-chart-group">
               <div class="ovx-chart-bars">
-                <b class="blue" style="height:${Math.max(10, row[1] / chartMax * 100)}%"><span>${overviewDecimal(row[1], 2)}</span></b>
-                <b class="green" style="height:${Math.max(10, row[2] / chartMax * 100)}%"><span>${overviewDecimal(row[2], 2)}</span></b>
-                <b class="orange" style="height:${Math.max(10, row[3] / chartMax * 100)}%"><span>${row[3] ? overviewDecimal(row[3], 2) : "-"}</span></b>
+                ${overviewChartBar("blue", row[1], chartMax)}
+                ${overviewChartBar("green", row[2], chartMax)}
+                ${overviewChartBar("orange", row[3], chartMax)}
               </div>
               <strong>${row[0]}</strong>
             </div>
@@ -5978,5 +5613,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   if (window.lucide) {
     window.lucide.createIcons();
+  }
+
+  // Dashboard sudah tergambar penuh di titik ini, jadi dataset EV yang besar
+  // boleh menyusul saat browser idle. Kalau user membuka tab EV lebih dulu,
+  // ensureEvDataset() di setActiveNav memakai promise yang sama.
+  const prefetchEvDataset = () => { ensureEvDataset(); };
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(prefetchEvDataset, { timeout: 8000 });
+  } else {
+    setTimeout(prefetchEvDataset, 3000);
   }
 });
