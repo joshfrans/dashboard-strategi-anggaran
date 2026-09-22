@@ -628,6 +628,280 @@
     apply();
   }
 
+
+  /* ---------------- Peta EV: gaya "Legenda Peta" ----------------
+     Unit Pelaksana = titik biru, ULP = cluster jumlah (oranye/merah),
+     SPKLU terdekat = pin hijau (saat zoom jauh hanya SPKLU > 5 km agar
+     geografi tetap terlihat), unit dipilih = ubin ungu. Legenda, kartu info,
+     tombol reset, skala & arah utara berada di atas peta. */
+  const EV_TIERS = [
+    { key: "ok", label: "Terjangkau", range: "≤ 5 km", color: "#0f8a5f", cats: ["Satu Lokasi", "< 5 KM"] },
+    { key: "watch", label: "Perlu dipantau", range: "5 – 25 km", color: "#c98a00", cats: ["5 - < 10 KM", "10 - < 25 KM"] },
+    { key: "serious", label: "Jauh", range: "25 – 100 km", color: "#dd5a12", cats: ["25 - < 50 KM", "50 - < 100 KM"] },
+    { key: "critical", label: "Kritis", range: "≥ 100 km", color: "#c81e1e", cats: ["100 - < 200 KM", ">= 200 KM"] }
+  ];
+  const evTier = (category) => EV_TIERS.find((t) => t.cats.includes(category)) || EV_TIERS[0];
+  const evKind = (name) => { const n = String(name || "").trim(); if (/^UI[A-Z0-9]*\b/i.test(n)) return "Unit Induk"; if (/^UP3(\s|$)/i.test(n)) return "UP3"; return "Unit pelaksana"; };
+  // Garis jarak & daftar unit di panel memakai warna tingkat jarak.
+  if (typeof window.evMapTone === "function") {
+    try { window.evMapTone = (category) => evTier(category).color; } catch (error) { /* biarkan warna lama */ }
+  }
+  const ID_BOUNDS = [[-11.2, 94.6], [6.4, 141.2]];
+  const SEAS = [
+    ["Laut Cina Selatan", 6.9, 108.6], ["Laut Sulawesi", 3.4, 122.6], ["Laut Jawa", -5.3, 111.2],
+    ["Samudera Hindia", -9.6, 99.5], ["Laut Banda", -5.6, 127.6], ["Laut Arafura", -9.2, 135.8]
+  ];
+  const SVG = {
+    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.6"/></svg>',
+    building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h.01M15 7h.01M9 11h.01M15 11h.01M9 15h.01M15 15h.01M10 21v-3h4v3"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2z"/></svg>',
+    plug: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><path d="M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg>',
+    target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 11v6"/><path d="M12 7.5v.5"/></svg>',
+    north: '<svg viewBox="0 0 24 32"><text x="12" y="8" text-anchor="middle" font-size="8" font-weight="700" fill="#14213d">N</text><path d="M12 10 19 29l-7-4-7 4z" fill="#14213d"/><path d="M12 10v15l-7 4z" fill="#5b6b86"/></svg>',
+    legend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>'
+  };
+  const fmtId = (n) => fmt(Number(n) || 0);
+
+  function decorateEvHead(card, stats) {
+    const head = card?.querySelector(".ev-geo-head");
+    if (!head || head.classList.contains("rd-geohead")) return;
+    head.classList.add("rd-geohead");
+    head.insertAdjacentHTML("afterbegin", `<span class="rd-geohead-ico" aria-hidden="true">${SVG.pin}</span>`);
+    const actions = head.querySelector(".ev-geo-actions");
+    actions?.querySelector(":scope > span")?.classList.add("rd-hide");
+    actions?.insertAdjacentHTML("afterbegin", `<div class="rd-geostats" role="group" aria-label="Ringkasan data peta">
+      <div><i class="b">${SVG.building}</i><span><b>${fmtId(stats.units)}</b><small>Unit Pelaksana</small></span></div>
+      <div><i class="g">${SVG.bolt}</i><span><b>${fmtId(stats.ulpTotal || stats.ulp)}</b><small>ULP</small></span></div>
+      <div><i class="g">${SVG.plug}</i><span><b>${fmtId(stats.candidates)}</b><small>Kandidat SPKLU</small></span></div>
+    </div>`);
+  }
+
+  let evDecoratedMap = null;
+  function decorateEvMap() {
+    const state = safeGlobal(() => evGeoMapState, null);
+    const units = safeGlobal(() => evGeoPriorityUnits, []);
+    const summary = safeGlobal(() => evGeoDataSummary, {}) || {};
+    if (!state || !state.map || !Array.isArray(state.unitMarkers) || evDecoratedMap === state.map || typeof L === "undefined") return;
+    const map = state.map;
+    const container = map.getContainer();
+    container.classList.add("rd-evmap");
+    const card = container.closest(".ev-geo-card");
+    const stats = { units: units.length, ulp: (state.ulpMarkers || []).length, ulpTotal: safeGlobal(() => evUlpUnits.length, 0), candidates: summary.spkluCandidates || 0 };
+    decorateEvHead(card, stats);
+    card?.querySelector(".ev-map-legend-strip")?.classList.add("rd-hide");
+    container.querySelector(".ev-map-leaflet-legend")?.classList.add("rd-hide");
+    container.parentElement.querySelector(":scope > .rd-evlegend")?.remove();
+
+    // Unit pelaksana → titik biru; tooltip kartu.
+    state.unitMarkers.forEach((marker, i) => {
+      const row = units[i] || {};
+      const tier = evTier(row.category);
+      const km = Number(row.distanceKm ?? row.distance);
+      const el = marker.getElement();
+      if (!el) return;
+      el.classList.add("rd-up");
+      marker.setZIndexOffset(200);
+      const tip = marker.getTooltip && marker.getTooltip();
+      if (tip) {
+        const approxNote = el.classList.contains("is-approximate") ? `<div class="n">Koordinat perkiraan</div>` : "";
+        tip.setContent(`<div class="rd-tipcard" style="--c:${tier.color}">
+          <div class="h"><span class="ic">${SVG.building}</span><b>${esc(row.unit)}</b></div>
+          <dl><dt>Jenis</dt><dd>${esc(evKind(row.unit))}</dd>
+          <dt>Jarak SPKLU</dt><dd>${Number.isFinite(km) ? `${esc(fmt(km, 1))} km` : "—"}</dd>
+          <dt>Kategori jarak</dt><dd class="t">${esc(tier.label)} <small>${esc(row.category || "")}</small></dd>
+          <dt>SPKLU terdekat</dt><dd>${esc(row.nearestSpklu || "—")}</dd></dl>${approxNote}</div>`);
+        tip.options.direction = "top"; tip.options.offset = [0, -8]; tip.options.opacity = 1;
+      }
+    });
+    // SPKLU terdekat → pin hijau. Saat zoom jauh hanya yang > 5 km (SPKLU lain berimpit dengan kantor unit).
+    const spkEls = [...container.querySelectorAll(".ev-spklu-triangle-div-icon")];
+    spkEls.forEach((el, i) => {
+      const km = Number(units[i]?.distance);
+      if (Number.isFinite(km) && km > 5) el.classList.add("rd-far");
+      const inner = el.querySelector(".ev-spklu-triangle-marker");
+      if (inner && !inner.querySelector("svg")) inner.innerHTML = SVG.bolt;
+    });
+    // ULP → cluster jumlah.
+    const ulps = state.ulpMarkers || [];
+    ulps.forEach((m) => {
+      try { m.setStyle({ color: "#ffffff", weight: 1, fillColor: "#f59e0b", fillOpacity: 0.95 }); m.setRadius(3.4); m.getElement()?.classList.add("rd-ulp"); } catch (error) { /* abaikan */ }
+    });
+    const clusterLayer = L.layerGroup().addTo(map);
+    const CLUSTER_UNTIL = 8;
+    let clusterGeo = [];
+    const buildClusters = () => {
+      clusterLayer.clearLayers();
+      clusterGeo = [];
+      const z = map.getZoom();
+      container.classList.toggle("rd-ulp-single", z > CLUSTER_UNTIL);
+      if (z > CLUSTER_UNTIL) return;
+      // Kelompokkan per sel 58 px; sel padat dipecah (quadtree) agar satu lingkaran ≤ 60 ULP.
+      const CAP = 60;
+      const zz = Math.round(z * 4) / 4;
+      const pts = ulps.map((m) => { const ll = m.getLatLng(); return { ll, pt: map.project(ll, zz) }; });
+      const groups = [];
+      const split = (arr, x0, y0, w) => {
+        if (arr.length <= CAP || w < 10) { groups.push(arr); return; }
+        const h = w / 2;
+        [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(([dx, dy]) => {
+          const sub = arr.filter((p) => p.pt.x >= x0 + dx * h && p.pt.x < x0 + (dx + 1) * h && p.pt.y >= y0 + dy * h && p.pt.y < y0 + (dy + 1) * h);
+          if (sub.length) split(sub, x0 + dx * h, y0 + dy * h, h);
+        });
+      };
+      const cell = 58;
+      const cells = new Map();
+      pts.forEach((p) => { const key = `${Math.floor(p.pt.x / cell)}:${Math.floor(p.pt.y / cell)}`; if (!cells.has(key)) cells.set(key, []); cells.get(key).push(p); });
+      cells.forEach((arr, key) => { const [cx, cy] = key.split(":").map(Number); split(arr, cx * cell, cy * cell, cell); });
+      const sizeOf = (n) => (n >= 50 ? 40 : n >= 25 ? 36 : n >= 10 ? 32 : 28);
+      let list = groups.map((g) => { const n = g.length; const x = g.reduce((t, p) => t + p.pt.x, 0) / n; const y = g.reduce((t, p) => t + p.pt.y, 0) / n; return { n, x, y }; });
+      // Gabungkan lingkaran yang bertumpuk selama total ≤ CAP.
+      for (let merged = true; merged;) {
+        merged = false;
+        outer: for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+          const A = list[i], B = list[j];
+          if (A.n + B.n <= CAP && Math.hypot(A.x - B.x, A.y - B.y) < (sizeOf(A.n) + sizeOf(B.n)) / 2 + 4) {
+            const n = A.n + B.n;
+            list[i] = { n, x: (A.x * A.n + B.x * B.n) / n, y: (A.y * A.n + B.y * B.n) / n };
+            list.splice(j, 1); merged = true; break outer;
+          }
+        }
+      }
+      // Sisanya yang masih bertumpuk digeser sedikit agar angkanya terbaca.
+      for (let it = 0; it < 12; it++) {
+        let moved = false;
+        for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+          const A = list[i], B = list[j];
+          const need = (sizeOf(A.n) + sizeOf(B.n)) / 2 + 3;
+          let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 0.01;
+          if (d < need) { const push = (need - d) / 2; dx /= d; dy /= d; A.x -= dx * push; A.y -= dy * push; B.x += dx * push; B.y += dy * push; moved = true; }
+        }
+        if (!moved) break;
+      }
+      list = list.map((c) => { const ll = map.unproject(L.point(c.x, c.y), zz); return { n: c.n, lat: ll.lat * c.n, lng: ll.lng * c.n }; });
+      clusterGeo = list.map((c) => ({ ll: L.latLng(c.lat / c.n, c.lng / c.n), r: c.n === 1 ? 5 : sizeOf(c.n) / 2 }));
+      list.forEach((c) => {
+        if (c.n === 1) {
+          const one = L.marker(L.latLng(c.lat, c.lng), { icon: L.divIcon({ className: "rd-clu-icon", html: '<span class="rd-ulp1"></span>', iconSize: [9, 9], iconAnchor: [4.5, 4.5] }), keyboard: false });
+          one.bindTooltip("1 ULP", { direction: "top", offset: [0, -4] });
+          clusterLayer.addLayer(one);
+          return;
+        }
+        const size = sizeOf(c.n);
+        const center = L.latLng(c.lat / c.n, c.lng / c.n);
+        const mk = L.marker(center, {
+          icon: L.divIcon({ className: "rd-clu-icon", html: `<span class="rd-clu${c.n >= 50 ? " hot" : ""}" style="--s:${size}px">${c.n}</span>`, iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
+          keyboard: false, zIndexOffset: 300
+        });
+        mk.bindTooltip(`${fmt(c.n)} ULP · klik untuk memperbesar`, { direction: "top", offset: [0, -size / 2] });
+        mk.on("click", () => map.setView(center, Math.min(z + 2, CLUSTER_UNTIL + 1)));
+        clusterLayer.addLayer(mk);
+      });
+    };
+    // Label laut (tidak interaktif).
+    SEAS.forEach(([name, lat, lng]) => {
+      L.marker([lat, lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: "rd-sea-icon", html: `<span class="rd-sea">${esc(name)}</span>`, iconSize: [140, 18], iconAnchor: [70, 9] }) }).addTo(map);
+    });
+
+    // Kontrol: reset ke seluruh Indonesia, skala, arah utara.
+    const fitIndonesia = (animate = true) => {
+      if (!container.isConnected || container.offsetWidth === 0) return;
+      const wide = container.offsetWidth > 760;
+      try { map.fitBounds(ID_BOUNDS, { paddingTopLeft: [16, 16], paddingBottomRight: [wide ? 250 : 16, 16], animate }); } catch (error) { /* abaikan */ }
+    };
+    const Reset = L.Control.extend({
+      options: { position: "topleft" },
+      onAdd() {
+        const b = L.DomUtil.create("button", "rd-mapbtn");
+        b.type = "button"; b.title = "Tampilkan seluruh Indonesia"; b.setAttribute("aria-label", "Tampilkan seluruh Indonesia");
+        b.innerHTML = SVG.target;
+        L.DomEvent.disableClickPropagation(b);
+        L.DomEvent.on(b, "click", () => fitIndonesia(true));
+        return b;
+      }
+    });
+    new Reset().addTo(map);
+    const North = L.Control.extend({ options: { position: "bottomright" }, onAdd() { const d = L.DomUtil.create("div", "rd-north"); d.innerHTML = SVG.north; d.setAttribute("aria-label", "Arah utara"); return d; } });
+    L.control.scale({ position: "bottomright", metric: true, imperial: false, maxWidth: 160 }).addTo(map);
+    new North().addTo(map);
+
+    // Legenda peta (di atas peta, dapat diklik untuk tampil/sembunyi).
+    const Legend = L.Control.extend({
+      options: { position: "topright" },
+      onAdd() {
+        const d = L.DomUtil.create("div", "rd-maplegend");
+        const row = (key, ico, title, sub, extra = "") => `<button type="button" class="it" data-rd-layer="${key}" aria-pressed="true"${extra}><span class="ico">${ico}</span><span class="tx"><b>${esc(title)}</b><small>${esc(sub)}</small></span></button>`;
+        d.innerHTML = `
+          <button type="button" class="rd-maplegend-toggle" aria-expanded="true">${SVG.legend}<span>Legenda Peta</span></button>
+          <div class="body">
+            <strong>Legenda Peta</strong>
+            ${row("up", '<i class="lg-up"></i>', "Unit Pelaksana", `Lokasi unit PLN · ${fmt(stats.units)}`)}
+            ${row("ulp", '<i class="lg-clu">12</i>', "ULP", `Jumlah ULP (cluster) · ${fmt(stats.ulpTotal || stats.ulp)}${stats.ulpTotal > stats.ulp ? ` (${fmt(stats.ulpTotal - stats.ulp)} tanpa koordinat)` : ""}`)}
+            ${row("spklu", `<i class="lg-spk">${SVG.bolt}</i>`, "SPKLU Terdekat", "Lokasi SPKLU (PLN/Umum)")}
+            ${row("cand", `<i class="lg-cand">${SVG.plug}</i>`, "Kandidat SPKLU", `${fmt(stats.candidates)} kandidat · koordinat belum ada di data`, " disabled")}
+            <div class="it static"><span class="ico"><i class="lg-sel">${SVG.building}</i></span><span class="tx"><b>Unit Dipilih</b><small>Unit yang sedang dipilih</small></span></div>
+            <div class="it static"><span class="ico"><i class="lg-prov"></i></span><span class="tx"><b>Batas Provinsi</b><small>Garis batas pada peta dasar</small></span></div>
+          </div>`;
+        L.DomEvent.disableClickPropagation(d);
+        L.DomEvent.disableScrollPropagation(d);
+        d.addEventListener("click", (event) => {
+          const tg = event.target.closest(".rd-maplegend-toggle");
+          if (tg) { const open = d.classList.toggle("is-collapsed") === false; tg.setAttribute("aria-expanded", String(open)); return; }
+          const btn = event.target.closest("[data-rd-layer]");
+          if (!btn || btn.disabled) return;
+          const on = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", String(on));
+          container.classList.toggle(`rd-off-${btn.dataset.rdLayer}`, !on);
+        });
+        if (container.offsetWidth <= 760) d.classList.add("is-collapsed");
+        return d;
+      }
+    });
+    new Legend().addTo(map);
+    // Kartu info kiri bawah.
+    const Info = L.Control.extend({
+      options: { position: "bottomleft" },
+      onAdd() {
+        const d = L.DomUtil.create("div", "rd-mapinfo");
+        d.innerHTML = `<i>${SVG.info}</i><div><b>${fmt(stats.units)} unit pelaksana <em>•</em> ${fmt(stats.ulpTotal || stats.ulp)} ULP <em>•</em> ${fmt(stats.candidates)} kandidat SPKLU</b><small>Klik marker atau nama unit untuk melihat daftar SPKLU terdekat.</small></div>`;
+        return d;
+      }
+    });
+    new Info().addTo(map);
+
+    // Geser pin SPKLU yang menutupi lingkaran ULP.
+    const nudgePins = () => {
+      const pins = [...container.querySelectorAll(".ev-spklu-triangle-div-icon")];
+      pins.forEach((el) => { el.style.left = ""; el.style.top = ""; });
+      if (map.getZoom() > CLUSTER_UNTIL || !clusterGeo.length) return;
+      const circles = clusterGeo.map((c) => ({ p: map.latLngToLayerPoint(c.ll), r: c.r }));
+      pins.forEach((el) => {
+        if (getComputedStyle(el).display === "none" || !el._leaflet_pos) return;
+        let x = el._leaflet_pos.x, y = el._leaflet_pos.y - 13; let ox = 0, oy = 0;
+        for (let k = 0; k < 3; k++) circles.forEach((c) => {
+          const dx = x + ox - c.p.x, dy = y + oy - c.p.y; const d = Math.hypot(dx, dy) || 0.01; const need = c.r + 13;
+          if (d < need) { ox += (dx / d) * (need - d); oy += (dy / d) * (need - d); }
+        });
+        if (ox || oy) { el.style.left = `${Math.round(ox)}px`; el.style.top = `${Math.round(oy)}px`; }
+      });
+    };
+    const applyZoom = () => {
+      const z = map.getZoom();
+      container.classList.toggle("rd-z-low", z <= 8);
+      buildClusters();
+      nudgePins();
+    };
+    map.on("zoomend", applyZoom);
+    try { map.options.zoomSnap = 0.25; map.options.zoomDelta = 0.5; map.invalidateSize(false); } catch (error) { /* abaikan */ }
+    fitIndonesia(false);
+    applyZoom();
+    evDecoratedMap = map;
+    const active = Number(document.querySelector("[data-ev-unit].is-active")?.dataset.evUnit || 0);
+    try { state.select && state.select(active, false); } catch (error) { /* abaikan */ }
+    nudgePins();
+  }
+  setInterval(() => { if (currentMode() === "ev-infra") decorateEvMap(); }, 800);
+
   /* ---------------- orchestration ---------------- */
   const VIEWS = {
     strategy: { render: renderStrategy, anchor: () => dashboard.querySelector(":scope > .kpi-grid") },

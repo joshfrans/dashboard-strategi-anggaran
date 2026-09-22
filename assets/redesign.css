@@ -393,7 +393,7 @@ body.rd-enabled .ao-embed-header a { border: 1px solid var(--rd-line); border-ra
 }
 @media (max-width: 760px) {
   body.rd-enabled .app-shell { background: var(--rd-ground); }
-  body.rd-enabled .sidebar { position: sticky; top: 0; z-index: 30; height: auto; min-height: 0; padding: 10px 12px; flex-direction: row; align-items: center; gap: 10px; overflow-x: auto; }
+  body.rd-enabled .sidebar { position: sticky; top: 0; z-index: 1200; height: auto; min-height: 0; padding: 10px 12px; flex-direction: row; align-items: center; gap: 10px; overflow-x: auto; }
   body.rd-enabled .brand { padding: 0; flex-shrink: 0; }
   body.rd-enabled .pln-logo { width: 52px; }
   body.rd-enabled .nav-list { display: flex; gap: 4px; flex-wrap: nowrap; }
@@ -453,3 +453,167 @@ body.rd-enabled .ao-embed-header a { border: 1px solid var(--rd-line); border-ra
 .rd-kpi .rd-kpi-ico svg { width: 24px; height: 24px; }
 @media (max-width: 760px) { .rd-kpi .rd-kpi-ico { width: 40px; height: 40px; border-radius: 12px; } .rd-kpi .rd-kpi-ico svg { width: 21px; height: 21px; } }
 @media print { .rd-kpi .rd-kpi-ico { box-shadow: inset 0 0 0 1px #d6dbe4; } }
+
+
+/* ==========================================================================
+   v10 — Peta EV gaya "Legenda Peta"
+   ========================================================================== */
+.rd-hide { display: none !important; }
+/* Kepala kartu */
+body.rd-enabled .ev-infra-view .ev-geo-head.rd-geohead { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 18px; padding: 16px 18px; background: #fff; color: var(--rd-ink); border-bottom: 0; }
+body.rd-enabled .ev-infra-view .ev-geo-head .rd-geohead-ico { padding: 0; border: 0; width: 52px; height: 52px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; background: #eaf2ff; color: #1d5fd6; }
+.rd-geohead-ico svg { width: 28px; height: 28px; }
+body.rd-enabled .ev-infra-view .rd-geohead h2 { margin: 0; font-size: 24px; font-weight: 700; color: var(--rd-ink); letter-spacing: -.01em; }
+body.rd-enabled .ev-infra-view .rd-geohead p { margin: 4px 0 0; font-size: 14px; font-weight: 400; color: var(--rd-ink-2); }
+body.rd-enabled .ev-infra-view .rd-geohead .ev-geo-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.rd-geostats { display: flex; align-items: center; border: 1px solid #e3e7ee; border-radius: 12px; background: #fbfcfe; padding: 8px 6px; }
+.rd-geostats > div { display: flex; align-items: center; gap: 10px; padding: 2px 14px; }
+.rd-geostats > div + div { border-left: 1px solid #e3e7ee; }
+.rd-geostats i { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 9px; }
+.rd-geostats i svg { width: 22px; height: 22px; }
+.rd-geostats i.b { color: #1d5fd6; background: #eaf2ff; }
+.rd-geostats i.g { color: #15803d; background: #e9f7ee; }
+body.rd-enabled .ev-infra-view .ev-geo-head .rd-geostats span { display: flex; flex-direction: column; line-height: 1.15; padding: 0; border: 0; border-radius: 0; background: none; color: var(--rd-ink); white-space: nowrap; }
+.rd-geostats b { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rd-geostats small { font-size: 12.5px; color: var(--rd-ink-2); }
+body.rd-enabled .ev-infra-view .rd-geohead .ev-geo-actions button { height: 44px; padding: 0 16px; border-radius: 10px; font: 600 14px/1 var(--rd-font); display: inline-flex; align-items: center; gap: 8px; }
+body.rd-enabled .ev-infra-view .rd-geohead #evImportData { background: #fff; color: var(--rd-ink); border: 1px solid #c9d3e3; }
+body.rd-enabled .ev-infra-view .rd-geohead #evExportData { background: #14213d; color: #fff; border: 1px solid #14213d; }
+body.rd-enabled .ev-infra-view .rd-geohead .ev-geo-actions { grid-column: 1 / -1; justify-content: flex-start !important; }
+@media (min-width: 1680px) { body.rd-enabled .ev-infra-view .ev-geo-head.rd-geohead { grid-template-columns: auto minmax(0, 1fr) auto; } body.rd-enabled .ev-infra-view .rd-geohead .ev-geo-actions { grid-column: auto; justify-content: flex-end !important; } }
+@media (max-width: 640px) {
+  body.rd-enabled .ev-infra-view .ev-geo-head.rd-geohead { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 14px; }
+  body.rd-enabled .ev-infra-view .ev-geo-head .rd-geohead-ico { display: none; }
+  body.rd-enabled .ev-infra-view .rd-geohead h2 { font-size: 19px; }
+  .rd-geostats { width: 100%; justify-content: space-between; }
+  .rd-geostats > div { padding: 2px 8px; gap: 6px; }
+  .rd-geostats i { display: none; }
+  .rd-geostats b { font-size: 16px; }
+}
+
+/* Kanvas peta */
+body.rd-enabled .ev-infra-view .ev-map-wrap { padding: 0 16px 16px; background: #fff; }
+.rd-evmap { height: 560px !important; border-radius: 14px; overflow: hidden; border: 1px solid #dbe4f0; font-family: var(--rd-font); }
+.rd-evmap .leaflet-tile-pane { filter: saturate(1.12) brightness(1.03); }
+@media (max-width: 1024px) { .rd-evmap { height: 480px !important; } }
+@media (max-width: 640px) { body.rd-enabled .ev-infra-view .ev-map-wrap { padding: 0 10px 10px; } .rd-evmap { height: 420px !important; } }
+
+/* Unit pelaksana: titik biru */
+.rd-evmap .rd-up .ev-unit-office-marker { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #fff; background: #1d6ff2; box-shadow: 0 0 0 .5px rgba(15, 23, 42, .3), 0 1px 2px rgba(15, 23, 42, .3); outline: none !important; }
+.rd-evmap .rd-up .ev-unit-office-marker::before, .rd-evmap .rd-up .ev-unit-office-marker::after { display: none; }
+.rd-evmap:not(.rd-z-low) .rd-up .ev-unit-office-marker { width: 11px; height: 11px; }
+.rd-evmap .rd-up.is-approximate .ev-unit-office-marker { background: #7aa7f5; }
+/* Unit dipilih: ubin ungu bergambar gedung */
+.rd-evmap .rd-up.is-active-unit { z-index: 5000 !important; }
+.rd-evmap .rd-up.is-active-unit .ev-unit-office-marker { width: 32px; height: 32px; border-radius: 9px; border: 2.5px solid #fff; background: linear-gradient(160deg, #6d4bf2, #3b1fb8); box-shadow: 0 0 0 1px rgba(59, 31, 184, .35), 0 6px 14px rgba(59, 31, 184, .4); translate: 0 -6px; }
+.rd-evmap .rd-up.is-active-unit .ev-unit-office-marker::before { display: block; width: 12px; height: 15px; border-width: 2px; border-bottom-width: 4px; }
+.rd-evmap .rd-up.is-active-unit .ev-unit-office-marker::after { display: block; bottom: 7px; left: 12px; width: 4px; height: 5px; box-shadow: -4px -5px 0 -1.5px #fff, 4px -5px 0 -1.5px #fff; }
+
+/* SPKLU terdekat: pin hijau dengan kilat */
+.rd-evmap .ev-spklu-triangle-div-icon { z-index: 400 !important; overflow: visible; }
+.rd-evmap .ev-spklu-triangle-marker {
+  position: relative; width: 22px; height: 22px; border: 2px solid #fff; border-radius: 50% 50% 50% 4px; rotate: -45deg; translate: 0 -12px;
+  background: linear-gradient(135deg, #22a45a, #117a3e); box-shadow: 0 3px 8px rgba(17, 122, 62, .4); opacity: 1; color: #fff; font-size: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.rd-evmap .ev-spklu-triangle-marker::before { content: none; }
+.rd-evmap .ev-spklu-triangle-marker svg { width: 12px; height: 12px; rotate: 45deg; }
+.rd-evmap.rd-z-low .ev-spklu-triangle-div-icon:not(.rd-far):not(.is-active-spklu) { display: none; }
+.rd-evmap .ev-spklu-triangle-div-icon.is-active-spklu { z-index: 4900 !important; }
+.rd-evmap .ev-spklu-triangle-div-icon.is-active-spklu .ev-spklu-triangle-marker { width: 28px; height: 28px; translate: 0 -15px; background: linear-gradient(135deg, #22a45a, #0e6b35); box-shadow: 0 0 0 3px rgba(34, 164, 90, .25), 0 5px 12px rgba(17, 122, 62, .45); }
+.rd-evmap .ev-spklu-triangle-div-icon.is-active-spklu .ev-spklu-triangle-marker svg { width: 15px; height: 15px; }
+.rd-evmap .ev-leaflet-spklu-label { min-width: 0; height: 28px; padding: 0 12px; border: 1px solid #e3e7ee; border-radius: 8px; background: #fff; color: #3b1fb8; font: 700 13px/1 var(--rd-font); box-shadow: 0 4px 12px rgba(15, 23, 42, .18); }
+.rd-evmap path.leaflet-interactive[stroke-dasharray] { stroke-width: 2.5; }
+
+/* ULP: cluster jumlah; titik oranye saat diperbesar */
+.rd-evmap:not(.rd-ulp-single) path.rd-ulp { display: none; }
+.rd-clu-icon { background: transparent; border: 0; z-index: 300 !important; }
+.rd-evmap .rd-up:not(.is-active-unit) { z-index: 250 !important; }
+.rd-clu { width: var(--s); height: var(--s); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font: 700 13px/1 var(--rd-font); font-variant-numeric: tabular-nums;
+  background: radial-gradient(circle at 35% 30%, #ffc24b, #f08c00 70%); border: 2.5px solid #fff; box-shadow: 0 0 0 4px rgba(245, 158, 11, .28), 0 3px 8px rgba(15, 23, 42, .25); cursor: pointer; }
+.rd-ulp1 { display: block; width: 9px; height: 9px; border-radius: 50%; background: #f59e0b; border: 1.5px solid #fff; box-shadow: 0 1px 2px rgba(15, 23, 42, .3); }
+.rd-clu.hot { background: radial-gradient(circle at 35% 30%, #ff7a6b, #d92d20 70%); box-shadow: 0 0 0 5px rgba(217, 45, 32, .25), 0 3px 8px rgba(15, 23, 42, .25); font-size: 14px; }
+
+/* Label laut */
+.rd-sea-icon { background: transparent; border: 0; pointer-events: none; }
+.rd-sea { display: block; text-align: center; white-space: nowrap; font: italic 500 14px/1 var(--rd-font); color: #2a6aa8; text-shadow: 0 0 3px rgba(255, 255, 255, .9), 0 0 6px rgba(255, 255, 255, .6); letter-spacing: .01em; }
+@media (max-width: 640px) { .rd-sea { font-size: 11px; } }
+
+/* Tampil/sembunyi lapisan */
+.rd-evmap.rd-off-up .rd-up:not(.is-active-unit),
+.rd-evmap.rd-off-spklu .ev-spklu-triangle-div-icon:not(.is-active-spklu),
+.rd-evmap.rd-off-ulp .rd-clu-icon, .rd-evmap.rd-off-ulp path.rd-ulp { display: none !important; }
+
+/* Kontrol peta */
+.rd-evmap .leaflet-control-zoom { border: 1px solid #dbe4f0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, .12) !important; }
+.rd-evmap .leaflet-control-zoom a { width: 38px !important; height: 38px !important; line-height: 38px !important; font-size: 20px !important; color: var(--rd-ink) !important; }
+.rd-mapbtn { width: 40px; height: 40px; border: 1px solid #dbe4f0; border-radius: 10px; background: #fff; color: var(--rd-ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(15, 23, 42, .12); margin-top: 14px !important; }
+.rd-mapbtn svg { width: 20px; height: 20px; }
+.rd-mapbtn:hover { background: #f3f6fb; }
+.rd-north { width: 26px; height: 34px; margin: 0 14px 6px 0 !important; background: rgba(255, 255, 255, .9); border-radius: 50%; padding: 3px; box-shadow: 0 2px 6px rgba(15, 23, 42, .15); clear: both; float: right; }
+.rd-north svg { width: 100%; height: 100%; }
+.rd-evmap .leaflet-control-scale-line { border: 2px solid #14213d; border-top: 0; background: rgba(255, 255, 255, .85); color: #14213d; font: 600 11.5px/1.4 var(--rd-font); padding: 1px 6px; }
+.rd-evmap .leaflet-control-attribution { font-size: 11px; }
+.rd-evmap .leaflet-tooltip-pane { z-index: 1100; }
+
+/* Legenda Peta */
+.rd-maplegend { width: 256px; margin: 14px 14px 0 0 !important; background: #fff; border: 1px solid #e3e7ee; border-radius: 14px; box-shadow: 0 10px 28px rgba(15, 23, 42, .14); font-family: var(--rd-font); color: var(--rd-ink); }
+.rd-maplegend .body { display: grid; gap: 2px; padding: 14px 14px 12px; }
+.rd-maplegend .body > strong { font-size: 17px; font-weight: 700; margin: 0 0 8px 2px; }
+.rd-maplegend .it { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 10px; padding: 7px 6px; border: 0; border-radius: 10px; background: transparent; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.rd-maplegend button.it:hover { background: #f3f6fb; }
+.rd-maplegend button.it:focus-visible { outline: 2px solid var(--rd-accent); outline-offset: 1px; }
+.rd-maplegend .it.static { cursor: default; }
+.rd-maplegend .it[aria-pressed="false"] { opacity: .45; }
+.rd-maplegend .it[aria-pressed="false"] b { text-decoration: line-through; }
+.rd-maplegend .it:disabled { cursor: default; opacity: .7; }
+.rd-maplegend .ico { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; }
+.rd-maplegend .tx { display: flex; flex-direction: column; gap: 2px; line-height: 1.25; }
+.rd-maplegend .tx b { font-size: 14px; font-weight: 700; }
+.rd-maplegend .tx small { font-size: 12.5px; color: var(--rd-ink-2); }
+.lg-up { width: 12px; height: 12px; border-radius: 50%; background: #1d6ff2; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(15, 23, 42, .25), 0 0 0 5px rgba(29, 111, 242, .12); }
+.lg-clu { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font: normal 700 12px/1 var(--rd-font); background: radial-gradient(circle at 35% 30%, #ffc24b, #f08c00 70%); border: 2px solid #fff; box-shadow: 0 0 0 3px rgba(245, 158, 11, .28); }
+.lg-spk { width: 26px; height: 26px; border: 2px solid #fff; border-radius: 50% 50% 50% 4px; rotate: -45deg; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #22a45a, #117a3e); color: #fff; box-shadow: 0 2px 6px rgba(17, 122, 62, .35); }
+.lg-spk svg { width: 13px; height: 13px; rotate: 45deg; }
+.lg-cand { width: 28px; height: 28px; border-radius: 8px; border: 2px solid #1d6ff2; background: #fff; color: #1d6ff2; display: inline-flex; align-items: center; justify-content: center; }
+.lg-cand svg { width: 16px; height: 16px; }
+.lg-sel { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(160deg, #6d4bf2, #3b1fb8); color: #fff; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(59, 31, 184, .35); }
+.lg-sel svg { width: 17px; height: 17px; }
+.lg-prov { width: 28px; height: 0; border-top: 2px dashed #7c6fbf; }
+.rd-maplegend-toggle { display: none; }
+@media (max-width: 760px) {
+  .rd-maplegend { width: auto; margin: 10px 10px 0 0 !important; }
+  .rd-maplegend-toggle { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; background: transparent; font: 600 13px/1 var(--rd-font); color: var(--rd-ink); cursor: pointer; }
+  .rd-maplegend-toggle svg { width: 16px; height: 16px; }
+  .rd-maplegend .body > strong { display: none; }
+  .rd-maplegend.is-collapsed .body { display: none; }
+  .rd-maplegend .body { width: 230px; padding-top: 2px; }
+}
+
+/* Kartu info kiri bawah */
+.rd-mapinfo { display: flex; align-items: center; gap: 12px; margin: 0 0 14px 14px !important; padding: 12px 18px 12px 12px; max-width: 600px; background: rgba(255, 255, 255, .96); border: 1px solid #e3e7ee; border-radius: 12px; box-shadow: 0 8px 22px rgba(15, 23, 42, .12); font-family: var(--rd-font); color: var(--rd-ink); }
+.rd-mapinfo > i { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: #1d6ff2; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+.rd-mapinfo > i svg { width: 20px; height: 20px; }
+.rd-mapinfo b { display: block; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.rd-mapinfo b em { font-style: normal; color: var(--rd-ink-2); margin: 0 4px; }
+.rd-mapinfo small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--rd-ink-2); }
+@media (max-width: 1024px) { .rd-mapinfo { display: none; } }
+
+/* Kartu tooltip unit */
+.rd-evmap .leaflet-tooltip:has(.rd-tipcard) { padding: 0; border: 1px solid #e3e7ee; border-radius: 12px; background: #fff; box-shadow: 0 10px 28px rgba(15, 23, 42, .18); white-space: normal; }
+.rd-evmap .leaflet-tooltip:has(.rd-tipcard)::before { display: none; }
+.rd-tipcard { width: 290px; padding: 12px 14px; font: 500 13px/1.35 var(--rd-font); color: var(--rd-ink); }
+.rd-tipcard .h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.rd-tipcard .h .ic { width: 26px; height: 26px; border-radius: 50%; background: #1d6ff2; color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rd-tipcard .h .ic svg { width: 15px; height: 15px; }
+.rd-tipcard .h b { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .01em; }
+.rd-tipcard dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+.rd-tipcard dt { color: var(--rd-ink-2); }
+.rd-tipcard dd { margin: 0; text-align: right; font-weight: 600; }
+.rd-tipcard dd.t { color: var(--c); }
+.rd-tipcard dd.t small { color: var(--rd-ink-2); font-weight: 500; }
+.rd-tipcard .n { margin-top: 8px; font-size: 12px; color: var(--rd-ink-2); }
+
+@media (max-width: 640px) {
+  body.rd-enabled .ev-infra-view .ev-geo-actions { flex-wrap: wrap; }
+}
