@@ -902,12 +902,205 @@
   }
   setInterval(() => { if (currentMode() === "ev-infra") decorateEvMap(); }, 800);
 
+  /* ================= OVERVIEW (ringkasan lintas menu) ================= */
+  const MONTHS = { jan: 1, januari: 1, feb: 2, februari: 2, mar: 3, maret: 3, apr: 4, april: 4, mei: 5, jun: 6, juni: 6, jul: 7, juli: 7, agu: 8, agustus: 8, agt: 8, sep: 9, september: 9, okt: 10, oktober: 10, nov: 11, november: 11, des: 12, desember: 12 };
+  // Laju waktu anggaran (% tahun berjalan) dari teks periode: "Mei 2026" = s.d. akhir Mei; "16 Juli 2026" = s.d. tanggal itu.
+  function paceOf(textValue) {
+    const t = String(textValue || "").toLowerCase();
+    const m = t.match(/(?:(\d{1,2})\s+)?([a-z]+)\s+(\d{4})/g);
+    if (!m) return null;
+    for (const part of m) {
+      const mm = part.match(/(?:(\d{1,2})\s+)?([a-z]+)\s+(\d{4})/);
+      const month = MONTHS[mm[2]];
+      if (!month) continue;
+      const year = Number(mm[3]);
+      if (mm[1]) { const days = new Date(year, month, 0).getDate(); return ((month - 1) + Number(mm[1]) / days) / 12 * 100; }
+      return month / 12 * 100;
+    }
+    return null;
+  }
+  const f2 = (v) => { const n = Number(v); return Number.isFinite(n) ? fmt(n, Number.isInteger(n) ? 0 : 2) : "—"; };
+  const pctNum = (v) => { const n = num(v); return Number.isFinite(n) ? n : NaN; };
+  const TONE_RANK = { critical: 0, serious: 1, watch: 2, good: 3, neutral: 4 };
+  const TONE_WORD = { critical: "Kritis", serious: "Perlu tindakan", watch: "Perlu perhatian", good: "Sesuai jalur", neutral: "Belum dinilai" };
+  const worst = (...tones) => tones.filter(Boolean).sort((a, b) => TONE_RANK[a] - TONE_RANK[b])[0] || "neutral";
+  const paceTone = (real, pace) => {
+    if (!Number.isFinite(real) || !Number.isFinite(pace) || pace <= 0) return "neutral";
+    const r = real / pace;
+    return r < 0.35 ? "critical" : r < 0.7 ? "serious" : r < 0.9 ? "watch" : "good";
+  };
+  const navBtn = (nav, label = "Buka menu") => `<button type="button" class="rd-link rd-ov-go" ${proxy(`.nav-item[data-nav="${nav}"]`)} data-rd-scrolltop>${esc(label)} →</button>`;
+  const mrow = (label, value, { sub = "", pct = null, tick = null, color = "" } = {}) => `
+    <div class="rd-ov-m"><div class="l"><span>${esc(label)}</span><b>${value}</b></div>
+      ${pct === null ? "" : bar(pct, color, tick, "h6")}${sub ? `<small>${sub}</small>` : ""}</div>`;
+
+  function overviewData() {
+    const policy = call("policyMetrics") || {};
+    const crRows = safeGlobal(() => crData, []);
+    const prepRows = safeGlobal(() => policyPrepData, []);
+    const crLate = crRows.filter((r) => statusFromDate(r).late > 0).length;
+    const crDone = crRows.filter((r) => statusFromDate(r).tone === "good" && /selesai/i.test(r.status || "")).length;
+    const prepOpen = prepRows.filter((r) => !/selesai/i.test(r.status || "")).length;
+    const prepLate = prepRows.filter((r) => statusFromDate(r).late > 0).length;
+    const nko = Number(call("calculatePerformanceScore"));
+    const perf = call("getPerformanceStatusSummary") || {};
+    const periodKey = call("strategyPeriodKey");
+    const measured = !!call("hasTrustedPerformanceMeasurement", periodKey, call("performanceRowsForPeriodKey"));
+    const periodLabel = call("strategyPeriodFullLabel") || "";
+    const beRows = safeGlobal(() => businessExcellenceData, []);
+    const beFirst = beRows.find((b) => Number.isFinite(num(b.realization)));
+    const inv = safeGlobal(() => investmentData, {}) || {};
+    const corp = safeGlobal(() => aoCorporateData, {}) || {};
+    const office = safeGlobal(() => aoOfficeData, {}) || {};
+    const evUnits = safeGlobal(() => evGeoPriorityUnits, []);
+    const evSum = safeGlobal(() => evGeoDataSummary, {}) || {};
+    const tiers = Object.fromEntries(EV_TIERS.map((t) => [t.key, 0]));
+    evUnits.forEach((u) => { tiers[evTier(u.category).key] += 1; });
+    const farthest = [...evUnits].sort((a, b) => (Number(b.distance) || 0) - (Number(a.distance) || 0))[0];
+    return { policy, crRows, crLate, crDone, prepRows, prepOpen, prepLate, nko, perf, measured, periodLabel, beRows, beFirst, inv, corp, office, evUnits, evSum, tiers, farthest };
+  }
+
+  function renderOverview() {
+    const d = overviewData();
+    const fresh = {
+      strategy: call("strategyDataFreshness"),
+      investment: call("dashboardFreshness", d.inv.reportDate),
+      corp: call("dashboardFreshness", d.corp.period),
+      office: call("dashboardFreshness", d.office.period)
+    };
+    const staleTone = (f) => (f && f.known && f.stale ? (f.ageDays > 90 ? "serious" : "watch") : null);
+
+    /* ---- Strategi & Evaluasi ---- */
+    const pol = d.policy;
+    const polPct = pol.total ? pol.done / pol.total * 100 : 0;
+    const nkoTone = !d.measured || !Number.isFinite(d.nko) ? "neutral" : d.nko >= 100 ? (d.perf.red ? "watch" : "good") : d.nko >= 95 ? "serious" : "critical";
+    const sTone = worst(nkoTone === "neutral" ? null : nkoTone, d.crLate || d.prepLate ? "watch" : "good");
+    /* ---- Investasi ---- */
+    const invPace = paceOf(d.inv.reportDate);
+    const aiPct = pctNum(d.inv.aiRealizationPct);
+    const akiPct = pctNum(d.inv.akiRealizationPct);
+    const iTone = worst(paceTone(aiPct, invPace), paceTone(akiPct, invPace));
+    /* ---- Anggaran Korporat ---- */
+    const cPace = paceOf(d.corp.period);
+    const cAbs = Number(d.corp.absorption);
+    const cTone = worst(paceTone(cAbs, cPace), Number(d.corp.projectionRate) > 100 ? "critical" : null);
+    /* ---- Anggaran Kantor Pusat ---- */
+    const oPace = paceOf(d.office.period);
+    const oAbs = Number(d.office.absorption);
+    const oOver = (d.office.topCosts || []).filter((c) => Number(c.absorption) > 100);
+    const oTone = worst(paceTone(oAbs, oPace), oOver.length ? "serious" : null);
+    /* ---- EV ---- */
+    const evTotal = d.evUnits.length;
+    const evOkPct = evTotal ? d.tiers.ok / evTotal * 100 : 0;
+    const eTone = d.tiers.critical ? "serious" : d.tiers.serious ? "watch" : evTotal ? "good" : "neutral";
+
+    /* ---- Sorotan lintas menu (diurutkan menurut tingkat) ---- */
+    const items = [];
+    const add = (tone, menu, nav, title, detail) => items.push({ tone, menu, nav, title, detail });
+    if (Number.isFinite(aiPct)) add(paceTone(aiPct, invPace), "Investasi", "investment", `Realisasi AI baru ${f2(aiPct)}%`, `${esc(d.inv.aiRealization || "")} dari ${esc(d.inv.totalInvestment || "")}${invPace ? ` · laju waktu ${fmt(invPace, 0)}%` : ""}`);
+    if (Number.isFinite(akiPct)) add(paceTone(akiPct, invPace), "Investasi", "investment", `Serapan AKI ${f2(akiPct)}%`, `${esc(d.inv.akiGapChip || "")} perlu BAPP & rekomposisi`);
+    if (d.measured && Number.isFinite(d.nko)) add(nkoTone, "Strategi & Evaluasi", "strategy", `NKO ${f2(d.nko)} s.d. ${esc(d.periodLabel)}`, `${fmt(d.perf.green || 0)} tercapai · ${fmt(d.perf.red || 0)} di bawah target · ${fmt(d.perf.gray || 0)} belum diukur`);
+    if (d.crLate || d.prepLate) add("watch", "Strategi & Evaluasi", "strategy", `${fmt(d.crLate + d.prepLate)} pekerjaan melewati target`, `${fmt(d.crLate)} Change Request · ${fmt(d.prepLate)} penyusunan kebijakan`);
+    if (pol.noRatification) add("watch", "Strategi & Evaluasi", "strategy", `${fmt(pol.noRatification)} status tidak ratifikasi`, "Validasi pengecualian sebelum laporan final");
+    if (Number.isFinite(cAbs)) add(paceTone(cAbs, cPace), "Anggaran Korporat", "ao-office", `Serapan RKAP ${f2(cAbs)}% s.d. ${esc(d.corp.period || "")}`, `${cPace ? `Laju waktu ${fmt(cPace, 0)}% · ` : ""}proyeksi ${fmt(d.corp.projectionRate)}% RKAP · ${fmt(d.corp.yoy)}% dari tahun lalu`);
+    oOver.forEach((c) => add("serious", "Anggaran Kantor Pusat", "ao", `${esc(c.name)} ${fmt(c.absorption)}% dari RKAP`, `${fmt(c.value)} jt · ${fmt(c.yoy)}% dari tahun lalu`));
+    if (Number.isFinite(oAbs)) add(paceTone(oAbs, oPace), "Anggaran Kantor Pusat", "ao", `Serapan ${esc(d.office.selectedUnit || "KP")} ${f2(oAbs)}% s.d. ${esc(d.office.period || "")}`, `${oPace ? `Laju waktu ${fmt(oPace, 0)}% · ` : ""}${fmt(d.office.yoy)}% dari tahun lalu`);
+    if (d.tiers.critical || d.tiers.serious) add(eTone, "Kesiapan Infrastruktur EV", "ev-infra", `${fmt(d.tiers.critical + d.tiers.serious)} UP jauh dari SPKLU`, `${d.farthest ? `${esc(d.farthest.unit)} ${fmt(Number(d.farthest.distance), 1)} km` : ""}${d.tiers.watch ? ` · ${fmt(d.tiers.watch)} UP 5–25 km` : ""}`);
+    [["Investasi", "investment", fresh.investment], ["Anggaran Korporat", "ao-office", fresh.corp], ["Anggaran Kantor Pusat", "ao", fresh.office]].forEach(([menu, nav, f]) => {
+      if (f && f.known && f.stale) add("neutral", menu, nav, `Data ${menu} usang ${fmt(f.ageDays)} hari`, "Perbarui sumber sebelum dijadikan dasar aksi");
+    });
+    const shown = items.filter((i) => i.tone !== "good").sort((a, b) => TONE_RANK[a.tone] - TONE_RANK[b.tone]);
+    const menuTones = [sTone, iTone, cTone, oTone, eTone];
+    const count = (t) => menuTones.filter((x) => x === t).length;
+
+    const head = header("Overview Manajemen · Umum & Aset Properti", "Ringkasan kinerja lintas menu",
+      "Satu halaman untuk Strategi & Evaluasi, Investasi, Anggaran Korporat, Anggaran Kantor Pusat, dan Kesiapan Infrastruktur EV. Warna menunjukkan status; bilah menunjukkan realisasi terhadap laju waktu tahun berjalan.",
+      "");
+    const strip = `<div class="rd-strip rd-ov-fresh"><span class="rd-note">Kesegaran data</span>
+      ${freshChip(fresh.strategy, "Strategi")}${freshChip(fresh.investment, "Investasi")}${freshChip(fresh.corp, "Korporat")}${freshChip(fresh.office, "Kantor Pusat")}
+      ${chip("neutral", `EV · ${d.evSum.source ? "analisis SPKLU" : "sumber EV"}`, false)}</div>`;
+
+    const summaryHero = `<section class="rd-hero rd-ov-hero">
+      <div><span class="rd-eyebrow">Sinyal manajemen</span>
+        <p>${shown[0] ? `Prioritas utama: <b>${shown[0].title}</b> (${esc(shown[0].menu)}). ` : ""}${count("critical") + count("serious")} dari 5 menu perlu tindakan, ${count("watch")} perlu perhatian, ${count("good")} sesuai jalur.</p></div>
+      <div class="rd-hero-tiles">
+        <div class="rd-hero-tile"><span>Kritis / perlu tindakan</span><strong>${count("critical") + count("serious")}</strong></div>
+        <div class="rd-hero-tile"><span>Perlu perhatian</span><strong>${count("watch")}</strong></div>
+        <div class="rd-hero-tile"><span>Sesuai jalur</span><strong>${count("good")}</strong></div>
+      </div></section>`;
+
+    const card = ({ nav, name, icon, tone, status, freshC, body, cta }) => `
+      <article class="rd-card rd-ov-card" data-tone="${tone}">
+        <div class="rd-ov-card-head">
+          <span class="rd-kpi-ico">${duo(icon)}</span>
+          <div><h2>${esc(name)}</h2>${freshC || ""}</div>
+        </div>
+        <div class="rd-ov-status">${chip(status, TONE_WORD[status] || "", false)}</div>
+        <div class="rd-ov-body">${body}</div>
+        <div class="rd-ov-foot">${navBtn(nav, cta)}</div>
+      </article>`;
+    const fchip = (f) => (f && f.known ? `<small class="rd-ov-age${f.stale ? " stale" : ""}">${f.stale ? `Usang ${fmt(f.ageDays)} hari` : f.ageDays ? `Diperbarui ${fmt(f.ageDays)} hari lalu` : "Diperbarui hari ini"}</small>` : "");
+
+    const cards = `<div class="rd-grid rd-ov-cards">
+      ${card({ nav: "strategy", name: "Strategi & Evaluasi", icon: "target", tone: "perf", status: sTone, freshC: fchip(fresh.strategy), cta: "Buka Strategi & Evaluasi",
+        body: mrow(`NKO s.d. ${d.periodLabel}`, d.measured && Number.isFinite(d.nko) ? f2(d.nko) : "Belum diukur", { pct: d.measured ? Math.min(d.nko, 100) : 0, tick: 100, sub: `Target 100 · ${fmt(d.perf.red || 0)} indikator di bawah target` })
+          + mrow("Ratifikasi kebijakan", `${fmt(pol.done || 0)}<small>/${fmt(pol.total || 0)}</small>`, { pct: polPct, sub: `${fmt(pol.onProgress || 0)} on progress · ${fmt(pol.noRatification || 0)} tidak ratifikasi` })
+          + mrow("Change Request", `${fmt(d.crDone)}<small>/${fmt(d.crRows.length)} selesai</small>`, { sub: d.crLate ? `<span class="bad">${fmt(d.crLate)} terlambat</span>` : "Tidak ada yang terlambat" })
+          + mrow("Business Excellence", d.beFirst ? `${f2(num(d.beFirst.realization))}` : "—", { sub: esc(d.beRows.map((b) => `${b.semester}: ${b.status}`).join(" · ")) }) })}
+      ${card({ nav: "investment", name: "Investasi", icon: "wallet", tone: "fin", status: iTone, freshC: fchip(fresh.investment), cta: "Buka Investasi",
+        body: mrow("Realisasi AI", `${esc(d.inv.aiRealization || "—")}<small> / ${esc(d.inv.totalInvestment || "—")}</small>`, { pct: aiPct, tick: invPace, sub: `${f2(aiPct)}% · garis = laju waktu ${invPace ? fmt(invPace, 0) : "—"}%` })
+          + mrow("Realisasi AKI", `${esc(d.inv.akiRealization || "—")}<small> / ${esc(d.inv.akiTotal || "—")}</small>`, { pct: akiPct, tick: invPace, sub: `${f2(akiPct)}% · ${esc(d.inv.akiGapChip || "")}` })
+          + mrow("AKI Kantor Pusat · Sarpras Unit", `${esc(d.inv.akiOfficePct || "—")} · ${esc(d.inv.akiSarprasPct || "—")}`, { sub: "Serapan per porsi AKI" }) })}
+      ${card({ nav: "ao-office", name: "Anggaran Korporat", icon: "receipt", tone: "flow", status: cTone, freshC: fchip(fresh.corp), cta: "Buka Anggaran Korporat",
+        body: mrow(`Serapan RKAP s.d. ${d.corp.period || ""}`, `${f2(cAbs)}%`, { pct: cAbs, tick: cPace, sub: `${fmt(d.corp.total)} dari ${fmt(d.corp.rkap)} jt · laju ${cPace ? fmt(cPace, 0) : "—"}%` })
+          + mrow("Capaian target periode", `${fmt(d.corp.targetRate)}%`, { pct: d.corp.targetRate })
+          + mrow("Proyeksi 2026", `${fmt(d.corp.projectionRate)}%<small> RKAP</small>`, { pct: d.corp.projectionRate, color: "#5b7fc4", sub: `${fmt(d.corp.projection)} jt · ${fmt(d.corp.yoy)}% dari tahun lalu` }) })}
+      ${card({ nav: "ao", name: "Anggaran Kantor Pusat", icon: "building", tone: "gov", status: oTone, freshC: fchip(fresh.office), cta: "Buka Anggaran Kantor Pusat",
+        body: mrow(`Serapan ${d.office.selectedUnit || ""} s.d. ${d.office.period || ""}`, `${f2(oAbs)}%`, { pct: oAbs, tick: oPace, sub: `${fmt(d.office.realization)} dari ${fmt(d.office.rkap)} jt · laju ${oPace ? fmt(oPace, 0) : "—"}%` })
+          + mrow("Pertumbuhan dari tahun lalu", `${fmt(d.office.yoy)}%`, { sub: `Peringkat realisasi ${esc(d.office.rank || "—")}` })
+          + mrow("Pos melebihi RKAP", oOver.length ? `<span class="bad">${fmt(oOver.length)}</span>` : "0", { sub: oOver.length ? esc(oOver.map((c) => `${c.name} ${fmt(c.absorption)}%`).join(" · ")) : "Semua pos di bawah RKAP" }) })}
+      ${card({ nav: "ev-infra", name: "Kesiapan Infrastruktur EV", icon: "plug", tone: "charge", status: eTone, freshC: "", cta: "Buka Kesiapan EV",
+        body: mrow("UP terjangkau SPKLU (≤ 5 km)", `${fmt(d.tiers.ok)}<small>/${fmt(evTotal)}</small>`, { pct: evOkPct, color: "#0f8a5f", sub: `${fmt(evOkPct, 1)}% · ${fmt(d.evSum.sameLocation || 0)} satu lokasi` })
+          + `<div class="rd-ov-m"><div class="l"><span>Sebaran jarak ke SPKLU</span><b>${fmt(evTotal)} UP</b></div>
+              <div class="rd-ov-stack">${EV_TIERS.map((t) => (d.tiers[t.key] ? `<i style="flex:${d.tiers[t.key]};background:${t.color}" title="${esc(t.label)} ${fmt(d.tiers[t.key])}"></i>` : "")).join("")}</div>
+              <small>${EV_TIERS.map((t) => `<span class="k"><i style="background:${t.color}"></i>${esc(t.label)} ${fmt(d.tiers[t.key])}</span>`).join("")}</small></div>`
+          + mrow("Kandidat SPKLU dianalisis", fmt(d.evSum.spkluCandidates || 0), { sub: d.farthest ? `Terjauh: ${esc(d.farthest.unit)} ${fmt(Number(d.farthest.distance), 1)} km` : "" }) })}
+    </div>`;
+
+    const attention = `<section class="rd-card rd-ov-att">${cardHead("Perlu perhatian", "Diurutkan dari yang paling mendesak, lintas semua menu. Klik untuk membuka menu terkait.")}
+      <ol class="rd-ov-list">${shown.slice(0, 8).map((i) => `<li data-tone="${i.tone}">
+        <span class="dot"></span>
+        <div><b>${i.title}</b><small>${esc(i.menu)} · ${i.detail}</small></div>
+        ${chip(i.tone, TONE_WORD[i.tone], true)}
+        ${navBtn(i.nav, "Buka")}</li>`).join("") || `<li><div><b>Tidak ada sinyal risiko</b><small>Semua menu sesuai jalur</small></div></li>`}</ol></section>`;
+
+    // Serapan terhadap laju waktu: satu skala untuk semua anggaran.
+    const paceRows = [
+      ["Investasi · AI", aiPct, invPace, d.inv.reportDate ? String(d.inv.reportDate).replace(/^.*-\s*/, "s.d. ") : "", "investment"],
+      ["Investasi · AKI", akiPct, invPace, d.inv.reportDate ? String(d.inv.reportDate).replace(/^.*-\s*/, "s.d. ") : "", "investment"],
+      ["Anggaran Korporat", cAbs, cPace, `s.d. ${d.corp.period || ""}`, "ao-office"],
+      [`Kantor Pusat · ${d.office.selectedUnit || ""}`, oAbs, oPace, `s.d. ${d.office.period || ""}`, "ao"]
+    ];
+    const paceCard = `<section class="rd-card rd-ov-pace">${cardHead("Serapan anggaran vs laju waktu", "Bilah = realisasi terhadap pagu/RKAP; garis tegak = porsi tahun yang sudah berjalan pada periode data.")}
+      <div class="rd-ov-pace-rows">${paceRows.map(([label, v, p, per]) => {
+        const tone = paceTone(v, p);
+        const col = { critical: "#c81e1e", serious: "#dd5a12", watch: "#c98a00", good: "#1f4fa3", neutral: "#8a94a8" }[tone];
+        return `<div class="rd-ov-prow"><div class="lab"><b>${esc(label)}</b><small>${esc(per)}</small></div>
+          <div class="plot">${bar(v, col, p)}<div class="ax"><span>0</span><span>50%</span><span>100%</span></div></div>
+          <div class="val"><b style="color:${col}">${Number.isFinite(v) ? `${f2(v)}%` : "—"}</b><small>laju ${Number.isFinite(p) ? fmt(p, 0) : "—"}%</small></div></div>`;
+      }).join("")}</div>
+      <p class="rd-ov-note">Status: ≥ 90% dari laju = sesuai jalur · 70–90% perlu perhatian · 35–70% perlu tindakan · &lt; 35% kritis. Periode sumber berbeda tiap menu, bandingkan dengan konteks tanggalnya.</p></section>`;
+
+    return [head, strip, summaryHero, cards, `<div class="rd-grid rd-ov-lower">${attention}${paceCard}</div>`].join("");
+  }
+
   /* ---------------- orchestration ---------------- */
   const VIEWS = {
     strategy: { render: renderStrategy, anchor: () => dashboard.querySelector(":scope > .kpi-grid") },
     investment: { render: renderInvestment, anchor: () => document.getElementById("investmentView") },
     "ao-office": { render: renderAoOffice, anchor: () => document.getElementById("aoOfficeView") },
-    "ev-infra": { render: renderEv, anchor: () => document.getElementById("evInfraView") }
+    "ev-infra": { render: renderEv, anchor: () => document.getElementById("evInfraView") },
+    dashboard: { render: renderOverview, anchor: () => document.getElementById("executiveDashboardView") }
   };
   const MODE_CLASSES = { "ao-mode": "ao", "ao-office-mode": "ao-office", "investment-mode": "investment", "ev-infra-mode": "ev-infra", "dashboard-mode": "dashboard", "analytics-mode": "analytics", "alerts-mode": "alerts", "settings-mode": "settings" };
   function currentMode() {
