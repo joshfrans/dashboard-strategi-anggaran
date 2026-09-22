@@ -644,6 +644,11 @@
     const span = document.querySelector(`.nav-item[data-nav="${key}"] span`);
     if (span) span.textContent = label;
   });
+  // Tooltip nama menu saat sidebar menjadi rel ikon (≤1280px).
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    const label = item.querySelector("span")?.textContent.trim();
+    if (label) { item.setAttribute("title", label); item.setAttribute("aria-label", label); }
+  });
 
   themeAoIframe();
   renderActive();
