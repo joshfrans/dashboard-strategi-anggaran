@@ -55,15 +55,67 @@
     ext: '<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
     pin: '<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
-    building: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h.01M15 7h.01M9 11h.01M15 11h.01M9 15h.01M15 15h.01"/>'
+    building: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h.01M15 7h.01M9 11h.01M15 11h.01M9 15h.01M15 15h.01"/>',
+    shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+    code: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 8.5h18"/><path d="m10 12-2.5 2.5L10 17"/><path d="m14 12 2.5 2.5L14 17"/>',
+    pen: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"/><path d="M14 3v6h6"/><path d="M20 9v1.5"/><path d="m16.5 13.5 3 3-5 5h-3v-3z"/>',
+    award: '<circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.2 5-2.8 5 2.8-1.5-7.2"/><path d="m10 9 1.5 1.5L14.5 7.5"/>',
+    wallet: '<path d="M19 7V5.5A1.5 1.5 0 0 0 17.5 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2H5"/><circle cx="16.5" cy="13.5" r="1.3"/>',
+    coins: '<ellipse cx="9" cy="6.5" rx="6" ry="2.5"/><path d="M3 6.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/><path d="M9 17.5c-3.3 0-6-1.1-6-2.5v-4"/><path d="M13 13.2c.6-.1 1.3-.2 2-.2 3.3 0 6 1.1 6 2.5v2.5c0 1.4-2.7 2.5-6 2.5s-6-1.1-6-2.5V15"/>',
+    banknote: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v.01M18 14.5v.01"/>',
+    gauge: '<path d="M4.5 18a9 9 0 1 1 15 0"/><path d="m12 13 4-4"/><circle cx="12" cy="13" r="1.3"/>',
+    receipt: '<path d="M6 3h12v18l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+    pie: '<path d="M12 3v9h9"/><path d="M20.5 15.5A9 9 0 1 1 8.5 3.7"/>',
+    flag: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+    telescope: '<path d="M3 17.5 17 9"/><path d="m14.5 5 4.5 7.5-3 1.8-4.5-7.5z"/><path d="M9 14.5 12 21M9 14.5 6 21"/>',
+    route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>',
+    plug: '<path d="M9 2v5M15 2v5"/><path d="M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/>'
+  };
+  /* Keluarga warna ikon — warna menandai JENIS informasi, bukan status.
+     Hijau/kuning/oranye/merah tetap khusus untuk status (chip), kecuali
+     kartu yang memang menyatakan risiko (serious/critical). */
+  const ICON_TONE = {
+    gov: "Tata kelola & kepatuhan", tech: "Digital & energi", doc: "Perencanaan & dokumen", perf: "Kinerja & target",
+    excel: "Keunggulan & capaian mutu", fin: "Anggaran & pagu", flow: "Realisasi & arus kas", geo: "Lokasi & jangkauan",
+    serious: "Risiko perlu dukungan", critical: "Risiko kritis"
+  };
+  const TONE_SHORT = {
+    gov: "Tata kelola", tech: "Digital & energi", doc: "Perencanaan", perf: "Kinerja", excel: "Keunggulan",
+    fin: "Anggaran", flow: "Realisasi", geo: "Lokasi", serious: "Risiko", critical: "Risiko kritis"
+  };
+  /* Lapisan isi (transparan) untuk ikon duotone kartu KPI. */
+  const DUO_FILL = {
+    shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/>',
+    code: '<rect x="3" y="4" width="18" height="16" rx="2.5"/>',
+    pen: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8V9h6z"/>',
+    target: '<circle cx="12" cy="12" r="9"/>',
+    award: '<circle cx="12" cy="9" r="6"/>',
+    wallet: '<path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    coins: '<ellipse cx="9" cy="6.5" rx="6" ry="2.5"/><path d="M9 13c3.3 0 6-1.1 6-2.5v-4c0 1.4-2.7 2.5-6 2.5S3 7.9 3 6.5v4C3 11.9 5.7 13 9 13z"/>',
+    banknote: '<rect x="2.5" y="6" width="19" height="12" rx="2"/>',
+    gauge: '<path d="M4.5 18a9 9 0 1 1 15 0z"/>',
+    receipt: '<path d="M6 3h12v18l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5z"/>',
+    pie: '<path d="M12 3v9h9a9 9 0 0 0-9-9z"/>',
+    flag: '<path d="M5 4h11l-2 4 2 4H5z"/>',
+    telescope: '<path d="m14.5 5 4.5 7.5-3 1.8-4.5-7.5z"/>',
+    building: '<rect x="4" y="3" width="16" height="18" rx="2"/>',
+    pin: '<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/>',
+    plug: '<path d="M6 7h12v4a6 6 0 0 1-12 0z"/>',
+    route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/>',
+    bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'
+  };
+  const duo = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor" fill-opacity=".2" stroke="none">${DUO_FILL[name] || ""}</g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON[name] || ""}</g></svg>`;
+  const toneLegend = (html) => {
+    const used = [...new Set([...html.matchAll(/data-tone="([a-z]+)"/g)].map((m) => m[1]))];
+    return `<div class="rd-tone-legend" aria-label="Arti warna ikon kartu"><span>Arti warna ikon:</span>${used.map((t) => `<span class="t" data-tone="${t}"><i></i>${esc(ICON_TONE[t] || t)}</span>`).join("")}</div>`;
   };
   const ico = (name, extra = "") => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${ICON[name] || ""}</svg>`;
   const CHIP_ICON = { good: "check", watch: "warn", serious: "alert", critical: "x", neutral: "minus" };
   const chip = (tone, label, small = true) => `<span class="rd-chip ${tone}${small ? " sm" : ""}">${ico(CHIP_ICON[tone] || "minus")}${esc(label)}</span>`;
   const bar = (pct, color = "", tick = null, cls = "") => `<div class="rd-bar ${cls}"><i style="width:${clamp(pct).toFixed(2)}%;${color ? `background:${color}` : ""}"></i>${tick === null ? "" : `<span class="rd-tick" style="left:calc(${clamp(tick)}% - 1px)"></span>`}</div>`;
-  const kpi = ({ label, value, unit = "", sub = "", foot = "", barPct = null, barColor = "", icon = "" }) => `
-    <div class="rd-kpi">
-      <div class="rd-kpi-top"><span>${esc(label)}</span>${icon ? `<span class="rd-kpi-ico">${ico(icon)}</span>` : ""}</div>
+  const kpi = ({ label, value, unit = "", sub = "", foot = "", barPct = null, barColor = "", icon = "", tone = "perf" }) => `
+    <div class="rd-kpi" data-tone="${tone}">
+      <div class="rd-kpi-top"><div class="rd-kpi-lab">${icon ? `<em class="rd-kpi-cat">${esc(TONE_SHORT[tone] || "")}</em>` : ""}<span>${esc(label)}</span></div>${icon ? `<span class="rd-kpi-ico" title="${esc(ICON_TONE[tone] || "")}">${duo(icon)}</span>` : ""}</div>
       <div class="rd-kpi-val">${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ""}</div>
       ${barPct === null ? "" : bar(barPct, barColor, null, "h6")}
       ${sub ? `<div class="rd-kpi-sub">${esc(sub)}</div>` : ""}
@@ -184,11 +236,11 @@
 
     /* KPI */
     const kpis = `<div class="rd-grid k5">
-      ${kpi({ label: "Ratifikasi kebijakan", value: fmt(metrics.total), unit: "status", icon: "check", foot: brk([[C.acc, fmt(metrics.done), "selesai"], [C.ctx, fmt(metrics.onProgress), "on progress"], [C.line, fmt(metrics.noRatification), "tidak ratifikasi"]]) })}
-      ${kpi({ label: "Change Request aplikasi", value: fmt(crRows.length), unit: "CR", icon: "grid", foot: brk([[C.acc, crDone, "selesai"], [C.ctx, crOpen, "on progress"], [C.line, crNotStarted, "belum mulai"]]) + (crLate ? chip("critical", `${crLate} terlambat`) : "") })}
-      ${kpi({ label: "Penyusunan kebijakan", value: fmt(prepRows.length), unit: "juknis", icon: "file", foot: brk([[C.acc, prepDone, "selesai"], [C.ctx, prepOpen, "on progress"]]) + (prepLate ? chip("serious", `${prepLate} terlambat`) : "") })}
-      ${kpi({ label: `NKO ${periodLabel ? "s.d. " + periodLabel : ""}`, value: nkoText, icon: "target", foot: chip(toneMap[scoreStatus.tone] || "neutral", scoreStatus.label || "Belum diukur") + `<span class="rd-kpi-sub">target 100</span>` })}
-      ${kpi({ label: "Business Excellence", value: beValue, icon: "trend", foot: beRows.map((b) => chip(/tercapai/i.test(b.status || "") ? "good" : "neutral", `${b.semester}: ${b.status}`)).join("") })}
+      ${kpi({ label: "Ratifikasi kebijakan", value: fmt(metrics.total), unit: "status", icon: "shield", tone: "gov", foot: brk([[C.acc, fmt(metrics.done), "selesai"], [C.ctx, fmt(metrics.onProgress), "on progress"], [C.line, fmt(metrics.noRatification), "tidak ratifikasi"]]) })}
+      ${kpi({ label: "Change Request aplikasi", value: fmt(crRows.length), unit: "CR", icon: "code", tone: "tech", foot: brk([[C.acc, crDone, "selesai"], [C.ctx, crOpen, "on progress"], [C.line, crNotStarted, "belum mulai"]]) + (crLate ? chip("critical", `${crLate} terlambat`) : "") })}
+      ${kpi({ label: "Penyusunan kebijakan", value: fmt(prepRows.length), unit: "juknis", icon: "pen", tone: "doc", foot: brk([[C.acc, prepDone, "selesai"], [C.ctx, prepOpen, "on progress"]]) + (prepLate ? chip("serious", `${prepLate} terlambat`) : "") })}
+      ${kpi({ label: `NKO ${periodLabel ? "s.d. " + periodLabel : ""}`, value: nkoText, icon: "target", tone: "perf", foot: chip(toneMap[scoreStatus.tone] || "neutral", scoreStatus.label || "Belum diukur") + `<span class="rd-kpi-sub">target 100</span>` })}
+      ${kpi({ label: "Business Excellence", value: beValue, icon: "award", tone: "excel", foot: beRows.map((b) => chip(/tercapai/i.test(b.status || "") ? "good" : "neutral", `${b.semester}: ${b.status}`)).join("") })}
     </div>`;
 
     /* NKO bullet */
@@ -340,10 +392,10 @@
       <div class="rd-hero-side">${freshness && freshness.stale ? chip("serious", "Data usang", false) : ""}${akiPct < 50 ? chip("watch", "Serapan AKI rendah", false) : ""}</div></section>`;
 
     const kpis = `<div class="rd-grid k4">
-      ${kpi({ label: "Total Anggaran Investasi (AI) 2026", value: String(d.totalInvestment || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.totalInvestment).match(/[TM]$/i) || [""])[0], sub: d.totalInvestmentNote, icon: "trend" })}
-      ${kpi({ label: "Realisasi AI", value: String(d.aiRealization || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.aiRealization).match(/[TM]$/i) || [""])[0], sub: d.aiRealizationNote, barPct: aiPct, icon: "check" })}
-      ${kpi({ label: "Total AKI 2026", value: String(d.akiTotal || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.akiTotal).match(/[TM]$/i) || [""])[0], sub: d.akiTotalNote, icon: "grid" })}
-      ${kpi({ label: "Realisasi AKI", value: String(d.akiRealization || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.akiRealization).match(/[TM]$/i) || [""])[0], sub: d.akiRealizationNote, barPct: akiPct, barColor: akiPct < 50 ? C.amber : "", foot: akiPct < 50 ? chip("watch", "Di bawah laju") : "", icon: "target" })}
+      ${kpi({ label: "Total Anggaran Investasi (AI) 2026", value: String(d.totalInvestment || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.totalInvestment).match(/[TM]$/i) || [""])[0], sub: d.totalInvestmentNote, icon: "wallet", tone: "fin" })}
+      ${kpi({ label: "Realisasi AI", value: String(d.aiRealization || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.aiRealization).match(/[TM]$/i) || [""])[0], sub: d.aiRealizationNote, barPct: aiPct, icon: "banknote", tone: "flow" })}
+      ${kpi({ label: "Total AKI 2026", value: String(d.akiTotal || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.akiTotal).match(/[TM]$/i) || [""])[0], sub: d.akiTotalNote, icon: "coins", tone: "fin" })}
+      ${kpi({ label: "Realisasi AKI", value: String(d.akiRealization || "—").replace(/\s*[TM]$/i, ""), unit: (String(d.akiRealization).match(/[TM]$/i) || [""])[0], sub: d.akiRealizationNote, barPct: akiPct, barColor: akiPct < 50 ? C.amber : "", foot: akiPct < 50 ? chip("watch", "Di bawah laju") : "", icon: "gauge", tone: "flow" })}
     </div>`;
 
     const aki = `<section class="rd-card">
@@ -432,10 +484,10 @@
     const strip = `<div class="rd-strip">${freshChip(freshness, `Sumber AO Korporat · s.d. ${period}`)}${chip("neutral", "Satuan: juta Rupiah (jt)", false)}<span class="rd-note">Realisasi, serapan RKAP, target s.d. ${esc(period)}, dan proyeksi 2026</span></div>`;
     const hero = `<section class="rd-hero"><div><span class="rd-eyebrow">Management signal</span><p>${esc(signalText)}</p></div><div class="rd-hero-side">${chip("watch", `${legacy?.querySelectorAll(".ao-signal-list li").length || 0} unsur perlu validasi`, false)}</div></section>`;
     const kpis = `<div class="rd-grid k4">
-      ${kpi({ label: "Realisasi", value: fmt(d.total), unit: "jt", sub: Number.isFinite(lastYear) ? `Tahun lalu ${fmt(lastYear)} jt` : "", foot: chip(d.yoy > 100 ? "watch" : "good", `${fmt(d.yoy)}% dari tahun lalu${growth === null ? "" : ` · ${growth >= 0 ? "+" : ""}${fmt(growth, 1)}%`}`), icon: "trend" })}
-      ${kpi({ label: "Serapan RKAP", value: fmt(d.absorption), unit: "%", sub: `${fmt(d.total)} dari RKAP ${fmt(d.rkap)} jt`, barPct: d.absorption, icon: "target" })}
-      ${kpi({ label: `Capaian target s.d. ${period}`, value: fmt(d.targetRate), unit: "%", sub: Number.isFinite(targetValue) ? `Target ${fmt(targetValue)} jt` : "", barPct: d.targetRate, icon: "check" })}
-      ${kpi({ label: "Proyeksi 2026", value: fmt(d.projection), unit: "jt", sub: `${fmt(d.projectionRate)}% dari RKAP`, barPct: d.projectionRate, barColor: "#5b7fc4", foot: chip(d.projectionRate <= 100 ? "good" : "critical", d.projectionRate <= 100 ? "Di bawah RKAP" : "Melebihi RKAP"), icon: "cal" })}
+      ${kpi({ label: "Realisasi", value: fmt(d.total), unit: "jt", sub: Number.isFinite(lastYear) ? `Tahun lalu ${fmt(lastYear)} jt` : "", foot: chip(d.yoy > 100 ? "watch" : "good", `${fmt(d.yoy)}% dari tahun lalu${growth === null ? "" : ` · ${growth >= 0 ? "+" : ""}${fmt(growth, 1)}%`}`), icon: "receipt", tone: "flow" })}
+      ${kpi({ label: "Serapan RKAP", value: fmt(d.absorption), unit: "%", sub: `${fmt(d.total)} dari RKAP ${fmt(d.rkap)} jt`, barPct: d.absorption, icon: "pie", tone: "fin" })}
+      ${kpi({ label: `Capaian target s.d. ${period}`, value: fmt(d.targetRate), unit: "%", sub: Number.isFinite(targetValue) ? `Target ${fmt(targetValue)} jt` : "", barPct: d.targetRate, icon: "flag", tone: "perf" })}
+      ${kpi({ label: "Proyeksi 2026", value: fmt(d.projection), unit: "jt", sub: `${fmt(d.projectionRate)}% dari RKAP`, barPct: d.projectionRate, barColor: "#5b7fc4", foot: chip(d.projectionRate <= 100 ? "good" : "critical", d.projectionRate <= 100 ? "Di bawah RKAP" : "Melebihi RKAP"), icon: "telescope", tone: "doc" })}
     </div>`;
 
     const org = [...(legacy?.querySelectorAll(".ao-org-list > div") || [])].map((row) => ({ name: text("span", row), value: num(text("strong", row).replace("−", "-")) })).filter((r) => Number.isFinite(r.value));
@@ -504,11 +556,11 @@
 
     const k = (label) => byLabel[label] || { units: 0, percent: 0 };
     const kpis = `<div class="rd-grid k5">
-      ${kpi({ label: "Total unit pelaksana", value: fmt(total), unit: "UP", sub: `${fmt(far)} UP dengan SPKLU > 5 km`, icon: "building" })}
-      ${kpi({ label: "Satu lokasi", value: fmt(k("Satu Lokasi").units), unit: "UP", sub: `${pct(k("Satu Lokasi").units)} · SPKLU di lokasi kantor UP`, icon: "pin" })}
-      ${kpi({ label: "< 5 km", value: fmt(k("< 5 KM").units), unit: "UP", sub: `${pct(k("< 5 KM").units)} · dalam radius 5 km`, icon: "check" })}
-      ${kpi({ label: "50 – <100 km", value: fmt(k("50 - < 100 KM").units), unit: "UP", sub: `${pct(k("50 - < 100 KM").units)} · butuh dukungan charging`, foot: k("50 - < 100 KM").units ? chip("serious", "Dukungan khusus") : "", icon: "alert" })}
-      ${kpi({ label: "≥ 200 km", value: fmt(k(">= 200 KM").units), unit: "UP", sub: `${pct(k(">= 200 KM").units)}${k(">= 200 KM").units && farthest ? ` · ${farthest.unitsList?.join(", ")}` : ""}`, foot: k(">= 200 KM").units ? chip("critical", "Solusi khusus") : "", icon: "bolt" })}
+      ${kpi({ label: "Total unit pelaksana", value: fmt(total), unit: "UP", sub: `${fmt(far)} UP dengan SPKLU > 5 km`, icon: "building", tone: "gov" })}
+      ${kpi({ label: "Satu lokasi", value: fmt(k("Satu Lokasi").units), unit: "UP", sub: `${pct(k("Satu Lokasi").units)} · SPKLU di lokasi kantor UP`, icon: "pin", tone: "geo" })}
+      ${kpi({ label: "< 5 km", value: fmt(k("< 5 KM").units), unit: "UP", sub: `${pct(k("< 5 KM").units)} · dalam radius 5 km`, icon: "plug", tone: "tech" })}
+      ${kpi({ label: "50 – <100 km", value: fmt(k("50 - < 100 KM").units), unit: "UP", sub: `${pct(k("50 - < 100 KM").units)} · butuh dukungan charging`, foot: k("50 - < 100 KM").units ? chip("serious", "Dukungan khusus") : "", icon: "route", tone: "serious" })}
+      ${kpi({ label: "≥ 200 km", value: fmt(k(">= 200 KM").units), unit: "UP", sub: `${pct(k(">= 200 KM").units)}${k(">= 200 KM").units && farthest ? ` · ${farthest.unitsList?.join(", ")}` : ""}`, foot: k(">= 200 KM").units ? chip("critical", "Solusi khusus") : "", icon: "bolt", tone: "critical" })}
     </div>`;
 
     const maxUnits = Math.max(1, ...cats.map((c) => c.units || 0));

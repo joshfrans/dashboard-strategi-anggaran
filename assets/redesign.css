@@ -215,7 +215,23 @@ body.rd-enabled .dashboard.ev-infra-mode .ev-infra-view { min-height: 0; }
 .rd-kpi-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .rd-kpi-top > span { font-size: 13px; font-weight: 600; color: var(--rd-ink-2); }
 .rd-kpi-ico { width: 32px; height: 32px; border-radius: 9px; background: var(--rd-accent-soft); color: var(--rd-accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.rd-kpi-ico svg { width: 17px; height: 17px; }
+.rd-kpi-ico svg { width: 18px; height: 18px; }
+/* Keluarga warna ikon kartu (makna = jenis informasi). --h: warna utama, --t1/--t2: gradasi latar */
+.rd-kpi { position: relative; overflow: hidden; }
+.rd-grid.k4, .rd-grid.k5 { align-items: stretch; }
+.rd-tone-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; margin-top: -8px; font-size: 12.5px; color: var(--rd-ink-2); }
+.rd-tone-legend .t { display: inline-flex; align-items: center; gap: 6px; }
+.rd-tone-legend .t i { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, var(--h), var(--h3)); }
+[data-tone="gov"]      { --h3: #6366f1; --h: #4338ca; --h2: #a5b4fc; --t1: #eef0ff; --t2: #e0e4ff; }
+[data-tone="tech"]     { --h3: #06a3c4; --h: #0e7490; --h2: #67e8f9; --t1: #e8f8fb; --t2: #d3f1f7; }
+[data-tone="doc"]      { --h3: #8b5cf6; --h: #6d28d9; --h2: #c4b5fd; --t1: #f4efff; --t2: #e9e0fe; }
+[data-tone="perf"]     { --h3: #3b73d9; --h: #1f4fa3; --h2: #9db4e0; --t1: #edf2fb; --t2: #dde7f7; }
+[data-tone="excel"]    { --h3: #c026d3; --h: #a21caf; --h2: #f0abfc; --t1: #fcefff; --t2: #f7defb; }
+[data-tone="fin"]      { --h3: #3656b0; --h: #1e3a8a; --h2: #93a8d8; --t1: #eaeef8; --t2: #dbe2f3; }
+[data-tone="flow"]     { --h3: #14a394; --h: #0f766e; --h2: #7dd3c8; --t1: #e7f6f4; --t2: #d2efeb; }
+[data-tone="geo"]      { --h3: #0891d8; --h: #0369a1; --h2: #7cc4ea; --t1: #e8f4fb; --t2: #d4ebf8; }
+[data-tone="serious"]  { --h3: #d9622b; --h: #a8380b; --h2: #f5b08f; --t1: #fdf0ea; --t2: #fbe1d5; }
+[data-tone="critical"] { --h3: #dc3b3b; --h: #a61b1b; --h2: #f3a3a3; --t1: #fdeeee; --t2: #fadcdc; }
 .rd-kpi-val { font-size: 28px; font-weight: 700; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .rd-kpi-val small { font-size: 16px; font-weight: 600; color: var(--rd-ink-2); margin-left: 4px; }
 .rd-kpi-sub { font-size: 13px; color: var(--rd-ink-2); }
@@ -424,3 +440,14 @@ body.rd-enabled .ao-embed-header a { border: 1px solid var(--rd-line); border-ra
   .rd-card, .rd-kpi, .rd-strip { box-shadow: none; break-inside: avoid; }
   .rd-view, .rd-view * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* v5 — Opsi D: ikon duotone dalam squircle + label kategori berwarna */
+.rd-kpi-top { align-items: flex-start; }
+.rd-kpi-lab { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rd-kpi-lab > span { font-size: 13px; font-weight: 600; color: var(--rd-ink-2); }
+.rd-kpi-cat { font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--h, #1f4fa3); line-height: 1.2; }
+.rd-kpi .rd-kpi-ico { width: 46px; height: 46px; border-radius: 14px; color: var(--h, #1f4fa3); background: linear-gradient(160deg, #ffffff 0%, var(--t1, #edf2fb) 100%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--h, #1f4fa3) 15%, transparent), 0 1px 2px color-mix(in srgb, var(--h, #1f4fa3) 8%, transparent), 0 8px 18px -10px color-mix(in srgb, var(--h, #1f4fa3) 40%, transparent); }
+.rd-kpi .rd-kpi-ico svg { width: 24px; height: 24px; }
+@media (max-width: 760px) { .rd-kpi .rd-kpi-ico { width: 40px; height: 40px; border-radius: 12px; } .rd-kpi .rd-kpi-ico svg { width: 21px; height: 21px; } }
+@media print { .rd-kpi .rd-kpi-ico { box-shadow: inset 0 0 0 1px #d6dbe4; } }
