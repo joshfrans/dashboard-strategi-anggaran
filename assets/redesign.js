@@ -363,9 +363,9 @@
       <div class="rd-sum-metrics">${m.map(([v, l]) => `<div><strong>${esc(v)}</strong><span>${esc(l)}</span></div>`).join("")}</div>
     </section>`;
 
-    const strip = `<div class="rd-strip">${freshness ? freshChip(freshness, "Sinkron data") : ""}${sourceStatus ? chip("neutral", sourceStatus.replace(/^Sumber data:\s*/i, "Sumber: "), false) : ""}${lastUpdated ? `<span class="rd-note">Sinkron teknis ${esc(lastUpdated)}</span>` : ""}${sourceDesc ? `<span class="rd-note">· ${esc(sourceDesc)}</span>` : ""}</div>`;
 
-    return [strip, kpis, nkoCard, crCard, (ui.prep ? `${prepCard}${beCard}` : `<div class="rd-grid c2">${prepCard}${beCard}</div>`), heatCard, sumCard].join("");
+    // Strip kesegaran data Strategi & Evaluasi dihilangkan atas permintaan; informasi sumber tetap ada di header lama & menu Pengaturan.
+    return [kpis, nkoCard, crCard, (ui.prep ? `${prepCard}${beCard}` : `<div class="rd-grid c2">${prepCard}${beCard}</div>`), heatCard, sumCard].join("");
   }
 
   /* ================= INVESTASI ================= */
