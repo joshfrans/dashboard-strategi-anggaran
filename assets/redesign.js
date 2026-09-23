@@ -635,10 +635,10 @@
      geografi tetap terlihat), unit dipilih = ubin ungu. Legenda, kartu info,
      tombol reset, skala & arah utara berada di atas peta. */
   const EV_TIERS = [
-    { key: "ok", label: "Terjangkau", range: "≤ 5 km", color: "#0f8a5f", cats: ["Satu Lokasi", "< 5 KM"] },
+    { key: "ok", label: "Terjangkau", range: "≤ 5 km", color: "#0f7a45", cats: ["Satu Lokasi", "< 5 KM"] },
     { key: "watch", label: "Perlu dipantau", range: "5 – 25 km", color: "#c98a00", cats: ["5 - < 10 KM", "10 - < 25 KM"] },
-    { key: "serious", label: "Jauh", range: "25 – 100 km", color: "#dd5a12", cats: ["25 - < 50 KM", "50 - < 100 KM"] },
-    { key: "critical", label: "Kritis", range: "≥ 100 km", color: "#c81e1e", cats: ["100 - < 200 KM", ">= 200 KM"] }
+    { key: "serious", label: "Jauh", range: "25 – 100 km", color: "#c2410c", cats: ["25 - < 50 KM", "50 - < 100 KM"] },
+    { key: "critical", label: "Kritis", range: "≥ 100 km", color: "#8c1111", cats: ["100 - < 200 KM", ">= 200 KM"] }
   ];
   const evTier = (category) => EV_TIERS.find((t) => t.cats.includes(category)) || EV_TIERS[0];
   const evKind = (name) => { const n = String(name || "").trim(); if (/^UI[A-Z0-9]*\b/i.test(n)) return "Unit Induk"; if (/^UP3(\s|$)/i.test(n)) return "UP3"; return "Unit pelaksana"; };
@@ -921,6 +921,9 @@
   }
   const f2 = (v) => { const n = Number(v); return Number.isFinite(n) ? fmt(n, Number.isInteger(n) ? 0 : 2) : "—"; };
   const pctNum = (v) => { const n = num(v); return Number.isFinite(n) ? n : NaN; };
+  /* Warna status: nada terang untuk bidang/bilah, nada gelap untuk teks (kontras >= 4.5:1). */
+  const FILL_TONE = { critical: "#8c1111", serious: "#c2410c", watch: "#c98a00", good: "#1f4fa3", neutral: "#8a94a8" };
+  const TEXT_TONE = { critical: "#8c1111", serious: "#a8380b", watch: "#7a4f00", good: "#1f4fa3", neutral: "#44506a" };
   const TONE_RANK = { critical: 0, serious: 1, watch: 2, good: 3, neutral: 4 };
   const TONE_WORD = { critical: "Kritis", serious: "Perlu tindakan", watch: "Perlu perhatian", good: "Sesuai jalur", neutral: "Belum dinilai" };
   const worst = (...tones) => tones.filter(Boolean).sort((a, b) => TONE_RANK[a] - TONE_RANK[b])[0] || "neutral";
@@ -1060,7 +1063,7 @@
           + mrow("Pertumbuhan dari tahun lalu", `${fmt(d.office.yoy)}%`, { sub: `Peringkat realisasi ${esc(d.office.rank || "—")}` })
           + mrow("Pos melebihi RKAP", oOver.length ? `<span class="bad">${fmt(oOver.length)}</span>` : "0", { sub: oOver.length ? esc(oOver.map((c) => `${c.name} ${fmt(c.absorption)}%`).join(" · ")) : "Semua pos di bawah RKAP" }) })}
       ${card({ nav: "ev-infra", name: "Kesiapan Infrastruktur EV", icon: "plug", tone: "charge", status: eTone, freshC: "", cta: "Buka Kesiapan EV",
-        body: mrow("UP terjangkau SPKLU (≤ 5 km)", `${fmt(d.tiers.ok)}<small>/${fmt(evTotal)}</small>`, { pct: evOkPct, color: "#0f8a5f", sub: `${fmt(evOkPct, 1)}% · ${fmt(d.evSum.sameLocation || 0)} satu lokasi` })
+        body: mrow("UP terjangkau SPKLU (≤ 5 km)", `${fmt(d.tiers.ok)}<small>/${fmt(evTotal)}</small>`, { pct: evOkPct, color: "#0f7a45", sub: `${fmt(evOkPct, 1)}% · ${fmt(d.evSum.sameLocation || 0)} satu lokasi` })
           + `<div class="rd-ov-m"><div class="l"><span>Sebaran jarak ke SPKLU</span><b>${fmt(evTotal)} UP</b></div>
               <div class="rd-ov-stack">${EV_TIERS.map((t) => (d.tiers[t.key] ? `<i style="flex:${d.tiers[t.key]};background:${t.color}" title="${esc(t.label)} ${fmt(d.tiers[t.key])}"></i>` : "")).join("")}</div>
               <small>${EV_TIERS.map((t) => `<span class="k"><i style="background:${t.color}"></i>${esc(t.label)} ${fmt(d.tiers[t.key])}</span>`).join("")}</small></div>`
@@ -1084,10 +1087,11 @@
     const paceCard = `<section class="rd-card rd-ov-pace">${cardHead("Serapan anggaran vs laju waktu", "Bilah = realisasi terhadap pagu/RKAP; garis tegak = porsi tahun yang sudah berjalan pada periode data.")}
       <div class="rd-ov-pace-rows">${paceRows.map(([label, v, p, per]) => {
         const tone = paceTone(v, p);
-        const col = { critical: "#c81e1e", serious: "#dd5a12", watch: "#c98a00", good: "#1f4fa3", neutral: "#8a94a8" }[tone];
+        const col = FILL_TONE[tone] || FILL_TONE.neutral;
+        const txt = TEXT_TONE[tone] || TEXT_TONE.neutral;
         return `<div class="rd-ov-prow"><div class="lab"><b>${esc(label)}</b><small>${esc(per)}</small></div>
           <div class="plot">${bar(v, col, p)}<div class="ax"><span>0</span><span>50%</span><span>100%</span></div></div>
-          <div class="val"><b style="color:${col}">${Number.isFinite(v) ? `${f2(v)}%` : "—"}</b><small>laju ${Number.isFinite(p) ? fmt(p, 0) : "—"}%</small></div></div>`;
+          <div class="val"><b style="color:${txt}">${Number.isFinite(v) ? `${f2(v)}%` : "—"}</b><small>laju ${Number.isFinite(p) ? fmt(p, 0) : "—"}%</small></div></div>`;
       }).join("")}</div>
       <p class="rd-ov-note">Status: ≥ 90% dari laju = sesuai jalur · 70–90% perlu perhatian · 35–70% perlu tindakan · &lt; 35% kritis. Periode sumber berbeda tiap menu, bandingkan dengan konteks tanggalnya.</p></section>`;
 
