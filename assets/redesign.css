@@ -722,3 +722,56 @@ body.rd-enabled .dashboard[data-rd-active="dashboard"] > #executiveDashboardView
   .rd-heat .ent { min-height: 44px; }
   .rd-ov-list li .rd-ov-go { padding: 0 2px; }
 }
+
+/* ---------- Overview: ikon bermakna, warna status, interaksi (Sep 2026) ---------- */
+/* Warna = status: hijau sesuai jalur, kuning perhatian, oranye tindakan, merah kritis, abu belum dinilai. */
+[data-status="good"]     { --st: var(--rd-good);     --st-bg: var(--rd-good-bg); }
+[data-status="watch"]    { --st: var(--rd-watch);    --st-bg: var(--rd-watch-bg); }
+[data-status="serious"]  { --st: var(--rd-serious);  --st-bg: var(--rd-serious-bg); }
+[data-status="critical"] { --st: var(--rd-critical); --st-bg: var(--rd-critical-bg); }
+[data-status="neutral"]  { --st: var(--rd-neutral);  --st-bg: var(--rd-neutral-bg); }
+
+.rd-ov-card { position: relative; cursor: pointer; border-top: 4px solid var(--st, var(--rd-line)); transition: transform .16s ease, box-shadow .16s ease, opacity .2s ease; }
+.rd-ov-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(20,33,61,.06), 0 14px 32px rgba(20,33,61,.10); }
+.rd-ov-card:focus-visible { outline: 3px solid var(--rd-accent); outline-offset: 3px; }
+.rd-ov-card.is-dim { opacity: .38; }
+.rd-ov-card.is-dim:hover, .rd-ov-card.is-dim:focus-visible { opacity: .85; }
+.rd-ov-card .rd-ov-card-head .rd-kpi-ico { color: var(--st); background: var(--st-bg); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--st) 28%, transparent); }
+
+.rd-ov-m.has-ico { flex-direction: row; align-items: flex-start; gap: 10px; }
+.rd-ov-mbody { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 0; }
+.rd-ov-mico { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; color: var(--st, var(--rd-neutral)); background: var(--st-bg, var(--rd-neutral-bg)); margin-top: 1px; }
+.rd-ov-mico svg { width: 16px; height: 16px; }
+.rd-ov-m.has-ico:hover .rd-ov-mico { box-shadow: 0 0 0 2px var(--st, var(--rd-neutral)); }
+
+.rd-ov-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -4px 0 2px; }
+.rd-ov-legend .lbl { font-size: 13px; font-weight: 600; color: var(--rd-ink); margin-right: 2px; }
+.rd-ov-legend .hint { font-size: 12.5px; color: var(--rd-ink-2); margin-left: 4px; }
+.rd-ov-lg { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 12px; border-radius: 999px; border: 1.5px solid transparent; background: var(--st-bg); color: var(--st); font: 600 13px/1.2 var(--rd-font); cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease; }
+.rd-ov-lg svg { width: 14px; height: 14px; }
+.rd-ov-lg:hover { border-color: var(--st); }
+.rd-ov-lg.on { border-color: var(--st); box-shadow: 0 0 0 3px color-mix(in srgb, var(--st) 18%, transparent); }
+.rd-ov-lg:focus-visible, .rd-ov-ftile:focus-visible { outline: 3px solid var(--rd-accent); outline-offset: 2px; }
+.rd-ov-clear { font-size: 13px; }
+
+.rd-ov-ftile { font: inherit; color: inherit; text-align: left; cursor: pointer; border: 1.5px solid transparent; position: relative; transition: border-color .15s ease, transform .15s ease; }
+.rd-ov-ftile::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 4px; border-radius: 0 3px 3px 0; background: var(--st); }
+.rd-ov-ftile:hover { transform: translateY(-2px); }
+.rd-ov-ftile.on { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-ov-card, .rd-ov-ftile, .rd-ov-lg { transition: none; }
+  .rd-ov-card:hover, .rd-ov-ftile:hover { transform: none; }
+}
+@media print {
+  .rd-ov-card.is-dim { opacity: 1; }
+  .rd-ov-legend .hint, .rd-ov-clear { display: none; }
+}
+/* Garis status pada tile hero (latar gelap): nada terang agar kontras >= 3:1. */
+.rd-ov-ftile[data-status="serious"]::before { background: #f2844b; }
+.rd-ov-ftile[data-status="watch"]::before { background: #e8b23a; }
+.rd-ov-ftile[data-status="good"]::before { background: #3cc47f; }
+/* Teks keterangan metrik tetap >= 12px setelah dibungkus kolom ikon. */
+.rd-ov-mbody > small { font-size: 12.5px; color: var(--rd-ink-2); line-height: 1.4; }
+.rd-ov-mbody > small .k { display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; white-space: nowrap; }
+.rd-ov-mbody > small .k i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
