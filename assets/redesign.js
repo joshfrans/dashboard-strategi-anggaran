@@ -136,7 +136,7 @@
   const header = (eyebrow, title, sub, actions) => `
     <header class="rd-header"><div><span class="rd-eyebrow">${esc(eyebrow)}</span><h1>${esc(title)}</h1>${sub ? `<p>${esc(sub)}</p>` : ""}</div><div class="rd-actions">${actions}</div></header>`;
 
-  const ui = { entities: false, types: false, prep: false };
+  const ui = { entities: false, types: false, prep: false, ovFilter: "" };
   const C = { acc: "#1f4fa3", ctx: "#9db4e0", line: "#d5dae3", amber: "#b7791f", serious: "#a8380b", critical: "#a61b1b", grey: "#8a94a8" };
 
   /* ---------------- containers ---------------- */
@@ -933,9 +933,13 @@
     return r < 0.35 ? "critical" : r < 0.7 ? "serious" : r < 0.9 ? "watch" : "good";
   };
   const navBtn = (nav, label = "Buka menu") => `<button type="button" class="rd-link rd-ov-go" ${proxy(`.nav-item[data-nav="${nav}"]`)} data-rd-scrolltop>${esc(label)} →</button>`;
-  const mrow = (label, value, { sub = "", pct = null, tick = null, color = "" } = {}) => `
-    <div class="rd-ov-m"><div class="l"><span>${esc(label)}</span><b>${value}</b></div>
-      ${pct === null ? "" : bar(pct, color, tick, "h6")}${sub ? `<small>${sub}</small>` : ""}</div>`;
+  /* Baris metrik: ikon mendefinisikan nilai; warna ikon = status nilai itu (bukan dekorasi). */
+  const mrow = (label, value, { sub = "", pct = null, tick = null, color = "", icon = "", tone = "" } = {}) => `
+    <div class="rd-ov-m${icon ? " has-ico" : ""}"${tone ? ` data-status="${tone}"` : ""}>
+      ${icon ? `<span class="rd-ov-mico" title="${esc(`${label}: ${TONE_WORD[tone || "neutral"] || ""}`)}">${ico(icon)}</span>` : ""}
+      <div class="rd-ov-mbody"><div class="l"><span>${esc(label)}</span><b>${value}</b></div>
+      ${pct === null ? "" : bar(pct, color, tick, "h6")}${sub ? `<small>${sub}</small>` : ""}</div></div>`;
+  const rateTone = (v, good = 90, watch = 70) => (!Number.isFinite(v) ? "neutral" : v >= good ? "good" : v >= watch ? "watch" : "serious");
 
   function overviewData() {
     const policy = call("policyMetrics") || {};
@@ -1016,6 +1020,8 @@
     const menuTones = [sTone, iTone, cTone, oTone, eTone];
     const count = (t) => menuTones.filter((x) => x === t).length;
 
+    const flt = ui.ovFilter;
+    const matchF = (st) => !flt || (flt === "action" ? st === "critical" || st === "serious" : st === flt);
     const head = header("Overview Manajemen · Umum & Aset Properti", "Ringkasan kinerja lintas menu",
       "Satu halaman untuk Strategi & Evaluasi, Investasi, Anggaran Korporat, Anggaran Kantor Pusat, dan Kesiapan Infrastruktur EV. Warna menunjukkan status; bilah menunjukkan realisasi terhadap laju waktu tahun berjalan.",
       "");
@@ -1027,13 +1033,14 @@
       <div><span class="rd-eyebrow">Sinyal manajemen</span>
         <p>${shown[0] ? `Prioritas utama: <b>${shown[0].title}</b> (${esc(shown[0].menu)}). ` : ""}${count("critical") + count("serious")} dari 5 menu perlu tindakan, ${count("watch")} perlu perhatian, ${count("good")} sesuai jalur.</p></div>
       <div class="rd-hero-tiles">
-        <div class="rd-hero-tile"><span>Kritis / perlu tindakan</span><strong>${count("critical") + count("serious")}</strong></div>
-        <div class="rd-hero-tile"><span>Perlu perhatian</span><strong>${count("watch")}</strong></div>
-        <div class="rd-hero-tile"><span>Sesuai jalur</span><strong>${count("good")}</strong></div>
+        ${[["action", "Kritis / perlu tindakan", count("critical") + count("serious")], ["watch", "Perlu perhatian", count("watch")], ["good", "Sesuai jalur", count("good")]].map(([k, l, n]) =>
+          `<button type="button" class="rd-hero-tile rd-ov-ftile${flt === k ? " on" : ""}" data-rd-ovfilter="${k}" aria-pressed="${flt === k}" data-status="${k === "action" ? "serious" : k}"><span>${l}</span><strong>${n}</strong></button>`).join("")}
       </div></section>`;
 
     const card = ({ nav, name, icon, tone, status, freshC, body, cta }) => `
-      <article class="rd-card rd-ov-card" data-tone="${tone}">
+      <article class="rd-card rd-ov-card${matchF(status) ? "" : " is-dim"}" data-tone="${tone}" data-status="${status}"
+        ${proxy(`.nav-item[data-nav="${nav}"]`)} data-rd-scrolltop data-rd-cardlink tabindex="0" role="link"
+        aria-label="${esc(`${name}: ${TONE_WORD[status] || ""}. Buka menu`)}">
         <div class="rd-ov-card-head">
           <span class="rd-kpi-ico">${duo(icon)}</span>
           <div><h2>${esc(name)}</h2>${freshC || ""}</div>
@@ -1044,34 +1051,40 @@
       </article>`;
     const fchip = (f) => (f && f.known ? `<small class="rd-ov-age${f.stale ? " stale" : ""}">${f.stale ? `Usang ${fmt(f.ageDays)} hari` : f.ageDays ? `Diperbarui ${fmt(f.ageDays)} hari lalu` : "Diperbarui hari ini"}</small>` : "");
 
+    const LEG = [["good", "Sesuai jalur / tercapai"], ["watch", "Perlu perhatian"], ["serious", "Perlu tindakan"], ["critical", "Kritis"], ["neutral", "Belum dinilai"]];
+    const legend = `<div class="rd-ov-legend" role="group" aria-label="Arti warna status. Klik untuk menyaring kartu">
+      <span class="lbl">Arti warna:</span>
+      ${LEG.map(([t, l]) => `<button type="button" class="rd-ov-lg${flt === t ? " on" : ""}" data-status="${t}" data-rd-ovfilter="${t}" aria-pressed="${flt === t}">${ico(CHIP_ICON[t])}${esc(l)}</button>`).join("")}
+      ${flt ? `<button type="button" class="rd-link rd-ov-clear" data-rd-ovfilter="">Tampilkan semua ×</button>` : `<span class="hint">Klik warna untuk menyaring · klik kartu untuk membuka menu</span>`}
+    </div>`;
     const cards = `<div class="rd-grid rd-ov-cards">
       ${card({ nav: "strategy", name: "Strategi & Evaluasi", icon: "target", tone: "perf", status: sTone, freshC: fchip(fresh.strategy), cta: "Buka Strategi & Evaluasi",
-        body: mrow(`NKO s.d. ${d.periodLabel}`, d.measured && Number.isFinite(d.nko) ? f2(d.nko) : "Belum diukur", { pct: d.measured ? Math.min(d.nko, 100) : 0, tick: 100, sub: `Target 100 · ${fmt(d.perf.red || 0)} indikator di bawah target` })
-          + mrow("Ratifikasi kebijakan", `${fmt(pol.done || 0)}<small>/${fmt(pol.total || 0)}</small>`, { pct: polPct, sub: `${fmt(pol.onProgress || 0)} on progress · ${fmt(pol.noRatification || 0)} tidak ratifikasi` })
-          + mrow("Change Request", `${fmt(d.crDone)}<small>/${fmt(d.crRows.length)} selesai</small>`, { sub: d.crLate ? `<span class="bad">${fmt(d.crLate)} terlambat</span>` : "Tidak ada yang terlambat" })
-          + mrow("Business Excellence", d.beFirst ? `${f2(num(d.beFirst.realization))}` : "—", { sub: esc(d.beRows.map((b) => `${b.semester}: ${b.status}`).join(" · ")) }) })}
+        body: mrow(`NKO s.d. ${d.periodLabel}`, d.measured && Number.isFinite(d.nko) ? f2(d.nko) : "Belum diukur", { icon: "target", tone: nkoTone, pct: d.measured ? Math.min(d.nko, 100) : 0, tick: 100, sub: `Target 100 · ${fmt(d.perf.red || 0)} indikator di bawah target` })
+          + mrow("Ratifikasi kebijakan", `${fmt(pol.done || 0)}<small>/${fmt(pol.total || 0)}</small>`, { icon: "shield", tone: pol.total ? rateTone(polPct) : "neutral", pct: polPct, sub: `${fmt(pol.onProgress || 0)} on progress · ${fmt(pol.noRatification || 0)} tidak ratifikasi` })
+          + mrow("Change Request", `${fmt(d.crDone)}<small>/${fmt(d.crRows.length)} selesai</small>`, { icon: "code", tone: !d.crRows.length ? "neutral" : d.crLate ? "serious" : "good", sub: d.crLate ? `<span class="bad">${fmt(d.crLate)} terlambat</span>` : "Tidak ada yang terlambat" })
+          + mrow("Business Excellence", d.beFirst ? `${f2(num(d.beFirst.realization))}` : "—", { icon: "award", tone: !d.beRows.length ? "neutral" : d.beRows.every((b) => /tercapai/i.test(b.status || "")) ? "good" : "watch", sub: esc(d.beRows.map((b) => `${b.semester}: ${b.status}`).join(" · ")) }) })}
       ${card({ nav: "investment", name: "Investasi", icon: "wallet", tone: "fin", status: iTone, freshC: fchip(fresh.investment), cta: "Buka Investasi",
-        body: mrow("Realisasi AI", `${esc(d.inv.aiRealization || "—")}<small> / ${esc(d.inv.totalInvestment || "—")}</small>`, { pct: aiPct, tick: invPace, sub: `${f2(aiPct)}% · garis = laju waktu ${invPace ? fmt(invPace, 0) : "—"}%` })
-          + mrow("Realisasi AKI", `${esc(d.inv.akiRealization || "—")}<small> / ${esc(d.inv.akiTotal || "—")}</small>`, { pct: akiPct, tick: invPace, sub: `${f2(akiPct)}% · ${esc(d.inv.akiGapChip || "")}` })
-          + mrow("AKI Kantor Pusat · Sarpras Unit", `${esc(d.inv.akiOfficePct || "—")} · ${esc(d.inv.akiSarprasPct || "—")}`, { sub: "Serapan per porsi AKI" }) })}
+        body: mrow("Realisasi AI", `${esc(d.inv.aiRealization || "—")}<small> / ${esc(d.inv.totalInvestment || "—")}</small>`, { icon: "wallet", tone: paceTone(aiPct, invPace), pct: aiPct, tick: invPace, sub: `${f2(aiPct)}% · garis = laju waktu ${invPace ? fmt(invPace, 0) : "—"}%` })
+          + mrow("Realisasi AKI", `${esc(d.inv.akiRealization || "—")}<small> / ${esc(d.inv.akiTotal || "—")}</small>`, { icon: "coins", tone: paceTone(akiPct, invPace), pct: akiPct, tick: invPace, sub: `${f2(akiPct)}% · ${esc(d.inv.akiGapChip || "")}` })
+          + mrow("AKI Kantor Pusat · Sarpras Unit", `${esc(d.inv.akiOfficePct || "—")} · ${esc(d.inv.akiSarprasPct || "—")}`, { icon: "pie", tone: worst(paceTone(pctNum(d.inv.akiOfficePct), invPace), paceTone(pctNum(d.inv.akiSarprasPct), invPace)), sub: "Serapan per porsi AKI" }) })}
       ${card({ nav: "ao-office", name: "Anggaran Korporat", icon: "receipt", tone: "flow", status: cTone, freshC: fchip(fresh.corp), cta: "Buka Anggaran Korporat",
-        body: mrow(`Serapan RKAP s.d. ${d.corp.period || ""}`, `${f2(cAbs)}%`, { pct: cAbs, tick: cPace, sub: `${fmt(d.corp.total)} dari ${fmt(d.corp.rkap)} jt · laju ${cPace ? fmt(cPace, 0) : "—"}%` })
-          + mrow("Capaian target periode", `${fmt(d.corp.targetRate)}%`, { pct: d.corp.targetRate })
-          + mrow("Proyeksi 2026", `${fmt(d.corp.projectionRate)}%<small> RKAP</small>`, { pct: d.corp.projectionRate, color: "#5b7fc4", sub: `${fmt(d.corp.projection)} jt · ${fmt(d.corp.yoy)}% dari tahun lalu` }) })}
+        body: mrow(`Serapan RKAP s.d. ${d.corp.period || ""}`, `${f2(cAbs)}%`, { icon: "receipt", tone: paceTone(cAbs, cPace), pct: cAbs, tick: cPace, sub: `${fmt(d.corp.total)} dari ${fmt(d.corp.rkap)} jt · laju ${cPace ? fmt(cPace, 0) : "—"}%` })
+          + mrow("Capaian target periode", `${fmt(d.corp.targetRate)}%`, { icon: "flag", tone: paceTone(Number(d.corp.targetRate), 100), pct: d.corp.targetRate })
+          + mrow("Proyeksi 2026", `${fmt(d.corp.projectionRate)}%<small> RKAP</small>`, { icon: "telescope", tone: !Number.isFinite(Number(d.corp.projectionRate)) ? "neutral" : Number(d.corp.projectionRate) > 100 ? "critical" : "good", pct: d.corp.projectionRate, color: "#5b7fc4", sub: `${fmt(d.corp.projection)} jt · ${fmt(d.corp.yoy)}% dari tahun lalu` }) })}
       ${card({ nav: "ao", name: "Anggaran Kantor Pusat", icon: "building", tone: "gov", status: oTone, freshC: fchip(fresh.office), cta: "Buka Anggaran Kantor Pusat",
-        body: mrow(`Serapan ${d.office.selectedUnit || ""} s.d. ${d.office.period || ""}`, `${f2(oAbs)}%`, { pct: oAbs, tick: oPace, sub: `${fmt(d.office.realization)} dari ${fmt(d.office.rkap)} jt · laju ${oPace ? fmt(oPace, 0) : "—"}%` })
-          + mrow("Pertumbuhan dari tahun lalu", `${fmt(d.office.yoy)}%`, { sub: `Peringkat realisasi ${esc(d.office.rank || "—")}` })
-          + mrow("Pos melebihi RKAP", oOver.length ? `<span class="bad">${fmt(oOver.length)}</span>` : "0", { sub: oOver.length ? esc(oOver.map((c) => `${c.name} ${fmt(c.absorption)}%`).join(" · ")) : "Semua pos di bawah RKAP" }) })}
+        body: mrow(`Serapan ${d.office.selectedUnit || ""} s.d. ${d.office.period || ""}`, `${f2(oAbs)}%`, { icon: "receipt", tone: paceTone(oAbs, oPace), pct: oAbs, tick: oPace, sub: `${fmt(d.office.realization)} dari ${fmt(d.office.rkap)} jt · laju ${oPace ? fmt(oPace, 0) : "—"}%` })
+          + mrow("Pertumbuhan dari tahun lalu", `${fmt(d.office.yoy)}%`, { icon: "gauge", tone: "neutral", sub: `Peringkat realisasi ${esc(d.office.rank || "—")}` })
+          + mrow("Pos melebihi RKAP", oOver.length ? `<span class="bad">${fmt(oOver.length)}</span>` : "0", { icon: "alert", tone: oOver.length ? "serious" : "good", sub: oOver.length ? esc(oOver.map((c) => `${c.name} ${fmt(c.absorption)}%`).join(" · ")) : "Semua pos di bawah RKAP" }) })}
       ${card({ nav: "ev-infra", name: "Kesiapan Infrastruktur EV", icon: "plug", tone: "charge", status: eTone, freshC: "", cta: "Buka Kesiapan EV",
-        body: mrow("UP terjangkau SPKLU (≤ 5 km)", `${fmt(d.tiers.ok)}<small>/${fmt(evTotal)}</small>`, { pct: evOkPct, color: "#0f7a45", sub: `${fmt(evOkPct, 1)}% · ${fmt(d.evSum.sameLocation || 0)} satu lokasi` })
-          + `<div class="rd-ov-m"><div class="l"><span>Sebaran jarak ke SPKLU</span><b>${fmt(evTotal)} UP</b></div>
+        body: mrow("UP terjangkau SPKLU (≤ 5 km)", `${fmt(d.tiers.ok)}<small>/${fmt(evTotal)}</small>`, { icon: "plug", tone: evTotal ? rateTone(evOkPct, 80, 60) : "neutral", pct: evOkPct, color: "#0f7a45", sub: `${fmt(evOkPct, 1)}% · ${fmt(d.evSum.sameLocation || 0)} satu lokasi` })
+          + `<div class="rd-ov-m has-ico" data-status="${eTone}"><span class="rd-ov-mico" title="Sebaran jarak ke SPKLU: ${esc(TONE_WORD[eTone] || "")}">${ico("route")}</span><div class="rd-ov-mbody"><div class="l"><span>Sebaran jarak ke SPKLU</span><b>${fmt(evTotal)} UP</b></div>
               <div class="rd-ov-stack">${EV_TIERS.map((t) => (d.tiers[t.key] ? `<i style="flex:${d.tiers[t.key]};background:${t.color}" title="${esc(t.label)} ${fmt(d.tiers[t.key])}"></i>` : "")).join("")}</div>
-              <small>${EV_TIERS.map((t) => `<span class="k"><i style="background:${t.color}"></i>${esc(t.label)} ${fmt(d.tiers[t.key])}</span>`).join("")}</small></div>`
-          + mrow("Kandidat SPKLU dianalisis", fmt(d.evSum.spkluCandidates || 0), { sub: d.farthest ? `Terjauh: ${esc(d.farthest.unit)} ${fmt(Number(d.farthest.distance), 1)} km` : "" }) })}
+              <small>${EV_TIERS.map((t) => `<span class="k"><i style="background:${t.color}"></i>${esc(t.label)} ${fmt(d.tiers[t.key])}</span>`).join("")}</small></div></div>`
+          + mrow("Kandidat SPKLU dianalisis", fmt(d.evSum.spkluCandidates || 0), { icon: "pin", tone: "neutral", sub: d.farthest ? `Terjauh: ${esc(d.farthest.unit)} ${fmt(Number(d.farthest.distance), 1)} km` : "" }) })}
     </div>`;
 
     const attention = `<section class="rd-card rd-ov-att">${cardHead("Perlu perhatian", "Diurutkan dari yang paling mendesak, lintas semua menu. Klik untuk membuka menu terkait.")}
-      <ol class="rd-ov-list">${shown.slice(0, 8).map((i) => `<li data-tone="${i.tone}">
+      <ol class="rd-ov-list">${shown.filter((i) => matchF(i.tone)).slice(0, 8).map((i) => `<li data-tone="${i.tone}">
         <span class="dot"></span>
         <div><b>${i.title}</b><small>${esc(i.menu)} · ${i.detail}</small></div>
         ${chip(i.tone, TONE_WORD[i.tone], true)}
@@ -1095,7 +1108,7 @@
       }).join("")}</div>
       <p class="rd-ov-note">Status: ≥ 90% dari laju = sesuai jalur · 70–90% perlu perhatian · 35–70% perlu tindakan · &lt; 35% kritis. Periode sumber berbeda tiap menu, bandingkan dengan konteks tanggalnya.</p></section>`;
 
-    return [head, strip, summaryHero, cards, `<div class="rd-grid rd-ov-lower">${attention}${paceCard}</div>`].join("");
+    return [head, strip, summaryHero, legend, cards, `<div class="rd-grid rd-ov-lower">${attention}${paceCard}</div>`].join("");
   }
 
   /* ---------------- orchestration ---------------- */
@@ -1137,6 +1150,21 @@
 
   // Tombol di tampilan baru meneruskan klik ke kontrol lama (import/export).
   document.addEventListener("click", (event) => {
+    const ovf = event.target.closest("[data-rd-ovfilter]");
+    if (ovf && ovf.closest(".rd-view")) {
+      const k = ovf.getAttribute("data-rd-ovfilter");
+      ui.ovFilter = ui.ovFilter === k ? "" : k;
+      event.stopPropagation();
+      renderActive();
+      const again = document.querySelector(`.rd-view [data-rd-ovfilter="${ui.ovFilter || k}"]`) || document.querySelector(".rd-view .rd-ov-legend .rd-ov-lg");
+      if (again) again.focus({ preventScroll: true });
+      return;
+    }
+    // Klik tombol/tautan di dalam kartu jangan ikut memicu tautan kartu.
+    if (event.target.closest("[data-rd-cardlink]") && event.target.closest("button, a") ) {
+      const inner = event.target.closest("button, a");
+      if (inner.closest("[data-rd-cardlink]") && !inner.hasAttribute("data-rd-proxy")) return;
+    }
     const toggle = event.target.closest("[data-rd-toggle]");
     if (toggle && toggle.closest(".rd-view")) {
       const key = toggle.getAttribute("data-rd-toggle");
@@ -1149,6 +1177,14 @@
     if (!trigger) return;
     const target = document.querySelector(trigger.getAttribute("data-rd-proxy"));
     if (target) { event.preventDefault(); setTimeout(() => target.click(), 0); }
+  });
+
+  // Kartu Overview bisa dibuka dengan keyboard (Enter / Spasi).
+  document.addEventListener("keydown", (event) => {
+    const card = event.target.closest && event.target.closest("[data-rd-cardlink]");
+    if (!card || event.target !== card || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    card.click();
   });
 
   // Rerender saat data/tampilan lama berubah (import, sinkron Google Sheets, pilih periode).
