@@ -5550,7 +5550,11 @@ function initEvGeoMap() {
   bindEvUnitSearch((index) => select(index, true, true));
   evGeoMapState = { map, select, unitMarkers, ulpMarkers, container: mapEl };
   select(0, false);
-  setTimeout(() => map.invalidateSize(), 150);
+  setTimeout(() => {
+    // Peta bisa sudah dihapus sebelum timer jalan (fallback peta statis saat tile gagal,
+    // atau inisialisasi ulang). invalidateSize pada peta yang sudah dihapus memicu error Leaflet.
+    if (evGeoMapState?.map === map && map.getContainer()?.isConnected) map.invalidateSize();
+  }, 150);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
