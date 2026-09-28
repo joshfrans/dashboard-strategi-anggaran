@@ -1,0 +1,270 @@
+/* Add-on Kendaraan Listrik — Kesiapan Infrastruktur EV (2026-09)
+ * Banner bernuansa EV & SPKLU + tab navigasi bagian + efek interaksi kartu.
+ * Disisipkan di dalam tampilan Kesiapan Infrastruktur EV; tampilan lama tetap utuh.
+ */
+:root {
+  --eg-navy: #14213d;
+  --eg-deep: #0c3b5c;
+  --eg-teal: #0b5f70;
+  --eg-emerald: #0e9aa7;
+  --eg-mint: #a5f3fc;
+  --eg-on-dark: #ffffff;
+  --eg-on-dark-2: #d6e6f2;
+}
+
+/* Elemen disisipkan di dalam .rd-view Kesiapan Infrastruktur EV sehingga ikut tampil/tersembunyi bersama menu itu. */
+.eg-hero { display: grid; }
+.eg-tabs { display: block; }
+.eg-hero[hidden] { display: none !important; }
+
+/* ---------- Banner ---------- */
+.eg-hero {
+  position: relative;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--rd-radius, 14px);
+  overflow: hidden;
+  color: var(--eg-on-dark);
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(34, 211, 238, .24) 0%, rgba(34, 211, 238, 0) 55%),
+    linear-gradient(118deg, var(--eg-navy) 0%, var(--eg-deep) 48%, var(--eg-teal) 100%);
+  box-shadow: 0 1px 2px rgba(20, 33, 61, .08), 0 14px 34px rgba(14, 47, 69, .18);
+  font-family: var(--rd-font, system-ui, sans-serif);
+}
+.eg-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 60%);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 60%);
+}
+.eg-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 8px 4px 28px;
+  min-width: 0;
+}
+.eg-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--eg-mint);
+}
+.eg-eyebrow svg { width: 16px; height: 16px; flex: none; }
+
+.eg-nko { display: flex; flex-direction: column; gap: 4px; }
+.eg-nko-label { font-size: 13px; font-weight: 600; color: var(--eg-on-dark-2); text-transform: uppercase; letter-spacing: .06em; }
+.eg-nko-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; }
+.eg-nko-val {
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+.eg-nko-tgt { font-size: 16px; color: var(--eg-on-dark-2); font-variant-numeric: tabular-nums; }
+.eg-nko-lead { font-size: 14px; color: var(--eg-on-dark-2); }
+.eg-nko .eg-chip { align-self: center; }
+
+.eg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: var(--rd-neutral-bg, #eef1f6);
+  color: var(--rd-neutral, #44506a);
+}
+.eg-chip svg { width: 14px; height: 14px; flex: none; stroke-width: 2.4; }
+.eg-chip.good { background: var(--rd-good-bg, #e8f6ee); color: var(--rd-good, #0a6e33); }
+.eg-chip.watch { background: var(--rd-watch-bg, #fff4dc); color: var(--rd-watch, #7a4f00); }
+.eg-chip.serious { background: var(--rd-serious-bg, #fdece4); color: var(--rd-serious, #a8380b); }
+
+/* Tiga sorotan yang bisa diklik */
+.eg-stats {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 28px 24px;
+  background: linear-gradient(180deg, rgba(6, 30, 45, 0) 0%, rgba(6, 30, 45, .35) 100%);
+}
+.eg-stat {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 16px;
+  align-items: start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 12px 12px 12px 12px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.eg-stat:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .14); border-color: rgba(165, 243, 252, .5); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); }
+.eg-stat:focus-visible { outline: 3px solid #ffd24a; outline-offset: 2px; }
+.eg-stat-ico {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(165, 243, 252, .14);
+  color: var(--eg-mint);
+}
+.eg-stat-ico svg { width: 20px; height: 20px; }
+.eg-stat-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.eg-stat-label { font-size: 12px; font-weight: 600; color: var(--eg-on-dark-2); }
+.eg-stat-body b { font-size: 16px; line-height: 1.3; font-weight: 700; font-variant-numeric: tabular-nums; }
+.eg-stat-body small { font-size: 12px; color: var(--eg-on-dark-2); }
+.eg-late {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--rd-critical-bg, #fde8e8);
+  color: var(--rd-critical, #a61b1b);
+}
+.eg-stat-go { width: 16px; height: 16px; margin-top: 10px; opacity: .6; transition: transform .18s ease, opacity .18s ease; }
+.eg-stat:hover .eg-stat-go { transform: translateX(3px); opacity: 1; }
+
+/* Ilustrasi */
+.eg-hero-art { grid-column: 2; grid-row: 1; position: relative; z-index: 0; display: flex; align-items: flex-end; justify-content: flex-end; min-width: 0; }
+.eg-art { display: block; width: 100%; height: auto; max-height: 250px; }
+.eg-rotor { animation: eg-spin 7s linear infinite; transform-box: view-box; transform-origin: 0 0; }
+@keyframes eg-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Tab navigasi bagian (lengket) ---------- */
+.eg-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--rd-line, #d5dae3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--rd-shadow, 0 6px 20px rgba(20, 33, 61, .04));
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.eg-tabs-inner { display: flex; gap: 4px; min-width: max-content; }
+.eg-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--rd-ink-2, #4a5670);
+  font: 600 14px/1 var(--rd-font, system-ui, sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease;
+}
+.eg-tab svg { width: 17px; height: 17px; flex: none; }
+.eg-tab:hover { background: var(--rd-accent-soft, #edf2fb); color: var(--rd-ink, #14213d); }
+.eg-tab.is-active { background: var(--eg-navy); color: #fff; }
+.eg-tab:focus-visible { outline: 3px solid var(--rd-accent, #1f4fa3); outline-offset: 2px; }
+
+/* ---------- Interaksi kartu yang sudah ada (tanpa mengubah isinya) ---------- */
+body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] [data-eg-section] { scroll-margin-top: 76px; }
+body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-kpi,
+body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-card {
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(20, 33, 61, .05), 0 14px 28px rgba(20, 33, 61, .10);
+}
+body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-card:hover {
+  box-shadow: 0 2px 4px rgba(20, 33, 61, .05), 0 12px 26px rgba(20, 33, 61, .08);
+}
+.eg-flash { animation: eg-flash 1.4s ease-out 1; }
+@keyframes eg-flash {
+  0% { box-shadow: 0 0 0 0 rgba(14, 154, 167, .55); }
+  40% { box-shadow: 0 0 0 6px rgba(14, 154, 167, .25); }
+  100% { box-shadow: var(--rd-shadow, none); }
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1100px) {
+  .eg-hero { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); }
+  .eg-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .eg-hero { grid-template-columns: minmax(0, 1fr); }
+  .eg-hero-copy { padding: 20px 18px 8px; }
+  .eg-hero-art { grid-column: 1; grid-row: 2; justify-content: center; margin-top: -8px; }
+  .eg-stats { grid-template-columns: minmax(0, 1fr); padding: 8px 18px 20px; }
+  .eg-art { max-height: 170px; }
+  .eg-nko-val { font-size: 36px; }
+}
+
+/* ---------- Aksesibilitas & cetak ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .eg-rotor, .eg-flash { animation: none !important; }
+  .eg-stat, .eg-tab, .eg-stat-go,
+  body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-kpi,
+  body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] .rd-card { transition: none !important; transform: none !important; }
+}
+@media print {
+  .eg-tabs { display: none !important; }
+  .eg-hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .eg-rotor { animation: none; }
+}
+
+/* Animasi EV: pengisian baterai, arus pada kabel, jaringan SPKLU berdenyut, marka jalan bergerak */
+.eg-charge { animation: eg-charge 3.6s ease-in-out infinite; transform-box: fill-box; transform-origin: left center; }
+@keyframes eg-charge { 0% { transform: scaleX(.25); } 70%, 100% { transform: scaleX(1); } }
+.eg-flow { animation: eg-flow 1.2s linear infinite; }
+@keyframes eg-flow { to { stroke-dashoffset: -24; } }
+.eg-node { animation: eg-pulse 2.8s ease-in-out infinite; }
+.eg-node:nth-of-type(2n) { animation-delay: -1s; }
+.eg-node:nth-of-type(3n) { animation-delay: -1.9s; }
+@keyframes eg-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.eg-road { animation: eg-road 1.4s linear infinite; }
+@keyframes eg-road { to { stroke-dashoffset: -40; } }
+@media (prefers-reduced-motion: reduce) { .eg-charge, .eg-flow, .eg-node, .eg-road { animation: none !important; } }
+@media print { .eg-charge, .eg-flow, .eg-node, .eg-road { animation: none; } }
+
+/* Peta geolokasi berada di luar panel baru; beri jarak saat dituju dari tab. */
+.ev-geo-card[data-eg-section] { scroll-margin-top: 20px; }
+
+/* Di layar ≤760px sidebar menjadi bilah atas lengket (64px); tab diletakkan di bawahnya. */
+@media (max-width: 760px) {
+  .eg-tabs { top: 64px; }
+  body.rd-enabled .dashboard[data-rd-active="ev-infra"] > .rd-view[data-rd="ev-infra"] [data-eg-section] { scroll-margin-top: 140px; }
+}
