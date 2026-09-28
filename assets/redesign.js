@@ -1281,3 +1281,19 @@
   js.defer = true;
   document.body.appendChild(js);
 })();
+
+/* Add-on Energi Kelistrikan untuk menu Investasi — berkas terpisah, tidak mengubah tampilan di atas. */
+(function () {
+  "use strict";
+  const q = new URLSearchParams(window.location.search);
+  if (q.get("legacy") === "1" || q.get("green") === "0") return;
+  const v = "20260928-1";
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = `./assets/investment-energy.css?v=${v}`;
+  document.head.appendChild(css);
+  const js = document.createElement("script");
+  js.src = `./assets/investment-energy.js?v=${v}`;
+  js.defer = true;
+  document.body.appendChild(js);
+})();

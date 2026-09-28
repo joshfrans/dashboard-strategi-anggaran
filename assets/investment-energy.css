@@ -1,0 +1,270 @@
+/* Add-on Energi Kelistrikan — Investasi (2026-09)
+ * Banner investasi energi kelistrikan + tab navigasi bagian + efek interaksi kartu.
+ * Disisipkan di dalam tampilan Investasi; tampilan lama tetap utuh.
+ */
+:root {
+  --ig-navy: #14213d;
+  --ig-deep: #0f2f6b;
+  --ig-teal: #0b4a8f;
+  --ig-emerald: #2f6fd0;
+  --ig-mint: #ffe27a;
+  --ig-on-dark: #ffffff;
+  --ig-on-dark-2: #d6e6f2;
+}
+
+/* Elemen disisipkan di dalam .rd-view Investasi sehingga ikut tampil/tersembunyi bersama menu itu. */
+.ig-hero { display: grid; }
+.ig-tabs { display: block; }
+.ig-hero[hidden] { display: none !important; }
+
+/* ---------- Banner ---------- */
+.ig-hero {
+  position: relative;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--rd-radius, 14px);
+  overflow: hidden;
+  color: var(--ig-on-dark);
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(125, 211, 252, .26) 0%, rgba(125, 211, 252, 0) 55%),
+    linear-gradient(118deg, var(--ig-navy) 0%, var(--ig-deep) 48%, var(--ig-teal) 100%);
+  box-shadow: 0 1px 2px rgba(20, 33, 61, .08), 0 14px 34px rgba(14, 47, 69, .18);
+  font-family: var(--rd-font, system-ui, sans-serif);
+}
+.ig-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 60%);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 60%);
+}
+.ig-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 8px 4px 28px;
+  min-width: 0;
+}
+.ig-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--ig-mint);
+}
+.ig-eyebrow svg { width: 16px; height: 16px; flex: none; }
+
+.ig-nko { display: flex; flex-direction: column; gap: 4px; }
+.ig-nko-label { font-size: 13px; font-weight: 600; color: var(--ig-on-dark-2); text-transform: uppercase; letter-spacing: .06em; }
+.ig-nko-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; }
+.ig-nko-val {
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+.ig-nko-tgt { font-size: 16px; color: var(--ig-on-dark-2); font-variant-numeric: tabular-nums; }
+.ig-nko-lead { font-size: 14px; color: var(--ig-on-dark-2); }
+.ig-nko .ig-chip { align-self: center; }
+
+.ig-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: var(--rd-neutral-bg, #eef1f6);
+  color: var(--rd-neutral, #44506a);
+}
+.ig-chip svg { width: 14px; height: 14px; flex: none; stroke-width: 2.4; }
+.ig-chip.good { background: var(--rd-good-bg, #e8f6ee); color: var(--rd-good, #0a6e33); }
+.ig-chip.watch { background: var(--rd-watch-bg, #fff4dc); color: var(--rd-watch, #7a4f00); }
+.ig-chip.serious { background: var(--rd-serious-bg, #fdece4); color: var(--rd-serious, #a8380b); }
+
+/* Tiga sorotan yang bisa diklik */
+.ig-stats {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 28px 24px;
+  background: linear-gradient(180deg, rgba(8, 24, 60, 0) 0%, rgba(8, 24, 60, .35) 100%);
+}
+.ig-stat {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 16px;
+  align-items: start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 12px 12px 12px 12px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.ig-stat:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .14); border-color: rgba(255, 226, 122, .5); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); }
+.ig-stat:focus-visible { outline: 3px solid #ffd24a; outline-offset: 2px; }
+.ig-stat-ico {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 226, 122, .14);
+  color: var(--ig-mint);
+}
+.ig-stat-ico svg { width: 20px; height: 20px; }
+.ig-stat-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ig-stat-label { font-size: 12px; font-weight: 600; color: var(--ig-on-dark-2); }
+.ig-stat-body b { font-size: 16px; line-height: 1.3; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ig-stat-body small { font-size: 12px; color: var(--ig-on-dark-2); }
+.ig-late {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--rd-critical-bg, #fde8e8);
+  color: var(--rd-critical, #a61b1b);
+}
+.ig-stat-go { width: 16px; height: 16px; margin-top: 10px; opacity: .6; transition: transform .18s ease, opacity .18s ease; }
+.ig-stat:hover .ig-stat-go { transform: translateX(3px); opacity: 1; }
+
+/* Ilustrasi */
+.ig-hero-art { grid-column: 2; grid-row: 1; position: relative; z-index: 0; display: flex; align-items: flex-end; justify-content: flex-end; min-width: 0; }
+.ig-art { display: block; width: 100%; height: auto; max-height: 250px; }
+.ig-rotor { animation: ig-spin 7s linear infinite; transform-box: view-box; transform-origin: 0 0; }
+@keyframes ig-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Tab navigasi bagian (lengket) ---------- */
+.ig-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--rd-line, #d5dae3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--rd-shadow, 0 6px 20px rgba(20, 33, 61, .04));
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.ig-tabs-inner { display: flex; gap: 4px; min-width: max-content; }
+.ig-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--rd-ink-2, #4a5670);
+  font: 600 14px/1 var(--rd-font, system-ui, sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease;
+}
+.ig-tab svg { width: 17px; height: 17px; flex: none; }
+.ig-tab:hover { background: var(--rd-accent-soft, #edf2fb); color: var(--rd-ink, #14213d); }
+.ig-tab.is-active { background: var(--ig-navy); color: #fff; }
+.ig-tab:focus-visible { outline: 3px solid var(--rd-accent, #1f4fa3); outline-offset: 2px; }
+
+/* ---------- Interaksi kartu yang sudah ada (tanpa mengubah isinya) ---------- */
+body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] [data-ig-section] { scroll-margin-top: 76px; }
+body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-kpi,
+body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-card {
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(20, 33, 61, .05), 0 14px 28px rgba(20, 33, 61, .10);
+}
+body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-card:hover {
+  box-shadow: 0 2px 4px rgba(20, 33, 61, .05), 0 12px 26px rgba(20, 33, 61, .08);
+}
+.ig-flash { animation: ig-flash 1.4s ease-out 1; }
+@keyframes ig-flash {
+  0% { box-shadow: 0 0 0 0 rgba(47, 111, 208, .55); }
+  40% { box-shadow: 0 0 0 6px rgba(47, 111, 208, .25); }
+  100% { box-shadow: var(--rd-shadow, none); }
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1100px) {
+  .ig-hero { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); }
+  .ig-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .ig-hero { grid-template-columns: minmax(0, 1fr); }
+  .ig-hero-copy { padding: 20px 18px 8px; }
+  .ig-hero-art { grid-column: 1; grid-row: 2; justify-content: center; margin-top: -8px; }
+  .ig-stats { grid-template-columns: minmax(0, 1fr); padding: 8px 18px 20px; }
+  .ig-art { max-height: 170px; }
+  .ig-nko-val { font-size: 36px; }
+}
+
+/* ---------- Aksesibilitas & cetak ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ig-rotor, .ig-flash { animation: none !important; }
+  .ig-stat, .ig-tab, .ig-stat-go,
+  body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-kpi,
+  body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] .rd-card { transition: none !important; transform: none !important; }
+}
+@media print {
+  .ig-tabs { display: none !important; }
+  .ig-hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ig-rotor { animation: none; }
+}
+
+/* Aliran listrik pada kabel transmisi & jendela kota yang menyala */
+.ig-flow { animation: ig-flow 1.6s linear infinite; }
+@keyframes ig-flow { to { stroke-dashoffset: -34; } }
+.ig-lit { animation: ig-twinkle 3.2s ease-in-out infinite; }
+.ig-lit:nth-of-type(3n) { animation-delay: -1.1s; }
+.ig-lit:nth-of-type(4n) { animation-delay: -2.2s; }
+@keyframes ig-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .ig-flow, .ig-lit { animation: none !important; } }
+@media print { .ig-flow, .ig-lit { animation: none; } }
+
+/* Chip kesegaran data di banner */
+.ig-fresh { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; }
+.ig-trend { stroke-dasharray: 360; stroke-dashoffset: 360; animation: ig-draw 1.6s ease-out .2s forwards; }
+@keyframes ig-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ig-trend { animation: none; stroke-dashoffset: 0; } }
+@media print { .ig-trend { animation: none; stroke-dashoffset: 0; } }
+
+/* Di layar ≤760px sidebar menjadi bilah atas lengket (64px); tab diletakkan di bawahnya. */
+@media (max-width: 760px) {
+  .ig-tabs { top: 64px; }
+  body.rd-enabled .dashboard[data-rd-active="investment"] > .rd-view[data-rd="investment"] [data-ig-section] { scroll-margin-top: 140px; }
+}
