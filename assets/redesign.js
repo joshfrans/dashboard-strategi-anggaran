@@ -1265,3 +1265,19 @@
   renderActive();
   window.addEventListener("load", () => schedule(0));
 })();
+
+/* Add-on Green Energy untuk Strategi & Evaluasi — berkas terpisah, tidak mengubah tampilan di atas. */
+(function () {
+  "use strict";
+  const q = new URLSearchParams(window.location.search);
+  if (q.get("legacy") === "1" || q.get("green") === "0") return;
+  const v = "20260928-1";
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = `./assets/strategy-green.css?v=${v}`;
+  document.head.appendChild(css);
+  const js = document.createElement("script");
+  js.src = `./assets/strategy-green.js?v=${v}`;
+  js.defer = true;
+  document.body.appendChild(js);
+})();
