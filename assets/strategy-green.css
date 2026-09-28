@@ -244,3 +244,9 @@ body.rd-enabled .dashboard[data-rd-active="strategy"] > .rd-view[data-rd="strate
   .sg-hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .sg-rotor { animation: none; }
 }
+
+/* Di layar ≤760px sidebar menjadi bilah atas lengket (64px); tab diletakkan di bawahnya. */
+@media (max-width: 760px) {
+  .sg-tabs { top: 64px; }
+  body.rd-enabled .dashboard[data-rd-active="strategy"] > .rd-view[data-rd="strategy"] [data-sg-section] { scroll-margin-top: 140px; }
+}
