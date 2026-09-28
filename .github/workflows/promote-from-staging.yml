@@ -1,0 +1,105 @@
+name: Promosi dari staging (dashboard-ga-claude)
+
+# Alur staging -> produksi:
+#   1. Redesign/perbaikan dikerjakan dan diuji di joshfrans/dashboard-ga-claude
+#      (https://joshfrans.github.io/dashboard-ga-claude/).
+#   2. Jalankan workflow ini secara manual (Actions -> Run workflow).
+#   3. Workflow menyalin kode staging ke branch baru di repo ini dan membuka
+#      Pull Request. Produksi baru berubah setelah PR di-review dan di-merge.
+#
+# Yang TIDAK ikut disalin (tetap milik produksi):
+#   - .git/, .github/ (workflow produksi), README.md
+#   - assets/data-* (data & snapshot yang disinkron otomatis dari Google Sheets)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch atau commit di dashboard-ga-claude yang dipromosikan"
+        required: true
+        default: "main"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: promote-from-staging
+  cancel-in-progress: false
+
+env:
+  STAGING_REPO: https://github.com/joshfrans/dashboard-ga-claude.git
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout produksi
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Ambil kode staging
+        env:
+          REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$REF" | grep -Eq '^[A-Za-z0-9._/-]+$'; then
+            echo "::error::Ref tidak valid: $REF"; exit 1
+          fi
+          git init -q /tmp/staging
+          git -C /tmp/staging fetch -q --depth 1 "$STAGING_REPO" "$REF"
+          git -C /tmp/staging checkout -q FETCH_HEAD
+          echo "SHA=$(git -C /tmp/staging rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Salin ke branch promosi
+        run: |
+          set -euo pipefail
+          SHORT="${SHA::7}"
+          BR="promote/staging-${SHORT}-${GITHUB_RUN_NUMBER}"
+          git checkout -q -b "$BR"
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='README.md' \
+            --exclude='assets/data-*' \
+            /tmp/staging/ ./
+          # Tautan yang menunjuk ke repo/situs staging dikembalikan ke produksi.
+          { grep -rlI 'dashboard-ga-claude' --exclude-dir=.git --exclude-dir=.github --exclude=README.md . || true; } \
+            | xargs -r sed -i 's#dashboard-ga-claude#dashboard-strategi-anggaran#g'
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Tidak ada perbedaan antara staging dan produksi."
+            echo "NOCHANGE=1" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898099+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Promosi dari dashboard-ga-claude@${SHORT}"
+          git push -q -u origin "$BR"
+          echo "BR=$BR" >> "$GITHUB_ENV"
+          {
+            echo "### File yang berubah"
+            echo '```'
+            git diff --stat HEAD~1 HEAD
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Buka Pull Request
+        if: env.NOCHANGE != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BODY="Promosi otomatis dari staging joshfrans/dashboard-ga-claude @ ${SHA}.
+
+          - Pratinjau staging: https://joshfrans.github.io/dashboard-ga-claude/
+          - Tidak disalin: .github/, README.md, assets/data-*
+          - Tautan dashboard-ga-claude sudah dikembalikan ke dashboard-strategi-anggaran.
+
+          Review perubahan, lalu Merge untuk menayangkan ke produksi."
+          if ! gh pr create --base main --head "$BR" \
+               --title "Promosi dari staging (dashboard-ga-claude@${SHA::7})" \
+               --body "$BODY"; then
+            echo "::warning::PR otomatis gagal dibuat (cek Settings -> Actions -> General -> 'Allow GitHub Actions to create and approve pull requests'). Buka PR manual: https://github.com/${GITHUB_REPOSITORY}/compare/main...${BR}?expand=1"
+          fi
