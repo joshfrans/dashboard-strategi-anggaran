@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # Gitleaks memindai rentang commit push/PR; butuh riwayat lengkap (bukan shallow clone).
+          fetch-depth: 0
 
       - name: Scan public files for data leaks
         run: node tools/data-leak-scan.mjs
