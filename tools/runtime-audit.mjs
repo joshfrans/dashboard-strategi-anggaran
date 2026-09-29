@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 const url = process.argv[2] || "http://127.0.0.1:4173/";
 const browser = await chromium.launch({
   headless: true,
-  executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  executablePath: process.env.CHROME_PATH || (process.platform === "win32" ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" : undefined)
 });
 
 async function inspect(viewport) {
