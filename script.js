@@ -514,7 +514,9 @@ function strategyDataFreshness() {
   return dashboardFreshness(dataTime);
 }
 
-function setStrategySourceStatus(sourceLabel = "Google Sheets (sinkron otomatis)", syncedAt = new Date(), detail = "") {
+// dataAt = waktu data sumber diperbarui (meta sinkron / Last-Modified), bukan waktu browser memeriksa.
+// null bila waktu data tidak diketahui (cache/aset bawaan) agar tidak menampilkan jam yang menyesatkan.
+function setStrategySourceStatus(sourceLabel = "Google Sheets (sinkron otomatis)", dataAt = null, detail = "") {
   const element = document.getElementById("strategySourceStatus");
   if (!element) return;
   // Sumber Strategi kini memakai ambang kesegaran yang sama dengan
@@ -522,7 +524,9 @@ function setStrategySourceStatus(sourceLabel = "Google Sheets (sinkron otomatis)
   // atau 3 bulan tetap tampil "sinkron otomatis" tanpa peringatan.
   const freshness = strategyDataFreshness();
   const staleNote = freshness.known && freshness.stale ? ` · ${freshness.label}` : "";
-  const status = `Sumber data: ${sourceLabel}${detail ? ` - ${detail}` : ""} - sinkron ${formatSourceSyncTimestamp(syncedAt)}`;
+  const validDataAt = dataAt instanceof Date && !Number.isNaN(dataAt.getTime()) ? dataAt : null;
+  const dataNote = validDataAt ? ` · data diperbarui ${formatSourceSyncTimestamp(validDataAt)} WIB` : "";
+  const status = `Sumber data: ${sourceLabel}${detail ? ` - ${detail}` : ""}${dataNote}`;
   element.textContent = `Sumber data: ${sourceLabel}${detail ? ` (${detail})` : ""}${staleNote}`;
   element.classList.toggle("is-stale", Boolean(staleNote));
   element.title = status;
@@ -3554,6 +3558,7 @@ function renderStrategyDashboard() {
 // lewat penanda waktu) dan unduhan penuh hanya terjadi saat versi berubah.
 let strategySnapshotVersion = null;
 let strategySnapshotCheckedAt = null;
+let strategySourceDataAt = null;
 
 function snapshotVersionFromHeaders(headers) {
   if (!headers) return null;
@@ -3562,6 +3567,26 @@ function snapshotVersionFromHeaders(headers) {
   const length = headers.get("content-length");
   if (etag) return `etag:${etag}`;
   if (lastModified) return `lm:${lastModified}|${length || ""}`;
+  return null;
+}
+
+// Waktu data sebenarnya ditulis workflow sinkron ke file meta. Last-Modified snapshot
+// di GitHub Pages ikut berubah setiap deploy kode, jadi hanya dipakai sebagai cadangan.
+async function loadStrategySnapshotDataTime() {
+  try {
+    const response = await fetch(`./assets/data-source-strategi-evaluasi-online.meta.json?_=${Date.now()}`, {
+      cache: "no-store",
+      credentials: "omit"
+    });
+    if (!response.ok) return null;
+    const meta = await response.json();
+    for (const value of [meta?.sourceModifiedAt, meta?.syncedAt]) {
+      const parsed = value ? new Date(value) : null;
+      if (parsed && !Number.isNaN(parsed.getTime())) return parsed;
+    }
+  } catch (error) {
+    console.info("Meta waktu data tidak terbaca:", error);
+  }
   return null;
 }
 
@@ -3630,9 +3655,12 @@ async function loadGoogleStrategyDataSource() {
     strategySnapshotVersion = snapshotVersionFromHeaders(response.headers);
     const lastModified = response.headers.get("last-modified");
     const parsedLastModified = lastModified ? new Date(lastModified) : null;
-    const sourceTime = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : new Date();
+    const knownLastModified = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : null;
+    const metaDataTime = await loadStrategySnapshotDataTime();
+    strategySourceDataAt = metaDataTime || knownLastModified;
+    const sourceTime = strategySourceDataAt || new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
-    setStrategySourceStatus("Google Sheets (sinkron otomatis)", sourceTime);
+    setStrategySourceStatus("Google Sheets (sinkron otomatis)", strategySourceDataAt);
     saveLocalStrategyDataSource("google-cache");
     return true;
   } catch (error) {
@@ -3669,22 +3697,22 @@ async function loadStrategyDataSource() {
       saveLocalStrategyDataSource("google-cache");
       setStrategySourceStatus(
         googleHasRatification ? "Google Sheets (sinkron otomatis)" : "Google Sheets + Excel Ratifikasi",
-        new Date()
+        strategySourceDataAt
       );
     } else if (ratificationLoaded) {
       saveLocalStrategyDataSource("asset-cache");
-      setStrategySourceStatus("Excel Ratifikasi", new Date());
+      setStrategySourceStatus("Excel Ratifikasi", null);
     }
     return true;
   }
   if (loadLocalStrategyDataSource({ mode: "import" })) {
-    setStrategySourceStatus("File import (lokal)", new Date(), "cadangan browser ini");
+    setStrategySourceStatus("File import (lokal)", null, "cadangan browser ini");
     return true;
   }
   if (loadLocalStrategyDataSource()) {
     const mode = localStorage.getItem(STRATEGY_LOCAL_SOURCE_MODE_KEY) || "google-cache";
     const sourceLabel = mode === "google-cache" ? "Cache Google terakhir" : "Data import lokal";
-    setStrategySourceStatus(sourceLabel, new Date(), strategyGoogleSourceError);
+    setStrategySourceStatus(sourceLabel, null, strategyGoogleSourceError);
     return true;
   }
   try {
@@ -3692,7 +3720,7 @@ async function loadStrategyDataSource() {
     if (!response.ok) return false;
     const source = await response.json();
     const applied = applyStrategyDataSource(source);
-    if (applied) setStrategySourceStatus("Data bawaan dashboard", new Date(), strategyGoogleSourceError);
+    if (applied) setStrategySourceStatus("Data bawaan dashboard", null, strategyGoogleSourceError);
     return applied;
   } catch (error) {
     console.info("Data source Strategi & Evaluasi tidak dimuat:", error);
@@ -3730,7 +3758,7 @@ async function refreshOnlineDashboardData(options = {}) {
     renderStrategyDashboard();
     // Tanpa argumen detail: sebelumnya label menjadi
     // "Google Sheets (sinkron otomatis) (snapshot diperiksa berkala)".
-    setStrategySourceStatus("Google Sheets (sinkron otomatis)", new Date());
+    setStrategySourceStatus("Google Sheets (sinkron otomatis)", strategySourceDataAt);
     updateStrategySourceCheckedTitle();
     if (!silent) {
       showImportToast(
