@@ -1,9 +1,20 @@
+import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
 
-const url = process.argv[2] || "http://127.0.0.1:4173/";
+const outDir = process.env.AUDIT_OUT_DIR || "../outputs";
+mkdirSync(outDir, { recursive: true });
+
+// Audit ini memeriksa logika data pada DOM tampilan lama (legacy), yang tetap menjadi
+// sumber data untuk tampilan redesign. Tambahkan ?legacy=1 agar elemennya terlihat & bisa diklik.
+const baseUrl = process.argv[2] || "http://127.0.0.1:4173/";
+const url = (() => {
+  const target = new URL(baseUrl);
+  if (!target.searchParams.has("legacy")) target.searchParams.set("legacy", "1");
+  return target.toString();
+})();
 const browser = await chromium.launch({
   headless: true,
-  executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  executablePath: process.env.CHROME_PATH || (process.platform === "win32" ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" : undefined)
 });
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
 const errors = [];
@@ -20,7 +31,7 @@ const overview = await page.evaluate(() => ({
   text: document.querySelector("#executiveDashboardView")?.textContent?.replace(/\s+/g, " ").trim() || "",
   html: document.querySelector("#executiveDashboardView")?.innerHTML || ""
 }));
-await page.screenshot({ path: "../outputs/dashboard-overview-audit.png", fullPage: false });
+await page.screenshot({ path: `${outDir}/dashboard-overview-audit.png`, fullPage: false });
 
 await page.locator('[data-nav="ao"]').click();
 await page.waitForTimeout(250);
@@ -85,7 +96,7 @@ const realtimeSource = await page.evaluate(() => {
     sourceStatus: document.querySelector("#strategySourceStatus")?.textContent?.replace(/\s+/g, " ").trim() || ""
   };
 });
-await page.locator(".cr-panel").screenshot({ path: "../outputs/dashboard-cr-audit.png" });
+await page.locator(".cr-panel").screenshot({ path: `${outDir}/dashboard-cr-audit.png` });
 const augustPerformance = await page.evaluate(() => {
   applyStrategyPeriod(7, 2026);
   const summary = getPerformanceStatusSummary();
@@ -127,7 +138,7 @@ const businessDetail = await page.evaluate(() => {
 await page.locator('[data-detail="performance"]').click();
 await page.waitForTimeout(150);
 const performanceModal = await page.locator("#detailOverlay").textContent();
-await page.locator("#detailOverlay").screenshot({ path: "../outputs/dashboard-performance-unmeasured-audit.png" });
+await page.locator("#detailOverlay").screenshot({ path: `${outDir}/dashboard-performance-unmeasured-audit.png` });
 await page.locator("#detailClose").click();
 await page.locator('[data-detail="business"]').click();
 await page.waitForTimeout(150);
@@ -135,7 +146,7 @@ const businessModal = {
   text: (await page.locator("#detailOverlay").textContent())?.replace(/\s+/g, " ").trim() || "",
   pendingBadges: await page.locator("#detailOverlay .badge.not-started").count()
 };
-await page.locator("#detailOverlay").screenshot({ path: "../outputs/dashboard-business-detail-audit.png" });
+await page.locator("#detailOverlay").screenshot({ path: `${outDir}/dashboard-business-detail-audit.png` });
 await page.locator("#detailClose").click();
 const junePerformance = await page.evaluate(() => {
   applyStrategyPeriod(5, 2026);
@@ -155,9 +166,12 @@ const ev = await page.evaluate(() => ({
   header: document.querySelector(".ev-title strong")?.textContent?.trim() || "",
   geoSummary: document.querySelector(".ev-geo-actions span")?.textContent?.replace(/\s+/g, " ").trim() || "",
   approximateMarkers: document.querySelectorAll(".ev-unit-office-div-icon.is-approximate").length,
+  // Saat tile OSM tidak bisa dimuat, dashboard memakai peta statis tanpa marker Leaflet.
+  staticMap: Boolean(document.querySelector("#evInfraView .ev-static-map")),
+  approximateUnits: evGeoPriorityUnits.filter((row) => evUnitCoordinateIsApproximate(row)).length,
   recommendations: document.querySelector(".ev-recommendations")?.textContent?.replace(/\s+/g, " ").trim() || document.querySelector("#evInfraView")?.textContent?.replace(/\s+/g, " ").trim() || ""
 }));
-await page.screenshot({ path: "../outputs/dashboard-ev-map-audit.png", fullPage: false });
+await page.screenshot({ path: `${outDir}/dashboard-ev-map-audit.png`, fullPage: false });
 
 const xss = await page.evaluate(() => {
   window.__dashboardXss = 0;
@@ -200,7 +214,7 @@ const result = {
     juneDateSerialNotScored: junePerformance.summary.green === 6 && junePerformance.summary.amber === 1 && junePerformance.summary.gray === 3 && junePerformance.policyStatus.toLowerCase().includes("belum") && junePerformance.policyAchievement === "",
     partialNkoQualified: junePerformance.panelStatus === "Tercapai Sementara",
     evDeduplicated: ev.header.includes("352") && ev.geoSummary.startsWith("352 unit pelaksana"),
-    approximateMarkersFlagged: ev.approximateMarkers >= 13,
+    approximateMarkersFlagged: ev.approximateMarkers >= 13 || (ev.staticMap && ev.approximateUnits >= 13),
     evRecommendationGated: ev.recommendations.includes("PILOT / VALIDASI") && !ev.recommendations.includes("GO Program EV"),
     importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0,
     dynamicTableStructure: Object.values(dynamicTables).every(
