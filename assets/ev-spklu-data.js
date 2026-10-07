@@ -1,12 +1,13 @@
 // Generated from Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx
 // Unit and ULP coordinates refreshed from Data Lokasi Pegawai PLN Daily 26082026.
+// Up2B NTT added 7 Oct 2026 from its office address; SPKLU distances estimated from UP3 Kupang.
 // Public asset stores organization-level coordinates only; employee/person-level fields are excluded.
 window.evGeoDataSummary = {
   "source": "Analisis_359_UP_SPKLU_Radius_dan_Fast_Normal_Terbaru.xlsx",
-  "units": 359,
-  "spkluCandidates": 10770,
+  "units": 360,
+  "spkluCandidates": 10800,
   "sameLocation": 151,
-  "under5": 188,
+  "under5": 189,
   "over5": 20,
   "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026",
   "unitCoordinatesUpdated": 346,
@@ -22524,6 +22525,270 @@ window.evGeoPriorityUnitsData = [
     "unitLat": -10.211261,
     "unitLng": 123.611535,
     "unitCoordinateSource": "Data Lokasi Pegawai PLN Daily 26082026"
+  },
+  {
+    "unit": "Up2B NTT",
+    "mapX": 459,
+    "mapY": 290,
+    "spkluX": 459,
+    "spkluY": 290,
+    "category": "< 5 KM",
+    "distance": 1.1,
+    "nearestSpklu": "SPKLU TRANSMART KUPANG",
+    "chargingClass": "Normal Charging",
+    "chargerType": "AC",
+    "powerKw": 22,
+    "fast": "SPKLU UMERA KOFIE",
+    "fastKm": 1.113,
+    "normal": "SPKLU TRANSMART KUPANG",
+    "normalKm": 1.063,
+    "unitLat": -10.2083125,
+    "unitLng": 123.6156875,
+    "unitCoordinateSource": "Alamat kantor Up2B NTT (input 7 Okt 2026)",
+    "unitAddress": "Wisma Senegor, Jl. HR Koroh Km.7, Sikumana-Kupang, NTT 85143",
+    "distanceBasis": "Estimasi: kandidat & jarak SPKLU mengikuti UP3 Kupang (berjarak 0,56 km). Perlu analisis ulang jarak SPKLU dari koordinat kantor.",
+    "spkluList": [
+      {
+        "name": "SPKLU TRANSMART KUPANG",
+        "distance": 1.063,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU UMERA KOFIE",
+        "distance": 1.113,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 50
+      },
+      {
+        "name": "SPKLU HOTEL HARPER",
+        "distance": 1.288,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU PARADOX KUPANG",
+        "distance": 1.627,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "AC/DC",
+        "powerKw": null
+      },
+      {
+        "name": "SPKLU HOTEL KRISTAL",
+        "distance": 1.964,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU RS MAMAMI",
+        "distance": 2.164,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 25
+      },
+      {
+        "name": "SPKLU TAMAN NOSTALGIA",
+        "distance": 2.592,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 25
+      },
+      {
+        "name": "SPKLU TIROSA",
+        "distance": 2.592,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "(WULING) Prima Kupang",
+        "distance": 3.576,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN UP3 KUPANG",
+        "distance": 4.718,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN ULP OESAO",
+        "distance": 23.823,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU TAKARI",
+        "distance": 56.062,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN ULP SOE",
+        "distance": 82.31,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7.4
+      },
+      {
+        "name": "SPKLU PLN ULP KEFAMENANU",
+        "distance": 124.677,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU WINI",
+        "distance": 146.603,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU AMIBELE ATAMBUA",
+        "distance": 184.846,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 50
+      },
+      {
+        "name": "SPKLU PLN ULP LARANTUKA",
+        "distance": 216.539,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN UP3 FBT 2",
+        "distance": 229.317,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU PLN ULP MAUMERE",
+        "distance": 229.342,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN ULP ENDE",
+        "distance": 258.477,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN KANTOR JAGA MELOLO",
+        "distance": 323.429,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU PLN ULP BAJAWA",
+        "distance": 326.65,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7.4
+      },
+      {
+        "name": "SPKLU PLN UP3 SUMBA",
+        "distance": 370.171,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU MAMULI SUMBA",
+        "distance": 370.229,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 60
+      },
+      {
+        "name": "SPKLU PLN ULP RUTENG",
+        "distance": 384.912,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU SPBU MENA RUTENG",
+        "distance": 388.246,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "Parkir Polres Manggarai Barat",
+        "distance": 447.311,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 7
+      },
+      {
+        "name": "SPKLU BLUEMOON HOTEL",
+        "distance": 447.955,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU PLN ULP LABUAN BAJO",
+        "distance": 448.471,
+        "label": "Normal",
+        "chargingClass": "Normal Charging",
+        "type": "AC",
+        "powerKw": 22
+      },
+      {
+        "name": "SPKLU PLN Kampung Ujung, Labuan Bajo",
+        "distance": 449.172,
+        "label": "Fast-capable",
+        "chargingClass": "Fast-capable (DC / AC+DC)",
+        "type": "DC",
+        "powerKw": 50
+      }
+    ]
   },
   {
     "unit": "UPT Bekasi",
