@@ -382,7 +382,7 @@ function loadEvDatasetScript() {
 
   evDatasetPromise = new Promise((resolve) => {
     const script = document.createElement("script");
-    script.src = "./assets/ev-spklu-data.js?v=20260826-13";
+    script.src = "./assets/ev-spklu-data.js?v=20261007-1";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {
@@ -5166,7 +5166,7 @@ function renderEvMapDetail(item) {
         <b>${spklu.name}</b>
         <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
       </div>
-      <strong>${evFormatKm(spklu.distance)}</strong>
+      <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(spklu.distance)}</strong>
     </li>
   `).join("");
 
@@ -5174,9 +5174,11 @@ function renderEvMapDetail(item) {
     <div class="ev-detail-badge" style="--marker-color:${evMapTone(item.category)}">${item.category}</div>
     <h3>${item.unit}</h3>
     ${evUnitCoordinateIsApproximate(item) ? '<p class="ev-coordinate-warning">Lokasi marker unit bersifat perkiraan; jarak SPKLU tetap mengikuti data sumber.</p>' : ""}
+    ${item.unitAddress ? `<p class="ev-unit-address">${evEscapeHtml(item.unitAddress)}</p>` : ""}
+    ${item.distanceBasis ? `<p class="ev-coordinate-warning">${evEscapeHtml(item.distanceBasis)}</p>` : ""}
     <div class="ev-distance-box">
-      <small>Jarak SPKLU terdekat</small>
-      <strong>${evFormatKm(item.distance)}</strong>
+      <small>Jarak SPKLU terdekat${item.distanceBasis ? " (estimasi)" : ""}</small>
+      <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(item.distance)}</strong>
     </div>
     <dl>
       <div><dt>SPKLU Terdekat</dt><dd>${item.nearestSpklu}</dd></div>
@@ -5449,7 +5451,7 @@ function initEvGeoMap() {
         iconSize: [20, 20]
       })
     }).addTo(map);
-    marker.bindTooltip(`${evEscapeHtml(row.unit)}${evUnitCoordinateIsApproximate(row) ? " · lokasi perkiraan" : ""}`, { direction: "top", offset: [0, -8] });
+    marker.bindTooltip(`${evEscapeHtml(row.unit)}${evUnitCoordinateIsApproximate(row) ? " · lokasi perkiraan" : ""}${row.distanceBasis ? " · jarak SPKLU estimasi" : ""}`, { direction: "top", offset: [0, -8] });
     marker.on("click", () => select(rowIndex, true, true));
     return marker;
   });
@@ -5520,13 +5522,13 @@ function initEvGeoMap() {
           <b>${spklu.name}</b>
           <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
         </div>
-        <strong>${evFormatKm(spklu.distance)}</strong>
+        <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(spklu.distance)}</strong>
       </li>
     `).join("");
     const popupHtml = `
       <div class="ev-map-popup">
         <strong>${item.unit}</strong>
-        <span>Daftar SPKLU berdasarkan jarak</span>
+        <span>Daftar SPKLU berdasarkan jarak${item.distanceBasis ? " (estimasi)" : ""}</span>
         <ol>${popupSpkluRows}</ol>
       </div>
     `;

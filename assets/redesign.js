@@ -707,11 +707,12 @@
       marker.setZIndexOffset(200);
       const tip = marker.getTooltip && marker.getTooltip();
       if (tip) {
-        const approxNote = el.classList.contains("is-approximate") ? `<div class="n">Koordinat perkiraan</div>` : "";
+        const approxNote = (el.classList.contains("is-approximate") ? `<div class="n">Koordinat perkiraan</div>` : "")
+          + (row.distanceBasis ? `<div class="n">Jarak SPKLU estimasi</div>` : "");
         tip.setContent(`<div class="rd-tipcard" style="--c:${tier.color}">
           <div class="h"><span class="ic">${SVG.building}</span><b>${esc(row.unit)}</b></div>
           <dl><dt>Jenis</dt><dd>${esc(evKind(row.unit))}</dd>
-          <dt>Jarak SPKLU</dt><dd>${Number.isFinite(km) ? `${esc(fmt(km, 1))} km` : "—"}</dd>
+          <dt>Jarak SPKLU</dt><dd>${Number.isFinite(km) ? `${row.distanceBasis ? "≈ " : ""}${esc(fmt(km, 1))} km` : "—"}</dd>
           <dt>Kategori jarak</dt><dd class="t">${esc(tier.label)} <small>${esc(row.category || "")}</small></dd>
           <dt>SPKLU terdekat</dt><dd>${esc(row.nearestSpklu || "—")}</dd></dl>${approxNote}</div>`);
         tip.options.direction = "top"; tip.options.offset = [0, -8]; tip.options.opacity = 1;

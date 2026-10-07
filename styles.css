@@ -1220,6 +1220,13 @@
   line-height: 1.1;
 }
 
+.ev-unit-address {
+  margin: 0 0 8px;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .ev-coordinate-warning {
   margin: 0;
   padding: 8px 10px;
