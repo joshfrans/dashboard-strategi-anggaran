@@ -349,6 +349,9 @@ let evUlpUnits = [];
 // evUserSourceActive menandai bahwa user punya data EV sendiri (import atau
 // localStorage) sehingga dataset bawaan tidak boleh menimpanya.
 let evUserSourceActive = false;
+// Waktu data EV lokal (hasil import) disimpan; dipakai untuk menambahkan unit baru
+// dari dataset bawaan yang ditambahkan SETELAH import itu (field addedAt).
+let evUserSourceSavedAt = null;
 let evDatasetApplied = false;
 let evDatasetPromise = null;
 
@@ -359,7 +362,10 @@ function applyEvDataset() {
   // Koordinat ULP hanya dipakai marker peta, jadi selalu aman diterapkan.
   evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
 
-  if (evUserSourceActive) return true;
+  if (evUserSourceActive) {
+    mergeNewBundledEvUnits(raw);
+    return true;
+  }
 
   if (window.evGeoDataSummary) evGeoDataSummary = window.evGeoDataSummary;
   evGeoPriorityUnits = dedupeEvUnits(raw);
@@ -374,6 +380,24 @@ function applyEvDataset() {
   return true;
 }
 
+// Pengguna yang pernah mengimpor data EV memakai salinan lokal. Unit yang ditambahkan ke
+// dataset bawaan sesudah import itu (addedAt > savedAt) tetap disisipkan agar semua
+// pengakses melihat unit baru tanpa harus mengimpor ulang. Data import tidak ditimpa.
+function mergeNewBundledEvUnits(raw) {
+  const savedAt = Date.parse(evUserSourceSavedAt || "") || 0;
+  const existing = new Set(evGeoPriorityUnits.map((unit) => String(unit.unit || "").trim().toLowerCase()));
+  const additions = raw.filter((unit) => {
+    const addedAt = Date.parse(unit?.addedAt || "");
+    return Number.isFinite(addedAt) && addedAt > savedAt && !existing.has(String(unit.unit || "").trim().toLowerCase());
+  });
+  if (!additions.length) return 0;
+  const period = evInfrastructureData.sourceUpdated;
+  evGeoPriorityUnits = dedupeEvUnits([...evGeoPriorityUnits, ...additions]).sort((a, b) => b.distance - a.distance);
+  evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV lokal"} · ${additions.length} unit baru dari dataset dashboard`);
+  if (period) evInfrastructureData.sourceUpdated = period;
+  return additions.length;
+}
+
 function loadEvDatasetScript() {
   if (Array.isArray(window.evGeoPriorityUnitsData) && window.evGeoPriorityUnitsData.length) {
     return Promise.resolve(true);
@@ -382,7 +406,7 @@ function loadEvDatasetScript() {
 
   evDatasetPromise = new Promise((resolve) => {
     const script = document.createElement("script");
-    script.src = "./assets/ev-spklu-data.js?v=20261007-1";
+    script.src = "./assets/ev-spklu-data.js?v=20261007-2";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {
@@ -4204,10 +4228,14 @@ function loadLocalEvDataSource() {
     const stored = JSON.parse(localStorage.getItem(EV_LOCAL_SOURCE_KEY) || "null");
     if (!stored?.units?.length) return false;
     evUserSourceActive = true;
+    evUserSourceSavedAt = stored.savedAt || null;
     evGeoDataSummary = stored.summary || evGeoDataSummary;
     evInfrastructureData = stored.data || evInfrastructureData;
     evGeoPriorityUnits = dedupeEvUnits(stored.units);
+    const storedPeriod = stored.data?.sourceUpdated;
     evBuildSummaryFromUnits(evGeoPriorityUnits, `${stored.summary?.source || "Data EV lokal"} · deduplikasi otomatis`);
+    // Label periode = periode data tersimpan, bukan jam halaman dibuka.
+    if (storedPeriod) evInfrastructureData.sourceUpdated = storedPeriod;
     renderEvInfrastructure();
     return true;
   } catch (error) {
@@ -5343,6 +5371,147 @@ function bindEvUnitSearch(onSelect) {
   });
 }
 
+// Pencarian di atas peta: ketik nama unit → saran muncul langsung (UP & ULP);
+// pilih saran (klik / Enter) → peta terbang ke unit dan detailnya terbuka.
+function evSearchKey(value) {
+  return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function evRankUnitMatch(name, query) {
+  const key = evSearchKey(name);
+  const tokens = query.split(" ").filter(Boolean);
+  if (!tokens.every((token) => key.includes(token))) return -1;
+  if (key === query) return 0;
+  if (key.startsWith(query)) return 1;
+  if (key.split(" ").some((word) => word.startsWith(tokens[0]))) return 2;
+  return 3;
+}
+
+function addEvMapSearch(map, { onUnit, onUlp, ulpMarkers = [] }) {
+  const control = L.control({ position: "topleft" });
+  control.onAdd = () => {
+    const box = L.DomUtil.create("div", "ev-map-search");
+    box.setAttribute("role", "search");
+    const input = L.DomUtil.create("input", "ev-map-search-input", box);
+    input.type = "search";
+    input.placeholder = "Cari nama unit di peta…";
+    input.autocomplete = "off";
+    input.setAttribute("aria-label", "Cari nama unit di peta");
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("aria-controls", "evMapSearchList");
+    const list = L.DomUtil.create("ul", "ev-map-search-list", box);
+    list.id = "evMapSearchList";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+    L.DomEvent.disableClickPropagation(box);
+    L.DomEvent.disableScrollPropagation(box);
+
+    let results = [];
+    let active = -1;
+
+    const close = () => {
+      list.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
+      active = -1;
+    };
+
+    const highlight = (index) => {
+      active = index;
+      [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === index)));
+      const current = list.children[index];
+      if (current?.id) {
+        input.setAttribute("aria-activedescendant", current.id);
+        current.scrollIntoView({ block: "nearest" });
+      }
+    };
+
+    const choose = (result) => {
+      if (!result) return;
+      input.value = result.name;
+      close();
+      input.blur();
+      if (result.type === "up") onUnit(result.index);
+      else onUlp(result.marker);
+    };
+
+    const renderList = (query) => {
+      list.replaceChildren();
+      if (!results.length) {
+        const empty = document.createElement("li");
+        empty.className = "ev-map-search-empty";
+        empty.textContent = `Unit "${query}" tidak ditemukan`;
+        list.append(empty);
+      }
+      results.forEach((result, i) => {
+        const li = document.createElement("li");
+        li.id = `evMapSearchOption${i}`;
+        li.setAttribute("role", "option");
+        li.setAttribute("aria-selected", "false");
+        const name = document.createElement("b");
+        name.textContent = result.name;
+        const meta = document.createElement("small");
+        meta.textContent = result.type === "up"
+          ? `Unit pelaksana · ${result.item.category} · ${result.item.distanceBasis ? "≈ " : ""}${evFormatKm(result.item.distance)}`
+          : "ULP · Unit Layanan Pelanggan";
+        li.append(name, meta);
+        li.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          choose(result);
+        });
+        list.append(li);
+      });
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      active = -1;
+    };
+
+    const search = () => {
+      const query = evSearchKey(input.value);
+      if (!query) {
+        results = [];
+        close();
+        return;
+      }
+      const ups = evGeoPriorityUnits
+        .map((item, index) => ({ type: "up", index, item, name: item.unit, rank: evRankUnitMatch(item.unit, query) }))
+        .filter((entry) => entry.rank >= 0);
+      const ulps = ulpMarkers
+        .map((marker) => ({ type: "ulp", marker, name: marker.evRow?.unit || "", rank: evRankUnitMatch(marker.evRow?.unit, query) }))
+        .filter((entry) => entry.rank >= 0);
+      const byRank = (a, b) => a.rank - b.rank || a.name.localeCompare(b.name, "id");
+      results = [...ups.sort(byRank), ...ulps.sort(byRank)].slice(0, 8);
+      renderList(input.value.trim());
+    };
+
+    input.addEventListener("input", search);
+    input.addEventListener("focus", () => { if (input.value.trim()) search(); });
+    input.addEventListener("blur", () => setTimeout(close, 120));
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        if (list.hidden) search();
+        if (!results.length) return;
+        event.preventDefault();
+        const step = event.key === "ArrowDown" ? 1 : -1;
+        highlight((active + step + results.length) % results.length);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        choose(results[active >= 0 ? active : 0]);
+      } else if (event.key === "Escape") {
+        close();
+      }
+    });
+    return box;
+  };
+  control.addTo(map);
+  // Tempatkan di atas tombol zoom agar mudah ditemukan.
+  const box = control.getContainer();
+  box.parentElement?.prepend(box);
+  return control;
+}
+
 function initEvGeoMap() {
   const mapEl = document.getElementById("evGeoMap");
   if (!mapEl || !document.querySelector(".dashboard.ev-infra-mode")) return;
@@ -5438,6 +5607,7 @@ function initEvGeoMap() {
       const name = evEscapeHtml(row.unit || "ULP");
       marker.bindTooltip(`ULP: ${name}`, { direction: "top", offset: [0, -5] });
       marker.bindPopup(`<div class="ev-map-popup ev-map-popup-compact"><strong>${name}</strong><span>Unit Layanan Pelanggan</span></div>`);
+      marker.evRow = row;
       return marker;
     })
     .filter(Boolean);
@@ -5550,6 +5720,21 @@ function initEvGeoMap() {
 
   bindEvUnitList((index) => select(index, true, true));
   bindEvUnitSearch((index) => select(index, true, true));
+  addEvMapSearch(map, {
+    onUnit: (index) => {
+      select(index, false, false);
+      map.closePopup();
+      map.flyTo(evUnitLatLng(evGeoPriorityUnits[index]), 13, { duration: 0.6 });
+      // Popup dibuka setelah peta berhenti agar Leaflet bisa menggeser peta (autoPan).
+      map.once("moveend", () => unitMarkers[index]?.openPopup());
+      document.querySelector(`[data-ev-unit="${index}"]`)?.scrollIntoView({ block: "nearest" });
+    },
+    onUlp: (marker) => {
+      map.flyTo(marker.getLatLng(), 14, { duration: 0.6 });
+      map.once("moveend", () => marker.openPopup());
+    },
+    ulpMarkers
+  });
   evGeoMapState = { map, select, unitMarkers, ulpMarkers, container: mapEl };
   select(0, false);
   setTimeout(() => {

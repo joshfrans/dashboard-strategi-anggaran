@@ -22546,6 +22546,7 @@ window.evGeoPriorityUnitsData = [
     "unitLng": 123.6156875,
     "unitCoordinateSource": "Alamat kantor Up2B NTT (input 7 Okt 2026)",
     "unitAddress": "Wisma Senegor, Jl. HR Koroh Km.7, Sikumana-Kupang, NTT 85143",
+    "addedAt": "2026-10-07T07:00:00Z",
     "distanceBasis": "Estimasi: kandidat & jarak SPKLU mengikuti UP3 Kupang (berjarak 0,56 km). Perlu analisis ulang jarak SPKLU dari koordinat kantor.",
     "spkluList": [
       {
