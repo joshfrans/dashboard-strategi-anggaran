@@ -5309,10 +5309,10 @@ function renderEvStaticMap(index = 0) {
       </g>
       <g transform="translate(18 18)">
         <rect width="270" height="76" rx="13" fill="#ffffff" opacity=".96" />
-        <text x="12" y="19" fill="#526280" font-size="10" font-weight="900">MAPS INDONESIA - SEBARAN SPKLU</text>
+        <text x="12" y="19" fill="#526280" font-size="12" font-weight="900">MAPS INDONESIA - SEBARAN SPKLU</text>
         <text x="12" y="39" fill="#06164c" font-size="13" font-weight="900">${item.unit}</text>
         <text x="12" y="61" fill="${tone}" font-size="22" font-weight="900">${evFormatKm(item.distance)}</text>
-        <text x="132" y="60" fill="#526280" font-size="11" font-weight="800">ke SPKLU terdekat</text>
+        <text x="132" y="60" fill="#526280" font-size="12" font-weight="800">ke SPKLU terdekat</text>
       </g>
       <g class="ev-map-zoom" transform="translate(20 222)">
         <rect width="34" height="68" rx="9" fill="#ffffff" />
