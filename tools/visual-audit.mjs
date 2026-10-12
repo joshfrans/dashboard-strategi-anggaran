@@ -1,9 +1,13 @@
+import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+
+const outDir = process.env.AUDIT_OUT_DIR || "../outputs";
+mkdirSync(outDir, { recursive: true });
 
 const url = process.argv[2] || "http://127.0.0.1:4173/";
 const browser = await chromium.launch({
   headless: true,
-  executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  executablePath: process.env.CHROME_PATH || (process.platform === "win32" ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" : undefined)
 });
 
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
@@ -40,7 +44,7 @@ for (const view of views) {
         .map((image) => image.currentSrc || image.src)
     };
   }, view);
-  await page.screenshot({ path: `../outputs/dashboard-view-${view}.png`, fullPage: false });
+  await page.screenshot({ path: `${outDir}/dashboard-view-${view}.png`, fullPage: false });
   results.push(state);
 }
 

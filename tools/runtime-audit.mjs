@@ -2,11 +2,13 @@ import { chromium } from "playwright";
 import { deflateSync } from "node:zlib";
 
 const url = process.argv[2] || "http://127.0.0.1:4173/";
-// CHROME_PATH opsional (mis. Chrome Windows). Kosong = Chromium bawaan Playwright,
-// sehingga skrip jalan di Linux/sesi Claude tanpa diubah.
+// CHROME_PATH bila diisi; di Windows default ke Chrome terpasang; selain itu Chromium
+// bawaan Playwright, sehingga skrip jalan di Linux/sesi Claude tanpa diubah.
 const browser = await chromium.launch({
   headless: true,
-  ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {})
+  ...(process.env.CHROME_PATH || process.platform === "win32"
+    ? { executablePath: process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" }
+    : {})
 });
 
 // OFFLINE_TILES=1: tile OpenStreetMap dilayani dengan tile polos lokal. Untuk lingkungan
