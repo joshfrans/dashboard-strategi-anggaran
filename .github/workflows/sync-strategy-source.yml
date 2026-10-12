@@ -6,6 +6,11 @@ on:
     # GitHub Actions. Use GitHub's documented start/step form and avoid minute 0.
     - cron: "2/5 * * * *"
   workflow_dispatch:
+    inputs:
+      source_modified:
+        description: "Waktu file data source terakhir diubah (ISO 8601 UTC, dikirim Apps Script)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -17,6 +22,7 @@ concurrency:
 env:
   STRATEGY_SHEET_ID: 15T2dQA_96m71Z2D9k-YZh0ehkZsxZMS5
   SNAPSHOT_PATH: assets/data-source-strategi-evaluasi-online.xlsx
+  META_PATH: assets/data-source-strategi-evaluasi-online.meta.json
 
 jobs:
   sync-strategy-source:
@@ -69,14 +75,31 @@ jobs:
 
       - name: Publish snapshot when data changed
         shell: bash
+        env:
+          SOURCE_MODIFIED: ${{ inputs.source_modified }}
         run: |
           set -euo pipefail
           if git diff --quiet -- "${SNAPSHOT_PATH}"; then
             echo "Google Sheet snapshot is already current."
             exit 0
           fi
+          # Catat waktu data untuk label "Data per" di dashboard (Last-Modified GitHub Pages
+          # berubah pada setiap deploy kode, jadi tidak mencerminkan waktu data).
+          python - <<'PY'
+          import datetime, json, os, re
+          raw = os.environ.get("SOURCE_MODIFIED", "").strip()
+          valid = re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z", raw)
+          meta = {
+              "syncedAt": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "sourceModifiedAt": raw if valid else None,
+          }
+          with open(os.environ["META_PATH"], "w", encoding="utf-8") as handle:
+              json.dump(meta, handle, indent=2)
+              handle.write("\n")
+          print("Meta:", meta)
+          PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- "${SNAPSHOT_PATH}"
+          git add -- "${SNAPSHOT_PATH}" "${META_PATH}"
           git commit -m "Sync Strategy & Evaluation data snapshot"
           git push origin HEAD:main

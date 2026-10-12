@@ -169,6 +169,10 @@ const ev = await page.evaluate(() => ({
   // Saat tile OSM tidak bisa dimuat, dashboard memakai peta statis tanpa marker Leaflet.
   staticMap: Boolean(document.querySelector("#evInfraView .ev-static-map")),
   approximateUnits: evGeoPriorityUnits.filter((row) => evUnitCoordinateIsApproximate(row)).length,
+  // Jumlah unit unik dihitung dari dataset (bukan angka tetap), agar cek tetap benar saat unit ditambah.
+  rawUnits: (window.evGeoPriorityUnitsData || []).length,
+  uniqueUnits: dedupeEvUnits(window.evGeoPriorityUnitsData || []).length,
+  shownUnits: evGeoPriorityUnits.length,
   recommendations: document.querySelector(".ev-recommendations")?.textContent?.replace(/\s+/g, " ").trim() || document.querySelector("#evInfraView")?.textContent?.replace(/\s+/g, " ").trim() || ""
 }));
 await page.screenshot({ path: `${outDir}/dashboard-ev-map-audit.png`, fullPage: false });
@@ -213,7 +217,8 @@ const result = {
     businessDetailCoverageHonest: businessModal.text.includes("1/2 semester telah diukur") && businessModal.text.includes("1 semester belum dinilai") && businessDetail.pendingBadge && businessModal.pendingBadges > 0,
     juneDateSerialNotScored: junePerformance.summary.green === 6 && junePerformance.summary.amber === 1 && junePerformance.summary.gray === 3 && junePerformance.policyStatus.toLowerCase().includes("belum") && junePerformance.policyAchievement === "",
     partialNkoQualified: junePerformance.panelStatus === "Tercapai Sementara",
-    evDeduplicated: ev.header.includes("352") && ev.geoSummary.startsWith("352 unit pelaksana"),
+    evDeduplicated: ev.uniqueUnits > 0 && ev.uniqueUnits < ev.rawUnits && ev.shownUnits === ev.uniqueUnits &&
+      ev.header.includes(String(ev.uniqueUnits)) && ev.geoSummary.startsWith(`${ev.uniqueUnits} unit pelaksana`),
     approximateMarkersFlagged: ev.approximateMarkers >= 13 || (ev.staticMap && ev.approximateUnits >= 13),
     evRecommendationGated: ev.recommendations.includes("PILOT / VALIDASI") && !ev.recommendations.includes("GO Program EV"),
     importHtmlSanitized: xss.executed === 0 && xss.eventAttributes === 0,

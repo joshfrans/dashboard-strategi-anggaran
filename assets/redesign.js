@@ -661,7 +661,7 @@
     plug: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><path d="M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg>',
     target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
     info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 11v6"/><path d="M12 7.5v.5"/></svg>',
-    north: '<svg viewBox="0 0 24 32"><text x="12" y="8" text-anchor="middle" font-size="8" font-weight="700" fill="#14213d">N</text><path d="M12 10 19 29l-7-4-7 4z" fill="#14213d"/><path d="M12 10v15l-7 4z" fill="#5b6b86"/></svg>',
+    north: '<svg viewBox="0 0 24 34" aria-hidden="true"><text x="12" y="11" text-anchor="middle" font-size="12" font-weight="700" fill="#14213d">N</text><path d="M12 14 18 32l-6-3.6L6 32z" fill="#14213d"/><path d="M12 14v14.4L6 32z" fill="#5b6b86"/></svg>',
     legend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>'
   };
   const fmtId = (n) => fmt(Number(n) || 0);
@@ -707,11 +707,12 @@
       marker.setZIndexOffset(200);
       const tip = marker.getTooltip && marker.getTooltip();
       if (tip) {
-        const approxNote = el.classList.contains("is-approximate") ? `<div class="n">Koordinat perkiraan</div>` : "";
+        const approxNote = (el.classList.contains("is-approximate") ? `<div class="n">Koordinat perkiraan</div>` : "")
+          + (row.distanceBasis ? `<div class="n">Jarak SPKLU estimasi</div>` : "");
         tip.setContent(`<div class="rd-tipcard" style="--c:${tier.color}">
           <div class="h"><span class="ic">${SVG.building}</span><b>${esc(row.unit)}</b></div>
           <dl><dt>Jenis</dt><dd>${esc(evKind(row.unit))}</dd>
-          <dt>Jarak SPKLU</dt><dd>${Number.isFinite(km) ? `${esc(fmt(km, 1))} km` : "—"}</dd>
+          <dt>Jarak SPKLU</dt><dd>${Number.isFinite(km) ? `${row.distanceBasis ? "≈ " : ""}${esc(fmt(km, 1))} km` : "—"}</dd>
           <dt>Kategori jarak</dt><dd class="t">${esc(tier.label)} <small>${esc(row.category || "")}</small></dd>
           <dt>SPKLU terdekat</dt><dd>${esc(row.nearestSpklu || "—")}</dd></dl>${approxNote}</div>`);
         tip.options.direction = "top"; tip.options.offset = [0, -8]; tip.options.opacity = 1;

@@ -349,6 +349,9 @@ let evUlpUnits = [];
 // evUserSourceActive menandai bahwa user punya data EV sendiri (import atau
 // localStorage) sehingga dataset bawaan tidak boleh menimpanya.
 let evUserSourceActive = false;
+// Waktu data EV lokal (hasil import) disimpan; dipakai untuk menambahkan unit baru
+// dari dataset bawaan yang ditambahkan SETELAH import itu (field addedAt).
+let evUserSourceSavedAt = null;
 let evDatasetApplied = false;
 let evDatasetPromise = null;
 
@@ -359,19 +362,39 @@ function applyEvDataset() {
   // Koordinat ULP hanya dipakai marker peta, jadi selalu aman diterapkan.
   evUlpUnits = Array.isArray(window.evUlpUnitsData) ? window.evUlpUnitsData : [];
 
-  if (evUserSourceActive) return true;
+  if (evUserSourceActive) {
+    mergeNewBundledEvUnits(raw);
+    return true;
+  }
 
   if (window.evGeoDataSummary) evGeoDataSummary = window.evGeoDataSummary;
   evGeoPriorityUnits = dedupeEvUnits(raw);
 
   if (evGeoPriorityUnits.length !== raw.length) {
-    const originalEvUpdate = evInfrastructureData.sourceUpdated;
     const removed = raw.length - evGeoPriorityUnits.length;
-    evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV"} · ${removed} duplikat identik dihapus`);
-    evInfrastructureData.sourceUpdated = originalEvUpdate;
-    evGeoDataSummary.duplicateRowsRemoved = removed;
+    evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV"} · ${removed} duplikat identik dihapus`, {
+      period: evInfrastructureData.sourceUpdated,
+      coordinatesUpdatedAt: evGeoDataSummary.unitCoordinatesUpdatedAt,
+      duplicateRowsRemoved: removed
+    });
   }
   return true;
+}
+
+// Pengguna yang pernah mengimpor data EV memakai salinan lokal. Unit yang ditambahkan ke
+// dataset bawaan sesudah import itu (addedAt > savedAt) tetap disisipkan agar semua
+// pengakses melihat unit baru tanpa harus mengimpor ulang. Data import tidak ditimpa.
+function mergeNewBundledEvUnits(raw) {
+  const savedAt = Date.parse(evUserSourceSavedAt || "") || 0;
+  const existing = new Set(evGeoPriorityUnits.map((unit) => String(unit.unit || "").trim().toLowerCase()));
+  const additions = raw.filter((unit) => {
+    const addedAt = Date.parse(unit?.addedAt || "");
+    return Number.isFinite(addedAt) && addedAt > savedAt && !existing.has(String(unit.unit || "").trim().toLowerCase());
+  });
+  if (!additions.length) return 0;
+  evGeoPriorityUnits = dedupeEvUnits([...evGeoPriorityUnits, ...additions]).sort((a, b) => b.distance - a.distance);
+  evBuildSummaryFromUnits(evGeoPriorityUnits, `${evGeoDataSummary.source || "Data EV lokal"} · ${additions.length} unit baru dari dataset dashboard`, evCurrentMeta());
+  return additions.length;
 }
 
 function loadEvDatasetScript() {
@@ -382,7 +405,7 @@ function loadEvDatasetScript() {
 
   evDatasetPromise = new Promise((resolve) => {
     const script = document.createElement("script");
-    script.src = "./assets/ev-spklu-data.js?v=20260826-13";
+    script.src = "./assets/ev-spklu-data.js?v=20261007-2";
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {
@@ -3954,7 +3977,9 @@ function evProjectCoordinate(latitude, longitude, fallbackX = 370, fallbackY = 1
   };
 }
 
-function evBuildSummaryFromUnits(units, source = "File import") {
+// meta: { period, coordinatesUpdatedAt, duplicateRowsRemoved } dari file/penyimpanan.
+// Tanpa meta.period, label periode = waktu impor (data baru tanpa keterangan periode).
+function evBuildSummaryFromUnits(units, source = "File import", meta = {}) {
   const orderedCategories = ["Satu Lokasi", "< 5 KM", "5 - < 10 KM", "10 - < 25 KM", "25 - < 50 KM", "50 - < 100 KM", "100 - < 200 KM", ">= 200 KM"];
   const toneMap = {
     "Satu Lokasi": ["building-2", "teal", "SPKLU berada di lokasi yang sama dengan kantor UP"],
@@ -3994,18 +4019,23 @@ function evBuildSummaryFromUnits(units, source = "File import") {
   const over5 = units.filter((unit) => numberFromImport(unit.distance, 0) >= 5).length;
   const farthest = [...units].sort((a, b) => b.distance - a.distance)[0];
 
+  const previousSummary = evGeoDataSummary || {};
   evGeoDataSummary = {
     source,
     units: units.length,
     spkluCandidates: units.reduce((sum, unit) => sum + evSpkluList(unit).length, 0),
     sameLocation: counts["Satu Lokasi"] || 0,
     under5: counts["< 5 KM"] || 0,
-    over5
+    over5,
+    // Jumlah ULP berasal dari dataset marker ULP terpisah yang tidak ikut diimpor.
+    ...(previousSummary.ulpUnits ? { ulpUnits: previousSummary.ulpUnits } : {}),
+    ...(meta.coordinatesUpdatedAt ? { unitCoordinatesUpdatedAt: meta.coordinatesUpdatedAt } : {}),
+    ...(meta.duplicateRowsRemoved ? { duplicateRowsRemoved: meta.duplicateRowsRemoved } : {})
   };
 
   evInfrastructureData = {
     ...evInfrastructureData,
-    sourceUpdated: formatDatabaseTimestamp(),
+    sourceUpdated: meta.period || formatDatabaseTimestamp(),
     implementingUnits: units.length,
     nearestRows: evGeoDataSummary.spkluCandidates,
     categories,
@@ -4046,14 +4076,29 @@ function evExportRows() {
     unit.mapX,
     unit.mapY,
     unit.spkluX,
-    unit.spkluY
+    unit.spkluY,
+    unit.unitLat ?? "",
+    unit.unitLng ?? "",
+    unit.unitCoordinateSource || "",
+    unit.unitAddress || "",
+    unit.distanceBasis || ""
   ]);
+}
+
+const EV_EXPORT_HEADER = ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y", "Latitude Unit", "Longitude Unit", "Sumber Koordinat Unit", "Alamat Unit", "Keterangan Jarak"];
+
+// Metadata yang harus kembali utuh saat data disimpan, diekspor, lalu diimpor ulang.
+function evCurrentMeta() {
+  return {
+    period: evInfrastructureData.sourceUpdated || "",
+    coordinatesUpdatedAt: evGeoDataSummary.unitCoordinatesUpdatedAt || "",
+    duplicateRowsRemoved: evGeoDataSummary.duplicateRowsRemoved || 0
+  };
 }
 
 async function downloadEvCsv() {
   await ensureEvDataset();
-  const header = ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y"];
-  const csv = [header, ...evExportRows()]
+  const csv = [EV_EXPORT_HEADER, ...evExportRows()]
     .map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(","))
     .join("\n");
   downloadBlob(`\ufeff${csv}`, "data-source-kesiapan-infrastruktur-ev.csv", "text/csv;charset=utf-8");
@@ -4062,7 +4107,7 @@ async function downloadEvCsv() {
 async function downloadEvJson() {
   await ensureEvDataset();
   downloadBlob(
-    JSON.stringify({ generatedAt: new Date().toISOString(), summary: evGeoDataSummary, units: evGeoPriorityUnits }, null, 2),
+    JSON.stringify({ generatedAt: new Date().toISOString(), meta: evCurrentMeta(), summary: evGeoDataSummary, units: evGeoPriorityUnits }, null, 2),
     "data-source-kesiapan-infrastruktur-ev.json",
     "application/json;charset=utf-8"
   );
@@ -4072,10 +4117,7 @@ async function downloadEvExcel() {
   await ensureEvDataset();
   if (!(await ensureXlsxLibrary())) return;
   const workbook = window.XLSX.utils.book_new();
-  const sourceSheet = window.XLSX.utils.aoa_to_sheet([
-    ["Unit Pelaksana", "Kategori Jarak", "SPKLU Terdekat KM", "SPKLU Terdekat", "Class", "AC/DC", "Daya KW", "Fast Terdekat", "Fast Terdekat KM", "Normal Terdekat", "Normal Terdekat KM", "Map X", "Map Y", "SPKLU X", "SPKLU Y"],
-    ...evExportRows()
-  ]);
+  const sourceSheet = window.XLSX.utils.aoa_to_sheet([EV_EXPORT_HEADER, ...evExportRows()]);
   const spkluRows = evGeoPriorityUnits.flatMap((unit, unitIndex) =>
     evSpkluList(unit).map((spklu) => [
       unitIndex + 1,
@@ -4084,11 +4126,12 @@ async function downloadEvExcel() {
       spklu.distance,
       spklu.chargingClass || spklu.class || "",
       spklu.type || "",
-      spklu.powerKw || ""
+      spklu.powerKw || "",
+      spklu.label || spklu.labels || ""
     ])
   );
   const spkluSheet = window.XLSX.utils.aoa_to_sheet([
-    ["No UP", "Unit Pelaksana", "SPKLU", "Jarak KM", "Class", "AC/DC", "Daya KW"],
+    ["No UP", "Unit Pelaksana", "SPKLU", "Jarak KM", "Class", "AC/DC", "Daya KW", "Label"],
     ...spkluRows
   ]);
   const guideSheet = window.XLSX.utils.aoa_to_sheet([
@@ -4096,11 +4139,20 @@ async function downloadEvExcel() {
     ["1. Untuk import dari file analisis asli, gunakan sheet Ringkasan 359 UP dan 30 SPKLU Terdekat per UP."],
     ["2. Untuk import dari export dashboard ini, gunakan sheet Data EV."],
     ["3. Kolom koordinat mentah tidak wajib; dashboard dapat memakai Map X/Map Y dan SPKLU X/SPKLU Y."],
-    ["4. Data tersimpan lokal di browser setelah import dan bisa di-export kembali sebagai backup."]
+    ["4. Data tersimpan lokal di browser setelah import dan bisa di-export kembali sebagai backup."],
+    ["5. Sheet Info Data menyimpan periode analisis. Ubah Periode Analisis bila data diganti dengan analisis baru."]
+  ]);
+  const meta = evCurrentMeta();
+  const infoSheet = window.XLSX.utils.aoa_to_sheet([
+    ["Kunci", "Nilai"],
+    ["Periode Analisis", meta.period],
+    ["Koordinat Unit Diperbarui", meta.coordinatesUpdatedAt],
+    ["Duplikat Dihapus", meta.duplicateRowsRemoved]
   ]);
   window.XLSX.utils.book_append_sheet(workbook, sourceSheet, "Data EV");
   window.XLSX.utils.book_append_sheet(workbook, spkluSheet, "30 SPKLU Terdekat per UP");
   window.XLSX.utils.book_append_sheet(workbook, guideSheet, "Panduan");
+  window.XLSX.utils.book_append_sheet(workbook, infoSheet, "Info Data");
   window.XLSX.writeFile(workbook, "template-data-source-kesiapan-infrastruktur-ev.xlsx");
 }
 
@@ -4111,20 +4163,20 @@ async function exportEvData(format = "xlsx") {
   if (format === "pdf") window.print();
 }
 
-function applyEvImportedUnits(units, source = "File import") {
+function applyEvImportedUnits(units, source = "File import", meta = {}) {
   const cleanUnits = dedupeEvUnits(units
     .map((unit) => ({
       ...unit,
       distance: numberFromImport(unit.distance, 0),
       fastKm: numberFromImport(unit.fastKm, 0),
       normalKm: numberFromImport(unit.normalKm, 0),
-      powerKw: numberFromImport(unit.powerKw, 0)
+      powerKw: numberFromImport(unit.powerKw, null)
     }))
     .filter((unit) => unit.unit && unit.nearestSpklu));
   if (!cleanUnits.length) return 0;
   evUserSourceActive = true;
   evGeoPriorityUnits = cleanUnits.sort((a, b) => b.distance - a.distance);
-  evBuildSummaryFromUnits(evGeoPriorityUnits, source);
+  evBuildSummaryFromUnits(evGeoPriorityUnits, source, meta);
   localStorage.setItem(EV_LOCAL_SOURCE_KEY, JSON.stringify({
     summary: evGeoDataSummary,
     data: evInfrastructureData,
@@ -4133,6 +4185,41 @@ function applyEvImportedUnits(units, source = "File import") {
   }));
   renderEvInfrastructure();
   return evGeoPriorityUnits.length;
+}
+
+function evRowUnitKey(row) {
+  return String(rowValue(row, "Unit Pelaksana", "Unit", "unit") || "").trim().toLowerCase();
+}
+
+// Koordinat & keterangan unit disimpan apa adanya; kewajaran (di dalam Indonesia) dicek
+// saat ditampilkan oleh evUnitCoordinateIsApproximate, jadi data sumber tidak diubah diam-diam.
+function evImportedUnitExtras(row) {
+  const extras = {};
+  const lat = numberFromImport(rowValue(row, "Latitude Unit", "unitLat"), NaN);
+  const lng = numberFromImport(rowValue(row, "Longitude Unit", "unitLng"), NaN);
+  if (Number.isFinite(lat) && Number.isFinite(lng)) {
+    extras.unitLat = lat;
+    extras.unitLng = lng;
+  }
+  const text = (...labels) => String(rowValue(row, ...labels) || "").trim();
+  if (text("Sumber Koordinat Unit", "unitCoordinateSource")) extras.unitCoordinateSource = text("Sumber Koordinat Unit", "unitCoordinateSource");
+  if (text("Alamat Unit", "unitAddress")) extras.unitAddress = text("Alamat Unit", "unitAddress");
+  if (text("Keterangan Jarak", "distanceBasis")) extras.distanceBasis = text("Keterangan Jarak", "distanceBasis");
+  return extras;
+}
+
+function evMetaFromWorkbook(workbook) {
+  const infoName = findSheetName(workbook, "Info Data");
+  if (!infoName) return {};
+  const info = {};
+  window.XLSX.utils.sheet_to_json(workbook.Sheets[infoName], { defval: "" }).forEach((row) => {
+    info[normalizeImportKey(rowValue(row, "Kunci"))] = rowValue(row, "Nilai");
+  });
+  return {
+    period: String(info[normalizeImportKey("Periode Analisis")] || "").trim(),
+    coordinatesUpdatedAt: String(info[normalizeImportKey("Koordinat Unit Diperbarui")] || "").trim(),
+    duplicateRowsRemoved: numberFromImport(info[normalizeImportKey("Duplikat Dihapus")], 0)
+  };
 }
 
 function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
@@ -4146,6 +4233,26 @@ function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
   if (exportedSheetName || firstSheetLooksLikeEvExport) {
     const sheetName = exportedSheetName || firstSheetName;
     const rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+    // Sheet kandidat SPKLU ikut dibaca agar daftar 30 SPKLU per unit tidak hilang.
+    const listSheetName = findSheetName(workbook, "30 SPKLU Terdekat per UP");
+    const listByUnit = new Map();
+    (listSheetName ? window.XLSX.utils.sheet_to_json(workbook.Sheets[listSheetName], { defval: "" }) : []).forEach((row) => {
+      const key = evRowUnitKey(row);
+      const name = String(rowValue(row, "SPKLU", "Nama SPKLU") || "").trim();
+      if (!key || !name) return;
+      const label = String(rowValue(row, "Label") || "").trim();
+      const list = listByUnit.get(key) || [];
+      list.push({
+        name,
+        distance: numberFromImport(rowValue(row, "Jarak KM", "Distance"), 0),
+        ...(label ? { label, labels: label } : {}),
+        chargingClass: rowValue(row, "Class") || "",
+        type: rowValue(row, "AC/DC", "Tipe Charging") || "",
+        powerKw: numberFromImport(rowValue(row, "Daya KW"), null)
+      });
+      listByUnit.set(key, list);
+    });
+    const meta = evMetaFromWorkbook(workbook);
     const units = rows.map((row) => {
       const mapX = numberFromImport(rowValue(row, "Map X", "mapX"), NaN);
       const mapY = numberFromImport(rowValue(row, "Map Y", "mapY"), NaN);
@@ -4163,14 +4270,16 @@ function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
         nearestSpklu: String(rowValue(row, "SPKLU Terdekat", "SPKLU", "nearestSpklu") || "").trim(),
         chargingClass: rowValue(row, "Class", "Kategori", "chargingClass") || "Normal Charging",
         chargerType: rowValue(row, "AC/DC", "Tipe Charging", "chargerType") || "AC",
-        powerKw: numberFromImport(rowValue(row, "Daya KW", "powerKw"), 0),
+        powerKw: numberFromImport(rowValue(row, "Daya KW", "powerKw"), null),
         fast: rowValue(row, "Fast Terdekat", "fast") || rowValue(row, "SPKLU Terdekat", "nearestSpklu"),
         fastKm: numberFromImport(rowValue(row, "Fast Terdekat KM", "fastKm"), distance),
         normal: rowValue(row, "Normal Terdekat", "normal") || rowValue(row, "SPKLU Terdekat", "nearestSpklu"),
-        normalKm: numberFromImport(rowValue(row, "Normal Terdekat KM", "normalKm"), distance)
+        normalKm: numberFromImport(rowValue(row, "Normal Terdekat KM", "normalKm"), distance),
+        ...evImportedUnitExtras(row),
+        ...(listByUnit.has(evRowUnitKey(row)) ? { spkluList: listByUnit.get(evRowUnitKey(row)) } : {})
       };
     });
-    return { units, sourceName };
+    return { units, sourceName, meta };
   }
 
   const summarySheetName = findSheetName(workbook, "Ringkasan 359 UP") || workbook.SheetNames.find((name) => normalizeImportKey(name).includes("ringkasan"));
@@ -4189,7 +4298,7 @@ function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
       distance: numberFromImport(rowValue(row, "JARAK KM", "Jarak KM", "Distance"), 0),
       labels: "SPKLU",
       type: rowValue(row, "AC/DC", "Tipe Charging") || "",
-      powerKw: numberFromImport(rowValue(row, "DAYA KW", "Daya KW"), 0),
+      powerKw: numberFromImport(rowValue(row, "DAYA KW", "Daya KW"), null),
       chargingClass: rowValue(row, "CLASS", "Class") || "",
       point: evProjectCoordinate(rowValue(row, "LAT", "Latitude"), rowValue(row, "LON", "Longitude"))
     });
@@ -4216,7 +4325,7 @@ function parseEvRowsFromWorkbook(workbook, sourceName = "File import") {
       nearestSpklu: nearestName,
       chargingClass: nearestCandidate?.chargingClass || "Normal Charging",
       chargerType: nearestCandidate?.type || "AC",
-      powerKw: nearestCandidate?.powerKw || 0,
+      powerKw: nearestCandidate?.powerKw ?? null,
       fast: rowValue(row, "FAST TERDEKAT", "Fast Terdekat") || nearestName,
       fastKm: numberFromImport(rowValue(row, "FAST TERDEKAT KM", "Fast Terdekat KM"), distance),
       normal: rowValue(row, "NORMAL TERDEKAT", "Normal Terdekat") || nearestName,
@@ -4232,10 +4341,16 @@ function loadLocalEvDataSource() {
     const stored = JSON.parse(localStorage.getItem(EV_LOCAL_SOURCE_KEY) || "null");
     if (!stored?.units?.length) return false;
     evUserSourceActive = true;
+    evUserSourceSavedAt = stored.savedAt || null;
     evGeoDataSummary = stored.summary || evGeoDataSummary;
     evInfrastructureData = stored.data || evInfrastructureData;
     evGeoPriorityUnits = dedupeEvUnits(stored.units);
-    evBuildSummaryFromUnits(evGeoPriorityUnits, `${stored.summary?.source || "Data EV lokal"} · deduplikasi otomatis`);
+    // Label periode = periode data tersimpan, bukan jam halaman dibuka.
+    evBuildSummaryFromUnits(evGeoPriorityUnits, `${stored.summary?.source || "Data EV lokal"} · deduplikasi otomatis`, {
+      period: stored.data?.sourceUpdated,
+      coordinatesUpdatedAt: stored.summary?.unitCoordinatesUpdatedAt,
+      duplicateRowsRemoved: stored.summary?.duplicateRowsRemoved
+    });
     renderEvInfrastructure();
     return true;
   } catch (error) {
@@ -4253,14 +4368,14 @@ async function importEvDataFile(file) {
     const buffer = await file.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
     const parsed = parseEvRowsFromWorkbook(workbook, file.name);
-    count = applyEvImportedUnits(parsed.units, parsed.sourceName);
+    count = applyEvImportedUnits(parsed.units, parsed.sourceName, parsed.meta);
   } else if (extension === "csv") {
     if (!(await ensureXlsxLibrary())) return;
     const workbook = window.XLSX.read(await file.text(), { type: "string" });
     count = applyEvImportedUnits(parseEvRowsFromWorkbook(workbook, file.name).units, file.name);
   } else if (extension === "json") {
     const json = JSON.parse(await file.text());
-    count = applyEvImportedUnits(json.units || json.evGeoPriorityUnits || json.data || [], file.name);
+    count = applyEvImportedUnits(json.units || json.evGeoPriorityUnits || json.data || [], file.name, json.meta || {});
   }
 
   if (!count) {
@@ -4268,9 +4383,12 @@ async function importEvDataFile(file) {
     return;
   }
   const uploadedAt = markDatabaseUploadedNow();
+  const csvNote = extension === "csv"
+    ? " CSV hanya memuat 1 baris per unit: daftar kandidat SPKLU dan periode analisis tidak ikut. Gunakan Excel atau JSON untuk data lengkap."
+    : "";
   showImportToast(
     "Import data EV berhasil",
-    `${count} unit pelaksana diperbarui. Data per ${uploadedAt} dan tersimpan untuk refresh berikutnya.`
+    `${count} unit pelaksana diperbarui. Data per ${uploadedAt} dan tersimpan untuk refresh berikutnya.${csvNote}`
   );
 }
 
@@ -5194,7 +5312,7 @@ function renderEvMapDetail(item) {
         <b>${spklu.name}</b>
         <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
       </div>
-      <strong>${evFormatKm(spklu.distance)}</strong>
+      <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(spklu.distance)}</strong>
     </li>
   `).join("");
 
@@ -5202,13 +5320,15 @@ function renderEvMapDetail(item) {
     <div class="ev-detail-badge" style="--marker-color:${evMapTone(item.category)}">${item.category}</div>
     <h3>${item.unit}</h3>
     ${evUnitCoordinateIsApproximate(item) ? '<p class="ev-coordinate-warning">Lokasi marker unit bersifat perkiraan; jarak SPKLU tetap mengikuti data sumber.</p>' : ""}
+    ${item.unitAddress ? `<p class="ev-unit-address">${evEscapeHtml(item.unitAddress)}</p>` : ""}
+    ${item.distanceBasis ? `<p class="ev-coordinate-warning">${evEscapeHtml(item.distanceBasis)}</p>` : ""}
     <div class="ev-distance-box">
-      <small>Jarak SPKLU terdekat</small>
-      <strong>${evFormatKm(item.distance)}</strong>
+      <small>Jarak SPKLU terdekat${item.distanceBasis ? " (estimasi)" : ""}</small>
+      <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(item.distance)}</strong>
     </div>
     <dl>
       <div><dt>SPKLU Terdekat</dt><dd>${item.nearestSpklu}</dd></div>
-      <div><dt>Tipe Charging</dt><dd>${item.chargerType} · ${item.powerKw} kW</dd></div>
+      <div><dt>Tipe Charging</dt><dd>${item.chargerType} · ${Number(item.powerKw) > 0 ? `${item.powerKw} kW` : "daya belum tercatat"}</dd></div>
       <div><dt>Kategori</dt><dd>${item.chargingClass}</dd></div>
       <div><dt>Fast Terdekat</dt><dd>${item.fast} (${evFormatKm(item.fastKm)})</dd></div>
       <div><dt>Normal Terdekat</dt><dd>${item.normal} (${evFormatKm(item.normalKm)})</dd></div>
@@ -5307,10 +5427,10 @@ function renderEvStaticMap(index = 0) {
       </g>
       <g transform="translate(18 18)">
         <rect width="270" height="76" rx="13" fill="#ffffff" opacity=".96" />
-        <text x="12" y="19" fill="#526280" font-size="10" font-weight="900">MAPS INDONESIA - SEBARAN SPKLU</text>
+        <text x="12" y="19" fill="#526280" font-size="12" font-weight="900">MAPS INDONESIA - SEBARAN SPKLU</text>
         <text x="12" y="39" fill="#06164c" font-size="13" font-weight="900">${item.unit}</text>
         <text x="12" y="61" fill="${tone}" font-size="22" font-weight="900">${evFormatKm(item.distance)}</text>
-        <text x="132" y="60" fill="#526280" font-size="11" font-weight="800">ke SPKLU terdekat</text>
+        <text x="132" y="60" fill="#526280" font-size="12" font-weight="800">ke SPKLU terdekat</text>
       </g>
       <g class="ev-map-zoom" transform="translate(20 222)">
         <rect width="34" height="68" rx="9" fill="#ffffff" />
@@ -5367,6 +5487,147 @@ function bindEvUnitSearch(onSelect) {
     event.preventDefault();
     onSelect(Number(firstVisible.dataset.evUnit));
   });
+}
+
+// Pencarian di atas peta: ketik nama unit → saran muncul langsung (UP & ULP);
+// pilih saran (klik / Enter) → peta terbang ke unit dan detailnya terbuka.
+function evSearchKey(value) {
+  return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function evRankUnitMatch(name, query) {
+  const key = evSearchKey(name);
+  const tokens = query.split(" ").filter(Boolean);
+  if (!tokens.every((token) => key.includes(token))) return -1;
+  if (key === query) return 0;
+  if (key.startsWith(query)) return 1;
+  if (key.split(" ").some((word) => word.startsWith(tokens[0]))) return 2;
+  return 3;
+}
+
+function addEvMapSearch(map, { onUnit, onUlp, ulpMarkers = [] }) {
+  const control = L.control({ position: "topleft" });
+  control.onAdd = () => {
+    const box = L.DomUtil.create("div", "ev-map-search");
+    box.setAttribute("role", "search");
+    const input = L.DomUtil.create("input", "ev-map-search-input", box);
+    input.type = "search";
+    input.placeholder = "Cari nama unit di peta…";
+    input.autocomplete = "off";
+    input.setAttribute("aria-label", "Cari nama unit di peta");
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("aria-controls", "evMapSearchList");
+    const list = L.DomUtil.create("ul", "ev-map-search-list", box);
+    list.id = "evMapSearchList";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+    L.DomEvent.disableClickPropagation(box);
+    L.DomEvent.disableScrollPropagation(box);
+
+    let results = [];
+    let active = -1;
+
+    const close = () => {
+      list.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
+      active = -1;
+    };
+
+    const highlight = (index) => {
+      active = index;
+      [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === index)));
+      const current = list.children[index];
+      if (current?.id) {
+        input.setAttribute("aria-activedescendant", current.id);
+        current.scrollIntoView({ block: "nearest" });
+      }
+    };
+
+    const choose = (result) => {
+      if (!result) return;
+      input.value = result.name;
+      close();
+      input.blur();
+      if (result.type === "up") onUnit(result.index);
+      else onUlp(result.marker);
+    };
+
+    const renderList = (query) => {
+      list.replaceChildren();
+      if (!results.length) {
+        const empty = document.createElement("li");
+        empty.className = "ev-map-search-empty";
+        empty.textContent = `Unit "${query}" tidak ditemukan`;
+        list.append(empty);
+      }
+      results.forEach((result, i) => {
+        const li = document.createElement("li");
+        li.id = `evMapSearchOption${i}`;
+        li.setAttribute("role", "option");
+        li.setAttribute("aria-selected", "false");
+        const name = document.createElement("b");
+        name.textContent = result.name;
+        const meta = document.createElement("small");
+        meta.textContent = result.type === "up"
+          ? `Unit pelaksana · ${result.item.category} · ${result.item.distanceBasis ? "≈ " : ""}${evFormatKm(result.item.distance)}`
+          : "ULP · Unit Layanan Pelanggan";
+        li.append(name, meta);
+        li.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          choose(result);
+        });
+        list.append(li);
+      });
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      active = -1;
+    };
+
+    const search = () => {
+      const query = evSearchKey(input.value);
+      if (!query) {
+        results = [];
+        close();
+        return;
+      }
+      const ups = evGeoPriorityUnits
+        .map((item, index) => ({ type: "up", index, item, name: item.unit, rank: evRankUnitMatch(item.unit, query) }))
+        .filter((entry) => entry.rank >= 0);
+      const ulps = ulpMarkers
+        .map((marker) => ({ type: "ulp", marker, name: marker.evRow?.unit || "", rank: evRankUnitMatch(marker.evRow?.unit, query) }))
+        .filter((entry) => entry.rank >= 0);
+      const byRank = (a, b) => a.rank - b.rank || a.name.localeCompare(b.name, "id");
+      results = [...ups.sort(byRank), ...ulps.sort(byRank)].slice(0, 8);
+      renderList(input.value.trim());
+    };
+
+    input.addEventListener("input", search);
+    input.addEventListener("focus", () => { if (input.value.trim()) search(); });
+    input.addEventListener("blur", () => setTimeout(close, 120));
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        if (list.hidden) search();
+        if (!results.length) return;
+        event.preventDefault();
+        const step = event.key === "ArrowDown" ? 1 : -1;
+        highlight((active + step + results.length) % results.length);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        choose(results[active >= 0 ? active : 0]);
+      } else if (event.key === "Escape") {
+        close();
+      }
+    });
+    return box;
+  };
+  control.addTo(map);
+  // Tempatkan di atas tombol zoom agar mudah ditemukan.
+  const box = control.getContainer();
+  box.parentElement?.prepend(box);
+  return control;
 }
 
 function initEvGeoMap() {
@@ -5464,6 +5725,7 @@ function initEvGeoMap() {
       const name = evEscapeHtml(row.unit || "ULP");
       marker.bindTooltip(`ULP: ${name}`, { direction: "top", offset: [0, -5] });
       marker.bindPopup(`<div class="ev-map-popup ev-map-popup-compact"><strong>${name}</strong><span>Unit Layanan Pelanggan</span></div>`);
+      marker.evRow = row;
       return marker;
     })
     .filter(Boolean);
@@ -5477,7 +5739,7 @@ function initEvGeoMap() {
         iconSize: [20, 20]
       })
     }).addTo(map);
-    marker.bindTooltip(`${evEscapeHtml(row.unit)}${evUnitCoordinateIsApproximate(row) ? " · lokasi perkiraan" : ""}`, { direction: "top", offset: [0, -8] });
+    marker.bindTooltip(`${evEscapeHtml(row.unit)}${evUnitCoordinateIsApproximate(row) ? " · lokasi perkiraan" : ""}${row.distanceBasis ? " · jarak SPKLU estimasi" : ""}`, { direction: "top", offset: [0, -8] });
     marker.on("click", () => select(rowIndex, true, true));
     return marker;
   });
@@ -5548,13 +5810,13 @@ function initEvGeoMap() {
           <b>${spklu.name}</b>
           <small>${spklu.labels} · ${spklu.type}${spklu.powerKw ? ` · ${spklu.powerKw} kW` : ""}</small>
         </div>
-        <strong>${evFormatKm(spklu.distance)}</strong>
+        <strong>${item.distanceBasis ? "≈ " : ""}${evFormatKm(spklu.distance)}</strong>
       </li>
     `).join("");
     const popupHtml = `
       <div class="ev-map-popup">
         <strong>${item.unit}</strong>
-        <span>Daftar SPKLU berdasarkan jarak</span>
+        <span>Daftar SPKLU berdasarkan jarak${item.distanceBasis ? " (estimasi)" : ""}</span>
         <ol>${popupSpkluRows}</ol>
       </div>
     `;
@@ -5576,6 +5838,21 @@ function initEvGeoMap() {
 
   bindEvUnitList((index) => select(index, true, true));
   bindEvUnitSearch((index) => select(index, true, true));
+  addEvMapSearch(map, {
+    onUnit: (index) => {
+      select(index, false, false);
+      map.closePopup();
+      map.flyTo(evUnitLatLng(evGeoPriorityUnits[index]), 13, { duration: 0.6 });
+      // Popup dibuka setelah peta berhenti agar Leaflet bisa menggeser peta (autoPan).
+      map.once("moveend", () => unitMarkers[index]?.openPopup());
+      document.querySelector(`[data-ev-unit="${index}"]`)?.scrollIntoView({ block: "nearest" });
+    },
+    onUlp: (marker) => {
+      map.flyTo(marker.getLatLng(), 14, { duration: 0.6 });
+      map.once("moveend", () => marker.openPopup());
+    },
+    ulpMarkers
+  });
   evGeoMapState = { map, select, unitMarkers, ulpMarkers, container: mapEl };
   select(0, false);
   setTimeout(() => {
