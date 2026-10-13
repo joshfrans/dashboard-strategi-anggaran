@@ -5102,10 +5102,13 @@ function renderEvInfrastructure() {
           </div>
           <div class="ev-geo-support">
             <div class="ev-unit-panel">
-              <label class="ev-unit-search">
-                <i data-lucide="search"></i>
-                <input id="evUnitSearch" type="search" placeholder="Cari unit, SPKLU, atau kategori jarak" autocomplete="off">
-              </label>
+              <div class="ev-unit-search-wrap">
+                <label class="ev-unit-search">
+                  <i data-lucide="search"></i>
+                  <input id="evUnitSearch" type="search" placeholder="Cari unit, SPKLU, atau kategori jarak" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="evUnitSuggest" aria-label="Cari unit, SPKLU, atau kategori jarak">
+                </label>
+                <ul id="evUnitSuggest" class="ev-map-search-list ev-unit-suggest" role="listbox" aria-label="Saran unit" hidden></ul>
+              </div>
               <div class="ev-map-legend-strip" aria-label="Keterangan marker maps">
                 <span><i class="ev-legend-office-icon"></i> Unit Pelaksana</span>
                 <span><i class="ev-legend-ulp-dot"></i> ULP</span>
@@ -5458,34 +5461,143 @@ function bindEvUnitList(onSelect) {
   });
 }
 
+// Kolom "Cari unit" di panel samping peta: daftar unit tetap tersaring, dan saran unit
+// muncul langsung saat mengetik (berlaku juga saat peta memakai mode statis karena
+// tile OSM diblokir jaringan). Pilih saran (klik / Enter) -> unit dipilih & detail terbuka.
 function bindEvUnitSearch(onSelect) {
   const searchInput = document.getElementById("evUnitSearch");
-  const buttons = Array.from(document.querySelectorAll("[data-ev-unit]"));
-  if (!searchInput || !buttons.length) return;
+  const list = document.getElementById("evUnitSuggest");
+  if (!searchInput) return;
+  // Mode peta bisa berganti (Leaflet -> statis); cukup ganti aksi pilih, jangan pasang listener ganda.
+  searchInput.evOnSelect = onSelect;
+  if (searchInput.dataset.evSearchBound === "1") return;
+  searchInput.dataset.evSearchBound = "1";
 
-  const searchableText = (item) => [
+  const unitButtons = () => Array.from(document.querySelectorAll("[data-ev-unit]"));
+  const spkluNames = (item) => [
+    item.nearestSpklu,
+    item.fast,
+    item.normal,
+    ...(Array.isArray(item.spkluList) ? item.spkluList.map((spklu) => spklu.name) : [])
+  ].filter(Boolean);
+  const searchableText = (item) => evSearchKey([
     item.unit,
     item.category,
-    item.nearestSpklu,
     item.chargingClass,
     item.chargerType,
-    ...(Array.isArray(item.spkluList) ? item.spkluList.map((spklu) => spklu.name) : [])
-  ].filter(Boolean).join(" ").toLowerCase();
+    ...spkluNames(item)
+  ].filter(Boolean).join(" "));
 
-  searchInput.addEventListener("input", () => {
-    const keyword = searchInput.value.trim().toLowerCase();
-    buttons.forEach((button) => {
+  let results = [];
+  let active = -1;
+
+  const close = () => {
+    if (!list) return;
+    list.hidden = true;
+    searchInput.setAttribute("aria-expanded", "false");
+    searchInput.removeAttribute("aria-activedescendant");
+    active = -1;
+  };
+
+  const highlight = (index) => {
+    if (!list) return;
+    active = index;
+    [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === index)));
+    const current = list.children[index];
+    if (current?.id) {
+      searchInput.setAttribute("aria-activedescendant", current.id);
+      current.scrollIntoView({ block: "nearest" });
+    }
+  };
+
+  const choose = (result) => {
+    if (!result) return;
+    searchInput.value = result.item.unit;
+    close();
+    unitButtons().forEach((button) => { button.hidden = false; });
+    searchInput.evOnSelect?.(result.index);
+    document.querySelector(`[data-ev-unit="${result.index}"]`)?.scrollIntoView({ block: "nearest" });
+  };
+
+  const filterButtons = (query) => {
+    unitButtons().forEach((button) => {
       const item = evGeoPriorityUnits[Number(button.dataset.evUnit)];
-      button.hidden = keyword ? !searchableText(item).includes(keyword) : false;
+      button.hidden = query && item ? !searchableText(item).includes(query) : false;
     });
-  });
+  };
 
+  const renderList = (rawQuery) => {
+    if (!list) return;
+    list.replaceChildren();
+    if (!results.length) {
+      const empty = document.createElement("li");
+      empty.className = "ev-map-search-empty";
+      empty.textContent = `Unit "${rawQuery}" tidak ditemukan`;
+      list.append(empty);
+    }
+    results.forEach((result, i) => {
+      const li = document.createElement("li");
+      li.id = `evUnitSuggestOption${i}`;
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", "false");
+      const name = document.createElement("b");
+      name.textContent = result.item.unit;
+      const meta = document.createElement("small");
+      const distance = `${result.item.distanceBasis ? "≈ " : ""}${evFormatKm(result.item.distance)}`;
+      meta.textContent = result.via
+        ? `SPKLU: ${result.via} · ${distance}`
+        : `${result.item.category} · ${distance} ke SPKLU terdekat`;
+      li.append(name, meta);
+      li.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        choose(result);
+      });
+      list.append(li);
+    });
+    list.hidden = false;
+    searchInput.setAttribute("aria-expanded", "true");
+    active = -1;
+  };
+
+  const search = () => {
+    const query = evSearchKey(searchInput.value);
+    filterButtons(query);
+    if (!query) {
+      results = [];
+      close();
+      return;
+    }
+    results = evGeoPriorityUnits
+      .map((item, index) => {
+        const rank = evRankUnitMatch(item.unit, query);
+        if (rank >= 0) return { index, item, rank, via: "" };
+        const spklu = spkluNames(item).find((spkluName) => evSearchKey(spkluName).includes(query));
+        if (spklu) return { index, item, rank: 4, via: spklu };
+        return searchableText(item).includes(query) ? { index, item, rank: 5, via: "" } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.rank - b.rank || a.item.unit.localeCompare(b.item.unit, "id"))
+      .slice(0, 8);
+    renderList(searchInput.value.trim());
+  };
+
+  searchInput.addEventListener("input", search);
+  searchInput.addEventListener("focus", () => { if (searchInput.value.trim()) search(); });
+  searchInput.addEventListener("blur", () => setTimeout(close, 120));
   searchInput.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") return;
-    const firstVisible = buttons.find((button) => !button.hidden);
-    if (!firstVisible) return;
-    event.preventDefault();
-    onSelect(Number(firstVisible.dataset.evUnit));
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      if (!list || list.hidden) search();
+      if (!results.length) return;
+      event.preventDefault();
+      const step = event.key === "ArrowDown" ? 1 : -1;
+      highlight((active + step + results.length) % results.length);
+    } else if (event.key === "Enter") {
+      if (!results.length) return;
+      event.preventDefault();
+      choose(results[active >= 0 ? active : 0]);
+    } else if (event.key === "Escape") {
+      close();
+    }
   });
 }
 
