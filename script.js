@@ -459,9 +459,15 @@ const STRATEGY_SOURCE_SHEETS = [
   "05_Business_Excellence",
   "09_Ringkasan"
 ];
-// GitHub Actions refreshes the public snapshot about every five minutes.
-// Poll once a minute so an open dashboard picks up a new snapshot promptly.
-const STRATEGY_REALTIME_REFRESH_MS = 60 * 1000;
+// Sumber langsung: Web App Apps Script yang menyajikan file data source dari Drive
+// (lihat sinkron-realtime-dashboard-ga.gs, fungsi doGet). Bila kosong/gagal, dashboard
+// memakai snapshot GitHub (disalin workflow sinkron) seperti sebelumnya.
+const STRATEGY_LIVE_SOURCE_URL = "https://script.google.com/macros/s/AKfycbzcA2YoN7-GcXJuB-crIYoqM6hUL2tPDWqtIwoYjG2A3GlIKIazP5b4t7R2nUMkoRR5/exec";
+const STRATEGY_LIVE_TIMEOUT_MS = 12 * 1000;
+const STRATEGY_LIVE_RETRY_MS = 5 * 60 * 1000;
+// Sumber langsung dicek tiap 15 detik (hanya waktu ubah file, unduh penuh bila berubah);
+// tanpa sumber langsung, snapshot GitHub dicek tiap menit.
+const STRATEGY_REALTIME_REFRESH_MS = STRATEGY_LIVE_SOURCE_URL ? 15 * 1000 : 60 * 1000;
 const STRATEGY_IMPORT_GRACE_MS = 5 * 60 * 1000;
 const EV_LOCAL_SOURCE_KEY = "dashboardEvInfrastructureDataSource:v20260826";
 const STRATEGY_MONTHS_FULL = [
@@ -3582,6 +3588,41 @@ function renderStrategyDashboard() {
 let strategySnapshotVersion = null;
 let strategySnapshotCheckedAt = null;
 let strategySourceDataAt = null;
+let strategyLiveVersion = null;
+let strategyLiveRetryAt = 0;
+
+function strategyGoogleSourceLabel() {
+  return strategyLiveVersion ? "Google Sheets (langsung)" : "Google Sheets (sinkron otomatis)";
+}
+
+// checkOnly=true -> hanya { modified }; false -> { modified, xlsx (base64) }.
+async function fetchStrategyLiveSource(checkOnly) {
+  if (!STRATEGY_LIVE_SOURCE_URL || Date.now() < strategyLiveRetryAt) return null;
+  const separator = STRATEGY_LIVE_SOURCE_URL.includes("?") ? "&" : "?";
+  const url = `${STRATEGY_LIVE_SOURCE_URL}${separator}${checkOnly ? "check=1&" : ""}_=${Date.now()}`;
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), STRATEGY_LIVE_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, { cache: "no-store", credentials: "omit", signal: controller.signal });
+    if (!response.ok) return null;
+    const payload = await response.json();
+    if (!payload || typeof payload.modified !== "string" || Number.isNaN(new Date(payload.modified).getTime())) return null;
+    if (!checkOnly && typeof payload.xlsx !== "string") return null;
+    return payload;
+  } catch (error) {
+    console.info("Sumber langsung data source tidak terbaca:", error?.name || error);
+    return null;
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+function base64ToArrayBuffer(base64) {
+  const binary = window.atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return bytes.buffer;
+}
 
 function snapshotVersionFromHeaders(headers) {
   if (!headers) return null;
@@ -3637,7 +3678,19 @@ async function loadGoogleStrategyDataSource() {
     if (!(await ensureXlsxLibrary())) return false;
     let response = null;
     let sourceError = "";
-    for (const sourceUrl of STRATEGY_GOOGLE_XLSX_URLS) {
+    let buffer = null;
+    let live = null;
+    if (STRATEGY_LIVE_SOURCE_URL) {
+      live = await fetchStrategyLiveSource(false);
+      try {
+        if (live) buffer = base64ToArrayBuffer(live.xlsx);
+      } catch (decodeError) {
+        live = null;
+        console.info("Sumber langsung tidak valid:", decodeError);
+      }
+      if (!live) strategyLiveRetryAt = Date.now() + STRATEGY_LIVE_RETRY_MS;
+    }
+    for (const sourceUrl of buffer ? [] : STRATEGY_GOOGLE_XLSX_URLS) {
       const separator = sourceUrl.includes("?") ? "&" : "?";
       try {
         const candidate = await fetch(`${sourceUrl}${separator}_=${Date.now()}`, {
@@ -3656,11 +3709,11 @@ async function loadGoogleStrategyDataSource() {
         console.info("Snapshot data source gagal dimuat:", fetchError);
       }
     }
-    if (!response) {
+    if (!buffer && !response) {
       strategyGoogleSourceError = sourceError || "Google tidak terbaca";
       return false;
     }
-    const buffer = await response.arrayBuffer();
+    if (!buffer) buffer = await response.arrayBuffer();
     const workbook = window.XLSX.read(buffer, { type: "array", cellDates: false });
     const sheetAudit = strategyWorkbookSheetAudit(workbook);
     const { imported, hasData } = applyStrategyWorkbook(workbook);
@@ -3675,15 +3728,22 @@ async function loadGoogleStrategyDataSource() {
       console.info(`Sheet opsional/pendukung belum terbaca: ${sheetAudit.missing.join(", ")}`);
     }
     strategyGoogleImported = imported || {};
-    strategySnapshotVersion = snapshotVersionFromHeaders(response.headers);
-    const lastModified = response.headers.get("last-modified");
-    const parsedLastModified = lastModified ? new Date(lastModified) : null;
-    const knownLastModified = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : null;
-    const metaDataTime = await loadStrategySnapshotDataTime();
-    strategySourceDataAt = metaDataTime || knownLastModified;
+    if (live) {
+      strategyLiveVersion = live.modified;
+      strategySnapshotVersion = null;
+      strategySourceDataAt = new Date(live.modified);
+    } else {
+      strategyLiveVersion = null;
+      strategySnapshotVersion = snapshotVersionFromHeaders(response.headers);
+      const lastModified = response.headers.get("last-modified");
+      const parsedLastModified = lastModified ? new Date(lastModified) : null;
+      const knownLastModified = parsedLastModified && !Number.isNaN(parsedLastModified.getTime()) ? parsedLastModified : null;
+      const metaDataTime = await loadStrategySnapshotDataTime();
+      strategySourceDataAt = metaDataTime || knownLastModified;
+    }
     const sourceTime = strategySourceDataAt || new Date();
     setDatabaseUpdatedAt(formatDatabaseTimestamp(sourceTime), true);
-    setStrategySourceStatus("Google Sheets (sinkron otomatis)", strategySourceDataAt);
+    setStrategySourceStatus(strategyGoogleSourceLabel(), strategySourceDataAt);
     saveLocalStrategyDataSource("google-cache");
     return true;
   } catch (error) {
@@ -3719,7 +3779,7 @@ async function loadStrategyDataSource() {
     if (googleLoaded) {
       saveLocalStrategyDataSource("google-cache");
       setStrategySourceStatus(
-        googleHasRatification ? "Google Sheets (sinkron otomatis)" : "Google Sheets + Excel Ratifikasi",
+        googleHasRatification ? strategyGoogleSourceLabel() : "Google Sheets + Excel Ratifikasi",
         strategySourceDataAt
       );
     } else if (ratificationLoaded) {
@@ -3757,12 +3817,31 @@ async function refreshOnlineDashboardData(options = {}) {
   if (!force && Date.now() < strategyManualImportUntil) return false;
   strategyRealtimeInFlight = true;
   try {
-    if (!force && strategySnapshotVersion) {
-      const latestVersion = await probeStrategySnapshotVersion();
-      strategySnapshotCheckedAt = new Date();
+    if (!force && (strategySnapshotVersion || strategyLiveVersion)) {
       // Versi sama = data tidak berubah: tidak perlu unduh, parse, atau render.
-      // Jika probe gagal (null), lanjut ke unduhan penuh seperti sebelumnya.
-      if (latestVersion && latestVersion === strategySnapshotVersion) {
+      // Sumber langsung dicek dulu (juga saat sedang memakai snapshot, agar kembali
+      // ke sumber langsung begitu pulih); jika gagal, cek snapshot GitHub.
+      let probed = false;
+      let unchanged = false;
+      const live = await fetchStrategyLiveSource(true);
+      if (live) {
+        probed = true;
+        unchanged = live.modified === strategyLiveVersion;
+      } else if (strategyLiveVersion) {
+        // Sumber langsung sedang gagal: pertahankan data terakhir (lebih baru dari snapshot),
+        // kecuali snapshot GitHub sudah memuat data yang lebih baru.
+        const snapshotDataTime = await loadStrategySnapshotDataTime();
+        probed = true;
+        unchanged = !(snapshotDataTime && strategySourceDataAt && snapshotDataTime > strategySourceDataAt);
+      } else if (strategySnapshotVersion) {
+        const latestVersion = await probeStrategySnapshotVersion();
+        if (latestVersion) {
+          probed = true;
+          unchanged = latestVersion === strategySnapshotVersion;
+        }
+      }
+      strategySnapshotCheckedAt = new Date();
+      if (probed && unchanged) {
         updateStrategySourceCheckedTitle();
         return true;
       }
@@ -3781,7 +3860,7 @@ async function refreshOnlineDashboardData(options = {}) {
     renderStrategyDashboard();
     // Tanpa argumen detail: sebelumnya label menjadi
     // "Google Sheets (sinkron otomatis) (snapshot diperiksa berkala)".
-    setStrategySourceStatus("Google Sheets (sinkron otomatis)", strategySourceDataAt);
+    setStrategySourceStatus(strategyGoogleSourceLabel(), strategySourceDataAt);
     updateStrategySourceCheckedTitle();
     if (!silent) {
       showImportToast(
