@@ -12357,3 +12357,7 @@ td {
 
 .ev-map-search-list li.ev-map-search-empty { color: #475569; font-size: 13px; cursor: default; }
 .ev-map-search-list li.ev-map-search-empty:hover { background: transparent; }
+
+/* Saran unit di kolom "Cari unit" panel EV (memakai gaya daftar saran peta). */
+.ev-unit-search-wrap { position: relative; }
+.ev-unit-suggest { z-index: 30; }
