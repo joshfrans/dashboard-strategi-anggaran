@@ -1,0 +1,347 @@
+/* Tema "Biru Listrik" — Smart Grid PLN: energi hijau · gedung cerdas · kendaraan listrik (pratinjau 2026-11)
+ * Lapisan tema di atas redesign.css + add-on banner. Mengganti token, tipografi, dan permukaan;
+ * logika, data, dan warna STATUS (tercapai / monitoring / percepatan) tidak diubah.
+ * Aktif bila <body> punya kelas .bb-on (dipasang oleh theme-biru.js).
+ */
+
+/* ---------- Font (self-hosted; CSP font-src 'self') ---------- */
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("./ibm-plex-sans-latin-wght-normal.woff2") format("woff2-variations"),
+       url("./ibm-plex-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./plus-jakarta-sans-latin-wght-normal.woff2") format("woff2-variations"),
+       url("./plus-jakarta-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}
+
+body.rd-enabled.bb-on {
+  /* Netral struktur — slate kebiruan */
+  --rd-ink: #0d1b3a;
+  --rd-ink-2: #4a5a78;
+  --rd-line: #d8e1ef;
+  --rd-hair: #ebf0f8;
+  --rd-track: #e7edf7;
+  --rd-ground: #f3f6fb;
+  --rd-card: #ffffff;
+  --rd-accent: #0b4fbf;
+  --rd-accent-soft: #e9f1ff;
+  --rd-context: #8fb4f0;
+  --rd-shadow: 0 1px 2px rgba(8, 34, 89, .05), 0 10px 28px rgba(8, 34, 89, .07);
+  --rd-radius: 16px;
+
+  /* Permukaan gelap "smart grid" */
+  --bb-midnight: #04112e;
+  --bb-night: #071a45;
+  --bb-navy: #0a2a6b;
+  --bb-royal: #0b4fbf;
+  --bb-electric: #2f7bff;
+  --bb-ice: #7fd8ff;      /* aliran listrik — hanya di latar gelap */
+  --bb-spark: #ffd200;    /* kuning PLN — hanya ikon petir dekoratif */
+  --bb-on-dark: #ffffff;
+  --bb-on-dark-2: #c9dbf7;
+  --bb-display: "Plus Jakarta Sans", "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --bb-grid: linear-gradient(rgba(127, 216, 255, .06) 1px, transparent 1px) 0 0 / 28px 28px,
+             linear-gradient(90deg, rgba(127, 216, 255, .06) 1px, transparent 1px) 0 0 / 28px 28px;
+
+  /* Satukan banner add-on tiap menu */
+  --sg-navy: var(--bb-midnight); --sg-deep: var(--bb-night); --sg-teal: #0d3f9e; --sg-emerald: var(--bb-electric); --sg-mint: #bfe3ff;
+  --eg-navy: var(--bb-midnight); --eg-deep: var(--bb-night); --eg-teal: #0d4aa8; --eg-emerald: var(--bb-electric); --eg-mint: #bfe3ff;
+  --ig-navy: var(--bb-midnight); --ig-deep: var(--bb-night); --ig-teal: #0d3f9e; --ig-emerald: var(--bb-electric);
+  --sg-on-dark-2: var(--bb-on-dark-2); --eg-on-dark-2: var(--bb-on-dark-2); --ig-on-dark-2: var(--bb-on-dark-2);
+}
+
+/* ---------- Tipografi ---------- */
+body.rd-enabled.bb-on .dashboard h1,
+body.rd-enabled.bb-on .dashboard h2,
+body.rd-enabled.bb-on .rd-ex-nko strong,
+body.rd-enabled.bb-on .rd-ex-card .v,
+body.rd-enabled.bb-on .rd-kpi-val,
+body.rd-enabled.bb-on .rd-tile strong,
+body.rd-enabled.bb-on .rd-hero-tile strong,
+body.rd-enabled.bb-on .sg-nko-val,
+body.rd-enabled.bb-on .eg-nko-val,
+body.rd-enabled.bb-on .ig-nko-val {
+  font-family: var(--bb-display);
+  letter-spacing: -.008em; word-spacing: .06em;
+  font-variant-numeric: tabular-nums;
+}
+body.rd-enabled.bb-on .dashboard h1 { font-weight: 800; }
+
+/* ---------- Shell ---------- */
+body.rd-enabled.bb-on .app-shell {
+  background: linear-gradient(90deg, var(--bb-midnight) 0, var(--bb-midnight) 236px, var(--rd-ground) 236px);
+}
+body.rd-enabled.bb-on .sidebar {
+  background:
+    radial-gradient(120% 40% at 0% 0%, rgba(47, 123, 255, .22) 0%, rgba(47, 123, 255, 0) 70%),
+    var(--bb-grid),
+    linear-gradient(180deg, var(--bb-midnight) 0%, var(--bb-night) 62%, var(--bb-navy) 100%);
+}
+body.rd-enabled.bb-on .brand { flex-direction: column; align-items: flex-start; gap: 12px; }
+body.rd-enabled.bb-on .brand::after {
+  content: "Energi Hijau · Gedung Cerdas\A Kendaraan Listrik"; white-space: pre-line;
+  font: 600 12px/1.35 var(--rd-font); letter-spacing: .03em; color: var(--bb-ice);
+}
+body.rd-enabled.bb-on .nav-item { color: #b8c8e6; }
+body.rd-enabled.bb-on .nav-item svg { transition: color .15s ease; }
+body.rd-enabled.bb-on .nav-item:hover { color: #fff; background: rgba(127, 216, 255, .08); }
+body.rd-enabled.bb-on .nav-item.is-active {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(47, 123, 255, .38) 0%, rgba(47, 123, 255, .08) 100%);
+  box-shadow: inset 0 0 0 1px rgba(127, 216, 255, .22), 0 8px 22px rgba(4, 17, 46, .35);
+}
+body.rd-enabled.bb-on .nav-item.is-active svg { color: var(--bb-ice); }
+body.rd-enabled.bb-on .nav-item.is-active::before {
+  background: var(--bb-ice);
+  box-shadow: 0 0 12px rgba(127, 216, 255, .9);
+}
+body.rd-enabled.bb-on .nav-item:focus-visible { outline: 2px solid var(--bb-ice); outline-offset: 2px; }
+body.rd-enabled.bb-on .nav-item[data-nav="analytics"]::after { background: rgba(127, 216, 255, .14); }
+body.rd-enabled.bb-on .sidebar-art { opacity: 1; display: flex; align-items: flex-end; padding: 0 4px 14px; }
+body.rd-enabled.bb-on .sidebar-art > * { display: none; }
+body.rd-enabled.bb-on .sidebar-art .bb-side-art { display: block; width: 100%; height: auto; }
+body.rd-enabled.bb-on .user-box { background: rgba(127, 216, 255, .07); box-shadow: inset 0 0 0 1px rgba(127, 216, 255, .14); }
+body.rd-enabled.bb-on .user-box .avatar { background: var(--bb-electric); color: #fff; }
+
+/* Garis aliran energi di bawah judul halaman */
+body.rd-enabled.bb-on .page-header { position: relative; }
+body.rd-enabled.bb-on .page-header::after {
+  content: ""; position: absolute; left: 0; bottom: -6px; width: min(520px, 60%); height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--bb-royal), var(--bb-electric) 45%, var(--bb-ice) 80%, rgba(127, 216, 255, 0));
+}
+
+/* ---------- Kontrol ---------- */
+body.rd-enabled.bb-on .export-btn,
+body.rd-enabled.bb-on .rd-btn.primary,
+body.rd-enabled.bb-on .ev-infra-view .rd-geohead #evExportData {
+  background: var(--bb-royal); border-color: var(--bb-royal); color: #fff;
+  box-shadow: 0 6px 16px rgba(11, 79, 191, .28);
+}
+body.rd-enabled.bb-on .export-btn:hover,
+body.rd-enabled.bb-on .rd-btn.primary:hover,
+body.rd-enabled.bb-on .ev-infra-view .rd-geohead #evExportData:hover { background: var(--bb-navy); border-color: var(--bb-navy); }
+body.rd-enabled.bb-on .sg-tab.is-active,
+body.rd-enabled.bb-on .eg-tab.is-active,
+body.rd-enabled.bb-on .ig-tab.is-active { background: var(--bb-royal); color: #fff; box-shadow: 0 6px 14px rgba(11, 79, 191, .25); }
+
+/* ---------- Overview: hero "kawasan gedung cerdas" ---------- */
+body.rd-enabled.bb-on .rd-ex-hero {
+  --bb-art-w: clamp(300px, 26vw, 390px);
+  position: relative; isolation: isolate;
+  min-height: 470px;
+  border-radius: 22px;
+  background:
+    radial-gradient(45% 70% at 86% 72%, rgba(47, 123, 255, .55) 0%, rgba(47, 123, 255, 0) 70%),
+    radial-gradient(40% 55% at 4% 0%, rgba(127, 216, 255, .16) 0%, rgba(127, 216, 255, 0) 70%),
+    var(--bb-grid),
+    linear-gradient(135deg, var(--bb-midnight) 0%, var(--bb-night) 45%, #0d3f9e 100%);
+  box-shadow: 0 24px 60px rgba(4, 17, 46, .28);
+}
+body.rd-enabled.bb-on .rd-ex-hero > * { position: relative; z-index: 1; }
+body.rd-enabled.bb-on .rd-ex-main,
+body.rd-enabled.bb-on .rd-ex-legend { max-width: calc(100% - var(--bb-art-w) - 16px); }
+body.rd-enabled.bb-on .rd-ex-hero > .bb-hero-art {
+  position: absolute; z-index: 0; right: 22px; bottom: 66px;
+  width: var(--bb-art-w); pointer-events: none;
+}
+.bb-hero-art svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.bb-hero-art .bb-tag {
+  position: absolute; transform: translate(-50%, -50%);
+  padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+  font: 600 12px/1.4 var(--rd-font, system-ui); letter-spacing: .02em;
+  color: #e8f4ff; background: rgba(4, 17, 46, .82); border: 1px solid rgba(127, 216, 255, .5);
+  box-shadow: 0 4px 12px rgba(4, 17, 46, .35);
+}
+body.rd-enabled.bb-on .rd-ex-eyebrow { color: var(--bb-ice); }
+body.rd-enabled.bb-on .rd-ex-hero h1 { font-size: clamp(34px, 3.4vw, 50px); letter-spacing: -.018em; word-spacing: .08em; }
+body.rd-enabled.bb-on .rd-ex-logos { padding: 6px 16px; box-shadow: 0 8px 24px rgba(4, 17, 46, .35); }
+body.rd-enabled.bb-on .rd-ex-logos img { height: 32px; }
+body.rd-enabled.bb-on .rd-ex-nko { border-right-color: rgba(127, 216, 255, .28); }
+body.rd-enabled.bb-on .rd-ex-nko strong {
+  font-size: clamp(60px, 6vw, 92px); font-weight: 800;
+  background: linear-gradient(180deg, #ffffff 35%, #bfe3ff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body.rd-enabled.bb-on .rd-ex-nko .lbl,
+body.rd-enabled.bb-on .rd-ex-nko .tgt,
+body.rd-enabled.bb-on .rd-ex-nko .why { color: var(--bb-on-dark-2); }
+body.rd-enabled.bb-on .rd-ex-narr { display: grid; gap: 10px; }
+body.rd-enabled.bb-on .rd-ex-narr p {
+  margin: 0; padding-left: 14px; font-size: 16.5px; line-height: 1.45; color: #e6efff; text-wrap: pretty;
+  border-left: 2px solid rgba(127, 216, 255, .55);
+}
+body.rd-enabled.bb-on .rd-ex-legend { justify-self: start; box-shadow: 0 8px 22px rgba(4, 17, 46, .3); }
+body.rd-enabled.bb-on .rd-ex-legend .lbl { color: var(--rd-ink); }
+
+/* Kartu ringkasan yang menumpang di tepi hero */
+body.rd-enabled.bb-on .rd-ex-card {
+  border-radius: 18px; border: 1px solid var(--rd-line); border-top: 4px solid var(--ex);
+  box-shadow: 0 16px 36px rgba(8, 34, 89, .14);
+}
+body.rd-enabled.bb-on .rd-ex-card:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(11, 79, 191, .22); }
+body.rd-enabled.bb-on .rd-ex-card h2 { color: var(--rd-ink); font-family: var(--rd-font); letter-spacing: 0; }
+body.rd-enabled.bb-on .rd-ex-card .v { color: var(--bb-navy); font-weight: 800; }
+body.rd-enabled.bb-on .rd-ex-card .v span { color: var(--rd-ink-2); letter-spacing: 0; margin-left: .2em; font-family: var(--rd-font); font-weight: 600; }
+body.rd-enabled.bb-on .rd-ex-card small { color: var(--rd-ink-2); }
+body.rd-enabled.bb-on .rd-ex-badge { box-shadow: 0 8px 18px rgba(8, 34, 89, .25); }
+body.rd-enabled.bb-on .rd-ex-sec h2 { color: var(--rd-ink); }
+body.rd-enabled.bb-on .rd-ex-sec span { color: var(--rd-ink-2); }
+body.rd-enabled.bb-on .rd-ex-card:focus-visible,
+body.rd-enabled.bb-on .rd-ex-lg:focus-visible { outline-color: var(--bb-royal); }
+
+/* Hero generik (rd-hero) */
+body.rd-enabled.bb-on .rd-hero { background: var(--bb-grid), linear-gradient(135deg, var(--bb-midnight) 0%, var(--bb-navy) 100%); }
+body.rd-enabled.bb-on .rd-hero .rd-eyebrow, body.rd-enabled.bb-on .rd-hero-tile span { color: var(--bb-on-dark-2); }
+body.rd-enabled.bb-on .rd-hero-tile { background: rgba(127, 216, 255, .08); box-shadow: inset 0 0 0 1px rgba(127, 216, 255, .12); }
+
+/* ---------- Banner menu: grid cetak biru + bukit hijau → biru ---------- */
+body.rd-enabled.bb-on .sg-hero,
+body.rd-enabled.bb-on .eg-hero,
+body.rd-enabled.bb-on .ig-hero { border-radius: 20px; box-shadow: 0 20px 48px rgba(4, 17, 46, .24); }
+body.rd-enabled.bb-on .sg-hero-art [stop-color="#3fbf8f"] { stop-color: #4f8ff0; }
+body.rd-enabled.bb-on .sg-hero-art [stop-color="#2a9e79"] { stop-color: #2f6fd8; }
+body.rd-enabled.bb-on .sg-hero-art [stop-color="#1b7a5c"] { stop-color: #1d4fb0; }
+body.rd-enabled.bb-on .sg-hero-art [stop-color="#145c48"] { stop-color: #163a8a; }
+body.rd-enabled.bb-on .sg-hero-art [stroke="#2fa37c"] { stroke: #5aa0f5; }
+body.rd-enabled.bb-on .sg-hero-art [stroke="#1b7a5c"] { stroke: #1d4fb0; }
+
+
+/* ======================================================================
+ * Menu lain — satu bahasa desain
+ * ====================================================================== */
+/* Banner gelap bersama: Laporan, Alert Center, Pengaturan, sinyal AO Korporat */
+body.rd-enabled.bb-on .rapim-cover,
+body.rd-enabled.bb-on .alert-hero,
+body.rd-enabled.bb-on .settings-hero {
+  border-radius: 20px;
+  background:
+    radial-gradient(45% 90% at 92% 10%, rgba(47, 123, 255, .45) 0%, rgba(47, 123, 255, 0) 70%),
+    var(--bb-grid),
+    linear-gradient(135deg, var(--bb-midnight) 0%, var(--bb-night) 55%, #0d3f9e 100%);
+  box-shadow: 0 20px 48px rgba(4, 17, 46, .24);
+  padding: 26px 28px;
+}
+body.rd-enabled.bb-on .rapim-cover h2,
+body.rd-enabled.bb-on .alert-hero h2,
+body.rd-enabled.bb-on .settings-hero h2 { font-size: clamp(26px, 2.6vw, 36px); font-weight: 800; color: #fff; }
+body.rd-enabled.bb-on .rapim-cover-copy span,
+body.rd-enabled.bb-on .alert-hero > div > span,
+body.rd-enabled.bb-on .settings-hero > div > span,
+body.rd-enabled.bb-on .rapim-brand-row strong { color: var(--bb-ice); letter-spacing: .1em; }
+body.rd-enabled.bb-on .rapim-cover p,
+body.rd-enabled.bb-on .alert-hero p,
+body.rd-enabled.bb-on .settings-hero p { color: var(--bb-on-dark-2); }
+body.rd-enabled.bb-on .alert-date,
+body.rd-enabled.bb-on .settings-hero > a,
+body.rd-enabled.bb-on .rapim-brand-row span {
+  background: rgba(127, 216, 255, .08); border: 1px solid rgba(127, 216, 255, .25); border-radius: 12px; color: #fff;
+}
+body.rd-enabled.bb-on .settings-hero > a:hover { background: rgba(127, 216, 255, .16); }
+
+/* Laporan & Analitik */
+body.rd-enabled.bb-on .rapim-report { padding: 0; background: transparent; border-radius: 0; }
+body.rd-enabled.bb-on .rapim-report::before,
+body.rd-enabled.bb-on .rapim-report::after { display: none; }
+body.rd-enabled.bb-on .rapim-headline-card,
+body.rd-enabled.bb-on .rapim-narrative,
+body.rd-enabled.bb-on .rapim-table-card,
+body.rd-enabled.bb-on .rapim-strategy-cards article,
+body.rd-enabled.bb-on .rapim-score-grid article,
+body.rd-enabled.bb-on .analytics-panel {
+  border: 1px solid var(--rd-line); border-radius: var(--rd-radius); background: var(--rd-card); box-shadow: var(--rd-shadow);
+}
+body.rd-enabled.bb-on .rapim-headline-card strong { color: var(--bb-navy); font-family: var(--bb-display); }
+body.rd-enabled.bb-on .rapim-headline-icon { color: var(--bb-royal); border-color: var(--bb-royal); background: var(--rd-accent-soft); }
+body.rd-enabled.bb-on .rapim-narrative b { color: var(--bb-navy); }
+body.rd-enabled.bb-on .rapim-narrative h3 { color: var(--rd-ink); border-color: var(--bb-royal); }
+body.rd-enabled.bb-on .rapim-score-grid article,
+body.rd-enabled.bb-on .rapim-score-grid article:nth-child(n) { border-left: 1px solid var(--rd-line); border-top: 4px solid var(--bb-royal); }
+body.rd-enabled.bb-on .rapim-score-grid strong { color: var(--bb-navy); font-family: var(--bb-display); }
+body.rd-enabled.bb-on .rapim-score-grid span { color: var(--rd-ink); }
+body.rd-enabled.bb-on .rapim-table-title { background: var(--bb-midnight); color: #fff; border-radius: var(--rd-radius) var(--rd-radius) 0 0; }
+body.rd-enabled.bb-on .rapim-table-title h3 { color: #fff; }
+body.rd-enabled.bb-on .rapim-table-title svg { color: var(--bb-ice); }
+body.rd-enabled.bb-on .rapim-analysis-table th { background: var(--bb-navy); color: #fff; }
+body.rd-enabled.bb-on .rapim-strategy-cards article,
+body.rd-enabled.bb-on .rapim-strategy-cards article:nth-child(n) { border-color: var(--rd-line); border-top: 4px solid var(--bb-royal); }
+body.rd-enabled.bb-on .rapim-strategy-cards b { background: var(--bb-royal); }
+body.rd-enabled.bb-on .rapim-strategy-cards h3 { color: var(--rd-ink); }
+body.rd-enabled.bb-on .rapim-strategy-cards svg { color: var(--bb-royal); }
+body.rd-enabled.bb-on .analytics-panel-head svg,
+body.rd-enabled.bb-on .alert-panel-head svg { color: var(--bb-royal); background: var(--rd-accent-soft); }
+body.rd-enabled.bb-on .analytics-bars i { background: var(--bb-royal); }
+
+/* Alert Center */
+body.rd-enabled.bb-on .alert-score-grid article { border-radius: var(--rd-radius); box-shadow: var(--rd-shadow); }
+body.rd-enabled.bb-on .alert-score-grid strong { font-family: var(--bb-display); font-size: 34px; color: var(--rd-ink); }
+body.rd-enabled.bb-on .alert-panel { border-radius: var(--rd-radius); box-shadow: var(--rd-shadow); border-color: var(--rd-line); }
+body.rd-enabled.bb-on .alert-action-table th { background: var(--rd-accent-soft); color: var(--rd-ink); }
+
+/* Pengaturan */
+body.rd-enabled.bb-on .settings-card { min-height: 0; border-radius: var(--rd-radius); box-shadow: var(--rd-shadow); border-color: var(--rd-line); }
+body.rd-enabled.bb-on .settings-card div { color: var(--bb-royal); background: var(--rd-accent-soft); }
+body.rd-enabled.bb-on .settings-card button,
+body.rd-enabled.bb-on .settings-card a { background: var(--bb-royal); }
+body.rd-enabled.bb-on .settings-info-grid article { min-height: 0; border-radius: var(--rd-radius); }
+
+/* AO Korporat: pita sinyal manajemen menjadi banner dengan vinyet kantor cerdas */
+body.rd-enabled.bb-on .rd-hero.bb-ao-banner {
+  position: relative; min-height: 200px; padding-right: 270px; align-content: center; overflow: hidden;
+  background:
+    radial-gradient(45% 110% at 88% 60%, rgba(47, 123, 255, .5) 0%, rgba(47, 123, 255, 0) 70%),
+    var(--bb-grid),
+    linear-gradient(135deg, var(--bb-midnight) 0%, var(--bb-night) 55%, #0d3f9e 100%);
+  border-radius: 20px;
+}
+body.rd-enabled.bb-on .rd-hero.bb-ao-banner p { font-size: 20px; line-height: 1.4; font-family: var(--bb-display); font-weight: 700; max-width: 46ch; }
+body.rd-enabled.bb-on .rd-hero.bb-ao-banner .rd-hero-side { position: relative; z-index: 1; }
+.bb-ao-art { position: absolute; right: 24px; bottom: 0; width: 205px; pointer-events: none; }
+.bb-ao-art svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@media (max-width: 1100px) {
+  body.rd-enabled.bb-on .rd-hero.bb-ao-banner { padding-right: 24px; }
+  .bb-ao-art { display: none; }
+}
+
+/* ---------- Gerak ---------- */
+@keyframes bb-spin { to { transform: rotate(360deg); } }
+@keyframes bb-flow { to { stroke-dashoffset: -40; } }
+@keyframes bb-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+.bb-rotor { animation: bb-spin 7s linear infinite; }
+.bb-rotor.r2 { animation-duration: 9s; }
+.bb-flow { stroke-dasharray: 5 7; animation: bb-flow 1.8s linear infinite; }
+.bb-node, .bb-beacon { animation: bb-pulse 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bb-rotor, .bb-flow, .bb-node, .bb-beacon { animation: none; }
+}
+
+/* ---------- Responsif & cetak ---------- */
+@media (max-width: 1360px) {
+  body.rd-enabled.bb-on .rd-ex-hero { --bb-art-w: clamp(280px, 25vw, 330px); }
+  body.rd-enabled.bb-on .rd-ex-nko { padding-right: 24px; }
+  body.rd-enabled.bb-on .rd-ex-main { gap: 24px; }
+  body.rd-enabled.bb-on .rd-ex-narr p { font-size: 15.5px; }
+}
+@media (max-width: 1280px) {
+  body.rd-enabled.bb-on .app-shell { background: linear-gradient(90deg, var(--bb-midnight) 0, var(--bb-midnight) 84px, var(--rd-ground) 84px); }
+  body.rd-enabled.bb-on .brand::after { display: none; }
+}
+@media (max-width: 1100px) {
+  body.rd-enabled.bb-on .rd-ex-hero > .bb-hero-art { display: none; }
+  body.rd-enabled.bb-on .rd-ex-main, body.rd-enabled.bb-on .rd-ex-legend { max-width: none; }
+  body.rd-enabled.bb-on .rd-ex-hero { min-height: 0; }
+}
+@media print {
+  body.rd-enabled.bb-on .rd-ex-hero > .bb-hero-art,
+  body.rd-enabled.bb-on .page-header::after { display: none; }
+  body.rd-enabled.bb-on .rd-ex-nko strong { background: none; color: #fff; }
+  body.rd-enabled.bb-on .rd-ex-main, body.rd-enabled.bb-on .rd-ex-legend { max-width: none; }
+}
+@media (max-width: 760px) {
+  body.rd-enabled.bb-on .app-shell { background: var(--rd-ground); }
+  body.rd-enabled.bb-on .sidebar-art { display: none; }
+  body.rd-enabled.bb-on .brand { gap: 0; }
+}

@@ -1,0 +1,135 @@
+/* Interaksi dashboard (pratinjau 2026-11) — gaya untuk interaksi.js. Mengikuti token tema Biru Listrik bila aktif. */
+body.ix-on {
+  --ix-ink: var(--rd-ink, #0d1b3a);
+  --ix-ink-2: var(--rd-ink-2, #4a5a78);
+  --ix-line: var(--rd-line, #d8e1ef);
+  --ix-card: var(--rd-card, #ffffff);
+  --ix-soft: var(--rd-accent-soft, #e9f1ff);
+  --ix-accent: var(--bb-royal, #0b4fbf);
+  --ix-dark: var(--bb-midnight, #04112e);
+  --ix-ice: var(--bb-ice, #7fd8ff);
+  --ix-font: var(--rd-font, "IBM Plex Sans", "Segoe UI", system-ui, sans-serif);
+}
+html.ix-lock { overflow: hidden; }
+.dashboard h2, .dashboard h3 { scroll-margin-top: 84px; }
+@keyframes ix-flash { 0% { box-shadow: 0 0 0 0 rgba(47, 123, 255, .55); } 100% { box-shadow: 0 0 0 14px rgba(47, 123, 255, 0); } }
+.ix-flash { animation: ix-flash 1.2s ease-out 1; border-radius: 6px; }
+
+/* ---------- Tombol alat di sidebar ---------- */
+.ix-tools { display: grid; gap: 6px; padding: 0 0 14px; }
+.ix-tools button {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; padding: 8px 12px;
+  border-radius: 10px; border: 1px solid rgba(127, 216, 255, .22); background: rgba(127, 216, 255, .06);
+  color: #dbe8ff; font: 500 14px/1.2 var(--ix-font); cursor: pointer; text-align: left;
+}
+.ix-tools button:hover { background: rgba(127, 216, 255, .14); color: #fff; }
+.ix-tools button:focus-visible { outline: 2px solid var(--ix-ice); outline-offset: 2px; }
+.ix-tools button span { flex: 1; }
+.ix-tools kbd { font: 600 12px/1 var(--ix-font); padding: 4px 6px; border-radius: 6px; background: rgba(255, 255, 255, .1); color: #c9dbf7; }
+.ix-tools .ix-present-btn[aria-pressed="true"] { background: var(--ix-accent); border-color: var(--ix-accent); color: #fff; }
+@media (max-width: 1280px) {
+  .ix-tools button { justify-content: center; padding: 8px; }
+  .ix-tools button span, .ix-tools kbd { display: none; }
+}
+@media (max-width: 760px) { .ix-tools { display: flex; padding: 0; } .ix-tools button { width: 44px; min-height: 44px; } }
+
+/* ---------- Palet pencarian ---------- */
+.ix-pal { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: start center; padding: 12vh 16px 16px; font-family: var(--ix-font); }
+.ix-pal[hidden] { display: none; }
+.ix-pal-backdrop { position: absolute; inset: 0; background: rgba(4, 17, 46, .55); backdrop-filter: blur(3px); }
+.ix-pal-box {
+  position: relative; width: min(640px, 100%); max-height: 70vh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--ix-card); color: var(--ix-ink); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(4, 17, 46, .45), 0 0 0 1px rgba(127, 216, 255, .25);
+}
+.ix-pal-field { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--ix-line); color: var(--ix-accent); }
+.ix-pal-field input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 500 17px/1.3 var(--ix-font); color: var(--ix-ink); }
+.ix-pal-field input::placeholder { color: var(--ix-ink-2); }
+.ix-pal kbd { font: 600 12px/1 var(--ix-font); padding: 4px 6px; border-radius: 6px; background: var(--ix-soft); color: var(--ix-ink-2); border: 1px solid var(--ix-line); }
+.ix-pal-list { list-style: none; margin: 0; padding: 8px; overflow: auto; }
+.ix-pal-list li[role="option"] { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+.ix-pal-list li[aria-selected="true"] { background: var(--ix-soft); box-shadow: inset 3px 0 0 var(--ix-accent); }
+.ix-pal-list .ix-ico { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--ix-soft); color: var(--ix-accent); flex-shrink: 0; }
+.ix-pal-list .ix-txt { display: grid; flex: 1; min-width: 0; }
+.ix-pal-list .ix-txt b { font-weight: 600; font-size: 15px; }
+.ix-pal-list .ix-txt small { font-size: 12px; color: var(--ix-ink-2); }
+.ix-pal-list .ix-go { color: var(--ix-ink-2); opacity: 0; }
+.ix-pal-list li[aria-selected="true"] .ix-go { opacity: 1; color: var(--ix-accent); }
+.ix-pal-list .ix-empty { padding: 18px 12px; color: var(--ix-ink-2); font-size: 14px; }
+.ix-pal-foot { display: flex; gap: 16px; flex-wrap: wrap; padding: 10px 16px; border-top: 1px solid var(--ix-line); font-size: 12px; color: var(--ix-ink-2); }
+.ix-pal-foot span { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ---------- Drill-down ---------- */
+.ix-drill { cursor: pointer; }
+.ix-drill:focus-visible { outline: 3px solid var(--ix-accent); outline-offset: 3px; border-radius: 10px; }
+#analyticsView .rapim-score-grid > article.ix-drill { transition: transform .15s ease, box-shadow .15s ease; }
+#analyticsView .rapim-score-grid > article.ix-drill:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(11, 79, 191, .16); }
+.rd-ov-prow.ix-drill { border-radius: 10px; transition: background .15s ease; }
+.rd-ov-prow.ix-drill:hover { background: var(--ix-soft); }
+.rd-ov-fresh .rd-chip.ix-drill:hover { filter: brightness(.96); text-decoration: underline; }
+.ix-open {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 2px 8px; min-height: 26px;
+  border: 1px solid var(--ix-line); border-radius: 999px; background: var(--ix-card); color: var(--ix-accent);
+  font: 600 12px/1 var(--ix-font); cursor: pointer; vertical-align: middle; white-space: nowrap;
+}
+.ix-open:hover { background: var(--ix-soft); border-color: var(--ix-accent); }
+.ix-open:focus-visible { outline: 2px solid var(--ix-accent); outline-offset: 2px; }
+
+/* ---------- Tabel bisa diurutkan ---------- */
+.ix-sortable th { white-space: nowrap; }
+.ix-sort { all: unset; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; border-radius: 4px; }
+.ix-sort svg { opacity: .45; }
+.ix-sort:hover svg, th[aria-sort="ascending"] .ix-sort svg, th[aria-sort="descending"] .ix-sort svg { opacity: 1; }
+th[aria-sort="ascending"] .ix-sort svg { transform: scaleY(-1); }
+.ix-sort:focus-visible { outline: 2px solid var(--ix-accent); outline-offset: 2px; }
+
+/* ---------- Alert Center: kartu prioritas sebagai penyaring ---------- */
+.ix-filterable > [data-ix-level] { cursor: pointer; transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease; }
+.ix-filterable > [data-ix-level]:hover { transform: translateY(-2px); }
+.ix-filterable > [data-ix-level]:focus-visible { outline: 3px solid var(--ix-accent); outline-offset: 3px; }
+.ix-filterable > [aria-pressed="true"] { box-shadow: 0 0 0 3px var(--ix-accent), 0 12px 28px rgba(11, 79, 191, .2) !important; }
+.ix-filterable:has([aria-pressed="true"]) > [aria-pressed="false"] { opacity: .55; }
+.ix-filter-status { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-radius: 12px; background: var(--ix-soft); color: var(--ix-ink); font: 500 14px/1.4 var(--ix-font); }
+.ix-filter-status[hidden] { display: none; }
+.ix-reset { border: 0; background: var(--ix-accent); color: #fff; font: 600 13px/1 var(--ix-font); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+#alertRows > div[hidden], #alertActionRows tr[hidden] { display: none !important; }
+
+/* ---------- Kembali ke atas ---------- */
+.ix-top {
+  position: fixed; z-index: 1500; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; border: 0; border-radius: 999px;
+  background: var(--ix-dark); color: #fff; font: 600 13px/1 var(--ix-font); cursor: pointer;
+  box-shadow: 0 10px 26px rgba(4, 17, 46, .35), 0 0 0 1px rgba(127, 216, 255, .25);
+}
+.ix-top[hidden] { display: none; }
+.ix-top:hover { background: var(--ix-accent); }
+.ix-top:focus-visible { outline: 3px solid var(--ix-ice); outline-offset: 2px; }
+
+/* ---------- Mode rapat ---------- */
+body.ix-present .sidebar { display: none !important; }
+body.ix-present .app-shell { grid-template-columns: minmax(0, 1fr) !important; background: var(--rd-ground, #f3f6fb) !important; }
+body.ix-present .dashboard { max-width: 1600px; margin: 0 auto; padding-bottom: 96px; }
+body.ix-present .ix-top { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+.ix-present-bar {
+  position: fixed; z-index: 4000; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 999px;
+  background: rgba(4, 17, 46, .92); color: #fff; font: 600 14px/1 var(--ix-font);
+  box-shadow: 0 16px 40px rgba(4, 17, 46, .45), 0 0 0 1px rgba(127, 216, 255, .3); backdrop-filter: blur(6px);
+}
+.ix-present-bar[hidden] { display: none; }
+.ix-present-bar button { display: inline-flex; align-items: center; gap: 6px; min-width: 44px; min-height: 44px; justify-content: center; border: 0; border-radius: 999px; background: rgba(127, 216, 255, .1); color: #fff; cursor: pointer; font: inherit; }
+.ix-present-bar button:hover { background: rgba(127, 216, 255, .22); }
+.ix-present-bar button:focus-visible { outline: 2px solid var(--ix-ice); outline-offset: 2px; }
+.ix-present-bar .ix-exit { padding: 0 14px; }
+.ix-present-label { padding: 0 12px; min-width: 220px; text-align: center; white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ix-flash { animation: none; }
+  .ix-filterable > [data-ix-level], #analyticsView .rapim-score-grid > article.ix-drill { transition: none; }
+}
+@media print { .ix-tools, .ix-top, .ix-present-bar, .ix-open, .ix-filter-status { display: none !important; } }
+@media (max-width: 760px) {
+  .alert-view, .alert-view > *, .alert-grid > * { min-width: 0; }
+  .alert-action-table { display: block; overflow-x: auto; }
+  .ix-open { margin: 4px 0 0; }
+}
